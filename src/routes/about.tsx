@@ -46,7 +46,6 @@ export const Route = createFileRoute("/about")({
     ],
   }),
 });
-
 function AboutPage() {
   useReveal();
   return (

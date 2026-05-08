@@ -95,7 +95,7 @@ export function Hero() {
             <StatCounter target={8.5} decimals={1} label="Era of Impact" />
             <StatCounter target={150} label=" Breakthroughs" />
             <StatCounter target={25} label="Global Reach" />
-            <StatCounter target={50} suffix="%" label="Vision Architects" />
+            <StatCounter target={50} suffix="+" label="Vision Architects" />
           </div>
         </div>
 

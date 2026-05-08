@@ -1,8 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { CTA, Footer } from "@/components/site/CTA";
 import { AnimatedHero } from "@/components/site/AnimatedHero";
 import { useReveal } from "@/hooks/use-reveal";
+import { useEffect, useRef, useState } from "react";
 import dataAiImg from "@/assets/service-data-ai.jpg";
 import digitalImg from "@/assets/service-digital.jpg";
 import productImg from "@/assets/service-product.jpg";
@@ -12,135 +13,663 @@ import consultingImg from "@/assets/service-consulting.jpg";
 import growthImg from "@/assets/service-growth.jpg";
 import managedImg from "@/assets/service-managed.jpg";
 
-const TITLE_TO_SLUG: Record<string, string> = {
-  "Artificial Intelligence": "artificial-intelligence",
-  "Digital Transformation": "digital-transformation",
-  "Product Engineering": "product-engineering",
-  "Application Development": "application-development",
-  "UI / UX": "ui-ux",
-  "Consulting": "consulting",
-  "Performance & Growth": "performance-growth",
-  "Managed Services": "managed-services",
-};
-const toSlug = (title: string) => TITLE_TO_SLUG[title] ?? title.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-
+// ─── Data ─────────────────────────────────────────────────────────────────────
 const SERVICE_GROUPS = [
   {
     title: "Artificial Intelligence",
     image: dataAiImg,
-    intro: "Unlock significant business opportunities & accelerate innovation at scale.",
+    eyebrow: "Neural Command Layer",
+    tagline: "Sentient systems. Zero latency. Infinite scale.",
+    intro:
+      "We forge cognitive architectures that don't just process data — they perceive, predict and act. Our AI systems operate at the intersection of large-scale language models, autonomous agent networks and real-time inference pipelines, compressing years of human deliberation into milliseconds of machine precision.",
+    stat: { value: "10×", label: "Decision velocity" },
     items: [
-      "Generative AI",
-      "Smart AI Assistant",
-      "AI Model Fine-tuning",
-      "Natural Language Processing (LLM)",
-      "Optical Character Recognition (OCR)",
-      "Automated Optimization",
-      "AI Integration",
-      "Deep Learning",
-      "Sentiment Analysis",
-      "Chat Bots",
-      "Custom AI App Development",
+      "Generative AI & LLM Orchestration",
+      "Autonomous Agent Networks",
+      "AI Model Fine-tuning & RAG Pipelines",
+      "Neural Language Processing",
+      "Cognitive OCR & Document Intelligence",
+      "Self-Optimising AI Systems",
+      "AI Integration & Intelligent API Mesh",
+      "Deep Learning & Neural Architectures",
+      "Real-Time Sentiment & Intent Engine",
+      "Conversational AI & Hyper-Bots",
+      "Custom AI Application Foundries",
     ],
   },
   {
     title: "Digital Transformation",
     image: digitalImg,
-    intro: "Drive a digital-first strategy for your entire enterprise — leading change, enabled by digital technology.",
+    eyebrow: "Enterprise Singularity",
+    tagline: "Legacy ends here. The adaptive enterprise begins.",
+    intro:
+      "We don't digitise your past — we architect your future. By deconstructing monolithic operations and rebuilding them on composable, AI-native foundations, we create enterprises that sense market shifts in real time, reconfigure autonomously and outpace competitors who are still running change management workshops.",
+    stat: { value: "3×", label: "Time-to-market compression" },
     items: [
-      "Enterprise Mobility Services",
-      "Enterprise System Integration",
-      "Cloud Integration",
-      "Digital Experience",
-      "Enterprise Architecture",
-      "Business Intelligence",
-      "Application Modernization",
+      "Enterprise Mobility & Neural Orchestration",
+      "Intelligent System Integration & API Mesh",
+      "Cloud-Native & Sovereign Migration",
+      "Immersive Digital Experience Platforms",
+      "Composable Enterprise Architecture",
+      "Predictive Business Intelligence",
+      "Zero-Downtime Application Modernization",
     ],
   },
   {
     title: "Product Engineering",
     image: productImg,
-    intro: "Software product development that supports product-led growth.",
+    eyebrow: "Precision Build Matrix",
+    tagline: "Engineered to disrupt. Built to endure.",
+    intro:
+      "We deploy elite engineering squads who treat software as a living organism — continuously evolving, self-healing and optimised for growth. From quantum-ready architectures to edge-deployed microservices, every system we craft is hardened for the demands of a world where downtime is extinction.",
+    stat: { value: "98%", label: "On-time delivery rate" },
     items: [
-      "Product Assessment & Design",
-      "Custom Product Development",
-      "Application Re-Engineering",
-      "Platform Engineering",
-      "DevOps",
-      "Quality Assurance",
-      "Team Augmentation",
+      "Product Genome Mapping & Discovery",
+      "Hyper-Custom Product Development",
+      "Application Re-Engineering & Resurrection",
+      "Platform & Edge Infrastructure Engineering",
+      "DevOps, GitOps & Autonomous CI/CD",
+      "AI-Augmented Quality Engineering",
+      "Embedded Squad Augmentation",
     ],
   },
   {
     title: "Application Development",
     image: appImg,
-    intro: "Bringing innovative products to market on every device and platform.",
+    eyebrow: "Omniscreen Deployment",
+    tagline: "Every pixel. Every platform. Every moment.",
+    intro:
+      "We engineer applications that exist seamlessly across every surface — from foldable screens to spatial computing environments. Our cross-platform architecture eliminates the ceiling between native performance and universal reach, delivering sub-second experiences that feel native to every device, OS and network condition.",
+    stat: { value: "4.9★", label: "Avg. app store rating" },
     items: [
-      "Mobile App Development",
-      "Responsive Web Applications",
-      "Cross-Platform App Development",
-      "Progressive Web Applications",
-      "API Development & Integration",
-      "Back-End Development",
+      "Native iOS & Android Engineering",
+      "Adaptive Responsive Web Applications",
+      "Cross-Platform Flutter & React Native",
+      "Offline-First Progressive Web Apps",
+      "API Fabric & Integration Architecture",
+      "Distributed Microservices & Backend",
     ],
   },
   {
-    title: "UI / UX",
+    title: "UI / UX Design",
     image: uiuxImg,
-    intro: "Merging UX, CX and product experience to develop high-performing digital products.",
+    eyebrow: "Neuro-Experience Design",
+    tagline: "Interfaces that rewire behaviour, not just attention.",
+    intro:
+      "We design from the limbic system outward. Every micro-interaction, spatial rhythm and typographic choice is calibrated against neuroscience and behavioural data — creating digital environments where users feel effortlessly guided, emotionally connected and compelled to return. Design so precise it becomes invisible.",
+    stat: { value: "62%", label: "Avg. engagement uplift" },
     items: [
-      "Usability and UX Consulting",
-      "UX Research",
-      "User Experience",
-      "UX Design",
-      "UI Design",
-      "UI/UX Design Team",
+      "Neuro-UX Research & Cognitive Audits",
+      "Spatial Information Architecture",
+      "Kinetic Interaction & Motion Design",
+      "Atomic Design Systems & Token Libraries",
+      "Visual Direction & Brand Expression",
+      "Inclusive & Zero-Barrier Accessibility",
     ],
   },
   {
     title: "Consulting",
     image: consultingImg,
-    intro: "We partner with our clients to bring to life their vision of enterprise-wide transformation.",
+    eyebrow: "Strategic Foresight Engine",
+    tagline: "We see the roadblocks you haven't hit yet.",
+    intro:
+      "Before a single line of code, we run your strategy through our proprietary foresight framework — mapping threat vectors, opportunity corridors and technology inflection points that most organisations won't see for two years. You leave every engagement with a high-conviction execution blueprint, not a deck of recommendations.",
+    stat: { value: "85%", label: "Clients advance to build" },
     items: [
-      "Business & Stakeholder Consultation",
-      "Customer Experience Strategy",
-      "Technology Strategy",
-      "Product Strategy",
-      "Data Strategy",
-      "Product Roadmapping",
+      "Digital Maturity & Readiness Scan",
+      "Next-Gen Customer Experience Strategy",
+      "Technology & Platform Futures Mapping",
+      "Product Vision & Horizon Roadmapping",
+      "AI & Data Monetisation Strategy",
+      "Transformation Leadership Facilitation",
     ],
   },
   {
     title: "Performance & Growth",
     image: growthImg,
-    intro: "Continuous improvement programmes that iteratively optimise your digital platform through data-driven insights.",
+    eyebrow: "Perpetual Optimisation Loop",
+    tagline: "Your platform compounds. Automatically.",
+    intro:
+      "We install a self-improving intelligence layer on top of your existing digital estate. Behavioural signals feed predictive models that autonomously surface friction, personalise journeys and redistribute traffic — creating a flywheel of compounding growth that accelerates while your competitors are still reading last quarter's analytics.",
+    stat: { value: "2.4×", label: "Avg. revenue multiplier" },
     items: [
-      "Experience Optimisation",
-      "Personalisation",
-      "Continuous Improvement",
-      "Tracking & Analytics",
-      "SEO",
-      "BI Consultancy",
-      "Dashboards & Reporting",
+      "Predictive Experience Optimisation",
+      "Hyper-Personalisation & Dynamic Content",
+      "Autonomous A/B & Multivariate Testing",
+      "Behavioural Signal & Event Intelligence",
+      "Core Web Vitals & Search Dominance",
+      "BI Consultancy & Revenue Attribution",
+      "Real-Time Executive Command Dashboards",
     ],
   },
   {
     title: "Managed Services",
     image: managedImg,
-    intro: "Keep your IT secure, reliable and efficient — from application modernization to 24/7 operations.",
+    eyebrow: "Autonomous Operations Grid",
+    tagline: "Self-healing infrastructure. Zero compromise.",
+    intro:
+      "We operate your digital estate like a mission-critical spacecraft — with autonomous threat neutralisation, predictive capacity scaling and zero-downtime deployment protocols running continuously in the background. Your engineering team focuses on innovation. We ensure the ground beneath them never shifts.",
+    stat: { value: "99.9%", label: "Guaranteed uptime SLA" },
     items: [
-      "Application Modernization",
-      "DevOps",
-      "Cloud",
-      "Hosting and Infrastructure",
-      "IT Operations and Support",
-      "Application Support",
-      "Professional Services and Consultancy",
-      "Cybersecurity and Compliance",
+      "Intelligent Application Modernization",
+      "DevOps, GitOps & SRE Automation",
+      "Multi-Cloud Operations & FinOps",
+      "Sovereign Hosting & Edge Infrastructure",
+      "24/7 Autonomous IT Operations",
+      "Predictive Application Support",
+      "Zero-Trust Cybersecurity & Compliance",
     ],
   },
 ];
 
+// ─── CSS ──────────────────────────────────────────────────────────────────────
+const STYLES = `
+  @keyframes imgEnter {
+    from { opacity: 0; transform: translateY(32px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes imgExit {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 0; transform: translateY(-28px) scale(1.02); }
+  }
+  @keyframes txtEnter {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes numEnter {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .fa-img-enter { animation: imgEnter 0.55s cubic-bezier(0.22,1,0.36,1) both; }
+  .fa-img-exit  { animation: imgExit  0.4s  cubic-bezier(0.4,0,1,1) both; }
+  .fa-txt-enter { animation: txtEnter 0.5s  cubic-bezier(0.22,1,0.36,1) both; }
+  .fa-txt-enter-d1 { animation: txtEnter 0.5s cubic-bezier(0.22,1,0.36,1) 0.06s both; }
+  .fa-txt-enter-d2 { animation: txtEnter 0.5s cubic-bezier(0.22,1,0.36,1) 0.12s both; }
+  .fa-txt-enter-d3 { animation: txtEnter 0.5s cubic-bezier(0.22,1,0.36,1) 0.18s both; }
+  .fa-num-enter { animation: numEnter 0.6s cubic-bezier(0.22,1,0.36,1) both; }
+
+  /* Sidebar dot */
+  .fa-dot {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: background 0.3s ease, transform 0.3s ease;
+    flex-shrink: 0;
+  }
+  .fa-dot.active {
+    background: rgb(255,130,50);
+    transform: scale(1.4);
+  }
+
+  /* Service items list */
+  .svc-item {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 12px; line-height: 1.6;
+    color: rgba(240,232,223,0.38);
+    transition: color 0.2s ease;
+  }
+  .svc-item:hover { color: rgba(240,232,223,0.7); }
+`;
+
+// ─── The fromanother-style scroll-driven services section ─────────────────────
+function ServicesScrollSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [active, setActive] = useState(0);
+  const [prevActive, setPrevActive] = useState<number | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const activeRef = useRef(0);
+  const ticking = useRef(false);
+
+  const total = SERVICE_GROUPS.length;
+  // Each service gets ~1.2 viewport of scroll space; total section height = 100vh + total*1.2*100vh
+  const SCROLL_PER = 1.2; // viewports per service
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    function onScroll() {
+      if (ticking.current) return;
+      ticking.current = true;
+      requestAnimationFrame(() => {
+        ticking.current = false;
+        if (!section) return;
+        const rect = section.getBoundingClientRect();
+        const scrolled = -rect.top; // how far we've scrolled into the section
+        const totalScrollable = section.offsetHeight - window.innerHeight;
+        const raw = Math.max(0, Math.min(1, scrolled / totalScrollable));
+        const newActive = Math.min(total - 1, Math.floor(raw * total));
+
+        if (newActive !== activeRef.current) {
+          setPrevActive(activeRef.current);
+          setIsTransitioning(true);
+          activeRef.current = newActive;
+          setActive(newActive);
+          // Clear exit animation after it completes
+          setTimeout(() => {
+            setPrevActive(null);
+            setIsTransitioning(false);
+          }, 450);
+        }
+      });
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [total]);
+
+  const g = SERVICE_GROUPS[active];
+  const prevG = prevActive !== null ? SERVICE_GROUPS[prevActive] : null;
+
+  return (
+    <section
+      ref={sectionRef}
+      style={{
+        // total height: 1 viewport for initial view + SCROLL_PER viewports per item
+        height: `calc(100vh + ${total * SCROLL_PER * 100}vh)`,
+        position: "relative",
+      }}
+    >
+      {/* ── Sticky viewport frame ── */}
+      <div style={{
+        position: "sticky",
+        top: 0,
+        height: "100vh",
+        overflow: "hidden",
+        background: "#0b0907",
+        display: "flex",
+        flexDirection: "column",
+      }}>
+
+        {/* ── Layout grid: sidebar | center image | right text ── */}
+        <div style={{
+          flex: 1,
+          display: "grid",
+          // fromanother layout: narrow sidebar | flexible center | text column
+          gridTemplateColumns: "64px 1fr 320px",
+          gridTemplateRows: "1fr",
+          position: "relative",
+        }}>
+
+          {/* ════════════════════════════════════════
+              LEFT SIDEBAR — numbered list 1–8
+              Active item shows dash + label
+          ════════════════════════════════════════ */}
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "20px",
+            padding: "60px 0",
+            borderRight: "1px solid rgba(255,255,255,0.05)",
+            position: "relative",
+          }}>
+            {SERVICE_GROUPS.map((s, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  position: "relative",
+                  width: "100%",
+                  justifyContent: "flex-end",
+                  paddingRight: "16px",
+                }}
+              >
+                {/* Active: dash + label */}
+                {i === active && (
+                  <div style={{
+                    position: "absolute",
+                    right: "28px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    whiteSpace: "nowrap",
+                    animation: "txtEnter 0.4s cubic-bezier(0.22,1,0.36,1) both",
+                  }}>
+                    <span style={{
+                      display: "block", width: "16px", height: "1px",
+                      background: "rgb(255,130,50)",
+                    }} />
+                    <span style={{
+                      fontSize: "8px", letterSpacing: "0.2em",
+                      textTransform: "uppercase",
+                      color: "rgba(255,130,50,0.8)",
+                    }}>
+                      {s.title.split(" ")[0]}
+                    </span>
+                  </div>
+                )}
+                {/* Number */}
+                <span style={{
+                  fontSize: "10px",
+                  color: i === active
+                    ? "rgba(255,255,255,0.75)"
+                    : "rgba(255,255,255,0.18)",
+                  fontVariantNumeric: "tabular-nums",
+                  transition: "color 0.3s ease",
+                  lineHeight: 1,
+                }}>
+                  {i + 1}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* ════════════════════════════════════════
+              CENTER — floating image + big number
+          ════════════════════════════════════════ */}
+          <div style={{
+            position: "relative",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+            {/* Giant bottom-left number — fromanother signature */}
+            <div
+              key={`num-${active}`}
+              className="fa-num-enter"
+              style={{
+                position: "absolute",
+                bottom: "20px",
+                left: "32px",
+                fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                fontSize: "clamp(100px, 14vw, 200px)",
+                fontWeight: 800,
+                lineHeight: 1,
+                color: "rgba(255,255,255,0.06)",
+                letterSpacing: "-0.04em",
+                userSelect: "none",
+                zIndex: 0,
+                pointerEvents: "none",
+              }}
+            >
+              {String(active + 1).padStart(2, "0")}
+            </div>
+
+            {/* Previous image — exits upward */}
+            {prevG && (
+              <div
+                className="fa-img-exit"
+                style={{
+                  position: "absolute",
+                  width: "min(420px, 55%)",
+                  aspectRatio: "4/3",
+                  borderRadius: "4px",
+                  overflow: "hidden",
+                  zIndex: 2,
+                  pointerEvents: "none",
+                }}
+              >
+                <img
+                  src={prevG.image}
+                  alt={prevG.title}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </div>
+            )}
+
+            {/* Active image — enters from below */}
+            <div
+              key={`img-${active}`}
+              className="fa-img-enter"
+              style={{
+                position: "relative",
+                width: "min(420px, 55%)",
+                aspectRatio: "4/3",
+                borderRadius: "4px",
+                overflow: "hidden",
+                zIndex: 3,
+                boxShadow: "0 40px 80px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06)",
+              }}
+            >
+              <img
+                src={g.image}
+                alt={g.title}
+                style={{
+                  width: "100%", height: "100%", objectFit: "cover",
+                  filter: "brightness(0.9) saturate(0.85)",
+                }}
+              />
+              {/* Subtle vignette */}
+              <div style={{
+                position: "absolute", inset: 0,
+                background: "linear-gradient(to bottom, transparent 55%, rgba(0,0,0,0.35) 100%)",
+              }} />
+
+              {/* Stat badge — bottom right of image like original services page */}
+              <div style={{
+                position: "absolute", bottom: "14px", right: "14px",
+                padding: "8px 12px",
+                background: "rgba(10,8,6,0.88)",
+                border: "1px solid rgba(255,100,30,0.3)",
+                backdropFilter: "blur(8px)",
+                borderRadius: "6px",
+                textAlign: "right",
+              }}>
+                <div style={{
+                  fontSize: "18px", fontWeight: 700, lineHeight: 1,
+                  color: "rgb(255,130,50)",
+                  fontFamily: "'Barlow Condensed', sans-serif",
+                }}>
+                  {g.stat.value}
+                </div>
+                <div style={{
+                  fontSize: "8px", letterSpacing: "0.15em", textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.38)", marginTop: "3px",
+                }}>
+                  {g.stat.label}
+                </div>
+              </div>
+            </div>
+
+            {/* Top: previous slide fragment — fromanother shows top of prev image peeking */}
+            {prevG && prevActive !== null && prevActive < active && (
+              <div style={{
+                position: "absolute",
+                top: 0,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "min(420px, 55%)",
+                height: "80px",
+                overflow: "hidden",
+                borderRadius: "0 0 4px 4px",
+                opacity: 0.35,
+                pointerEvents: "none",
+                zIndex: 1,
+              }}>
+                <img
+                  src={prevG.image}
+                  alt=""
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    objectPosition: "top",
+                    filter: "brightness(0.6) blur(1px)",
+                  }}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* ════════════════════════════════════════
+              RIGHT — text content
+          ════════════════════════════════════════ */}
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            padding: "60px 48px 60px 24px",
+            borderLeft: "1px solid rgba(255,255,255,0.05)",
+            position: "relative",
+            overflow: "hidden",
+          }}>
+            {/* Warm glow */}
+            <div style={{
+              position: "absolute", top: "30%", right: 0,
+              width: "220px", height: "220px", borderRadius: "50%",
+              background: "radial-gradient(circle, rgba(255,90,20,0.06) 0%, transparent 70%)",
+              pointerEvents: "none",
+            }} />
+
+            <div key={`txt-${active}`} style={{ position: "relative", zIndex: 1 }}>
+              {/* Eyebrow */}
+              <p
+                className="fa-txt-enter"
+                style={{
+                  fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase",
+                  color: "rgb(255,130,50)", marginBottom: "12px", opacity: 0,
+                }}
+              >
+                {g.eyebrow}
+              </p>
+
+              {/* Title */}
+              <h2
+                className="fa-txt-enter-d1"
+                style={{
+                  fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                  fontSize: "clamp(22px, 2.2vw, 32px)",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.02em",
+                  lineHeight: 1.05,
+                  color: "#f0e8df",
+                  margin: 0, marginBottom: "8px", opacity: 0,
+                }}
+              >
+                {g.title}
+              </h2>
+
+              {/* Tagline — italic like fromanother body text */}
+              <p
+                className="fa-txt-enter-d1"
+                style={{
+                  fontFamily: "Georgia, serif",
+                  fontStyle: "italic",
+                  fontSize: "13px",
+                  lineHeight: 1.6,
+                  color: "rgba(255,200,140,0.65)",
+                  marginBottom: "16px", opacity: 0,
+                }}
+              >
+                {g.tagline}
+              </p>
+
+              {/* Description — exact fromanother right-column paragraph style */}
+              <p
+                className="fa-txt-enter-d2"
+                style={{
+                  fontSize: "13px",
+                  lineHeight: 1.8,
+                  color: "rgba(240,232,223,0.42)",
+                  marginBottom: "24px", opacity: 0,
+                }}
+              >
+                {g.intro}
+              </p>
+
+              {/* Thin separator */}
+              <div style={{
+                width: "32px", height: "1px",
+                background: "linear-gradient(to right, rgba(255,130,50,0.7), transparent)",
+                marginBottom: "18px",
+              }} />
+
+              {/* Service items list */}
+              <ul
+                className="fa-txt-enter-d3"
+                style={{ listStyle: "none", padding: 0, margin: 0, opacity: 0 }}
+              >
+                {g.items.slice(0, 6).map((item) => (
+                  <li key={item} className="svc-item" style={{ marginBottom: "8px" }}>
+                    <span style={{
+                      width: "14px", height: "1px", flexShrink: 0,
+                      background: "rgb(255,130,50)", display: "block",
+                    }} />
+                    {item}
+                  </li>
+                ))}
+                {g.items.length > 6 && (
+                  <li style={{
+                    fontSize: "10px", letterSpacing: "0.2em",
+                    color: "rgba(255,130,50,0.45)", textTransform: "uppercase",
+                    marginTop: "4px", paddingLeft: "26px",
+                  }}>
+                    +{g.items.length - 6} more
+                  </li>
+                )}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Bottom bar: service name + progress ── */}
+        <div style={{
+          flexShrink: 0,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "0 32px",
+          height: "44px",
+          borderTop: "1px solid rgba(255,255,255,0.05)",
+          background: "rgba(11,9,7,0.9)",
+        }}>
+          {/* Left: current service label */}
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <span style={{
+              fontSize: "9px", letterSpacing: "0.25em", textTransform: "uppercase",
+              color: "rgba(255,130,50,0.6)",
+            }}>
+              {String(active + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+            </span>
+            <span style={{
+              width: "1px", height: "12px",
+              background: "rgba(255,255,255,0.1)", display: "block",
+            }} />
+            <span
+              key={`label-${active}`}
+              className="fa-txt-enter"
+              style={{
+                fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase",
+                color: "rgba(255,255,255,0.35)", opacity: 0,
+              }}
+            >
+              {g.title}
+            </span>
+          </div>
+
+          {/* Right: scroll progress bar */}
+          <div style={{
+            display: "flex", alignItems: "center", gap: "8px",
+          }}>
+            <span style={{
+              fontSize: "8px", letterSpacing: "0.25em", textTransform: "uppercase",
+              color: "rgba(255,255,255,0.15)",
+            }}>
+              Scroll
+            </span>
+            {/* Dot rail */}
+            <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+              {SERVICE_GROUPS.map((_, i) => (
+                <div
+                  key={i}
+                  className={`fa-dot${i === active ? " active" : ""}`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Route ────────────────────────────────────────────────────────────────────
 export const Route = createFileRoute("/services")({
   component: ServicesPage,
   head: () => ({
@@ -149,7 +678,7 @@ export const Route = createFileRoute("/services")({
       {
         name: "description",
         content:
-          "Build, scale and modernise apps with our services — Data & AI, Digital Transformation, Product Engineering, App Dev, UI/UX, Consulting and Managed Services.",
+          "Build, scale and modernise apps with our services — AI, Digital Transformation, Product Engineering, App Dev, UI/UX, Consulting, Growth and Managed Services.",
       },
       { property: "og:title", content: "Services — Jarvis Technolabs" },
       {
@@ -165,85 +694,25 @@ function ServicesPage() {
   useReveal();
   return (
     <main className="bg-background text-foreground min-h-screen">
+      <style>{STYLES}</style>
       <Nav />
       <AnimatedHero
         bgImage={dataAiImg}
         eyebrow="WHAT WE DO"
         title={
           <>
-            Build, scale and <em className="text-shimmer not-italic font-light">modernise apps</em> with our services.
+            Build, scale and{" "}
+            <em className="text-shimmer not-italic font-light">modernise apps</em>{" "}
+            with our services.
           </>
         }
         description="A powerhouse of innovation, design and transformation, fueled by disruptive technologies and agility."
       />
 
-      <section className="border-t border-white/5">
-        <div className="mx-auto max-w-7xl px-6 py-16">
-          <div className="space-y-24">
-            {SERVICE_GROUPS.map((g, i) => (
-              <div
-                key={g.title}
-                className={`reveal grid md:grid-cols-12 gap-10 items-center ${
-                  i % 2 === 1 ? "md:[&>*:first-child]:order-2" : ""
-                }`}
-              >
-                <div className="md:col-span-5 group">
-                  <div className="relative overflow-hidden rounded-2xl border border-white/10 aspect-[4/3]">
-                    <img
-                      src={g.image}
-                      alt={g.title}
-                      width={1024}
-                      height={768}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-tr from-background/70 via-transparent to-transparent" />
-                    <div className="absolute top-4 left-4 text-[11px] tracking-[0.3em] uppercase text-warm bracket-label">
-                      0{i + 1} / {String(SERVICE_GROUPS.length).padStart(2, "0")}
-                    </div>
-                  </div>
-                </div>
-                <div className="md:col-span-7">
-                  <h2 className="font-display text-3xl md:text-5xl tracking-tight mb-5">{g.title}</h2>
-                  <p className="text-muted-foreground text-base md:text-lg leading-relaxed max-w-xl">
-                    {g.intro}
-                  </p>
-                  <ul className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
-                    {g.items.map((it) => (
-                      <li key={it} className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors">
-                        <span className="h-px w-4 bg-warm" />
-                        <span>{it}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    to="/services/$slug"
-                    params={{ slug: toSlug(g.title) }}
-                    className="mt-8 inline-flex items-center gap-2 text-[11px] tracking-[0.25em] uppercase text-warm hover:gap-3 transition-all"
-                  >
-                    Explore {g.title} →
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── fromanother-style scroll-driven services ── */}
+      <ServicesScrollSection />
 
-      <CTA
-        eyebrow="WHAT WE DO · SCOPE A PROJECT"
-        title={
-          <>
-            Pick a service. <em className="text-warm not-italic font-light">We'll scope it in a week.</em>
-          </>
-        }
-        description="Send a brief or jump on a 30-minute call. You'll leave with a clear roadmap, timeline and team shape."
-        primaryLabel="Brief us →"
-        secondaryLabel="Read insights"
-        secondaryTo="/insights"
-      />
       <Footer />
     </main>
   );
 }
-

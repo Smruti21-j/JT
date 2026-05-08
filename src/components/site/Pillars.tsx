@@ -35,7 +35,7 @@ const PILLARS = [
     icon: Layers3,
   },
 ];
-
+const CTA_LABELS = ["Experience+", "Growth+", "Insight+", "Engineering+"];
 const FLOATING_ICONS = [Brain, Zap, Globe, Shield, Cpu, Sparkles, Workflow, Layers3];
 
 const CX_CENTER = 200;
@@ -371,7 +371,7 @@ export function Pillars() {
                 onClick={() => setActive((active + 1) % PILLARS.length)}
                 className="mt-8 inline-flex items-center gap-2 text-[11px] tracking-[0.25em] uppercase font-medium text-warm hover:translate-x-1 transition-transform"
               >
-                Engage Next <span>→</span>
+               {CTA_LABELS[active]} <span>+</span>
               </button>
             </div>
           </div>

@@ -82,7 +82,7 @@ export function Brands() {
             </h2>
           </div>
           <p className="lg:col-span-4 text-muted-foreground leading-relaxed">
-            See your future in action. Explore the missions where we turned bold ambition into a scalable reality. These global leaders didn't just build software - they used our intelligence layer to gain decision authority and command their markets.
+            Brands and institutions from our success stories, brought together in a moving wall of trust.
           </p>
         </div>
 
