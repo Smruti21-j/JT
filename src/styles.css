@@ -29,8 +29,8 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
 
   --animate-float: float 8s ease-in-out infinite;
   --animate-float-slow: float 14s ease-in-out infinite;
@@ -43,7 +43,8 @@
   --animate-drift: drift 18s ease-in-out infinite;
   --animate-tilt: tilt 12s ease-in-out infinite;
   --animate-blob: blob 16s ease-in-out infinite;
-  --animate-sun-rise: sun-rise 1.6s cubic-bezier(0.22, 1, 0.36, 1) both, sun-bob 7s ease-in-out 1.6s infinite;
+  --animate-sun-rise:
+    sun-rise 1.6s cubic-bezier(0.22, 1, 0.36, 1) both, sun-bob 7s ease-in-out 1.6s infinite;
   --animate-breakthrough-scan: breakthrough-scan 3.2s ease-in-out infinite;
   --animate-breakthrough-orbit: breakthrough-orbit 22s linear infinite;
   --animate-breakthrough-pulse: breakthrough-pulse 3.2s ease-in-out infinite;
@@ -55,92 +56,208 @@
   --animate-brand-marquee-reverse: brand-marquee-reverse 46s linear infinite;
 
   @keyframes sun-rise {
-    0% { transform: translate(-50%, 80px) scale(0.85); opacity: 0; }
-    100% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+    0% {
+      transform: translate(-50%, 80px) scale(0.85);
+      opacity: 0;
+    }
+    100% {
+      transform: translate(-50%, 0) scale(1);
+      opacity: 1;
+    }
   }
   @keyframes sun-bob {
-    0%, 100% { transform: translate(-50%, 0) scale(1); }
-    50% { transform: translate(-50%, -10px) scale(1.02); }
+    0%,
+    100% {
+      transform: translate(-50%, 0) scale(1);
+    }
+    50% {
+      transform: translate(-50%, -10px) scale(1.02);
+    }
   }
 
   @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
   @keyframes float {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    50% { transform: translateY(-18px) rotate(1.5deg); }
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-18px) rotate(1.5deg);
+    }
   }
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   @keyframes pulse-glow {
-    0%, 100% { opacity: 0.4; }
-    50% { opacity: 0.85; }
+    0%,
+    100% {
+      opacity: 0.4;
+    }
+    50% {
+      opacity: 0.85;
+    }
   }
   @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
   }
   @keyframes shimmer {
-    0% { background-position: -200% center; }
-    100% { background-position: 200% center; }
+    0% {
+      background-position: -200% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
   }
   @keyframes ken-burns {
-    0% { transform: scale(1.05) translate(0, 0); }
-    100% { transform: scale(1.18) translate(-2%, -2%); }
+    0% {
+      transform: scale(1.05) translate(0, 0);
+    }
+    100% {
+      transform: scale(1.18) translate(-2%, -2%);
+    }
   }
   @keyframes drift {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(2%, -2%); }
+    0%,
+    100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(2%, -2%);
+    }
   }
   @keyframes tilt {
-    0%, 100% { transform: rotate(-1deg) translateY(0); }
-    50% { transform: rotate(1deg) translateY(-6px); }
+    0%,
+    100% {
+      transform: rotate(-1deg) translateY(0);
+    }
+    50% {
+      transform: rotate(1deg) translateY(-6px);
+    }
   }
   @keyframes blob {
-    0%, 100% { border-radius: 42% 58% 70% 30% / 45% 30% 70% 55%; transform: translate(0,0) scale(1); }
-    33% { border-radius: 70% 30% 46% 54% / 30% 50% 50% 70%; transform: translate(2%, -3%) scale(1.04); }
-    66% { border-radius: 38% 62% 30% 70% / 60% 40% 60% 40%; transform: translate(-2%, 2%) scale(0.98); }
+    0%,
+    100% {
+      border-radius: 42% 58% 70% 30% / 45% 30% 70% 55%;
+      transform: translate(0, 0) scale(1);
+    }
+    33% {
+      border-radius: 70% 30% 46% 54% / 30% 50% 50% 70%;
+      transform: translate(2%, -3%) scale(1.04);
+    }
+    66% {
+      border-radius: 38% 62% 30% 70% / 60% 40% 60% 40%;
+      transform: translate(-2%, 2%) scale(0.98);
+    }
   }
   @keyframes breakthrough-scan {
-    0% { transform: translateX(-120%); opacity: 0; }
-    18%, 82% { opacity: 1; }
-    100% { transform: translateX(320%); opacity: 0; }
+    0% {
+      transform: translateX(-120%);
+      opacity: 0;
+    }
+    18%,
+    82% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(320%);
+      opacity: 0;
+    }
   }
   @keyframes breakthrough-orbit {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
   @keyframes breakthrough-pulse {
-    0%, 100% { opacity: 0.25; transform: scale(0.98); }
-    50% { opacity: 0.7; transform: scale(1.02); }
+    0%,
+    100% {
+      opacity: 0.25;
+      transform: scale(0.98);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.02);
+    }
   }
   @keyframes signal-flow {
-    from { stroke-dashoffset: 180; opacity: 0.25; }
-    50% { opacity: 1; }
-    to { stroke-dashoffset: 0; opacity: 0.25; }
+    from {
+      stroke-dashoffset: 180;
+      opacity: 0.25;
+    }
+    50% {
+      opacity: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+      opacity: 0.25;
+    }
   }
   @keyframes core-dash {
-    from { stroke-dashoffset: 0; }
-    to { stroke-dashoffset: -48; }
+    from {
+      stroke-dashoffset: 0;
+    }
+    to {
+      stroke-dashoffset: -48;
+    }
   }
   @keyframes pizza-dash {
-    from { stroke-dashoffset: 36; }
-    to { stroke-dashoffset: 0; }
+    from {
+      stroke-dashoffset: 36;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
   }
   @keyframes flash-card {
-    0%, 100% { transform: translateY(0); box-shadow: 0 0 0 1px oklch(0.96 0.01 170 / 0.04); }
-    45% { transform: translateY(-6px); box-shadow: 0 24px 70px -42px oklch(0.72 0.16 45 / 0.55), 0 0 0 1px oklch(0.72 0.16 45 / 0.16); }
+    0%,
+    100% {
+      transform: translateY(0);
+      box-shadow: 0 0 0 1px oklch(0.96 0.01 170 / 0.04);
+    }
+    45% {
+      transform: translateY(-6px);
+      box-shadow:
+        0 24px 70px -42px oklch(0.72 0.16 45 / 0.55),
+        0 0 0 1px oklch(0.72 0.16 45 / 0.16);
+    }
   }
   @keyframes brand-marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
   }
   @keyframes brand-marquee-reverse {
-    from { transform: translateX(-50%); }
-    to { transform: translateX(0); }
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
   }
 }
 
@@ -181,8 +298,12 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -193,7 +314,16 @@
       radial-gradient(circle at 80% 30%, oklch(0.22 0.03 180 / 0.4), transparent 50%),
       radial-gradient(circle at 50% 100%, oklch(0.72 0.16 45 / 0.06), transparent 55%);
   }
-  h1, h2, h3, .font-display { font-family: var(--font-display); font-weight: 600; letter-spacing: 0; }
+  body :where(*):not(code, pre, kbd, samp, .font-mono, .font-mono *) {
+    font-family: var(--font-sans) !important;
+  }
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: 0;
+  }
 }
 
 @layer utilities {
@@ -216,7 +346,12 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(120deg, transparent 15%, oklch(0.96 0.01 170 / 0.08), transparent 42%);
+    background: linear-gradient(
+      120deg,
+      transparent 15%,
+      oklch(0.96 0.01 170 / 0.08),
+      transparent 42%
+    );
     transform: translateX(-120%);
     transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
     pointer-events: none;
@@ -272,7 +407,9 @@
   }
   .brand-card {
     box-shadow: 0 24px 70px -42px oklch(0 0 0 / 0.8);
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.45s ease;
   }
   .brand-card:hover {
     transform: translateY(-6px) scale(1.03);
@@ -289,9 +426,9 @@
     background: linear-gradient(
       90deg,
       oklch(0.72 0.16 45) 0%,
-      oklch(0.92 0.10 60) 25%,
+      oklch(0.92 0.1 60) 25%,
       oklch(0.98 0.02 80) 50%,
-      oklch(0.92 0.10 60) 75%,
+      oklch(0.92 0.1 60) 75%,
       oklch(0.72 0.16 45) 100%
     );
     background-size: 200% auto;
@@ -304,9 +441,13 @@
     background: oklch(0.97 0.005 90);
     color: oklch(0.18 0.02 180);
   }
-  .section-light .text-muted-foreground { color: oklch(0.42 0.02 180); }
+  .section-light .text-muted-foreground {
+    color: oklch(0.42 0.02 180);
+  }
   .section-light .border-white\/5,
-  .section-light .border-white\/10 { border-color: oklch(0.18 0.02 180 / 0.1); }
+  .section-light .border-white\/10 {
+    border-color: oklch(0.18 0.02 180 / 0.1);
+  }
   .glass {
     background: oklch(0.96 0.01 170 / 0.03);
     backdrop-filter: blur(12px);
@@ -324,23 +465,40 @@
       linear-gradient(oklch(0.96 0.01 170 / 0.12), oklch(0.96 0.01 170 / 0.12)),
       linear-gradient(oklch(0.96 0.01 170 / 0.12), oklch(0.96 0.01 170 / 0.12)),
       linear-gradient(oklch(0.96 0.01 170 / 0.12), oklch(0.96 0.01 170 / 0.12));
-    background-position: top left, top right, bottom left, bottom right;
-    background-size: 24px 1px, 24px 1px, 24px 1px, 24px 1px;
+    background-position:
+      top left,
+      top right,
+      bottom left,
+      bottom right;
+    background-size:
+      24px 1px,
+      24px 1px,
+      24px 1px,
+      24px 1px;
     background-repeat: no-repeat;
   }
   .reveal {
     opacity: 0;
     transform: translateY(28px) scale(0.985);
     filter: blur(8px);
-    transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.9s ease;
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.9s ease;
   }
   .reveal.in {
     opacity: 1;
     transform: translateY(0) scale(1);
     filter: blur(0);
   }
-  .bracket-label::before { content: "[ "; opacity: 0.7; }
-  .bracket-label::after { content: " ]"; opacity: 0.7; }
+  .bracket-label::before {
+    content: "[ ";
+    opacity: 0.7;
+  }
+  .bracket-label::after {
+    content: " ]";
+    opacity: 0.7;
+  }
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -400,21 +558,41 @@
 /* ========================= */
 
 @keyframes pizza-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes pizza-float {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-12px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
 @keyframes pizza-pop {
-  0%,100% { transform: scale(1); opacity: 0.7; }
-  50% { transform: scale(1.35); opacity: 1; }
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 1;
+  }
 }
 
 @keyframes pizza-orbit {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

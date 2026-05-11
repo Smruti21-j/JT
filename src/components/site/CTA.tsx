@@ -44,7 +44,7 @@ const BRANDS = [
   { name: "Sail", logo: sail },
   { name: "RoleplayLabs.ai", logo: roleplayLabs },
   { name: "Home", logo: homeMark },
-];
+] as const;
 
 // ─── Single marquee row — NO overlap, proper sizing ──────────────────────────
 // FIX 3: Replaced two-row overlapping layout with a single clean marquee row.
@@ -102,23 +102,73 @@ function BrandsCarousel() {
       style={{ padding: "80px 0", overflow: "hidden" }}
     >
       {/* Subtle grid bg */}
-      <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.025, backgroundImage: "linear-gradient(to right,white 1px,transparent 1px),linear-gradient(to bottom,white 1px,transparent 1px)", backgroundSize: "40px 40px" }} />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          opacity: 0.025,
+          backgroundImage:
+            "linear-gradient(to right,white 1px,transparent 1px),linear-gradient(to bottom,white 1px,transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
       {/* Edge fades */}
-      <div className="absolute left-0 top-0 bottom-0 z-10 pointer-events-none" style={{ width: "120px", background: "linear-gradient(to right, #000 0%, transparent 100%)" }} />
-      <div className="absolute right-0 top-0 bottom-0 z-10 pointer-events-none" style={{ width: "120px", background: "linear-gradient(to left, #000 0%, transparent 100%)" }} />
+      <div
+        className="absolute left-0 top-0 bottom-0 z-10 pointer-events-none"
+        style={{
+          width: "120px",
+          background: "linear-gradient(to right, #000 0%, transparent 100%)",
+        }}
+      />
+      <div
+        className="absolute right-0 top-0 bottom-0 z-10 pointer-events-none"
+        style={{
+          width: "120px",
+          background: "linear-gradient(to left, #000 0%, transparent 100%)",
+        }}
+      />
 
       {/* Header */}
       <div className="relative mx-auto max-w-7xl px-6 mb-12 z-20">
-        <p style={{ fontSize: "11px", letterSpacing: "0.3em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginBottom: "12px" }}>
+        <p
+          style={{
+            fontSize: "11px",
+            letterSpacing: "0.3em",
+            color: "rgba(255,255,255,0.4)",
+            textTransform: "uppercase",
+            marginBottom: "12px",
+          }}
+        >
           Trusted by Leaders
         </p>
-        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: "16px" }}>
-          <h2 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 600, color: "#fff", lineHeight: 1.2 }}>
-            Brands we've{" "}
-            <span style={{ color: "rgb(249,115,22)" }}>worked with</span>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            gap: "16px",
+          }}
+        >
+          <h2
+            style={{
+              fontSize: "clamp(2rem, 4vw, 2.75rem)",
+              fontWeight: 600,
+              color: "#fff",
+              lineHeight: 1.2,
+            }}
+          >
+            Brands we've <span style={{ color: "rgb(249,115,22)" }}>worked with</span>
           </h2>
-          <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.5)", maxWidth: "360px", lineHeight: 1.65 }}>
-            From government enterprises to fast-moving startups — global leaders who turned bold ambition into scalable digital reality.
+          <p
+            style={{
+              fontSize: "14px",
+              color: "rgba(255,255,255,0.5)",
+              maxWidth: "360px",
+              lineHeight: 1.65,
+            }}
+          >
+            From government enterprises to fast-moving startups — global leaders who turned bold
+            ambition into scalable digital reality.
           </p>
         </div>
       </div>
@@ -149,7 +199,11 @@ const FOOTER_COLS = [
   {
     title: "AI Systems",
     links: [
-      { label: "Autonomous Workflows", to: "/services/$slug", params: { slug: "digital-transformation" } },
+      {
+        label: "Autonomous Workflows",
+        to: "/services/$slug",
+        params: { slug: "digital-transformation" },
+      },
       { label: "Decision Intelligence", to: "/services/$slug", params: { slug: "data-ai" } },
       { label: "AI Infrastructure", to: "/services/$slug", params: { slug: "managed-services" } },
     ],
@@ -181,25 +235,96 @@ const SOCIALS = [
   { icon: Facebook, href: "https://www.facebook.com/498711123977909" },
 ];
 
+const FOOTER_STYLES = `
+  @keyframes footerHeatBloom {
+    0%, 100% { transform: translate3d(-4%, 4%, 0) scale(.95) rotate(-2deg); opacity: .28; }
+    45% { transform: translate3d(5%, -3%, 0) scale(1.08) rotate(5deg); opacity: .62; }
+    72% { transform: translate3d(1%, 5%, 0) scale(1.02) rotate(-4deg); opacity: .4; }
+  }
+  @keyframes footerSignalSweep {
+    from { transform: translateX(-110%); opacity: 0; }
+    18%, 74% { opacity: 1; }
+    to { transform: translateX(220%); opacity: 0; }
+  }
+  @keyframes footerSparkRise {
+    from { transform: translateY(160px); opacity: 0; }
+    18%, 75% { opacity: .85; }
+    to { transform: translateY(-360px); opacity: 0; }
+  }
+  .footer-heat-field {
+    position: absolute;
+    inset: auto 5% 12% auto;
+    width: min(860px, 72vw);
+    height: 420px;
+    border-radius: 999px;
+    background:
+      radial-gradient(circle at 24% 42%, rgba(255, 208, 122, 0.24), transparent 22%),
+      radial-gradient(circle at 50% 54%, rgba(255, 106, 24, 0.42), transparent 28%),
+      radial-gradient(circle at 78% 36%, rgba(255, 70, 10, 0.24), transparent 24%);
+    filter: blur(46px);
+    mix-blend-mode: screen;
+    animation: footerHeatBloom 15s ease-in-out infinite;
+    pointer-events: none;
+  }
+  .footer-signal-line {
+    position: absolute;
+    left: 0;
+    width: 56%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 130, 50, .72), transparent);
+    animation: footerSignalSweep 6.5s ease-in-out infinite;
+  }
+  .footer-spark {
+    position: absolute;
+    bottom: 0;
+    width: 2px;
+    height: 80px;
+    background: linear-gradient(to top, transparent, rgba(255, 130, 50, .58), transparent);
+    animation: footerSparkRise 8s linear infinite;
+    pointer-events: none;
+  }
+`;
+
 export function Footer() {
   return (
     <footer className="relative border-t border-white/10 bg-black text-white overflow-hidden">
+      <style>{FOOTER_STYLES}</style>
 
       {/* Grid background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "linear-gradient(to right,white 1px,transparent 1px),linear-gradient(to bottom,white 1px,transparent 1px)", backgroundSize: "40px 40px" }} />
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right,white 1px,transparent 1px),linear-gradient(to bottom,white 1px,transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        />
+        <div className="footer-heat-field" />
+        <div className="footer-signal-line top-[18%]" />
+        <div className="footer-signal-line top-[48%]" style={{ animationDelay: "1.8s" }} />
+        <div className="footer-signal-line top-[72%]" style={{ animationDelay: "3.2s" }} />
+        {[11, 23, 37, 52, 68, 83, 94].map((left, i) => (
+          <span
+            key={left}
+            className="footer-spark"
+            style={{ left: `${left}%`, animationDelay: `${i * 0.75}s` }}
+          />
+        ))}
         <div className="absolute w-[120%] h-[2px] bg-gradient-to-r from-transparent via-orange-500/30 to-transparent animate-flow-x top-[25%]" />
         <div className="absolute w-[120%] h-[2px] bg-gradient-to-r from-transparent via-orange-400/20 to-transparent animate-flow-x-reverse top-[55%]" />
         {[...Array(6)].map((_, i) => (
-          <div key={i} className="absolute w-1.5 h-1.5 bg-orange-400/40 rounded-full animate-pulse"
-            style={{ top: `${20 + i * 10}%`, left: `${10 + i * 12}%` }} />
+          <div
+            key={i}
+            className="absolute w-1.5 h-1.5 bg-orange-400/40 rounded-full animate-pulse"
+            style={{ top: `${20 + i * 10}%`, left: `${10 + i * 12}%` }}
+          />
         ))}
         <div className="absolute right-20 bottom-20 w-[300px] h-[300px] border border-orange-500/10 rounded-full animate-ping-slow" />
       </div>
 
       <div className="relative max-w-7xl mx-auto px-6 py-20">
         <div className="grid lg:grid-cols-12 gap-12 border-b border-white/10 pb-16">
-
           {/* ── LEFT COLUMN ─────────────────────────────────────────────── */}
           <div className="lg:col-span-5">
             <Link to="/">
@@ -213,8 +338,13 @@ export function Footer() {
             </p>
 
             {/* FIX 4b: Added description paragraph */}
-            <p className="text-sm leading-relaxed max-w-sm mb-8" style={{ color: "rgba(255,255,255,0.45)" }}>
-              We are an AI-native digital engineering company helping enterprises and high-growth brands build intelligent products, automate operations, and deliver exceptional customer experiences.
+            <p
+              className="text-sm leading-relaxed max-w-sm mb-8"
+              style={{ color: "rgba(255,255,255,0.45)" }}
+            >
+              We are an AI-native digital engineering company helping enterprises and high-growth
+              brands build intelligent products, automate operations, and deliver exceptional
+              customer experiences.
             </p>
 
             {/* FIX 4c: Contact details with icons */}
@@ -227,7 +357,10 @@ export function Footer() {
               >
                 <span
                   className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
-                  style={{ background: "rgba(255,90,20,0.1)", border: "1px solid rgba(255,100,30,0.2)" }}
+                  style={{
+                    background: "rgba(255,90,20,0.1)",
+                    border: "1px solid rgba(255,100,30,0.2)",
+                  }}
                 >
                   <Mail size={14} style={{ color: "rgb(249,115,22)" }} />
                 </span>
@@ -244,7 +377,10 @@ export function Footer() {
               >
                 <span
                   className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
-                  style={{ background: "rgba(255,90,20,0.1)", border: "1px solid rgba(255,100,30,0.2)" }}
+                  style={{
+                    background: "rgba(255,90,20,0.1)",
+                    border: "1px solid rgba(255,100,30,0.2)",
+                  }}
                 >
                   <Phone size={14} style={{ color: "rgb(249,115,22)" }} />
                 </span>
@@ -254,10 +390,16 @@ export function Footer() {
               </a>
 
               {/* Location with icon */}
-              <div className="flex items-start gap-3 text-sm" style={{ color: "rgba(255,255,255,0.45)" }}>
+              <div
+                className="flex items-start gap-3 text-sm"
+                style={{ color: "rgba(255,255,255,0.45)" }}
+              >
                 <span
                   className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg mt-0.5"
-                  style={{ background: "rgba(255,90,20,0.1)", border: "1px solid rgba(255,100,30,0.2)" }}
+                  style={{
+                    background: "rgba(255,90,20,0.1)",
+                    border: "1px solid rgba(255,100,30,0.2)",
+                  }}
                 >
                   <MapPin size={14} style={{ color: "rgb(249,115,22)" }} />
                 </span>
@@ -270,17 +412,28 @@ export function Footer() {
           <div className="lg:col-span-7 grid sm:grid-cols-3 gap-10">
             {FOOTER_COLS.map((col) => (
               <div key={col.title}>
-                <p className="text-xs tracking-widest text-orange-500 mb-5 uppercase">{col.title}</p>
+                <p className="text-xs tracking-widest text-orange-500 mb-5 uppercase">
+                  {col.title}
+                </p>
                 <ul className="space-y-3">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <Link
-                        to={l.to as any}
-                        params={l.params as any}
-                        className="text-sm text-white/70 hover:text-white hover:translate-x-1 inline-block transition-all"
-                      >
-                        {l.label}
-                      </Link>
+                      {"params" in l ? (
+                        <Link
+                          to="/services/$slug"
+                          params={l.params}
+                          className="text-sm text-white/70 hover:text-white hover:translate-x-1 inline-block transition-all"
+                        >
+                          {l.label}
+                        </Link>
+                      ) : (
+                        <Link
+                          to={l.to}
+                          className="text-sm text-white/70 hover:text-white hover:translate-x-1 inline-block transition-all"
+                        >
+                          {l.label}
+                        </Link>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -296,7 +449,13 @@ export function Footer() {
             {SOCIALS.map((s, i) => {
               const Icon = s.icon;
               return (
-                <a key={i} href={s.href} target="_blank" rel="noreferrer" className="hover:text-orange-400 transition">
+                <a
+                  key={i}
+                  href={s.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-orange-400 transition"
+                >
                   <Icon size={16} />
                 </a>
               );
