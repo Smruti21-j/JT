@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import logo from "@/assets/JarvisTechnolabs_Logo.webp";
+import logo from "@/assets/JarvisTechnolabs_Logo_white.png";
 import { Linkedin, Instagram, Twitter, Youtube, Facebook, Mail, Phone, MapPin } from "lucide-react";
 
 // ── Brand logo imports ────────────────────────────────────────────────────────
