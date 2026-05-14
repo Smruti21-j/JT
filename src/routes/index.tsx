@@ -7,6 +7,14 @@ import { CTA, Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
 import { useState, useEffect, useRef, useCallback } from "react";
 
+// ─── Local image imports ──────────────────────────────────────────────────────
+import pillarImg2 from "/index-image2.png";
+import pillarImg3 from "/index-image3.jpg";
+import pillarImg4 from "/index-image4.jpg";
+import pillarImg5 from "/index-image5.jpg";
+import pillarImg6 from "/index-image6.jpg";
+
+
 // ─────────────────────────────────────────────────────────────────────────────
 // ██████████  PIETERKOOPT-STYLE STACKED PILLARS  ██████████████████████████████
 // ─────────────────────────────────────────────────────────────────────────────
@@ -16,37 +24,55 @@ const CX_PILLARS = [
     num: "01",
     label: "Discovery",
     titlePlain: "INTELLIGENCE",
-    titleItalic: "that listens",
-    desc: "We start by mapping your business deeply goals, friction points, and untapped opportunities turning raw context into a precise transformation blueprint.",
+    titleItalic: "that Acts",
+    desc: "Transition from generative prompts to agentic workflows that resolve complex tasks with zero friction.",
     stat: { value: "48h", label: "Initial assessment" },
     image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&q=80",
   },
   {
     num: "02",
-    label: "Architecture",
-    titlePlain: "SYSTEMS",
+    label: "The AI-First",
+    titlePlain: "CORE",
     titleItalic: "built to last",
-    desc: "Our architects design AI-native cores and cloud-resilient infrastructure tailored to your scale no off-the-shelf blueprints, no technical debt.",
+    desc: "Embed intelligence into the substrate of your business to create a self-evolving, future-proof operating model.",
     stat: { value: "3×", label: "Deploy velocity" },
-    image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80",
+    image: "/index-image2.png",
   },
   {
     num: "03",
-    label: "Delivery",
-    titlePlain: "MOMENTUM",
+    label: "Digital Engineering at",
+    titlePlain: "SCALE",
     titleItalic: "in every sprint",
-    desc: "Cross-functional squads ship working software fast. We apply battle-tested playbooks to keep quality high and timelines honest from MVP to full-scale rollout.",
+    desc: "Accelerate your time-to-impact with battle-tested engineering playbooks and frontier technology stacks.",
     stat: { value: "99.9%", label: "Uptime SLA" },
-    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&q=80",
+    image: "/index-image3.jpg",
   },
   {
     num: "04",
-    label: "Evolution",
-    titlePlain: "ALWAYS",
+    label: "Next-Gen",
+    titlePlain: "ECOSYSTEMS",
     titleItalic: "getting smarter",
-    desc: "Post-launch, our models retrain on your live data, dashboards surface new signals, and our teams iterate continuously so your platform improves itself.",
+    desc: "Build the connected, cloud-native infrastructure required for a resilient and sovereign digital future.",
     stat: { value: "10×", label: "Faster decisions" },
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80",
+    image: "/index-image4.jpg",
+  },
+    {
+    num: "05",
+    label: "Design with",
+    titlePlain: "PURPOSE",
+    titleItalic: "getting smarter",
+    desc: "Amplify human potential through sensory UX that balances high-tech precision with human-centric empathy.",
+    stat: { value: "10×", label: "Faster decisions" },
+    image: "/index-image5.jpg",
+  },
+   {
+    num: "06",
+    label: "Accelerated Value",
+    titlePlain: "CHAINS",
+    titleItalic: "getting smarter",
+    desc: "Unlock pervasive efficiencies across your entire enterprise with data-driven insights that act as your growth catalyst.",
+    stat: { value: "10×", label: "Faster decisions" },
+    image: "/index-image6.jpg",
   },
 ];
 
