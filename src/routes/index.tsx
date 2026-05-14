@@ -7,194 +7,6 @@ import { CTA, Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
 import { useState, useEffect, useRef, useCallback } from "react";
 
-// ─── Inline SVG icons (text tiles only) ──────────────────────────────────────
-const ServiceIcons: Record<string, JSX.Element> = {
-  "Intelligence that Acts": (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 2a7 7 0 0 1 7 7c0 3.5-2.5 6.5-6 7.4V20h-2v-3.6C7.5 15.5 5 12.5 5 9a7 7 0 0 1 7-7z"/>
-      <path d="M9 21h6"/><path d="M10 9l2 2 4-4"/>
-    </svg>
-  ),
-  "The AI-First Core": (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="3" width="18" height="18" rx="3"/>
-      <circle cx="12" cy="12" r="3"/>
-      <path d="M12 3v3M12 18v3M3 12h3M18 12h3"/>
-    </svg>
-  ),
-  "Digital Engineering at Scale": (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
-      <line x1="19" y1="12" x2="5" y2="12"/>
-    </svg>
-  ),
-  "Next-Gen Ecosystems": (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="2"/><circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/>
-      <circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/>
-      <path d="M7 5h10M5 7v10M19 7v10M7 19h10"/>
-    </svg>
-  ),
-  "Design with Purpose": (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 20h9"/>
-      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
-    </svg>
-  ),
-  "Accelerated Value Chains": (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
-      <polyline points="16 7 22 7 22 13"/>
-    </svg>
-  ),
-};
-
-// ─── Per-service infographic stats shown on text tiles ────────────────────────
-const ServiceStats: Record<string, { value: string; label: string }[]> = {
-  "The AI-First Core": [
-    { value: "10×", label: "Faster decisions" },
-    { value: "87%", label: "Task automation" },
-  ],
-  "Next-Gen Ecosystems": [
-    { value: "99.9%", label: "Uptime SLA" },
-    { value: "3×", label: "Deploy speed" },
-  ],
-  "Accelerated Value Chains": [
-    { value: "40%", label: "Cost reduction" },
-    { value: "2.4×", label: "Revenue lift" },
-  ],
-};
-
-// ─── Mosaic grid data ─────────────────────────────────────────────────────────
-const HOME_SERVICES = [
-  {
-    title: "Intelligence that Acts",
-    desc: "Transition from generative prompts to agentic workflows that resolve complex tasks with zero friction.",
-    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=900&q=80",
-  },
-  {
-    title: "The AI-First Core",
-    desc: "Embed intelligence into the substrate of your business to create a self-evolving, future-proof operating model.",
-    image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=900&q=80",
-  },
-  {
-    title: "Digital Engineering at Scale",
-    desc: "Accelerate your time-to-impact with battle-tested engineering playbooks and frontier technology stacks.",
-    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=900&q=80",
-  },
-  {
-    title: "Next-Gen Ecosystems",
-    desc: "Build the connected, cloud-native infrastructure required for a resilient and sovereign digital future.",
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&q=80",
-  },
-  {
-    title: "Design with Purpose",
-    desc: "Amplify human potential through sensory UX that balances high-tech precision with human-centric empathy.",
-    image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=900&q=80",
-  },
-  {
-    title: "Accelerated Value Chains",
-    desc: "Unlock pervasive efficiencies across your entire enterprise with data-driven insights that act as your growth catalyst.",
-    image: "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=900&q=80",
-  },
-];
-
-// ─── Mosaic grid ──────────────────────────────────────────────────────────────
-function ServiceMosaic() {
-  const cells = HOME_SERVICES.map((s, i) => ({
-    ...s,
-    isImage: i === 0 || i === 2 || i === 4,
-  }));
-
-  return (
-    <div
-      className="w-full"
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gridTemplateRows: "repeat(2, 320px)",
-        gap: "2px",
-        background: "rgba(255,255,255,0.04)",
-        borderRadius: "20px",
-        overflow: "hidden",
-        boxShadow:
-          "0 0 0 1px rgba(255,255,255,0.05), 0 32px 80px -12px rgba(0,0,0,0.7), 0 0 60px 0 rgba(255,80,10,0.06)",
-      }}
-    >
-      {cells.map((cell) =>
-        cell.isImage ? (
-          <div
-            key={cell.title}
-            className="relative overflow-hidden group"
-            style={{ background: "#0a0806" }}
-          >
-            <img
-              src={cell.image}
-              alt={cell.title}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              style={{ filter: "brightness(0.40) saturate(0.55) sepia(0.1)" }}
-            />
-            <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, rgba(255,80,10,0.08) 0%, transparent 50%, rgba(0,0,0,0.5) 100%)" }} />
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: "rgba(255,90,10,0.07)" }} />
-            <div className="absolute bottom-0 left-0 right-0 px-6 py-5" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 100%)" }}>
-              <p className="text-sm font-medium tracking-wide" style={{ color: "rgba(255,225,190,0.65)" }}>
-                {cell.title}
-              </p>
-            </div>
-            <div className="absolute bottom-0 left-0" style={{ width: "50%", height: "2px", background: "linear-gradient(to right, rgba(255,110,30,0.7), transparent)" }} />
-          </div>
-        ) : (
-          <Link
-            key={cell.title}
-            to="/services"
-            className="group relative flex flex-col justify-between overflow-hidden"
-            style={{ background: "#0e0c0a", padding: "2.25rem 2rem", textDecoration: "none", transition: "background 0.3s ease" }}
-          >
-            <span aria-hidden className="absolute top-0 left-0 right-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ height: "1px", background: "linear-gradient(90deg, transparent, rgba(255,110,30,0.7), transparent)" }} />
-            <span aria-hidden className="absolute pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-350" style={{ top: "-50px", left: "-30px", width: "200px", height: "200px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,90,10,0.1) 0%, transparent 70%)" }} />
-            <div className="w-11 h-11 flex items-center justify-center rounded-xl mb-5 relative z-10 transition-all duration-300"
-              style={{ background: "rgba(255,90,20,0.08)", border: "1px solid rgba(255,100,30,0.2)", color: "rgb(255,125,45)", boxShadow: "0 0 16px rgba(255,90,10,0.12)" }}>
-              {ServiceIcons[cell.title]}
-            </div>
-            <div className="relative z-10 flex-1">
-              <h3 className="font-display text-lg mb-2 group-hover:text-orange-400 transition-colors duration-250" style={{ color: "#e8ddd4" }}>
-                {cell.title}
-              </h3>
-              <p className="text-sm leading-relaxed" style={{ color: "rgba(232,221,212,0.40)" }}>
-                {cell.desc}
-              </p>
-            </div>
-            {ServiceStats[cell.title] && (
-              <div className="relative z-10 mt-5 flex gap-5 border-t border-white/5 pt-4">
-                {ServiceStats[cell.title].map((stat) => (
-                  <div key={stat.label}>
-                    <div className="text-xl font-semibold leading-none" style={{ color: "rgb(255,130,50)" }}>
-                      {stat.value}
-                    </div>
-                    <div className="text-[10px] tracking-[0.15em] uppercase mt-1" style={{ color: "rgba(255,255,255,0.3)" }}>
-                      {stat.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-            {!ServiceStats[cell.title] && (
-              <span className="mt-5 inline-flex text-[11px] tracking-[0.25em] uppercase relative z-10 group-hover:text-orange-400 transition-colors duration-250" style={{ color: "rgba(255,255,255,0.22)" }}>
-                Know more →
-              </span>
-            )}
-            {ServiceStats[cell.title] && (
-              <span className="mt-3 inline-flex text-[11px] tracking-[0.25em] uppercase relative z-10 group-hover:text-orange-400 transition-colors duration-250" style={{ color: "rgba(255,255,255,0.22)" }}>
-                Know more →
-              </span>
-            )}
-          </Link>
-        )
-      )}
-    </div>
-  );
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // ██████████  PIETERKOOPT-STYLE STACKED PILLARS  ██████████████████████████████
 // ─────────────────────────────────────────────────────────────────────────────
@@ -238,7 +50,7 @@ const CX_PILLARS = [
   },
 ];
 
-// Keyframes for the new pillars section
+// Keyframes for the pillars section
 const PK_KEYFRAMES = `
   @keyframes pkHeaderIn {
     from { opacity: 0; transform: translateY(32px); }
@@ -285,7 +97,6 @@ function PillarCard({
     return () => obs.disconnect();
   }, []);
 
-  // Stagger sticky tops so cards peek behind each other like PieterKoopt
   const stickyTop = 72 + index * 20;
 
   return (
@@ -296,7 +107,6 @@ function PillarCard({
         position: "sticky",
         top: `${stickyTop}px`,
         zIndex: index + 1,
-        // Extra bottom margin so next card has space to reveal below
         marginBottom: index < CX_PILLARS.length - 1 ? "0px" : "0px",
       }}
     >
@@ -342,7 +152,7 @@ function PillarCard({
             }}
           />
 
-          {/* Large italic number — top */}
+          {/* Large italic number */}
           <div
             className="pk-num"
             style={{
@@ -362,7 +172,6 @@ function PillarCard({
 
           {/* Bottom text block */}
           <div style={{ position: "relative", zIndex: 1 }}>
-            {/* Step label */}
             <p
               className="pk-text"
               style={{
@@ -377,7 +186,6 @@ function PillarCard({
               {pillar.label}
             </p>
 
-            {/* Title: condensed caps + italic serif (exactly like PieterKoopt) */}
             <h3
               className="pk-text"
               style={{
@@ -391,8 +199,7 @@ function PillarCard({
               <span
                 style={{
                   display: "block",
-                  fontFamily:
-                    "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                  fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
                   fontSize: "clamp(30px, 3.2vw, 48px)",
                   fontWeight: 700,
                   textTransform: "uppercase",
@@ -418,20 +225,17 @@ function PillarCard({
               </span>
             </h3>
 
-            {/* Thin orange line separator */}
             <div
               className="pk-text"
               style={{
                 width: "44px",
                 height: "1px",
-                background:
-                  "linear-gradient(to right, rgba(255,130,50,0.9), transparent)",
+                background: "linear-gradient(to right, rgba(255,130,50,0.9), transparent)",
                 marginBottom: "18px",
                 opacity: 0,
               }}
             />
 
-            {/* Description */}
             <p
               className="pk-text"
               style={{
@@ -446,7 +250,6 @@ function PillarCard({
               {pillar.desc}
             </p>
 
-            {/* Stat + CTA row */}
             <div
               className="pk-text"
               style={{
@@ -512,12 +315,8 @@ function PillarCard({
               transformOrigin: "center center",
             }}
           />
-
-          {/* Gradient overlays */}
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(0,0,0,0.4) 0%, transparent 55%)" }} />
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 45%)" }} />
-
-          {/* Orange bottom edge accent — exact PieterKoopt detail */}
           <div
             style={{
               position: "absolute",
@@ -528,8 +327,6 @@ function PillarCard({
               background: "linear-gradient(to right, rgba(255,110,30,0.9), transparent)",
             }}
           />
-
-          {/* Step badge top-right */}
           <div
             style={{
               position: "absolute",
@@ -563,8 +360,7 @@ function PillarsHowItWorks() {
     const obs = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
-          el.style.animation =
-            "pkHeaderIn 0.9s cubic-bezier(0.22,1,0.36,1) both";
+          el.style.animation = "pkHeaderIn 0.9s cubic-bezier(0.22,1,0.36,1) both";
           obs.disconnect();
         }
       },
@@ -582,7 +378,6 @@ function PillarsHowItWorks() {
       <style>{`
         ${PK_KEYFRAMES}
 
-        /* Card entrance */
         .pk-card {
           opacity: 0;
           transform: translateY(64px) scale(0.984);
@@ -594,47 +389,32 @@ function PillarsHowItWorks() {
           opacity: 1;
           transform: translateY(0) scale(1);
         }
-
-        /* Number slides in */
         .pk-card.pk-vis .pk-num {
           animation: pkNumIn 1s cubic-bezier(0.22,1,0.36,1) 0.2s both;
         }
-
-        /* Text elements stagger in */
         .pk-card.pk-vis .pk-text:nth-child(1) { animation: pkTextIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.30s both; }
         .pk-card.pk-vis .pk-text:nth-child(2) { animation: pkTextIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.38s both; }
         .pk-card.pk-vis .pk-text:nth-child(3) { animation: pkTextIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.44s both; }
         .pk-card.pk-vis .pk-text:nth-child(4) { animation: pkTextIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.50s both; }
         .pk-card.pk-vis .pk-text:nth-child(5) { animation: pkTextIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.56s both; }
-
-        /* Image zoom on reveal */
         .pk-card.pk-vis .pk-img {
           animation: pkImgZoom 1.6s cubic-bezier(0.22,1,0.36,1) 0.05s both;
         }
-
-        /* Hover elevation */
         .pk-card-inner:hover {
           box-shadow:
             0 48px 100px -12px rgba(0,0,0,0.85),
             0 0 0 1px rgba(255,130,50,0.1),
             0 0 48px rgba(255,90,10,0.07);
         }
-
-        /* Card-specific transition delays (stagger on scroll) */
         .pk-card:nth-child(1) { transition-delay: 0s; }
         .pk-card:nth-child(2) { transition-delay: 0.06s; }
         .pk-card:nth-child(3) { transition-delay: 0.12s; }
         .pk-card:nth-child(4) { transition-delay: 0.18s; }
       `}</style>
 
-      {/* ── Section header ── */}
-      <div
-        ref={headerRef}
-        className="mx-auto max-w-7xl px-6 mb-16"
-        style={{ opacity: 0 }}
-      >
+      {/* Section header */}
+      <div ref={headerRef} className="mx-auto max-w-7xl px-6 mb-16" style={{ opacity: 0 }}>
         <div className="flex flex-wrap items-end justify-between gap-6">
-          {/* Left */}
           <div>
             <p
               style={{
@@ -645,12 +425,11 @@ function PillarsHowItWorks() {
                 marginBottom: "22px",
               }}
             >
-              HOW WE WORK
+              [PILLARS]
             </p>
             <h2
               style={{
-                fontFamily:
-                  "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
                 fontSize: "clamp(44px, 7vw, 96px)",
                 fontWeight: 700,
                 lineHeight: 0.9,
@@ -660,7 +439,7 @@ function PillarsHowItWorks() {
                 margin: 0,
               }}
             >
-              PILLARS
+              THE ARCHITECT OF
               <br />
               <em
                 style={{
@@ -673,12 +452,10 @@ function PillarsHowItWorks() {
                   letterSpacing: "0em",
                 }}
               >
-                driving CX
+                AUTONOMY
               </em>
             </h2>
           </div>
-
-          {/* Right descriptor */}
           <p
             style={{
               maxWidth: "340px",
@@ -694,7 +471,7 @@ function PillarsHowItWorks() {
         </div>
       </div>
 
-      {/* ── Stacked sticky cards ── */}
+      {/* Stacked sticky cards */}
       <div className="mx-auto max-w-7xl px-6">
         {CX_PILLARS.map((pillar, i) => (
           <PillarCard key={pillar.num} pillar={pillar} index={i} />
@@ -873,25 +650,6 @@ function Index() {
     <main className="bg-background text-foreground min-h-screen">
       <Nav />
       <Hero />
-
-      {/* ── The Architect of Autonomy ────────────────────────────────────── */}
-      <section className="relative py-32 border-t border-white/5">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="reveal flex flex-wrap items-end justify-between gap-6 mb-12">
-            <div className="max-w-2xl">
-              <p className="text-xs tracking-[0.3em] text-muted-foreground bracket-label mb-6">PILLARS</p>
-              <h2 className="font-display text-4xl md:text-6xl tracking-tight">
-                The <em className="text-warm not-italic font-light">Architect</em>
-                <span className="font-display text-4xl md:text-6xl tracking-tight block">of&nbsp;Autonomy</span>
-              </h2>
-            </div>
-            <Link to="/services" className="text-xs tracking-[0.25em] uppercase text-muted-foreground hover:text-warm transition-colors">
-              All services →
-            </Link>
-          </div>
-          <ServiceMosaic />
-        </div>
-      </section>
 
       {/* ── PieterKoopt-style stacked Pillars ── */}
       <PillarsHowItWorks />
