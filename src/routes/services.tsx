@@ -20,18 +20,17 @@ const SERVICE_GROUPS = [
     title: "Artificial Intelligence",
     image: dataAiImg,
     eyebrow: "Neural Command Layer",
-    tagline: "Sentient systems. Zero latency. Infinite scale.",
-    intro:
-      "We forge cognitive architectures that don't just process data — they perceive, predict and act. Our AI systems operate at the intersection of large-scale language models, autonomous agent networks and real-time inference pipelines, compressing years of human deliberation into milliseconds of machine precision.",
+    tagline: "Move from AI that talks to AI that acts. We build the proactive engines that reason, plan, and execute missions across your entire business. ",
+    
     stat: { value: "10×", label: "Decision velocity" },
     items: [
       "Generative AI & LLM Orchestration",
-      "Autonomous Agent Networks",
-      "AI Model Fine-tuning & RAG Pipelines",
-      "Neural Language Processing",
-      "Cognitive OCR & Document Intelligence",
-      "Self-Optimising AI Systems",
-      "AI Integration & Intelligent API Mesh",
+      "Autonomous Agent",
+      "Smart AI Assistants",
+      "LLM Substrates",
+      "Deep Learning",
+      "Model Fine-tuning",
+      "Sentiment & Context Analysis",
       "Deep Learning & Neural Architectures",
       "Real-Time Sentiment & Intent Engine",
       "Conversational AI & Hyper-Bots",
@@ -42,123 +41,117 @@ const SERVICE_GROUPS = [
     title: "Digital Transformation",
     image: digitalImg,
     eyebrow: "Enterprise Singularity",
-    tagline: "Legacy ends here. The adaptive enterprise begins.",
-    intro:
-      "We don't digitise your past — we architect your future. By deconstructing monolithic operations and rebuilding them on composable, AI-native foundations, we create enterprises that sense market shifts in real time, reconfigure autonomously and outpace competitors who are still running change management workshops.",
+    tagline: "Reclaim your digital destiny. We transform legacy chaos into a self-evolving operating model where you own the data and the results .",
+    
     stat: { value: "3×", label: "Time-to-market compression" },
     items: [
-      "Enterprise Mobility & Neural Orchestration",
-      "Intelligent System Integration & API Mesh",
-      "Cloud-Native & Sovereign Migration",
-      "Immersive Digital Experience Platforms",
-      "Composable Enterprise Architecture",
-      "Predictive Business Intelligence",
-      "Zero-Downtime Application Modernization",
+      "Enterprise Architecture",
+      "Business Intelligence",
+      "Architecture Resurgence (App Modernization)",
+      "Sovereign System Integration",
+      "Cloud & Hybrid Core",
+      "Immersive Digital Experience",
+      "Enterprise Mobility",
     ],
   },
   {
     title: "Product Engineering",
     image: productImg,
     eyebrow: "Precision Build Matrix",
-    tagline: "Engineered to disrupt. Built to endure.",
-    intro:
-      "We deploy elite engineering squads who treat software as a living organism — continuously evolving, self-healing and optimised for growth. From quantum-ready architectures to edge-deployed microservices, every system we craft is hardened for the demands of a world where downtime is extinction.",
+    tagline: "Forge the impossible with future-fit engineering. We build resilient digital products designed for your infinite scale",
+    //intro:
+      //"We deploy elite engineering squads who treat software as a living organism — continuously evolving, self-healing and optimised for growth. From quantum-ready architectures to edge-deployed microservices, every system we craft is hardened for the demands of a world where downtime is extinction.",
     stat: { value: "98%", label: "On-time delivery rate" },
     items: [
-      "Product Genome Mapping & Discovery",
-      "Hyper-Custom Product Development",
-      "Application Re-Engineering & Resurrection",
-      "Platform & Edge Infrastructure Engineering",
-      "DevOps, GitOps & Autonomous CI/CD",
-      "AI-Augmented Quality Engineering",
-      "Embedded Squad Augmentation",
+      "Product Assessment & Design",
+      "Application Re-Engineering",
+      "Platform Engineering",
+      "Custom High-Stakes Development",
+      "Battle-Tested DevOps",
+      "Precision Quality Assurance",
+      "Elite Team Augmentation",
     ],
   },
   {
-    title: "Application Development",
+    title: "Application Transformation",
     image: appImg,
     eyebrow: "Omniscreen Deployment",
-    tagline: "Every pixel. Every platform. Every moment.",
-    intro:
-      "We engineer applications that exist seamlessly across every surface — from foldable screens to spatial computing environments. Our cross-platform architecture eliminates the ceiling between native performance and universal reach, delivering sub-second experiences that feel native to every device, OS and network condition.",
+    tagline: "High-velocity platforms for a real-time world. We deploy the composable applications you need to optimize operations in near-real-time.  ",
+    //intro:
+      //"We engineer applications that exist seamlessly across every surface — from foldable screens to spatial computing environments. Our cross-platform architecture eliminates the ceiling between native performance and universal reach, delivering sub-second experiences that feel native to every device, OS and network condition.",
     stat: { value: "4.9★", label: "Avg. app store rating" },
     items: [
-      "Native iOS & Android Engineering",
-      "Adaptive Responsive Web Applications",
-      "Cross-Platform Flutter & React Native",
-      "Offline-First Progressive Web Apps",
-      "API Fabric & Integration Architecture",
-      "Distributed Microservices & Backend",
+      "Responsive Web Ecosystem",
+      "Progressive Web Apps (PWA)",
+      "Mobile App Development",
+      "Cross-Platform Architectures",
+      "API Substrates & Integration",
+      "Scalable Back-End",
     ],
   },
   {
     title: "UI / UX Design",
     image: uiuxImg,
     eyebrow: "Neuro-Experience Design",
-    tagline: "Interfaces that rewire behaviour, not just attention.",
-    intro:
-      "We design from the limbic system outward. Every micro-interaction, spatial rhythm and typographic choice is calibrated against neuroscience and behavioural data — creating digital environments where users feel effortlessly guided, emotionally connected and compelled to return. Design so precise it becomes invisible.",
+    tagline: "Interfaces that sense human intent. We design the human-AI symbiosis that makes your brand feel natural and inevitable.  ",
+    //intro:
+      //"We design from the limbic system outward. Every micro-interaction, spatial rhythm and typographic choice is calibrated against neuroscience and behavioural data — creating digital environments where users feel effortlessly guided, emotionally connected and compelled to return. Design so precise it becomes invisible.",
     stat: { value: "62%", label: "Avg. engagement uplift" },
     items: [
-      "Neuro-UX Research & Cognitive Audits",
-      "Spatial Information Architecture",
-      "Kinetic Interaction & Motion Design",
-      "Atomic Design Systems & Token Libraries",
-      "Visual Direction & Brand Expression",
-      "Inclusive & Zero-Barrier Accessibility",
+      "Cognitive UX Research",
+      "Usability Consulting",
+      "Precision UX Design",
+      "Intuitive UI Craftsmanship",
+      "User Experience Strategy",
+      "Specialized Design Squads",
     ],
   },
   {
     title: "Consulting",
     image: consultingImg,
     eyebrow: "Strategic Foresight Engine",
-    tagline: "We see the roadblocks you haven't hit yet.",
-    intro:
-      "Before a single line of code, we run your strategy through our proprietary foresight framework — mapping threat vectors, opportunity corridors and technology inflection points that most organisations won't see for two years. You leave every engagement with a high-conviction execution blueprint, not a deck of recommendations.",
+    tagline: "Turn technical complexity into unvarnished business clarity. We provide the blueprint for your world’s most important decisions.",
+    //intro:
+      //"Before a single line of code, we run your strategy through our proprietary foresight framework — mapping threat vectors, opportunity corridors and technology inflection points that most organisations won't see for two years. You leave every engagement with a high-conviction execution blueprint, not a deck of recommendations.",
     stat: { value: "85%", label: "Clients advance to build" },
     items: [
-      "Digital Maturity & Readiness Scan",
-      "Next-Gen Customer Experience Strategy",
-      "Technology & Platform Futures Mapping",
-      "Product Vision & Horizon Roadmapping",
-      "AI & Data Monetisation Strategy",
-      "Transformation Leadership Facilitation",
+      "Business & Stakeholder Value",
+      "Technology Strategy",
+      "Product Strategy",
+      "Sovereign Data Strategy",
+      "Impact-Driven Roadmapping",
+      "CX Strategy",
     ],
   },
   {
     title: "Performance & Growth",
     image: growthImg,
     eyebrow: "Perpetual Optimisation Loop",
-    tagline: "Your platform compounds. Automatically.",
-    intro:
-      "We install a self-improving intelligence layer on top of your existing digital estate. Behavioural signals feed predictive models that autonomously surface friction, personalise journeys and redistribute traffic — creating a flywheel of compounding growth that accelerates while your competitors are still reading last quarter's analytics.",
+    tagline: "Stop chasing vanity metrics; start commanding results. Activate a continuous cycle of optimization that drives your growth.",
+    //intro:
+      //"We install a self-improving intelligence layer on top of your existing digital estate. Behavioural signals feed predictive models that autonomously surface friction, personalise journeys and redistribute traffic — creating a flywheel of compounding growth that accelerates while your competitors are still reading last quarter's analytics.",
     stat: { value: "2.4×", label: "Avg. revenue multiplier" },
     items: [
-      "Predictive Experience Optimisation",
-      "Hyper-Personalisation & Dynamic Content",
-      "Autonomous A/B & Multivariate Testing",
-      "Behavioural Signal & Event Intelligence",
-      "Core Web Vitals & Search Dominance",
-      "BI Consultancy & Revenue Attribution",
-      "Real-Time Executive Command Dashboards",
+      "Experience & Conversion Optimization",
+      "1:1 Personalization",
+      "Real-Time Tracking & Analytics",
+      "SEO (GEO & AIO)",
+      "Intelligent BI Consultancy, Impact Dashboard",
+      
     ],
   },
   {
     title: "Managed Services",
     image: managedImg,
     eyebrow: "Autonomous Operations Grid",
-    tagline: "Self-healing infrastructure. Zero compromise.",
-    intro:
-      "We operate your digital estate like a mission-critical spacecraft — with autonomous threat neutralisation, predictive capacity scaling and zero-downtime deployment protocols running continuously in the background. Your engineering team focuses on innovation. We ensure the ground beneath them never shifts.",
+    tagline: "The self-healing backbone for your digital core. We keep your IT secure and invisible so you can focus purely on your scale.",
+    //intro:
+      //"We operate your digital estate like a mission-critical spacecraft — with autonomous threat neutralisation, predictive capacity scaling and zero-downtime deployment protocols running continuously in the background. Your engineering team focuses on innovation. We ensure the ground beneath them never shifts.",
     stat: { value: "99.9%", label: "Guaranteed uptime SLA" },
     items: [
-      "Intelligent Application Modernization",
-      "DevOps, GitOps & SRE Automation",
-      "Multi-Cloud Operations & FinOps",
-      "Sovereign Hosting & Edge Infrastructure",
-      "24/7 Autonomous IT Operations",
-      "Predictive Application Support",
-      "Zero-Trust Cybersecurity & Compliance",
+      "Intelligent IT Ops & Support, 24/7 Application Support.",
+      "Preemptive Cybersecurity, Compliance & Risk Governance",
+      "Architecture Resurgence, Sovereign Cloud Hosting.",
     ],
   },
 ];
@@ -328,11 +321,11 @@ function VideoHero() {
             animation: "heroTextIn 0.7s 0.42s cubic-bezier(0.4,0,0.2,1) both",
             opacity: 0,
           }}>
-            Build, scale and{" "}
+            IMPACT{" "}
             <em style={{ fontStyle: "italic", fontWeight: 300, color: "rgb(255,130,50)" }}>
-              modernise apps
+              WITNESSED
             </em>{" "}
-            with our services.
+           
           </h1>
 
           {/* Animated orange underline */}
@@ -354,7 +347,7 @@ function VideoHero() {
             animation: "heroTextIn 0.6s 0.58s cubic-bezier(0.4,0,0.2,1) both",
             opacity: 0,
           }}>
-            A powerhouse of innovation, design and transformation, fueled by disruptive technologies and agility.
+            See your future in action. Explore the missions where we turned bold ambition into a scalable reality. These global leaders didn't just build software - they used our intelligence layer to gain decision authority and command their markets.
           </p>
         </div>
       </div>

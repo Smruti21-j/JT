@@ -11,37 +11,62 @@ import careersImg from "@/assets/page-careers.jpg";
 const PERKS = [
   {
     num: "01",
-    titlePlain: "WORK-LIFE",
-    titleItalic: "Balance",
-    desc: "We believe your best work comes from a rested mind. Flexible hours, no crunch culture, and real boundaries between work and life.",
-    stat: { value: "5×", label: "Avg. team tenure" },
+    titlePlain: "Flexible work options",
+    titleItalic: "Timeframes",
+    desc: "Forget the 9-to-5 grind. With flexible work options, you define your own peak productivity hours.",
+    stat: { value: "", label: "" },
     image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1400&q=85",
   },
   {
     num: "02",
-    titlePlain: "FLEXIBLE",
-    titleItalic: "Work Options",
-    desc: "Hybrid-ready setups, async-first communication, and tools that let you do great work from wherever you thrive.",
-    stat: { value: "100%", label: "Team satisfaction" },
+    titlePlain: "No hidden policies",
+    titleItalic: "Communication",
+    desc: "We operate with no hidden policies, ensuring complete transparency across every layer of the organization.",
+    stat: { value: "", label: "" },
     image: "https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?w=1400&q=85",
   },
   {
     num: "03",
-    titlePlain: "VIBRANT",
-    titleItalic: "Work Culture",
-    desc: "Festival celebrations, team lunches, hackathons and everything in between — we ship together and celebrate together.",
-    stat: { value: "48h", label: "Onboarding speed" },
+    titlePlain: "Vibrant work culture",
+    titleItalic: "Mind",
+    desc: "You’ll be surrounded by awesome team members in a vibrant work culture designed to spark eureka  moments daily.",
+    stat: { value: "", label: "" },
     image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=85",
   },
   {
     num: "04",
-    titlePlain: "INDIVIDUAL",
-    titleItalic: "Achievement Perks",
-    desc: "Your wins are recognised. Performance bonuses, learning budgets, and career paths that actually move — not just promises.",
-    stat: { value: "3×", label: "Faster growth" },
+    titlePlain: "Individual Achievement Perks",
+    titleItalic: "Breakthroughs",
+    desc: "We celebrate your unique contributions with individual achievement perks.",
+    stat: { value: "", label: "" },
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=85",
+  },
+    {
+    num: "05",
+    titlePlain: "Team Performance Perks",
+    titleItalic: "Victory",
+    desc: "When the team wins, everyone wins. Our team performance perks ensure our shared success translates into shared rewards.",
+    stat: { value: "", label: "" },
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=85",
+  },
+    {
+    num: "06",
+    titlePlain: "Festival Celebrations",
+    titleItalic: "Connection",
+    desc: "We pause to recharge and reconnect through meaningful festival celebrations.",
+    stat: { value: "", label: "" },
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=85",
+  },
+  {
+    num: "07",
+    titlePlain: "Sustainable Innovation",
+    titleItalic: "Connection",
+    desc: "To keep your creative engine running, we prioritize work-life balance as a core functional requirement.",
+    stat: { value: "", label: "" },
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=85",
   },
 ];
+
 
 // Stories / culture gallery items — using PieterKoopt CDN images
 const CULTURE_STORIES = [
@@ -245,15 +270,7 @@ function CultureGallery() {
               Always.
             </em>
           </h2>
-          <p style={{
-            marginTop: "24px",
-            fontSize: "16px",
-            lineHeight: 1.75,
-            color: "rgba(240,232,223,0.4)",
-            maxWidth: "520px",
-          }}>
-            Art is more than an object — it's a story that lives on. Every team has a moment, a memory, an emotion. This is where our stories continue.
-          </p>
+          
         </div>
       </div>
 
@@ -508,7 +525,7 @@ function PerksSection() {
               fontSize: "9px", letterSpacing: "0.32em", textTransform: "uppercase",
               color: "rgba(240,232,223,0.3)", marginBottom: "14px",
             }}>
-              REWARDING YOU
+              [ Rewiring The Experience ]
             </p>
             <h2 style={{
               fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
@@ -520,7 +537,7 @@ function PerksSection() {
               color: "#f0e8df",
               margin: 0,
             }}>
-              MORE THAN
+             The Future Isn’t Found.
               <em style={{
                 fontFamily: "Georgia, serif",
                 fontStyle: "italic",
@@ -530,7 +547,8 @@ function PerksSection() {
                 fontSize: "0.82em",
                 marginLeft: "16px",
               }}>
-                a paycheck.
+
+                It’s Built.
               </em>
             </h2>
           </div>
@@ -787,7 +805,7 @@ function OpenRoles() {
             fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase",
             color: "rgba(240,232,223,0.32)", marginBottom: "20px",
           }}>
-            JOIN US · OPEN ROLES
+            [Decoding Tomorrow]
           </p>
           <h2 style={{
             fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
@@ -934,10 +952,10 @@ function CareersPage() {
         eyebrow="CAREERS · LIFE AT JARVIS"
         title={
           <>
-            Build a future <em className="text-shimmer not-italic font-light">you believe in.</em>
+            The next big thing is  <em className="text-shimmer not-italic font-light">YOU</em>
           </>
         }
-        description="Building experiences that are happier, engaging and meaningful — with a team that ships, learns and celebrates together."
+        description="In the world of IT, you’re either ahead of the curve or part of the past. We’re looking for enthusiasts who are all ears for new ideas and ready to hit the ground running on global scales. At Jarvis, we don’t just play the game; we change the way it’s played."
       >
         <a
           href="mailto:talent@jarvistechnolabs.com"

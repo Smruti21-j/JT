@@ -879,7 +879,7 @@ function Index() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="reveal flex flex-wrap items-end justify-between gap-6 mb-12">
             <div className="max-w-2xl">
-              <p className="text-xs tracking-[0.3em] text-muted-foreground bracket-label mb-6">WHAT WE DO</p>
+              <p className="text-xs tracking-[0.3em] text-muted-foreground bracket-label mb-6">PILLARS</p>
               <h2 className="font-display text-4xl md:text-6xl tracking-tight">
                 The <em className="text-warm not-italic font-light">Architect</em>
                 <span className="font-display text-4xl md:text-6xl tracking-tight block">of&nbsp;Autonomy</span>

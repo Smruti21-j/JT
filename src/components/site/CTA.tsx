@@ -46,10 +46,7 @@ const BRANDS = [
   { name: "Home", logo: homeMark },
 ] as const;
 
-// ─── Single marquee row — NO overlap, proper sizing ──────────────────────────
-// FIX 3: Replaced two-row overlapping layout with a single clean marquee row.
-// Each logo card has a fixed width/height, flex-shrink-0, and the track is
-// a single continuous flex row duplicated for the infinite illusion.
+// ─── Marquee rail ─────────────────────────────────────────────────────────────
 function LogoRail({ reverse = false }: { reverse?: boolean }) {
   const doubled = [...BRANDS, ...BRANDS];
   return (
@@ -94,91 +91,22 @@ function LogoRail({ reverse = false }: { reverse?: boolean }) {
   );
 }
 
-/* ─── Brands section ─────────────────────────────────────────────────────────── */
+/* ─── Brands carousel ────────────────────────────────────────────────────────── */
 function BrandsCarousel() {
   return (
-    <section
-      className="relative border-t border-white/10"
-      style={{ padding: "80px 0", overflow: "hidden" }}
-    >
-      {/* Subtle grid bg */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          opacity: 0.025,
-          backgroundImage:
-            "linear-gradient(to right,white 1px,transparent 1px),linear-gradient(to bottom,white 1px,transparent 1px)",
-          backgroundSize: "40px 40px",
-        }}
-      />
-      {/* Edge fades */}
-      <div
-        className="absolute left-0 top-0 bottom-0 z-10 pointer-events-none"
-        style={{
-          width: "120px",
-          background: "linear-gradient(to right, #000 0%, transparent 100%)",
-        }}
-      />
-      <div
-        className="absolute right-0 top-0 bottom-0 z-10 pointer-events-none"
-        style={{
-          width: "120px",
-          background: "linear-gradient(to left, #000 0%, transparent 100%)",
-        }}
-      />
-
-      {/* Header */}
+    <section className="relative border-t border-white/10" style={{ padding: "80px 0", overflow: "hidden" }}>
+      <div className="absolute inset-0 pointer-events-none" style={{ opacity: 0.025, backgroundImage: "linear-gradient(to right,white 1px,transparent 1px),linear-gradient(to bottom,white 1px,transparent 1px)", backgroundSize: "40px 40px" }} />
+      <div className="absolute left-0 top-0 bottom-0 z-10 pointer-events-none" style={{ width: "120px", background: "linear-gradient(to right, #000 0%, transparent 100%)" }} />
+      <div className="absolute right-0 top-0 bottom-0 z-10 pointer-events-none" style={{ width: "120px", background: "linear-gradient(to left, #000 0%, transparent 100%)" }} />
       <div className="relative mx-auto max-w-7xl px-6 mb-12 z-20">
-        <p
-          style={{
-            fontSize: "11px",
-            letterSpacing: "0.3em",
-            color: "rgba(255,255,255,0.4)",
-            textTransform: "uppercase",
-            marginBottom: "12px",
-          }}
-        >
-          Trusted by Leaders
-        </p>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            gap: "16px",
-          }}
-        >
-          <h2
-            style={{
-              fontSize: "clamp(2rem, 4vw, 2.75rem)",
-              fontWeight: 600,
-              color: "#fff",
-              lineHeight: 1.2,
-            }}
-          >
-            Brands we've <span style={{ color: "rgb(249,115,22)" }}>worked with</span>
-          </h2>
-          <p
-            style={{
-              fontSize: "14px",
-              color: "rgba(255,255,255,0.5)",
-              maxWidth: "360px",
-              lineHeight: 1.65,
-            }}
-          >
-            From government enterprises to fast-moving startups — global leaders who turned bold
-            ambition into scalable digital reality.
-          </p>
-        </div>
+        <p style={{ fontSize: "11px", letterSpacing: "0.3em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginBottom: "12px" }}>Trusted by Leaders</p>
+        <h2 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 600, color: "#fff", lineHeight: 1.2 }}>
+          The Ecosystem You <span style={{ color: "rgb(249,115,22)" }}>Trust</span>
+        </h2>
       </div>
-
-      {/* Single marquee row */}
       <div className="relative z-20" style={{ paddingLeft: "24px", paddingRight: "24px" }}>
         <LogoRail />
       </div>
-
-      {/* Keyframes */}
       <style>{`
         @keyframes marquee        { from { transform: translateX(0) } to { transform: translateX(-50%) } }
         @keyframes marqueeReverse { from { transform: translateX(-50%) } to { transform: translateX(0) } }
@@ -187,220 +115,207 @@ function BrandsCarousel() {
   );
 }
 
-/* ─── CTA export ─────────────────────────────────────────────────────────────── */
+/* ─── CTA ────────────────────────────────────────────────────────────────────── */
 type CTAProps = { showBrands?: boolean };
-
 export function CTA({ showBrands = false }: CTAProps = {}) {
   return <>{showBrands && <BrandsCarousel />}</>;
 }
 
-/* ─── Footer ─────────────────────────────────────────────────────────────────── */
+/* ─── Footer nav & socials ───────────────────────────────────────────────────── */
 const FOOTER_COLS = [
   {
     title: "AI Systems",
     links: [
-      {
-        label: "Autonomous Workflows",
-        to: "/services/$slug",
-        params: { slug: "digital-transformation" },
-      },
-      { label: "Decision Intelligence", to: "/services/$slug", params: { slug: "data-ai" } },
-      { label: "AI Infrastructure", to: "/services/$slug", params: { slug: "managed-services" } },
+      { label: "Autonomous Workflows", to: "/services/$slug", params: { slug: "digital-transformation" } },
+      { label: "Decision Intelligence",  to: "/services/$slug", params: { slug: "data-ai" } },
+      { label: "AI Infrastructure",      to: "/services/$slug", params: { slug: "managed-services" } },
     ],
   },
   {
     title: "CX Pillars",
     links: [
-      { label: "Personalization", to: "/services" },
+      { label: "Personalization",        to: "/services" },
       { label: "Real-time Intelligence", to: "/services" },
-      { label: "Adaptive Systems", to: "/services" },
+      { label: "Adaptive Systems",       to: "/services" },
     ],
   },
   {
     title: "Company",
     links: [
-      { label: "About", to: "/about" },
-      { label: "Careers", to: "/careers" },
+      { label: "About",    to: "/about" },
+      { label: "Careers",  to: "/careers" },
       { label: "Insights", to: "/insights" },
-      { label: "Contact", to: "/contact" },
+      { label: "Contact",  to: "/contact" },
     ],
   },
 ];
 
 const SOCIALS = [
-  { icon: Linkedin, href: "https://www.linkedin.com/company/jarvis-technolabs/" },
+  { icon: Linkedin,  href: "https://www.linkedin.com/company/jarvis-technolabs/" },
   { icon: Instagram, href: "https://www.instagram.com/jarvistechnolabs/" },
-  { icon: Twitter, href: "https://www.x.com/Jarvis_Techno" },
-  { icon: Youtube, href: "https://www.youtube.com/channel/UCEZSQCoL_1lja1UsQX_uoUw" },
-  { icon: Facebook, href: "https://www.facebook.com/498711123977909" },
+  { icon: Twitter,   href: "https://www.x.com/Jarvis_Techno" },
+  { icon: Youtube,   href: "https://www.youtube.com/channel/UCEZSQCoL_1lja1UsQX_uoUw" },
+  { icon: Facebook,  href: "https://www.facebook.com/498711123977909" },
 ];
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   MADEBYCAT EXACT TECHNIQUE:
+   The key insight from the reference is that orbs are NOT just blurred divs
+   that drift. They ROTATE around an off-centre pivot (transform-origin set
+   far outside the circle). This makes each orb arc slowly through the frame
+   like a camera bokeh circle drifting. Combined with heavy blur (80-110px)
+   and large sizes (300-600px) partially clipped by overflow:hidden, this
+   recreates the exact aesthetic — large, soft, glowing orange/amber orbs
+   slowly sweeping across a black background.
+   ───────────────────────────────────────────────────────────────────────── */
 const FOOTER_STYLES = `
-  @keyframes footerHeatBloom {
-    0%, 100% { transform: translate3d(-4%, 4%, 0) scale(.95) rotate(-2deg); opacity: .28; }
-    45% { transform: translate3d(5%, -3%, 0) scale(1.08) rotate(5deg); opacity: .62; }
-    72% { transform: translate3d(1%, 5%, 0) scale(1.02) rotate(-4deg); opacity: .4; }
+  @keyframes orbRotate {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
   }
-  @keyframes footerSignalSweep {
-    from { transform: translateX(-110%); opacity: 0; }
-    18%, 74% { opacity: 1; }
-    to { transform: translateX(220%); opacity: 0; }
+  @keyframes orbRotateReverse {
+    from { transform: rotate(360deg); }
+    to   { transform: rotate(0deg); }
   }
-  @keyframes footerSparkRise {
-    from { transform: translateY(160px); opacity: 0; }
-    18%, 75% { opacity: .85; }
-    to { transform: translateY(-360px); opacity: 0; }
-  }
-  .footer-heat-field {
+
+  .footer-bokeh-orb {
     position: absolute;
-    inset: auto 5% 12% auto;
-    width: min(860px, 72vw);
-    height: 420px;
-    border-radius: 999px;
-    background:
-      radial-gradient(circle at 24% 42%, rgba(255, 208, 122, 0.24), transparent 22%),
-      radial-gradient(circle at 50% 54%, rgba(255, 106, 24, 0.42), transparent 28%),
-      radial-gradient(circle at 78% 36%, rgba(255, 70, 10, 0.24), transparent 24%);
-    filter: blur(46px);
-    mix-blend-mode: screen;
-    animation: footerHeatBloom 15s ease-in-out infinite;
+    border-radius: 50%;
     pointer-events: none;
-  }
-  .footer-signal-line {
-    position: absolute;
-    left: 0;
-    width: 56%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 130, 50, .72), transparent);
-    animation: footerSignalSweep 6.5s ease-in-out infinite;
-  }
-  .footer-spark {
-    position: absolute;
-    bottom: 0;
-    width: 2px;
-    height: 80px;
-    background: linear-gradient(to top, transparent, rgba(255, 130, 50, .58), transparent);
-    animation: footerSparkRise 8s linear infinite;
-    pointer-events: none;
+    will-change: transform;
   }
 `;
 
+/* Orb config — each has a rotation pivot far from its centre so it arcs
+   across the viewport, exactly replicating the reference screenshot motion */
+const ORBS = [
+  // Deep orange — top-left, arcs down into view
+  {
+    w: 500, h: 500,
+    top: "-160px", left: "-120px",
+    color: "rgba(234, 88, 12, 0.85)",
+    blur: 88,
+    originX: "340px", originY: "360px",
+    animation: "orbRotate 24s linear infinite",
+  },
+  // Bright orange-amber — upper centre, the large dominant orb
+  {
+    w: 640, h: 640,
+    top: "-80px", left: "30%",
+    color: "rgba(249, 115, 22, 0.72)",
+    blur: 110,
+    originX: "-160px", originY: "220px",
+    animation: "orbRotateReverse 32s linear infinite",
+  },
+  // Pale amber/yellow — lower-left, softer glow
+  {
+    w: 360, h: 360,
+    top: "50%", left: "-60px",
+    color: "rgba(251, 191, 36, 0.60)",
+    blur: 72,
+    originX: "280px", originY: "-200px",
+    animation: "orbRotate 20s linear infinite",
+    delay: "-7s",
+  },
+  // Orange — bottom-right corner
+  {
+    w: 440, h: 440,
+    top: "55%", left: "68%",
+    color: "rgba(234, 88, 12, 0.65)",
+    blur: 90,
+    originX: "-220px", originY: "-260px",
+    animation: "orbRotateReverse 28s linear infinite",
+    delay: "-12s",
+  },
+  // Small accent — top-right, partial crop
+  {
+    w: 280, h: 280,
+    top: "-80px", left: "76%",
+    color: "rgba(251, 146, 60, 0.78)",
+    blur: 64,
+    originX: "-100px", originY: "240px",
+    animation: "orbRotate 18s linear infinite",
+    delay: "-4s",
+  },
+] as const;
+
+/* ─── Footer ─────────────────────────────────────────────────────────────────── */
 export function Footer() {
   return (
     <footer className="relative border-t border-white/10 bg-black text-white overflow-hidden">
       <style>{FOOTER_STYLES}</style>
 
-      {/* Grid background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* ── Bokeh background ─────────────────────────────────────────────── */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
+        {/* Dot grid */}
         <div
-          className="absolute inset-0 opacity-[0.04]"
+          className="absolute inset-0"
           style={{
+            opacity: 0.04,
             backgroundImage:
               "linear-gradient(to right,white 1px,transparent 1px),linear-gradient(to bottom,white 1px,transparent 1px)",
             backgroundSize: "40px 40px",
           }}
         />
-        <div className="footer-heat-field" />
-        <div className="footer-signal-line top-[18%]" />
-        <div className="footer-signal-line top-[48%]" style={{ animationDelay: "1.8s" }} />
-        <div className="footer-signal-line top-[72%]" style={{ animationDelay: "3.2s" }} />
-        {[11, 23, 37, 52, 68, 83, 94].map((left, i) => (
-          <span
-            key={left}
-            className="footer-spark"
-            style={{ left: `${left}%`, animationDelay: `${i * 0.75}s` }}
-          />
-        ))}
-        <div className="absolute w-[120%] h-[2px] bg-gradient-to-r from-transparent via-orange-500/30 to-transparent animate-flow-x top-[25%]" />
-        <div className="absolute w-[120%] h-[2px] bg-gradient-to-r from-transparent via-orange-400/20 to-transparent animate-flow-x-reverse top-[55%]" />
-        {[...Array(6)].map((_, i) => (
+
+        {/* Bokeh orbs — rotate around off-centre pivots like madebycat */}
+        {ORBS.map((orb, i) => (
           <div
             key={i}
-            className="absolute w-1.5 h-1.5 bg-orange-400/40 rounded-full animate-pulse"
-            style={{ top: `${20 + i * 10}%`, left: `${10 + i * 12}%` }}
+            className="footer-bokeh-orb"
+            style={{
+              width:  `${orb.w}px`,
+              height: `${orb.h}px`,
+              top:    orb.top,
+              left:   orb.left,
+              background: orb.color,
+              filter: `blur(${orb.blur}px)`,
+              transformOrigin: `${orb.originX} ${orb.originY}`,
+              animation: orb.animation,
+              animationDelay: "delay" in orb ? orb.delay : "0s",
+            }}
           />
         ))}
-        <div className="absolute right-20 bottom-20 w-[300px] h-[300px] border border-orange-500/10 rounded-full animate-ping-slow" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 py-20">
+      {/* ── Content ──────────────────────────────────────────────────────── */}
+      <div className="relative max-w-7xl mx-auto px-6 py-20" style={{ zIndex: 10 }}>
         <div className="grid lg:grid-cols-12 gap-12 border-b border-white/10 pb-16">
-          {/* ── LEFT COLUMN ─────────────────────────────────────────────── */}
+
+          {/* LEFT */}
           <div className="lg:col-span-5">
             <Link to="/">
               <img src={logo} alt="Jarvis Technolabs" className="h-12 mb-6" />
             </Link>
 
-            {/* FIX 4a: Added tagline description */}
             <p className="text-2xl md:text-3xl font-semibold leading-tight max-w-md mb-4">
               Orchestrating Your Autonomous
               <span className="text-orange-500"> Future</span>
             </p>
 
-            {/* FIX 4b: Added description paragraph */}
-            <p
-              className="text-sm leading-relaxed max-w-sm mb-8"
-              style={{ color: "rgba(255,255,255,0.45)" }}
-            >
+            <p className="text-sm leading-relaxed max-w-sm mb-8" style={{ color: "rgba(255,255,255,0.45)" }}>
               We are an AI-native digital engineering company helping enterprises and high-growth
               brands build intelligent products, automate operations, and deliver exceptional
               customer experiences.
             </p>
 
-            {/* FIX 4c: Contact details with icons */}
             <div className="space-y-3">
-              {/* Email with icon */}
-              <a
-                href="mailto:info@jarvistechnolabs.com"
-                className="flex items-center gap-3 text-sm group transition-colors"
-                style={{ color: "rgba(255,255,255,0.6)" }}
-              >
-                <span
-                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
-                  style={{
-                    background: "rgba(255,90,20,0.1)",
-                    border: "1px solid rgba(255,100,30,0.2)",
-                  }}
-                >
+              <a href="mailto:info@jarvistechnolabs.com" className="flex items-center gap-3 text-sm group transition-colors" style={{ color: "rgba(255,255,255,0.6)" }}>
+                <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg" style={{ background: "rgba(255,90,20,0.1)", border: "1px solid rgba(255,100,30,0.2)" }}>
                   <Mail size={14} style={{ color: "rgb(249,115,22)" }} />
                 </span>
-                <span className="group-hover:text-orange-400 transition-colors">
-                  info@jarvistechnolabs.com
-                </span>
+                <span className="group-hover:text-orange-400 transition-colors">info@jarvistechnolabs.com</span>
               </a>
 
-              {/* Phone with icon */}
-              <a
-                href="tel:+917203030707"
-                className="flex items-center gap-3 text-sm group transition-colors"
-                style={{ color: "rgba(255,255,255,0.6)" }}
-              >
-                <span
-                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg transition-colors"
-                  style={{
-                    background: "rgba(255,90,20,0.1)",
-                    border: "1px solid rgba(255,100,30,0.2)",
-                  }}
-                >
+              <a href="tel:+917203030707" className="flex items-center gap-3 text-sm group transition-colors" style={{ color: "rgba(255,255,255,0.6)" }}>
+                <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg" style={{ background: "rgba(255,90,20,0.1)", border: "1px solid rgba(255,100,30,0.2)" }}>
                   <Phone size={14} style={{ color: "rgb(249,115,22)" }} />
                 </span>
-                <span className="group-hover:text-orange-400 transition-colors">
-                  +91 720 303 0707
-                </span>
+                <span className="group-hover:text-orange-400 transition-colors">+91 720 303 0707</span>
               </a>
 
-              {/* Location with icon */}
-              <div
-                className="flex items-start gap-3 text-sm"
-                style={{ color: "rgba(255,255,255,0.45)" }}
-              >
-                <span
-                  className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg mt-0.5"
-                  style={{
-                    background: "rgba(255,90,20,0.1)",
-                    border: "1px solid rgba(255,100,30,0.2)",
-                  }}
-                >
+              <div className="flex items-start gap-3 text-sm" style={{ color: "rgba(255,255,255,0.45)" }}>
+                <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg mt-0.5" style={{ background: "rgba(255,90,20,0.1)", border: "1px solid rgba(255,100,30,0.2)" }}>
                   <MapPin size={14} style={{ color: "rgb(249,115,22)" }} />
                 </span>
                 <span>Ahmedabad, Gujarat, India</span>
@@ -408,29 +323,20 @@ export function Footer() {
             </div>
           </div>
 
-          {/* ── RIGHT COLUMNS ───────────────────────────────────────────── */}
+          {/* RIGHT */}
           <div className="lg:col-span-7 grid sm:grid-cols-3 gap-10">
             {FOOTER_COLS.map((col) => (
               <div key={col.title}>
-                <p className="text-xs tracking-widest text-orange-500 mb-5 uppercase">
-                  {col.title}
-                </p>
+                <p className="text-xs tracking-widest text-orange-500 mb-5 uppercase">{col.title}</p>
                 <ul className="space-y-3">
                   {col.links.map((l) => (
                     <li key={l.label}>
                       {"params" in l ? (
-                        <Link
-                          to="/services/$slug"
-                          params={l.params}
-                          className="text-sm text-white/70 hover:text-white hover:translate-x-1 inline-block transition-all"
-                        >
+                        <Link to="/services/$slug" params={l.params} className="text-sm text-white/70 hover:text-white hover:translate-x-1 inline-block transition-all">
                           {l.label}
                         </Link>
                       ) : (
-                        <Link
-                          to={l.to}
-                          className="text-sm text-white/70 hover:text-white hover:translate-x-1 inline-block transition-all"
-                        >
+                        <Link to={l.to} className="text-sm text-white/70 hover:text-white hover:translate-x-1 inline-block transition-all">
                           {l.label}
                         </Link>
                       )}
@@ -449,13 +355,7 @@ export function Footer() {
             {SOCIALS.map((s, i) => {
               const Icon = s.icon;
               return (
-                <a
-                  key={i}
-                  href={s.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-orange-400 transition"
-                >
+                <a key={i} href={s.href} target="_blank" rel="noreferrer" className="hover:text-orange-400 transition">
                   <Icon size={16} />
                 </a>
               );
