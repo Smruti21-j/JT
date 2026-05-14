@@ -17,7 +17,7 @@ const CX_PILLARS = [
     label: "Discovery",
     titlePlain: "INTELLIGENCE",
     titleItalic: "that listens",
-    desc: "We start by mapping your business deeply — goals, friction points, and untapped opportunities — turning raw context into a precise transformation blueprint.",
+    desc: "We start by mapping your business deeply goals, friction points, and untapped opportunities turning raw context into a precise transformation blueprint.",
     stat: { value: "48h", label: "Initial assessment" },
     image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&q=80",
   },
@@ -26,7 +26,7 @@ const CX_PILLARS = [
     label: "Architecture",
     titlePlain: "SYSTEMS",
     titleItalic: "built to last",
-    desc: "Our architects design AI-native cores and cloud-resilient infrastructure tailored to your scale — no off-the-shelf blueprints, no technical debt.",
+    desc: "Our architects design AI-native cores and cloud-resilient infrastructure tailored to your scale no off-the-shelf blueprints, no technical debt.",
     stat: { value: "3×", label: "Deploy velocity" },
     image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80",
   },
@@ -35,7 +35,7 @@ const CX_PILLARS = [
     label: "Delivery",
     titlePlain: "MOMENTUM",
     titleItalic: "in every sprint",
-    desc: "Cross-functional squads ship working software fast. We apply battle-tested playbooks to keep quality high and timelines honest — from MVP to full-scale rollout.",
+    desc: "Cross-functional squads ship working software fast. We apply battle-tested playbooks to keep quality high and timelines honest from MVP to full-scale rollout.",
     stat: { value: "99.9%", label: "Uptime SLA" },
     image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1200&q=80",
   },
@@ -44,7 +44,7 @@ const CX_PILLARS = [
     label: "Evolution",
     titlePlain: "ALWAYS",
     titleItalic: "getting smarter",
-    desc: "Post-launch, our models retrain on your live data, dashboards surface new signals, and our teams iterate continuously — so your platform improves itself.",
+    desc: "Post-launch, our models retrain on your live data, dashboards surface new signals, and our teams iterate continuously so your platform improves itself.",
     stat: { value: "10×", label: "Faster decisions" },
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&q=80",
   },
@@ -465,8 +465,7 @@ function PillarsHowItWorks() {
               textAlign: "right",
             }}
           >
-            At Jarvis Technolabs, we keep things focused, fast, and impactful.
-            Follow the pillars below — and we take care of the rest.
+            The foundation for your global growth, built on nearly a decade of high-velocity engineering.
           </p>
         </div>
       </div>
