@@ -80,7 +80,7 @@ const SERVICE_GROUPS = [
       "Integration: Sovereign System Integration, Cloud & Hybrid Core",
       "Experience: Immersive Digital Experience, Enterprise Mobility",
     ],
-    subImages: [
+    subImages: [  
       { src: "/DT1.png", label: "Core Logic" },
       { src: "/DT2.png", label: "Modernization" },
       { src: "/DT3.png", label: "Integration" },
@@ -100,10 +100,10 @@ const SERVICE_GROUPS = [
       "Resource: Elite Team Augmentation",
     ],
     subImages: [
-      { src: "/AI1.png", label: "Design Forge" },
-      { src: "/AI2.png", label: "Scale Logic" },
-      { src: "/AI3.png", label: "Velocity" },
-      { src: "/AI4.png", label: "Resource" },
+      { src: "/PE1.png", label: "Design Forge" },
+      { src: "/PE2.png", label: "Scale Logic" },
+      { src: "/PE3.png", label: "Velocity" },
+      { src: "/PE4.png", label: "Resource" },
     ],
   },
   {
@@ -118,10 +118,10 @@ const SERVICE_GROUPS = [
       "Foundation: API Substrates & Integration, Scalable Back-End",
     ],
     subImages: [
-      { src: "/AI1.png", label: "Web Logic" },
-      { src: "/AI2.png", label: "Mobile Core" },
-      { src: "/AI3.png", label: "Foundation" },
-      { src: "/AI4.png", label: "Integration" },
+      { src: "/AT1.png", label: "Web Logic" },
+      { src: "/AT2.png", label: "Mobile Core" },
+      { src: "/AT3.png", label: "Foundation" },
+      { src: "/AT4.png", label: "Integration" },
     ],
   },
   {
@@ -136,8 +136,8 @@ const SERVICE_GROUPS = [
       "Strategy: User Experience Strategy, Specialized Design Squads",
     ],
     subImages: [
-      { src: "/AI1.png", label: "Research" },
-      { src: "/AI2.png", label: "Craft" },
+      { src: "/UI1.png", label: "Research" },
+      { src: "/UI2.png", label: "Craft" },
       { src: "/AI3.png", label: "Strategy" },
       { src: "/AI4.png", label: "Squads" },
     ],
