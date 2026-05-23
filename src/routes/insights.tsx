@@ -65,11 +65,12 @@ function InsightsPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {POSTS.map((p, index) => (
-              <Link
+              <a
                 key={p.title}
-                to="/insights/$slug"
-                params={{ slug: p.slug }}
-                className="reveal group rounded-2xl overflow-hidden border border-black/10 bg-white hover:-translate-y-1 transition-transform duration-500 flash-card"
+                href={p.pdf}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="reveal group rounded-2xl overflow-hidden border border-black/10 bg-white hover:-translate-y-1 transition-transform duration-500 flash-card cursor-pointer"
                 style={{ animationDelay: `${index * 90}ms` }}
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
@@ -99,7 +100,7 @@ function InsightsPage() {
                     Read note →
                   </div>
                 </div>
-              </Link>
+              </a>
             ))}
           </div>
         </div>

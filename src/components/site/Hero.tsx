@@ -1,10 +1,42 @@
 import { Link } from "@tanstack/react-router";
 import { StatCounter } from "@/components/site/StatCounter";
+import { useEffect, useState } from "react";
+
+const ROTATING_WORDS = ["Autonomous", "Sovereign", "Architected", "Pioneering", "Cohesive", "Catalytic"];
+
+function RotatingWord() {
+  const [index, setIndex] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setIndex((prev) => (prev + 1) % ROTATING_WORDS.length);
+        setVisible(true);
+      }, 400);
+    }, 2200);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <span
+     className="inline-block transition-all duration-400 font-light text-primary"
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(-12px)",
+        transition: "opacity 0.4s ease, transform 0.4s ease",
+      }}
+    >
+      {ROTATING_WORDS[index]}
+    </span>
+  );
+}
 
 export function Hero() {
   return (
     <section className="relative min-h-screen pt-40 pb-24 overflow-hidden">
-      
+
       {/* VIDEO BACKGROUND */}
       <div className="absolute inset-0 overflow-hidden">
         <video
@@ -14,10 +46,10 @@ export function Hero() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover brightness-[0.45] contrast-125"
         >
-          <source src="/hero-video-5.mp4" type="video/mp4" />
+          <source src="/hero-video-6.mp4" type="video/mp4" />
         </video>
 
-        {/* STRONG OVERLAY (FIXED) */}
+        {/* STRONG OVERLAY */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />
       </div>
 
@@ -32,7 +64,6 @@ export function Hero() {
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6">
-        
 
         {/* CORNERS */}
         <div className="absolute top-10 left-6 h-6 w-6 border-l border-t border-white/20" />
@@ -40,7 +71,7 @@ export function Hero() {
 
         {/* CONTENT */}
         <div className="reveal text-center max-w-5xl mx-auto">
-          
+
           <p className="text-xs tracking-[0.3em] text-white/60 mb-12">
             YOU THINK · WE CREATE
           </p>
@@ -49,18 +80,20 @@ export function Hero() {
             <span className="text-primary text-2xl animate-pulse">✦</span>
           </div>
 
-          {/* HEADING (FIXED CONTRAST) */}
-          <h1 className="font-display text-5xl md:text-7xl lg:text-[5.5rem] leading-[1.05] tracking-tight text-white drop-shadow-[0_5px_30px_rgba(0,0,0,0.8)]">
-            Orchestrating
-            <br />
-            <span className="font-light text-white/90">
-              Your Autonomous
-            </span>
-            <br />
-            <span className="text-primary">
-              Future
-            </span>
-          </h1>
+     <h1 className="font-display text-5xl md:text-7xl lg:text-[5.5rem] leading-[1.05] tracking-tight text-white drop-shadow-[0_5px_30px_rgba(0,0,0,0.8)]">
+  Orchestrating
+  <br />
+  <span className="inline-flex items-center justify-center gap-[0.25em]">
+    <span>Your</span>
+   <span className="inline-block min-w-[500px] text-left">
+      <RotatingWord />
+    </span>
+  </span>
+  <br />
+  <span className="text-white">
+    Future
+  </span>
+</h1>
 
           {/* DESCRIPTION */}
           <p className="mt-10 text-base md:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
@@ -69,7 +102,7 @@ export function Hero() {
 
           {/* BUTTONS */}
           <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
-            
+
             <Link
               to="/contact"
               className="motion-link group inline-flex items-center gap-3 bg-primary text-primary-foreground rounded-md px-7 py-3.5 text-xs tracking-[0.2em] uppercase font-medium hover:translate-y-[-2px] hover:shadow-[0_10px_40px_-10px_oklch(0.72_0.16_45_/_0.6)] transition-all"
