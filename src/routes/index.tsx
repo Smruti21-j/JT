@@ -13,7 +13,8 @@ import pillarImg3 from "/index-image3.jpg";
 import pillarImg4 from "/index-image4.jpg";
 import pillarImg5 from "/index-image5.jpg";
 import pillarImg6 from "/index-image6.jpg";
-
+import pillarImg7 from "/index-image7.png";
+import pillarImg8 from "/index-image8.png";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ██████████  PIETERKOOPT-STYLE STACKED PILLARS  ██████████████████████████████
@@ -81,7 +82,7 @@ const CX_PILLARS = [
     titleItalic: "Of Intent",
     desc: "Before you build autonomy, you must engineer the intent. We map your industry’s future friction points to design custom governance and cognitive blueprints, ensuring your proprietary intelligence remains entirely your own.",
     stat: { value: "", label: "" },
-    image: "/index-image6.jpg",
+    image: "/index-image7.png",
   },
   {
     num: "08",
@@ -90,7 +91,7 @@ const CX_PILLARS = [
     titleItalic: "Perpetual Motion",
     desc: "Autonomy isn't set and forget - it is a living ecosystem. Our engineering squads continuously tune, optimize, & defend your agentic workflows and self-healing infrastructure in real time.",
     stat: { value: "", label: "" },
-    image: "/index-image6.jpg",
+    image: "/index-image8.png",
   },
 ];
 
