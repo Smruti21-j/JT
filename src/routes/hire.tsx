@@ -357,7 +357,7 @@ function HirePage() {
               <div className="absolute bottom-8 left-0 h-[48%] w-[58%] overflow-hidden rounded-lg border border-orange-400/25 bg-black shadow-2xl">
                 <video
                   className="h-full w-full object-cover opacity-70"
-                  src="/hero-video-5.mp4"
+                  src="/hero-video-7.mp4"
                   autoPlay
                   muted
                   loop

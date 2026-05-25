@@ -14,21 +14,20 @@ import heroVideoSrc from "@/assets/hero-video.mp4";
 
 // ── Alternating panel backgrounds: black → dark-grey → orange-tint ────────────
 const PANEL_BG = [
-  "#0a0a0a",          // 1 — deep black
-  "#141414",          // 2 — dark grey
-  "#120a00",          // 3 — dark orange tint
-  "#0a0a0a",          // 4 — deep black
-  "#141414",          // 5 — dark grey
-  "#120a00",          // 6 — dark orange tint
-  "#0a0a0a",          // 7 — deep black
-  "#141414",          // 8 — dark grey
+  "#0a0a0a",
+  "#141414",
+  "#120a00",
+  "#0a0a0a",
+  "#141414",
+  "#120a00",
+  "#0a0a0a",
+  "#141414",
 ];
 
-// Matching accent colours per panel
 const PANEL_ACCENT = [
-  "rgb(255,130,50)",          // black → full orange
-  "rgb(180,180,180)",         // grey  → light grey accent
-  "rgb(255,160,60)",          // orange tint → brighter orange
+  "rgb(255,130,50)",
+  "rgb(180,180,180)",
+  "rgb(255,160,60)",
   "rgb(255,130,50)",
   "rgb(180,180,180)",
   "rgb(255,160,60)",
@@ -80,7 +79,7 @@ const SERVICE_GROUPS = [
       "Integration: Sovereign System Integration, Cloud & Hybrid Core",
       "Experience: Immersive Digital Experience, Enterprise Mobility",
     ],
-    subImages: [  
+    subImages: [
       { src: "/DT1.png", label: "Core Logic" },
       { src: "/DT2.png", label: "Modernization" },
       { src: "/DT3.png", label: "Integration" },
@@ -138,7 +137,6 @@ const SERVICE_GROUPS = [
     subImages: [
       { src: "/UI1.png", label: "Research" },
       { src: "/UI2.png", label: "Craft" },
-      { src: "/AI3.png", label: "Strategy" },
       { src: "/UI4.png", label: "Squads" },
     ],
   },
@@ -157,7 +155,6 @@ const SERVICE_GROUPS = [
       { src: "/C1.png", label: "Strategic Core" },
       { src: "/C2.png", label: "Plan Forge" },
       { src: "/C3.png", label: "Milestones" },
-      { src: "/AI4.png", label: "CX Strategy" },
     ],
   },
   {
@@ -175,7 +172,6 @@ const SERVICE_GROUPS = [
       { src: "/PG1.png", label: "Engines" },
       { src: "/PG2.png", label: "Intelligence" },
       { src: "/PG3.png", label: "Clarity" },
-      { src: "/AI4.png", label: "Dashboards" },
     ],
   },
   {
@@ -218,7 +214,6 @@ const STYLES = `
     to   { transform: scaleX(1); transform-origin: left; }
   }
 
-  /* Enter animations — applied via .panel-entered class */
   @keyframes titleIn {
     from { opacity: 0; transform: translateX(-60px); }
     to   { opacity: 1; transform: translateX(0); }
@@ -236,7 +231,6 @@ const STYLES = `
     to   { opacity: 1; transform: translateX(0) scale(1); }
   }
 
-  /* Hidden by default */
   .p-title   { opacity: 0; }
   .p-img-0   { opacity: 0; }
   .p-img-1   { opacity: 0; }
@@ -247,7 +241,6 @@ const STYLES = `
   .p-tags    { opacity: 0; }
   .p-bignum  { opacity: 0; }
 
-  /* Fire when panel enters viewport */
   .panel-entered .p-title   { animation: titleIn 0.72s cubic-bezier(0.16,1,0.3,1) 0.02s both; }
   .panel-entered .p-img-0   { animation: imgRise  0.65s cubic-bezier(0.16,1,0.3,1) 0.08s both; }
   .panel-entered .p-img-1   { animation: imgRise  0.65s cubic-bezier(0.16,1,0.3,1) 0.18s both; }
@@ -289,10 +282,50 @@ const STYLES = `
     background: linear-gradient(to top, rgba(0,0,0,0.88), transparent);
     font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase;
     color: rgba(255,255,255,0.35);
-    transition: color 0.2s;
+    transition: color 0.2s, opacity 0.3s;
     z-index: 1;
   }
-  .svc-img-card:hover .svc-img-label { color: var(--accent); }
+  .svc-img-card:hover .svc-img-label,
+  .svc-img-card.touched .svc-img-label { color: var(--accent); }
+
+  /* Slide-up overlay */
+  .svc-img-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 32px 14px 14px;
+    background: linear-gradient(to top, rgba(0,0,0,0.97) 65%, rgba(0,0,0,0.7) 85%, transparent 100%);
+    transform: translateY(100%);
+    transition: transform 0.48s cubic-bezier(0.16,1,0.3,1);
+    z-index: 4;
+  }
+  .svc-img-card:hover .svc-img-overlay,
+  .svc-img-card.touched .svc-img-overlay {
+    transform: translateY(0%);
+  }
+  .svc-img-overlay-cat {
+    font-size: 8px;
+    letter-spacing: 0.30em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .svc-img-overlay-cat::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .svc-img-overlay-text {
+    font-size: 10.5px;
+    line-height: 1.68;
+    color: rgba(255,255,255,0.76);
+    letter-spacing: 0.01em;
+  }
 
   /* Tag pills */
   .svc-tag {
@@ -367,6 +400,37 @@ function VideoHero() {
   );
 }
 
+// ─── Image card with slide-up overlay ─────────────────────────────────────────
+function SvcImgCard({
+  si,
+  idx,
+  itemText,
+}: {
+  si: { src: string; label: string };
+  idx: number;
+  itemText: string;
+}) {
+  const [touched, setTouched] = useState(false);
+
+  const colonIdx = itemText.indexOf(":");
+  const cat    = colonIdx > -1 ? itemText.slice(0, colonIdx).trim() : "";
+  const detail = colonIdx > -1 ? itemText.slice(colonIdx + 1).trim() : itemText;
+
+  return (
+    <div
+      className={`svc-img-card p-img-${idx}${touched ? " touched" : ""}`}
+      onTouchStart={() => setTouched((t) => !t)}
+    >
+      <img src={si.src} alt={si.label} loading="lazy" />
+      <div className="svc-img-label">{si.label}</div>
+      <div className="svc-img-overlay">
+        {cat && <div className="svc-img-overlay-cat">{cat}</div>}
+        <div className="svc-img-overlay-text">{detail}</div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Single service panel ─────────────────────────────────────────────────────
 function ServicePanel({
   g,
@@ -387,7 +451,6 @@ function ServicePanel({
   const numCol = PANEL_NUM_COLOR[index];
   const isLast = index === total - 1;
 
-  // ── Intersection: fire enter animations once ──────────────────────────────
   useEffect(() => {
     if (enteredRef.current) return;
     const el = panelRef.current;
@@ -406,7 +469,6 @@ function ServicePanel({
     return () => io.disconnect();
   }, []);
 
-  // ── Scroll: clip-path wipe-out (T11 mechanic) ────────────────────────────
   useEffect(() => {
     const wrap  = wrapRef.current;
     const panel = panelRef.current;
@@ -414,7 +476,6 @@ function ServicePanel({
 
     const onScroll = () => {
       const rect = wrap.getBoundingClientRect();
-      // rect.top is 0 when sticky starts, goes negative as we scroll exit zone
       const progress = Math.max(0, Math.min(1, -rect.top / window.innerHeight));
       panel.style.clipPath = progress > 0
         ? `inset(${progress * 100}% 0 0 0)`
@@ -427,7 +488,6 @@ function ServicePanel({
   }, [isLast]);
 
   return (
-    // 200vh wrapper: first 100vh = sticky visible, second 100vh = scroll-exit clip
     <div
       ref={wrapRef}
       style={{ height: isLast ? "100vh" : "200vh", position: "relative" }}
@@ -437,7 +497,6 @@ function ServicePanel({
           ref={panelRef}
           className={entered ? "panel-entered" : ""}
           style={{
-            // CSS vars for accent colour — used in child CSS classes
             "--accent"      : accent,
             "--accent-faint": accent.replace("rgb", "rgba").replace(")", ",0.35)"),
             "--accent-bg"   : accent.replace("rgb", "rgba").replace(")", ",0.06)"),
@@ -446,7 +505,6 @@ function ServicePanel({
             background      : bg,
             display         : "flex",
             flexDirection   : "column",
-            // Fixed padding — NO flex trickery on height, children are sized explicitly
             padding         : "clamp(56px,7vh,90px) clamp(24px,5vw,80px) 56px",
             gap             : "clamp(18px,2.8vh,32px)",
             overflow        : "hidden",
@@ -475,27 +533,28 @@ function ServicePanel({
             {g.title}
           </h2>
 
-          {/* ── 2. FOUR IMAGES — fixed height, no overlap ── */}
+          {/* ── 2. FOUR IMAGES with slide-up overlay ── */}
           <div
             style={{
               display   : "flex",
               gap       : "clamp(6px,0.9vw,14px)",
-              height    : "clamp(180px,26vh,295px)",    // explicit fixed height
+              height    : "clamp(180px,26vh,295px)",
               flexShrink: 0,
               position  : "relative",
               zIndex    : 1,
             }}
           >
             {g.subImages.map((si, idx) => (
-              <div key={idx} className={`svc-img-card p-img-${idx}`}>
-                <img src={si.src} alt={si.label} loading="lazy" />
-                <div className="svc-img-label">{si.label}</div>
-              </div>
+              <SvcImgCard
+                key={idx}
+                si={si}
+                idx={idx}
+                itemText={g.items[idx] ?? ""}
+              />
             ))}
           </div>
 
-          {/* ── 3. BOTTOM ROW — eyebrow + tagline + tags LEFT | (0N) RIGHT ── */}
-          {/* Uses explicit sizing, not flex:1, to avoid any overlap */}
+          {/* ── 3. BOTTOM ROW ── */}
           <div
             style={{
               display        : "flex",

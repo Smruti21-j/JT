@@ -46,7 +46,7 @@ export function Hero() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover brightness-[0.45] contrast-125"
         >
-          <source src="/hero-video-5.mp4" type="video/mp4" />
+          <source src="/hero-video-7.mp4" type="video/mp4" />
         </video>
 
         {/* STRONG OVERLAY */}

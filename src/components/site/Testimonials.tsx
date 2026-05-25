@@ -40,19 +40,11 @@ export function Testimonials() {
           </p>
           <div className="hidden md:flex items-center gap-3 text-[10px] tracking-[0.3em] uppercase text-muted-foreground">
             <span className="h-px w-10 bg-white/20" />
-          
           </div>
         </div>
 
         {/* Carousel viewport */}
         <div className="relative">
-          {/* Decorative frame corners */}
-          <div className="absolute -inset-px rounded-2xl border border-white/10 pointer-events-none" />
-          <div className="absolute -top-2 -left-2 h-6 w-6 border-t-2 border-l-2 border-warm/70" />
-          <div className="absolute -top-2 -right-2 h-6 w-6 border-t-2 border-r-2 border-warm/70" />
-          <div className="absolute -bottom-2 -left-2 h-6 w-6 border-b-2 border-l-2 border-warm/70" />
-          <div className="absolute -bottom-2 -right-2 h-6 w-6 border-b-2 border-r-2 border-warm/70" />
-
           <div className="relative overflow-hidden rounded-2xl glass">
             <div
               className="flex transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
@@ -73,13 +65,6 @@ export function Testimonials() {
                   <blockquote className="relative font-display text-2xl md:text-4xl leading-snug tracking-tight text-foreground max-w-4xl mx-auto text-center">
                     {quote}
                   </blockquote>
-                  {/* Tech meta line */}
-                  <div className="mt-10 flex items-center justify-center gap-3 text-[10px] tracking-[0.4em] uppercase text-muted-foreground">
-                    <span className="h-1.5 w-1.5 rounded-full bg-warm animate-pulse" />
-                    <span> {String(idx + 1).padStart(3, "0")}</span>
-                    <span className="h-px w-10 bg-white/20" />
-                    <span className="text-warm">★★★★★</span>
-                  </div>
                 </div>
               ))}
             </div>
@@ -89,46 +74,22 @@ export function Testimonials() {
             <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent" />
           </div>
 
-          {/* Controls */}
-          <div className="mt-8 flex items-center justify-between">
-            <button
-              onClick={() => go(i - 1)}
-              className="group flex items-center gap-3 text-xs tracking-[0.3em] uppercase text-muted-foreground hover:text-warm transition-colors"
-              aria-label="Previous testimonial"
-            >
-              <span className="h-10 w-10 rounded-full border border-white/15 flex items-center justify-center group-hover:border-warm group-hover:bg-warm/5 transition-all">
-                ←
-              </span>
-              Prev
-            </button>
-
-            <div className="flex items-center gap-2">
-              {TESTIMONIALS.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => go(idx)}
-                  aria-label={`Go to testimonial ${idx + 1}`}
-                  className="group relative h-2 overflow-hidden rounded-full transition-all"
-                  style={{ width: idx === i ? 48 : 16 }}
-                >
-                  <span className="absolute inset-0 bg-white/15" />
-                  {idx === i && (
-                    <span className="absolute inset-0 bg-gradient-to-r from-warm to-primary animate-pulse" />
-                  )}
-                </button>
-              ))}
-            </div>
-
-            <button
-              onClick={() => go(i + 1)}
-              className="group flex items-center gap-3 text-xs tracking-[0.3em] uppercase text-muted-foreground hover:text-warm transition-colors"
-              aria-label="Next testimonial"
-            >
-              Next
-              <span className="h-10 w-10 rounded-full border border-white/15 flex items-center justify-center group-hover:border-warm group-hover:bg-warm/5 transition-all">
-                →
-              </span>
-            </button>
+          {/* Dot indicators only */}
+          <div className="mt-8 flex items-center justify-center gap-2">
+            {TESTIMONIALS.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => go(idx)}
+                aria-label={`Go to testimonial ${idx + 1}`}
+                className="group relative h-2 overflow-hidden rounded-full transition-all"
+                style={{ width: idx === i ? 48 : 16 }}
+              >
+                <span className="absolute inset-0 bg-white/15" />
+                {idx === i && (
+                  <span className="absolute inset-0 bg-gradient-to-r from-warm to-primary animate-pulse" />
+                )}
+              </button>
+            ))}
           </div>
         </div>
       </div>
