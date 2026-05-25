@@ -10,9 +10,15 @@ import uiuxImg from "@/assets/service-uiux.jpg";
 import consultingImg from "@/assets/service-consulting.jpg";
 import growthImg from "@/assets/service-growth.jpg";
 import managedImg from "@/assets/service-managed.jpg";
-import heroVideoSrc from "@/assets/hero-video.mp4";
 
-// ── Alternating panel backgrounds: black → dark-grey → orange-tint ────────────
+const CAROUSEL_IMAGES = [
+  "/services-c1.png",
+  "/services-c2.png",
+  "/services-c3.png",
+  "/services-c4.png",
+  "/services-c5.png",
+];
+
 const PANEL_BG = [
   "#0a0a0a",
   "#141414",
@@ -46,7 +52,6 @@ const PANEL_NUM_COLOR = [
   "rgba(255,255,255,0.06)",
 ];
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
 const SERVICE_GROUPS = [
   {
     title: "Artificial Intelligence",
@@ -195,7 +200,6 @@ const SERVICE_GROUPS = [
   },
 ];
 
-// ─── CSS ──────────────────────────────────────────────────────────────────────
 const STYLES = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -213,7 +217,6 @@ const STYLES = `
     from { transform: scaleX(0); transform-origin: left; }
     to   { transform: scaleX(1); transform-origin: left; }
   }
-
   @keyframes titleIn {
     from { opacity: 0; transform: translateX(-60px); }
     to   { opacity: 1; transform: translateX(0); }
@@ -230,6 +233,60 @@ const STYLES = `
     from { opacity: 0; transform: translateX(40px) scale(0.8); }
     to   { opacity: 1; transform: translateX(0) scale(1); }
   }
+  @keyframes kenBurns {
+    0%   { transform: scale(1)    translateX(0)    translateY(0); }
+    25%  { transform: scale(1.06) translateX(-1%)  translateY(-0.5%); }
+    50%  { transform: scale(1.04) translateX(1%)   translateY(0.5%); }
+    75%  { transform: scale(1.07) translateX(-0.5%) translateY(1%); }
+    100% { transform: scale(1)    translateX(0)    translateY(0); }
+  }
+
+  /* ── Carousel ── */
+  .hero-carousel-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity;
+  }
+  .hero-carousel-slide.active {
+    opacity: 1;
+  }
+  .hero-carousel-slide .kb-inner {
+    position: absolute;
+    inset: -4%;
+    background-size: cover;
+    background-position: center;
+    filter: saturate(0.55) brightness(0.42);
+    animation: kenBurns 18s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  /* Carousel dot/pill nav */
+  .carousel-pip {
+    height: 4px;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: width 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s ease;
+    flex-shrink: 0;
+  }
+
+  /* Progress bar on active pip */
+  .carousel-pip-track {
+    position: absolute;
+    top: 0; left: 0; height: 100%;
+    border-radius: 2px;
+    background: rgb(255,130,50);
+    animation: pipProgress 4s linear forwards;
+  }
+  @keyframes pipProgress {
+    from { width: 0%; }
+    to   { width: 100%; }
+  }
 
   .p-title   { opacity: 0; }
   .p-img-0   { opacity: 0; }
@@ -238,7 +295,6 @@ const STYLES = `
   .p-img-3   { opacity: 0; }
   .p-eyebrow { opacity: 0; }
   .p-tagline { opacity: 0; }
-  .p-tags    { opacity: 0; }
   .p-bignum  { opacity: 0; }
 
   .panel-entered .p-title   { animation: titleIn 0.72s cubic-bezier(0.16,1,0.3,1) 0.02s both; }
@@ -248,7 +304,6 @@ const STYLES = `
   .panel-entered .p-img-3   { animation: imgRise  0.65s cubic-bezier(0.16,1,0.3,1) 0.38s both; }
   .panel-entered .p-eyebrow { animation: fadeUp   0.5s  cubic-bezier(0.16,1,0.3,1) 0.36s both; }
   .panel-entered .p-tagline { animation: fadeUp   0.5s  cubic-bezier(0.16,1,0.3,1) 0.46s both; }
-  .panel-entered .p-tags    { animation: fadeUp   0.5s  cubic-bezier(0.16,1,0.3,1) 0.54s both; }
   .panel-entered .p-bignum  { animation: numIn    0.7s  cubic-bezier(0.16,1,0.3,1) 0.12s both; }
 
   /* Image cards */
@@ -327,24 +382,6 @@ const STYLES = `
     letter-spacing: 0.01em;
   }
 
-  /* Tag pills */
-  .svc-tag {
-    display: inline-block;
-    font-size: 10.5px; letter-spacing: 0.03em;
-    color: rgba(255,255,255,0.28);
-    padding: 5px 12px;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 2px;
-    transition: color 0.2s, border-color 0.2s, background 0.2s;
-    cursor: default;
-    white-space: nowrap;
-  }
-  .svc-tag:hover {
-    color: var(--accent);
-    border-color: var(--accent-faint);
-    background: var(--accent-bg);
-  }
-
   /* Dot nav */
   .svc-dot {
     width: 5px; height: 5px; border-radius: 50%;
@@ -357,24 +394,100 @@ const STYLES = `
   }
 `;
 
-// ─── Video Hero ────────────────────────────────────────────────────────────────
 function VideoHero() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => { videoRef.current?.play().catch(() => {}); }, []);
+  const [current, setCurrent] = useState(0);
+  const [pipKey, setPipKey] = useState(0); // force re-mount to restart animation
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCurrent((c) => (c + 1) % CAROUSEL_IMAGES.length);
+      setPipKey((k) => k + 1);
+    }, 4000);
+    return () => clearInterval(id);
+  }, []);
+
+  const handleDotClick = (i: number) => {
+    setCurrent(i);
+    setPipKey((k) => k + 1);
+  };
 
   return (
     <section style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden", background: "#050403" }}>
-      <video ref={videoRef} src={heroVideoSrc} autoPlay loop muted playsInline
-        onCanPlay={() => setLoaded(true)}
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: loaded ? 0.45 : 0, filter: "saturate(0.6) brightness(0.6)", transition: "opacity 1.4s ease" }}
-      />
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,rgba(5,4,3,.3) 0%,rgba(5,4,3,.05) 35%,rgba(5,4,3,.6) 70%,rgba(5,4,3,1) 100%)" }} />
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,rgba(5,4,3,.55) 0%,transparent 60%)" }} />
-      <div style={{ position: "absolute", left: 0, right: 0, height: "1px", background: "linear-gradient(90deg,transparent,rgba(255,110,30,.5),transparent)", animation: "scanLine 8s ease-in-out infinite", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", top: "15%", bottom: "15%", left: 0, width: "2px", background: "linear-gradient(180deg,transparent,rgb(255,110,30) 30%,rgb(255,110,30) 70%,transparent)" }} />
+
+      {/* ── Background image carousel ── */}
+      {CAROUSEL_IMAGES.map((src, i) => (
+        <div
+          key={src}
+          className={`hero-carousel-slide${i === current ? " active" : ""}`}
+        >
+          <div
+            className="kb-inner"
+            style={{ backgroundImage: `url(${src})` }}
+          />
+        </div>
+      ))}
+
+      {/* ── Gradient overlays ── */}
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,rgba(5,4,3,.35) 0%,rgba(5,4,3,.05) 30%,rgba(5,4,3,.65) 68%,rgba(5,4,3,1) 100%)" }} />
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,rgba(5,4,3,.6) 0%,transparent 65%)" }} />
+
+      {/* ── Grid texture ── */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
 
+      {/* ── Scan line ── */}
+      <div style={{ position: "absolute", left: 0, right: 0, height: "1px", background: "linear-gradient(90deg,transparent,rgba(255,110,30,.5),transparent)", animation: "scanLine 8s ease-in-out infinite", pointerEvents: "none" }} />
+
+      {/* ── Left accent bar ── */}
+      <div style={{ position: "absolute", top: "15%", bottom: "15%", left: 0, width: "2px", background: "linear-gradient(180deg,transparent,rgb(255,110,30) 30%,rgb(255,110,30) 70%,transparent)" }} />
+
+      {/* ── Carousel pip indicators (top-right) ── */}
+      <div style={{
+        position: "absolute",
+        top: 28,
+        right: "clamp(24px,5vw,80px)",
+        display: "flex",
+        gap: 6,
+        alignItems: "center",
+        zIndex: 20,
+      }}>
+        {CAROUSEL_IMAGES.map((_, i) => (
+          <button
+            key={i}
+            className="carousel-pip"
+            onClick={() => handleDotClick(i)}
+            style={{
+              width: i === current ? 28 : 6,
+              background: i === current ? "rgba(255,130,50,0.25)" : "rgba(255,255,255,0.2)",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            {i === current && (
+              <span key={pipKey} className="carousel-pip-track" />
+            )}
+          </button>
+        ))}
+      </div>
+
+      {/* ── Slide counter (bottom-right corner) ── */}
+      <div style={{
+        position: "absolute",
+        bottom: 80,
+        right: "clamp(24px,5vw,80px)",
+        display: "flex",
+        alignItems: "baseline",
+        gap: 4,
+        zIndex: 10,
+      }}>
+        <span style={{ fontSize: 22, fontWeight: 700, color: "rgb(255,130,50)", lineHeight: 1, letterSpacing: "-0.02em" }}>
+          {String(current + 1).padStart(2, "0")}
+        </span>
+        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", letterSpacing: "0.1em" }}>
+          / {String(CAROUSEL_IMAGES.length).padStart(2, "0")}
+        </span>
+      </div>
+
+      {/* ── Hero text ── */}
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 clamp(24px,5vw,80px) 72px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28, animation: "heroIn .6s .3s both", opacity: 0 }}>
           <div style={{ width: 32, height: 1, background: "rgb(255,130,50)" }} />
@@ -392,6 +505,8 @@ function VideoHero() {
           </p>
         </div>
       </div>
+
+      {/* ── Scroll indicator ── */}
       <div style={{ position: "absolute", bottom: 28, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, animation: "heroIn .6s 1.1s both", opacity: 0 }}>
         <span style={{ fontSize: 8, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,.25)" }}>Scroll</span>
         <div style={{ width: 1, height: 32, background: "linear-gradient(to bottom,rgba(255,130,50,.6),transparent)", animation: "scanLine 2s ease-in-out infinite" }} />
@@ -400,7 +515,6 @@ function VideoHero() {
   );
 }
 
-// ─── Image card with slide-up overlay ─────────────────────────────────────────
 function SvcImgCard({
   si,
   idx,
@@ -431,7 +545,6 @@ function SvcImgCard({
   );
 }
 
-// ─── Single service panel ─────────────────────────────────────────────────────
 function ServicePanel({
   g,
   index,
@@ -510,13 +623,13 @@ function ServicePanel({
             overflow        : "hidden",
           } as React.CSSProperties}
         >
-          {/* Subtle grid texture */}
+          {/* Grid texture */}
           <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
 
           {/* Left accent bar */}
           <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 2, background: `linear-gradient(180deg,transparent,${accent} 20%,${accent} 80%,transparent)`, opacity: 0.65 }} />
 
-          {/* ── 1. HUGE TITLE ── */}
+          {/* ── 1. TITLE ── */}
           <h2
             className="p-title"
             style={{
@@ -533,7 +646,7 @@ function ServicePanel({
             {g.title}
           </h2>
 
-          {/* ── 2. FOUR IMAGES with slide-up overlay ── */}
+          {/* ── 2. IMAGES ── */}
           <div
             style={{
               display   : "flex",
@@ -566,29 +679,18 @@ function ServicePanel({
               flexShrink     : 0,
             }}
           >
-            {/* LEFT */}
+            {/* LEFT — eyebrow + tagline only */}
             <div style={{ flex: 1, maxWidth: 560, display: "flex", flexDirection: "column", gap: 10 }}>
-
-              {/* Eyebrow */}
               <p className="p-eyebrow" style={{ fontSize: 9, letterSpacing: "0.38em", textTransform: "uppercase", color: accent, display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
                 <span style={{ display: "inline-block", width: 22, height: 1, background: accent, flexShrink: 0 }} />
                 {g.eyebrow}
               </p>
-
-              {/* Tagline */}
               <p className="p-tagline" style={{ fontSize: "clamp(.95rem,1.5vw,1.25rem)", fontWeight: 600, lineHeight: 1.5, color: "rgba(240,232,220,.82)", flexShrink: 0 }}>
                 {g.tagline}
               </p>
-
-              {/* Tag pills */}
-              <div className="p-tags" style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
-                {g.items.map((item, i) => (
-                  <span key={i} className="svc-tag">{item}</span>
-                ))}
-              </div>
             </div>
 
-            {/* RIGHT — big ghost number */}
+            {/* RIGHT — ghost number */}
             <div className="p-bignum" style={{ fontSize: "clamp(68px,10vw,138px)", fontWeight: 800, lineHeight: 1, letterSpacing: "-0.04em", color: numCol, userSelect: "none", flexShrink: 0, alignSelf: "flex-end" }}>
               ({String(index + 1).padStart(2, "0")})
             </div>
@@ -604,7 +706,6 @@ function ServicePanel({
             padding: "0 clamp(24px,5vw,80px)",
             zIndex: 10,
           }}>
-            {/* Counter + name */}
             <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
               <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: accent }}>{String(index + 1).padStart(2, "0")}</span>
               <div style={{ width: 1, height: 14, background: "rgba(255,255,255,.12)" }} />
@@ -612,13 +713,9 @@ function ServicePanel({
               <div style={{ width: 1, height: 14, background: "rgba(255,255,255,.06)" }} />
               <span style={{ fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(255,255,255,.24)" }}>{g.title}</span>
             </div>
-
-            {/* Progress bar */}
             <div style={{ flex: 1, maxWidth: 280, height: 1, background: "rgba(255,255,255,.08)", margin: "0 clamp(16px,3vw,40px)", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: `${((index + 1) / total) * 100}%`, background: `linear-gradient(90deg,${accent},transparent)` }} />
             </div>
-
-            {/* Dots */}
             <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
               {SERVICE_GROUPS.map((_, di) => (
                 <div
@@ -635,7 +732,6 @@ function ServicePanel({
   );
 }
 
-// ─── Services section ─────────────────────────────────────────────────────────
 function ServicesScrollSection() {
   return (
     <section>
@@ -646,7 +742,6 @@ function ServicesScrollSection() {
   );
 }
 
-// ─── Route ────────────────────────────────────────────────────────────────────
 export const Route = createFileRoute("/services")({
   component: ServicesPage,
   head: () => ({
