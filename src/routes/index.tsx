@@ -22,59 +22,78 @@ import pillarImg6 from "/index-image6.jpg";
 const CX_PILLARS = [
   {
     num: "01",
-    label: "Discovery",
+  
     titlePlain: "INTELLIGENCE",
     titleItalic: "that Acts",
     desc: "Transition from generative prompts to agentic workflows that resolve complex tasks with zero friction.",
-    stat: { value: "48h", label: "Initial assessment" },
+    stat: { value: "", label: "" },
     image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&q=80",
   },
   {
     num: "02",
-    label: "The AI-First",
-    titlePlain: "CORE",
-    titleItalic: "built to last",
+    
+    titlePlain: "THE AI-",
+    titleItalic: "First Core",
     desc: "Embed intelligence into the substrate of your business to create a self-evolving, future-proof operating model.",
-    stat: { value: "3×", label: "Deploy velocity" },
+    stat: { value: "", label: "" },
     image: "/index-image2.png",
   },
   {
     num: "03",
-    label: "Digital Engineering at",
-    titlePlain: "SCALE",
-    titleItalic: "in every sprint",
+    
+    titlePlain: "DIGITAL ENGINEERING",
+    titleItalic: "At Scale",
     desc: "Accelerate your time-to-impact with battle-tested engineering playbooks and frontier technology stacks.",
-    stat: { value: "99.9%", label: "Uptime SLA" },
+    stat: { value: "", label: "" },
     image: "/index-image3.jpg",
   },
   {
     num: "04",
-    label: "Next-Gen",
-    titlePlain: "ECOSYSTEMS",
-    titleItalic: "getting smarter",
+    
+    titlePlain: "NEXT GEN",
+    titleItalic: "Ecosystems",
     desc: "Build the connected, cloud-native infrastructure required for a resilient and sovereign digital future.",
-    stat: { value: "10×", label: "Faster decisions" },
+    stat: { value: "", label: "" },
     image: "/index-image4.jpg",
   },
     {
     num: "05",
-    label: "Design with",
-    titlePlain: "PURPOSE",
-    titleItalic: "getting smarter",
+    
+    titlePlain: "DESIGN WITH",
+    titleItalic: "PURPOSE",
     desc: "Amplify human potential through sensory UX that balances high-tech precision with human-centric empathy.",
-    stat: { value: "10×", label: "Faster decisions" },
+    stat: { value: "", label: "" },
     image: "/index-image5.jpg",
   },
    {
     num: "06",
-    label: "Accelerated Value",
-    titlePlain: "CHAINS",
-    titleItalic: "getting smarter",
+    
+    titlePlain: "ACCELERATED VALUE",
+    titleItalic: "Chains",
     desc: "Unlock pervasive efficiencies across your entire enterprise with data-driven insights that act as your growth catalyst.",
-    stat: { value: "10×", label: "Faster decisions" },
+    stat: { value: "", label: "" },
+    image: "/index-image6.jpg",
+  },
+  {
+    num: "07",
+    
+    titlePlain: "THE ARCHITECTS",
+    titleItalic: "Of Intent",
+    desc: "Before you build autonomy, you must engineer the intent. We map your industry’s future friction points to design custom governance and cognitive blueprints, ensuring your proprietary intelligence remains entirely your own.",
+    stat: { value: "", label: "" },
+    image: "/index-image6.jpg",
+  },
+  {
+    num: "08",
+    
+    titlePlain: "THE ENGINE OF",
+    titleItalic: "Perpetual Motion",
+    desc: "Autonomy isn't set and forget - it is a living ecosystem. Our engineering squads continuously tune, optimize, & defend your agentic workflows and self-healing infrastructure in real time.",
+    stat: { value: "", label: "" },
     image: "/index-image6.jpg",
   },
 ];
+
 
 // Keyframes for the pillars section
 const PK_KEYFRAMES = `
