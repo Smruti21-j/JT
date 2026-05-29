@@ -21,11 +21,6 @@ export function Testimonials() {
     };
   }, []);
 
-  const go = (n: number) => {
-    setI((n + TESTIMONIALS.length) % TESTIMONIALS.length);
-    if (timer.current) window.clearInterval(timer.current);
-  };
-
   return (
     <section className="relative py-32 border-t border-white/5 overflow-hidden">
       {/* Ambient tech grid + glow */}
@@ -56,14 +51,10 @@ export function Testimonials() {
                   className="min-w-full px-8 md:px-16 py-16 md:py-20 relative"
                   aria-hidden={idx !== i}
                 >
-                  <div className="absolute top-6 left-8 font-display text-7xl leading-none text-warm/60 select-none">
-                    "
-                  </div>
-                  <div className="absolute bottom-6 right-8 font-display text-7xl leading-none text-warm/30 rotate-180 select-none">
-                    "
-                  </div>
                   <blockquote className="relative font-display text-2xl md:text-4xl leading-snug tracking-tight text-foreground max-w-4xl mx-auto text-center">
+                    <span className="text-warm/70">"</span>
                     {quote}
+                    <span className="text-warm/70">"</span>
                   </blockquote>
                 </div>
               ))}
@@ -72,24 +63,6 @@ export function Testimonials() {
             {/* Edge fades */}
             <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent" />
             <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent" />
-          </div>
-
-          {/* Dot indicators only */}
-          <div className="mt-8 flex items-center justify-center gap-2">
-            {TESTIMONIALS.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => go(idx)}
-                aria-label={`Go to testimonial ${idx + 1}`}
-                className="group relative h-2 overflow-hidden rounded-full transition-all"
-                style={{ width: idx === i ? 48 : 16 }}
-              >
-                <span className="absolute inset-0 bg-white/15" />
-                {idx === i && (
-                  <span className="absolute inset-0 bg-gradient-to-r from-warm to-primary animate-pulse" />
-                )}
-              </button>
-            ))}
           </div>
         </div>
       </div>

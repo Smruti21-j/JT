@@ -46,7 +46,7 @@ export function Hero() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover brightness-[0.45] contrast-125"
         >
-          <source src="/hero-video-7.mp4" type="video/mp4" />
+          <source src="/public-video10.mp4" type="video/mp4" />
         </video>
 
         {/* STRONG OVERLAY */}
@@ -73,7 +73,7 @@ export function Hero() {
         <div className="reveal text-center max-w-5xl mx-auto">
 
           <p className="text-xs tracking-[0.3em] text-white/60 mb-12">
-            YOU THINK · WE CREATE
+            [YOU THINK · WE CREATE]
           </p>
 
           <div className="inline-flex items-center justify-center mb-10">

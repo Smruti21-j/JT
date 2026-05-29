@@ -99,7 +99,7 @@ function BrandsCarousel() {
       <div className="absolute left-0 top-0 bottom-0 z-10 pointer-events-none" style={{ width: "120px", background: "linear-gradient(to right, #000 0%, transparent 100%)" }} />
       <div className="absolute right-0 top-0 bottom-0 z-10 pointer-events-none" style={{ width: "120px", background: "linear-gradient(to left, #000 0%, transparent 100%)" }} />
       <div className="relative mx-auto max-w-7xl px-6 mb-12 z-20">
-        <p style={{ fontSize: "11px", letterSpacing: "0.3em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginBottom: "12px" }}>Trusted by Leaders</p>
+        <p style={{ fontSize: "11px", letterSpacing: "0.3em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginBottom: "12px" }}>[Trusted by Leaders]</p>
         <h2 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 600, color: "#fff", lineHeight: 1.2 }}>
           The Ecosystem You <span style={{ color: "rgb(249,115,22)" }}>Trust</span>
         </h2>
@@ -158,96 +158,13 @@ const SOCIALS = [
   { icon: Facebook,  href: "https://www.facebook.com/498711123977909" },
 ];
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   MADEBYCAT EXACT TECHNIQUE:
-   The key insight from the reference is that orbs are NOT just blurred divs
-   that drift. They ROTATE around an off-centre pivot (transform-origin set
-   far outside the circle). This makes each orb arc slowly through the frame
-   like a camera bokeh circle drifting. Combined with heavy blur (80-110px)
-   and large sizes (300-600px) partially clipped by overflow:hidden, this
-   recreates the exact aesthetic — large, soft, glowing orange/amber orbs
-   slowly sweeping across a black background.
-   ───────────────────────────────────────────────────────────────────────── */
-const FOOTER_STYLES = `
-  @keyframes orbRotate {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-  @keyframes orbRotateReverse {
-    from { transform: rotate(360deg); }
-    to   { transform: rotate(0deg); }
-  }
-
-  .footer-bokeh-orb {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-    will-change: transform;
-  }
-`;
-
-/* Orb config — each has a rotation pivot far from its centre so it arcs
-   across the viewport, exactly replicating the reference screenshot motion */
-const ORBS = [
-  // Deep orange — top-left, arcs down into view
-  {
-    w: 500, h: 500,
-    top: "-160px", left: "-120px",
-    color: "rgba(234, 88, 12, 0.85)",
-    blur: 88,
-    originX: "340px", originY: "360px",
-    animation: "orbRotate 24s linear infinite",
-  },
-  // Bright orange-amber — upper centre, the large dominant orb
-  {
-    w: 640, h: 640,
-    top: "-80px", left: "30%",
-    color: "rgba(249, 115, 22, 0.72)",
-    blur: 110,
-    originX: "-160px", originY: "220px",
-    animation: "orbRotateReverse 32s linear infinite",
-  },
-  // Pale amber/yellow — lower-left, softer glow
-  {
-    w: 360, h: 360,
-    top: "50%", left: "-60px",
-    color: "rgba(251, 191, 36, 0.60)",
-    blur: 72,
-    originX: "280px", originY: "-200px",
-    animation: "orbRotate 20s linear infinite",
-    delay: "-7s",
-  },
-  // Orange — bottom-right corner
-  {
-    w: 440, h: 440,
-    top: "55%", left: "68%",
-    color: "rgba(234, 88, 12, 0.65)",
-    blur: 90,
-    originX: "-220px", originY: "-260px",
-    animation: "orbRotateReverse 28s linear infinite",
-    delay: "-12s",
-  },
-  // Small accent — top-right, partial crop
-  {
-    w: 280, h: 280,
-    top: "-80px", left: "76%",
-    color: "rgba(251, 146, 60, 0.78)",
-    blur: 64,
-    originX: "-100px", originY: "240px",
-    animation: "orbRotate 18s linear infinite",
-    delay: "-4s",
-  },
-] as const;
-
 /* ─── Footer ─────────────────────────────────────────────────────────────────── */
 export function Footer() {
   return (
     <footer className="relative border-t border-white/10 bg-black text-white overflow-hidden">
-      <style>{FOOTER_STYLES}</style>
 
-      {/* ── Bokeh background ─────────────────────────────────────────────── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: 0 }}>
-        {/* Dot grid */}
+      {/* ── Subtle dot grid background only ──────────────────────────────── */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
         <div
           className="absolute inset-0"
           style={{
@@ -257,25 +174,6 @@ export function Footer() {
             backgroundSize: "40px 40px",
           }}
         />
-
-        {/* Bokeh orbs — rotate around off-centre pivots like madebycat */}
-        {ORBS.map((orb, i) => (
-          <div
-            key={i}
-            className="footer-bokeh-orb"
-            style={{
-              width:  `${orb.w}px`,
-              height: `${orb.h}px`,
-              top:    orb.top,
-              left:   orb.left,
-              background: orb.color,
-              filter: `blur(${orb.blur}px)`,
-              transformOrigin: `${orb.originX} ${orb.originY}`,
-              animation: orb.animation,
-              animationDelay: "delay" in orb ? orb.delay : "0s",
-            }}
-          />
-        ))}
       </div>
 
       {/* ── Content ──────────────────────────────────────────────────────── */}

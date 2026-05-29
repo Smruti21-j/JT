@@ -17,13 +17,12 @@ import pillarImg7 from "/index-image7.png";
 import pillarImg8 from "/index-image8.png";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// ██████████  PIETERKOOPT-STYLE STACKED PILLARS  ██████████████████████████████
+// PILLARS
 // ─────────────────────────────────────────────────────────────────────────────
 
 const CX_PILLARS = [
   {
     num: "01",
-  
     titlePlain: "INTELLIGENCE",
     titleItalic: "that Acts",
     desc: "Transition from generative prompts to agentic workflows that resolve complex tasks with zero friction.",
@@ -32,7 +31,6 @@ const CX_PILLARS = [
   },
   {
     num: "02",
-    
     titlePlain: "THE AI-",
     titleItalic: "First Core",
     desc: "Embed intelligence into the substrate of your business to create a self-evolving, future-proof operating model.",
@@ -41,7 +39,6 @@ const CX_PILLARS = [
   },
   {
     num: "03",
-    
     titlePlain: "DIGITAL ENGINEERING",
     titleItalic: "At Scale",
     desc: "Accelerate your time-to-impact with battle-tested engineering playbooks and frontier technology stacks.",
@@ -50,25 +47,22 @@ const CX_PILLARS = [
   },
   {
     num: "04",
-    
     titlePlain: "NEXT GEN",
     titleItalic: "Ecosystems",
     desc: "Build the connected, cloud-native infrastructure required for a resilient and sovereign digital future.",
     stat: { value: "", label: "" },
     image: "/index-image4.jpg",
   },
-    {
+  {
     num: "05",
-    
     titlePlain: "DESIGN WITH",
     titleItalic: "PURPOSE",
     desc: "Amplify human potential through sensory UX that balances high-tech precision with human-centric empathy.",
     stat: { value: "", label: "" },
     image: "/index-image5.jpg",
   },
-   {
+  {
     num: "06",
-    
     titlePlain: "ACCELERATED VALUE",
     titleItalic: "Chains",
     desc: "Unlock pervasive efficiencies across your entire enterprise with data-driven insights that act as your growth catalyst.",
@@ -77,16 +71,14 @@ const CX_PILLARS = [
   },
   {
     num: "07",
-    
     titlePlain: "THE ARCHITECTS",
     titleItalic: "Of Intent",
-    desc: "Before you build autonomy, you must engineer the intent. We map your industry’s future friction points to design custom governance and cognitive blueprints, ensuring your proprietary intelligence remains entirely your own.",
+    desc: "Before you build autonomy, you must engineer the intent. We map your industry's future friction points to design custom governance and cognitive blueprints, ensuring your proprietary intelligence remains entirely your own.",
     stat: { value: "", label: "" },
     image: "/index-image7.png",
   },
   {
     num: "08",
-    
     titlePlain: "THE ENGINE OF",
     titleItalic: "Perpetual Motion",
     desc: "Autonomy isn't set and forget - it is a living ecosystem. Our engineering squads continuously tune, optimize, & defend your agentic workflows and self-healing infrastructure in real time.",
@@ -95,8 +87,6 @@ const CX_PILLARS = [
   },
 ];
 
-
-// Keyframes for the pillars section
 const PK_KEYFRAMES = `
   @keyframes pkHeaderIn {
     from { opacity: 0; transform: translateY(32px); }
@@ -116,7 +106,6 @@ const PK_KEYFRAMES = `
   }
 `;
 
-// Single stacked card component
 function PillarCard({
   pillar,
   index,
@@ -153,7 +142,7 @@ function PillarCard({
         position: "sticky",
         top: `${stickyTop}px`,
         zIndex: index + 1,
-        marginBottom: index < CX_PILLARS.length - 1 ? "0px" : "0px",
+        marginBottom: 0,
       }}
     >
       <div
@@ -166,12 +155,11 @@ function PillarCard({
           overflow: "hidden",
           border: "1px solid rgba(255,255,255,0.06)",
           background: `hsl(${25 + index * 3}, 10%, ${5 + index * 0.5}%)`,
-          boxShadow:
-            "0 28px 72px -10px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.04)",
+          boxShadow: "0 28px 72px -10px rgba(0,0,0,0.75), 0 0 0 1px rgba(255,255,255,0.04)",
           transition: "box-shadow 0.4s ease",
         }}
       >
-        {/* ── LEFT pane ── */}
+        {/* LEFT pane */}
         <div
           style={{
             padding: "52px 56px 52px 60px",
@@ -183,7 +171,6 @@ function PillarCard({
             overflow: "hidden",
           }}
         >
-          {/* Subtle bottom-left warm glow */}
           <div
             style={{
               position: "absolute",
@@ -192,13 +179,10 @@ function PillarCard({
               width: "260px",
               height: "260px",
               borderRadius: "50%",
-              background:
-                "radial-gradient(circle, rgba(255,90,20,0.07) 0%, transparent 70%)",
+              background: "radial-gradient(circle, rgba(255,90,20,0.07) 0%, transparent 70%)",
               pointerEvents: "none",
             }}
           />
-
-          {/* Large italic number */}
           <div
             className="pk-num"
             style={{
@@ -215,179 +199,45 @@ function PillarCard({
           >
             {pillar.num}
           </div>
-
-          {/* Bottom text block */}
           <div style={{ position: "relative", zIndex: 1 }}>
-            <p
-              className="pk-text"
-              style={{
-                fontSize: "9px",
-                letterSpacing: "0.3em",
-                textTransform: "uppercase",
-                color: "rgb(255,130,50)",
-                marginBottom: "14px",
-                opacity: 0,
-              }}
-            >
+            <p className="pk-text" style={{ fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgb(255,130,50)", marginBottom: "14px", opacity: 0 }}>
               {pillar.label}
             </p>
-
-            <h3
-              className="pk-text"
-              style={{
-                margin: 0,
-                padding: 0,
-                lineHeight: 1.0,
-                marginBottom: "22px",
-                opacity: 0,
-              }}
-            >
-              <span
-                style={{
-                  display: "block",
-                  fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                  fontSize: "clamp(30px, 3.2vw, 48px)",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.03em",
-                  color: "#f0e8df",
-                }}
-              >
+            <h3 className="pk-text" style={{ margin: 0, padding: 0, lineHeight: 1.0, marginBottom: "22px", opacity: 0 }}>
+              <span style={{ display: "block", fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif", fontSize: "clamp(30px, 3.2vw, 48px)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.03em", color: "#f0e8df" }}>
                 {pillar.titlePlain}
               </span>
-              <span
-                style={{
-                  display: "block",
-                  fontFamily: "Georgia, 'Times New Roman', serif",
-                  fontSize: "clamp(24px, 2.6vw, 40px)",
-                  fontWeight: 300,
-                  fontStyle: "italic",
-                  color: "rgba(240,232,223,0.65)",
-                  letterSpacing: "0.01em",
-                  marginTop: "2px",
-                }}
-              >
+              <span style={{ display: "block", fontFamily: "Georgia, 'Times New Roman', serif", fontSize: "clamp(24px, 2.6vw, 40px)", fontWeight: 300, fontStyle: "italic", color: "rgba(240,232,223,0.65)", letterSpacing: "0.01em", marginTop: "2px" }}>
                 {pillar.titleItalic}
               </span>
             </h3>
-
-            <div
-              className="pk-text"
-              style={{
-                width: "44px",
-                height: "1px",
-                background: "linear-gradient(to right, rgba(255,130,50,0.9), transparent)",
-                marginBottom: "18px",
-                opacity: 0,
-              }}
-            />
-
-            <p
-              className="pk-text"
-              style={{
-                fontSize: "14px",
-                lineHeight: 1.8,
-                color: "rgba(240,232,223,0.38)",
-                maxWidth: "380px",
-                marginBottom: "28px",
-                opacity: 0,
-              }}
-            >
+            <div className="pk-text" style={{ width: "44px", height: "1px", background: "linear-gradient(to right, rgba(255,130,50,0.9), transparent)", marginBottom: "18px", opacity: 0 }} />
+            <p className="pk-text" style={{ fontSize: "14px", lineHeight: 1.8, color: "rgba(240,232,223,0.38)", maxWidth: "380px", marginBottom: "28px", opacity: 0 }}>
               {pillar.desc}
             </p>
-
-            <div
-              className="pk-text"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                paddingTop: "18px",
-                borderTop: "1px solid rgba(255,255,255,0.05)",
-                opacity: 0,
-              }}
-            >
+            <div className="pk-text" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "18px", borderTop: "1px solid rgba(255,255,255,0.05)", opacity: 0 }}>
               <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-                <span
-                  style={{
-                    fontFamily: "'Barlow Condensed', sans-serif",
-                    fontSize: "30px",
-                    fontWeight: 700,
-                    color: "rgb(255,130,50)",
-                    lineHeight: 1,
-                  }}
-                >
-                  {pillar.stat.value}
-                </span>
-                <span
-                  style={{
-                    fontSize: "9px",
-                    letterSpacing: "0.2em",
-                    textTransform: "uppercase",
-                    color: "rgba(255,255,255,0.27)",
-                  }}
-                >
-                  {pillar.stat.label}
-                </span>
+                <span style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: "30px", fontWeight: 700, color: "rgb(255,130,50)", lineHeight: 1 }}>{pillar.stat.value}</span>
+                <span style={{ fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.27)" }}>{pillar.stat.label}</span>
               </div>
-              <span
-                style={{
-                  fontSize: "10px",
-                  letterSpacing: "0.25em",
-                  textTransform: "uppercase",
-                  color: "rgba(255,130,50,0.45)",
-                }}
-              >
-                Know more →
-              </span>
+              <span style={{ fontSize: "10px", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(255,130,50,0.45)" }}>Know more →</span>
             </div>
           </div>
         </div>
 
-        {/* ── RIGHT pane: image ── */}
+        {/* RIGHT pane */}
         <div style={{ position: "relative", overflow: "hidden", background: "#060504" }}>
           <img
             ref={imgRef}
             src={pillar.image}
             alt={pillar.titlePlain}
             className="pk-img"
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              filter: "brightness(0.52) saturate(0.55)",
-              transformOrigin: "center center",
-            }}
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.52) saturate(0.55)", transformOrigin: "center center" }}
           />
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(0,0,0,0.4) 0%, transparent 55%)" }} />
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 45%)" }} />
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              width: "55%",
-              height: "2px",
-              background: "linear-gradient(to right, rgba(255,110,30,0.9), transparent)",
-            }}
-          />
-          <div
-            style={{
-              position: "absolute",
-              top: "24px",
-              right: "24px",
-              padding: "5px 13px",
-              background: "rgba(255,90,20,0.08)",
-              border: "1px solid rgba(255,110,30,0.22)",
-              borderRadius: "999px",
-              fontSize: "9px",
-              letterSpacing: "0.25em",
-              textTransform: "uppercase",
-              color: "rgba(255,200,140,0.6)",
-            }}
-          >
+          <div style={{ position: "absolute", bottom: 0, left: 0, width: "55%", height: "2px", background: "linear-gradient(to right, rgba(255,110,30,0.9), transparent)" }} />
+          <div style={{ position: "absolute", top: "24px", right: "24px", padding: "5px 13px", background: "rgba(255,90,20,0.08)", border: "1px solid rgba(255,110,30,0.22)", borderRadius: "999px", fontSize: "9px", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(255,200,140,0.6)" }}>
             {pillar.label}
           </div>
         </div>
@@ -396,7 +246,6 @@ function PillarCard({
   );
 }
 
-// ── PieterKoopt-style section ─────────────────────────────────────────────────
 function PillarsHowItWorks() {
   const headerRef = useRef<HTMLDivElement>(null);
 
@@ -417,106 +266,45 @@ function PillarsHowItWorks() {
   }, []);
 
   return (
-    <section
-      className="relative border-t border-white/5"
-      style={{ paddingTop: "6rem", paddingBottom: "14rem" }}
-    >
+    <section className="relative border-t border-white/5" style={{ paddingTop: "6rem", paddingBottom: "14rem" }}>
       <style>{`
         ${PK_KEYFRAMES}
-
-        .pk-card {
-          opacity: 0;
-          transform: translateY(64px) scale(0.984);
-          transition:
-            opacity 0.85s cubic-bezier(0.22,1,0.36,1),
-            transform 0.85s cubic-bezier(0.22,1,0.36,1);
-        }
-        .pk-card.pk-vis {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-        }
-        .pk-card.pk-vis .pk-num {
-          animation: pkNumIn 1s cubic-bezier(0.22,1,0.36,1) 0.2s both;
-        }
+        .pk-card { opacity: 0; transform: translateY(64px) scale(0.984); transition: opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1); }
+        .pk-card.pk-vis { opacity: 1; transform: translateY(0) scale(1); }
+        .pk-card.pk-vis .pk-num { animation: pkNumIn 1s cubic-bezier(0.22,1,0.36,1) 0.2s both; }
         .pk-card.pk-vis .pk-text:nth-child(1) { animation: pkTextIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.30s both; }
         .pk-card.pk-vis .pk-text:nth-child(2) { animation: pkTextIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.38s both; }
         .pk-card.pk-vis .pk-text:nth-child(3) { animation: pkTextIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.44s both; }
         .pk-card.pk-vis .pk-text:nth-child(4) { animation: pkTextIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.50s both; }
         .pk-card.pk-vis .pk-text:nth-child(5) { animation: pkTextIn 0.7s cubic-bezier(0.22,1,0.36,1) 0.56s both; }
-        .pk-card.pk-vis .pk-img {
-          animation: pkImgZoom 1.6s cubic-bezier(0.22,1,0.36,1) 0.05s both;
-        }
-        .pk-card-inner:hover {
-          box-shadow:
-            0 48px 100px -12px rgba(0,0,0,0.85),
-            0 0 0 1px rgba(255,130,50,0.1),
-            0 0 48px rgba(255,90,10,0.07);
-        }
+        .pk-card.pk-vis .pk-img { animation: pkImgZoom 1.6s cubic-bezier(0.22,1,0.36,1) 0.05s both; }
+        .pk-card-inner:hover { box-shadow: 0 48px 100px -12px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,130,50,0.1), 0 0 48px rgba(255,90,10,0.07); }
         .pk-card:nth-child(1) { transition-delay: 0s; }
         .pk-card:nth-child(2) { transition-delay: 0.06s; }
         .pk-card:nth-child(3) { transition-delay: 0.12s; }
         .pk-card:nth-child(4) { transition-delay: 0.18s; }
       `}</style>
 
-      {/* Section header */}
       <div ref={headerRef} className="mx-auto max-w-7xl px-6 mb-16" style={{ opacity: 0 }}>
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p
-              style={{
-                fontSize: "10px",
-                letterSpacing: "0.3em",
-                textTransform: "uppercase",
-                color: "rgba(240,232,223,0.32)",
-                marginBottom: "22px",
-              }}
-            >
+            <p style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(240,232,223,0.32)", marginBottom: "22px" }}>
               [PILLARS]
             </p>
-            <h2
-              style={{
-                fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                fontSize: "clamp(44px, 7vw, 96px)",
-                fontWeight: 700,
-                lineHeight: 0.9,
-                textTransform: "uppercase",
-                letterSpacing: "-0.01em",
-                color: "#f0e8df",
-                margin: 0,
-              }}
-            >
+            <h2 style={{ fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif", fontSize: "clamp(44px, 7vw, 96px)", fontWeight: 700, lineHeight: 0.9, textTransform: "uppercase", letterSpacing: "-0.01em", color: "#f0e8df", margin: 0 }}>
               THE ARCHITECT OF
               <br />
-              <em
-                style={{
-                  fontFamily: "Georgia, serif",
-                  fontStyle: "italic",
-                  fontWeight: 300,
-                  color: "rgb(255,130,50)",
-                  textTransform: "none",
-                  fontSize: "0.82em",
-                  letterSpacing: "0em",
-                }}
-              >
+              <em style={{ fontFamily: "Georgia, serif", fontStyle: "italic", fontWeight: 300, color: "rgb(255,130,50)", textTransform: "none", fontSize: "0.82em", letterSpacing: "0em" }}>
                 AUTONOMY
               </em>
             </h2>
           </div>
-          <p
-            style={{
-              maxWidth: "340px",
-              fontSize: "15px",
-              lineHeight: 1.75,
-              color: "rgba(240,232,223,0.36)",
-              textAlign: "right",
-            }}
-          >
+          <p style={{ maxWidth: "340px", fontSize: "15px", lineHeight: 1.75, color: "rgba(240,232,223,0.36)", textAlign: "right" }}>
             The foundation for your global growth, built on nearly a decade of high-velocity engineering.
           </p>
         </div>
       </div>
 
-      {/* Stacked sticky cards */}
       <div className="mx-auto max-w-7xl px-6">
         {CX_PILLARS.map((pillar, i) => (
           <PillarCard key={pillar.num} pillar={pillar} index={i} />
@@ -526,7 +314,10 @@ function PillarsHowItWorks() {
   );
 }
 
-// ─── Insight cards ────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// INSIGHT CARDS DATA
+// ─────────────────────────────────────────────────────────────────────────────
+
 const INSIGHT_CARDS = [
   {
     tag: "AI Strategy",
@@ -552,7 +343,7 @@ const INSIGHT_CARDS = [
   {
     tag: "Future of Work",
     title: "The Human-AI Operating Model",
-    excerpt: "Rethinking org design when 40 % of tasks are delegated to digital colleagues who never sleep.",
+    excerpt: "Rethinking org design when 40% of tasks are delegated to digital colleagues who never sleep.",
     date: "Feb 2025",
     image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80",
   },
@@ -565,113 +356,314 @@ const INSIGHT_CARDS = [
   },
 ];
 
-// ─── Insight Carousel ─────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// SCROLL-HIJACKED HORIZONTAL INSIGHT CAROUSEL
+// Vertical scroll → moves cards horizontally → releases when done
+// Click anywhere → pause / resume auto-advance
+// ─────────────────────────────────────────────────────────────────────────────
+
 function InsightFlashcards() {
-  const [active, setActive] = useState(0);
-  const [leaving, setLeaving] = useState<number | null>(null);
-  const [transitioning, setTransitioning] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const total = INSIGHT_CARDS.length;
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [locked, setLocked] = useState(false); // true = section is "hijacking" scroll
+
+  // ── refs that don't need re-render ──
+  const activeRef = useRef(0);
+  const lockedRef = useRef(false);
+  const pausedRef = useRef(false);
+  const scrollAccum = useRef(0);       // accumulated wheel delta
+  const THRESHOLD = 80;                // px of scroll needed to advance one card
+  const isAnimating = useRef(false);
 
   const goTo = useCallback((next: number) => {
-    if (transitioning || next === active) return;
-    setLeaving(active);
-    setTransitioning(true);
-    setActive(next);
-    setTimeout(() => {
-      setLeaving(null);
-      setTransitioning(false);
-    }, 600);
-  }, [transitioning, active]);
+    if (isAnimating.current) return;
+    const clamped = Math.max(0, Math.min(total - 1, next));
+    activeRef.current = clamped;
+    setActive(clamped);
+    scrollAccum.current = 0;
+    isAnimating.current = true;
+    setTimeout(() => { isAnimating.current = false; }, 520);
+  }, [total]);
 
-  const advance = useCallback(() => goTo((active + 1) % total), [active, goTo, total]);
+  // ── scroll-hijack wheel handler ──
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
 
-  const resetTimer = useCallback(() => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    timerRef.current = setInterval(advance, 4800);
-  }, [advance]);
+    const onWheel = (e: WheelEvent) => {
+      if (!lockedRef.current) return;
+      // Always prevent default while locked so page doesn't scroll
+      e.preventDefault();
+
+      if (pausedRef.current || isAnimating.current) return;
+
+      scrollAccum.current += e.deltaY;
+
+      if (scrollAccum.current >= THRESHOLD) {
+        const next = activeRef.current + 1;
+        if (next >= total) {
+          // Release lock — let page scroll continue
+          lockedRef.current = false;
+          setLocked(false);
+          scrollAccum.current = 0;
+          return;
+        }
+        goTo(next);
+      } else if (scrollAccum.current <= -THRESHOLD) {
+        const next = activeRef.current - 1;
+        if (next < 0) {
+          // Release lock upward
+          lockedRef.current = false;
+          setLocked(false);
+          scrollAccum.current = 0;
+          return;
+        }
+        goTo(next);
+      }
+    };
+
+    // Passive: false so we can preventDefault
+    section.addEventListener("wheel", onWheel, { passive: false });
+    return () => section.removeEventListener("wheel", onWheel);
+  }, [goTo, total]);
+
+  // ── IntersectionObserver: lock when section enters viewport ──
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+          lockedRef.current = true;
+          setLocked(true);
+        } else if (!entry.isIntersecting) {
+          lockedRef.current = false;
+          setLocked(false);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    obs.observe(section);
+    return () => obs.disconnect();
+  }, []);
+
+  // ── Auto-advance timer ──
+  useEffect(() => {
+    pausedRef.current = paused;
+  }, [paused]);
 
   useEffect(() => {
-    resetTimer();
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
-  }, [resetTimer]);
+    if (paused) return;
+    const id = setInterval(() => {
+      if (pausedRef.current || !lockedRef.current) return;
+      const next = activeRef.current + 1;
+      if (next < total) goTo(next);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [paused, goTo, total]);
+
+  // ── touch swipe support ──
+  const touchStart = useRef(0);
+  const onTouchStart = (e: React.TouchEvent) => { touchStart.current = e.touches[0].clientX; };
+  const onTouchEnd = (e: React.TouchEvent) => {
+    const diff = touchStart.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) goTo(activeRef.current + (diff > 0 ? 1 : -1));
+  };
 
   const card = INSIGHT_CARDS[active];
-  const leavingCard = leaving !== null ? INSIGHT_CARDS[leaving] : null;
 
   return (
-    <section className="relative border-t border-white/5">
+    <section
+      ref={sectionRef}
+      className="relative border-t border-white/5"
+      style={{ minHeight: "100vh" }}
+      onClick={() => setPaused((p) => !p)}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
+      <style>{`
+        @keyframes insightImgIn {
+          from { opacity: 0; transform: scale(1.06); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes insightTextIn {
+          from { opacity: 0; transform: translateY(22px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes insightBarGrow {
+          from { width: 0%; }
+          to   { width: 100%; }
+        }
+        .insight-img-anim { animation: insightImgIn 0.65s cubic-bezier(0.22,1,0.36,1) both; }
+        .insight-tag-anim { animation: insightTextIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both; }
+        .insight-title-anim { animation: insightTextIn 0.55s cubic-bezier(0.22,1,0.36,1) 0.18s both; }
+        .insight-excerpt-anim { animation: insightTextIn 0.55s cubic-bezier(0.22,1,0.36,1) 0.26s both; }
+        .insight-meta-anim { animation: insightTextIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.33s both; }
+        .insight-progress-bar { animation: insightBarGrow 5s linear forwards; }
+      `}</style>
+
+      {/* ── Header ── */}
       <div className="mx-auto max-w-7xl px-6 pt-28 pb-10">
         <div className="reveal flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs tracking-[0.3em] text-muted-foreground bracket-label mb-4">LATEST THINKING</p>
+            <p className="text-xs tracking-[0.3em] text-muted-foreground mb-4">
+              [LATEST THINKING]
+            </p>
             <h2 className="font-display text-4xl md:text-5xl tracking-tight">
               Insights &amp; <em className="text-warm not-italic font-light">Perspectives</em>
             </h2>
           </div>
-          <Link to="/insights" className="text-xs tracking-[0.25em] uppercase text-muted-foreground hover:text-warm transition-colors">
+          <Link
+            to="/insights"
+            onClick={(e) => e.stopPropagation()}
+            className="text-xs tracking-[0.25em] uppercase text-muted-foreground hover:text-warm transition-colors"
+          >
             All insights →
           </Link>
         </div>
       </div>
 
-      <div className="relative w-full overflow-hidden" style={{ height: "min(88vh, 640px)" }}>
-        <div className="absolute inset-0 w-full h-full" style={{ zIndex: 1 }}>
-          <img src={card.image} alt={card.title} className="absolute inset-0 w-full h-full object-cover" style={{ filter: "brightness(0.42) saturate(0.75) hue-rotate(8deg)" }} />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.08) 100%)" }} />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 42%)" }} />
-          <div className="absolute bottom-0 left-0" style={{ width: "65%", height: "2px", background: "linear-gradient(to right, rgba(255,100,30,1) 0%, rgba(255,160,60,0.45) 60%, transparent 100%)" }} />
-          <div className="absolute top-0 bottom-0 left-0" style={{ width: "3px", background: "linear-gradient(to bottom, transparent 5%, rgba(255,110,30,0.8) 35%, rgba(255,110,30,0.8) 65%, transparent 95%)" }} />
-          <div className="absolute bottom-0 left-0" style={{ width: "420px", height: "180px", background: "radial-gradient(ellipse at bottom left, rgba(255,80,10,0.2) 0%, transparent 70%)" }} />
-          <div className="relative h-full max-w-7xl mx-auto px-6 md:px-12 flex flex-col justify-center" style={{ zIndex: 3 }}>
-            <div className="max-w-2xl">
-              <span style={{ display: "inline-block", fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 500, color: "rgb(255,130,50)", border: "1px solid rgba(255,130,50,0.35)", background: "rgba(255,100,20,0.1)", borderRadius: "999px", padding: "5px 14px", marginBottom: "1.5rem" }}>
-                {card.tag}
-              </span>
-              <h3 className="font-display leading-tight mb-5" style={{ fontSize: "clamp(2rem, 4vw, 3.4rem)", color: "#f0e8df" }}>
-                {card.title}
-              </h3>
-              <p style={{ fontSize: "clamp(0.875rem, 1.1vw, 1.05rem)", lineHeight: 1.7, color: "rgba(240,232,223,0.6)", maxWidth: "560px", marginBottom: "2.5rem" }}>
-                {card.excerpt}
-              </p>
-              <div className="flex items-center gap-8">
-                <span style={{ fontSize: "11px", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(255,255,255,0.35)" }}>{card.date}</span>
-                <Link to="/insights" style={{ fontSize: "11px", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(255,130,50,0.9)" }} className="hover:text-warm transition-colors">Read more →</Link>
-              </div>
+      {/* ── Full-viewport card stage ── */}
+      <div
+        ref={trackRef}
+        className="relative w-full overflow-hidden"
+        style={{ height: "min(86vh, 620px)" }}
+      >
+        {/* Background image — animated on change */}
+        <img
+          key={`img-${active}`}
+          src={card.image}
+          alt={card.title}
+          className="absolute inset-0 w-full h-full object-cover insight-img-anim"
+          style={{ filter: "brightness(0.38) saturate(0.7) hue-rotate(8deg)" }}
+        />
+
+        {/* Gradient overlays */}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.93) 0%, rgba(0,0,0,0.58) 42%, rgba(0,0,0,0.06) 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 44%)" }} />
+
+        {/* Left accent bar */}
+        <div className="absolute top-0 bottom-0 left-0" style={{ width: "3px", background: "linear-gradient(to bottom, transparent 5%, rgba(255,110,30,0.85) 35%, rgba(255,110,30,0.85) 65%, transparent 95%)" }} />
+
+        {/* Bottom accent line */}
+        <div className="absolute bottom-0 left-0" style={{ width: "65%", height: "2px", background: "linear-gradient(to right, rgba(255,100,30,1) 0%, rgba(255,160,60,0.4) 60%, transparent 100%)" }} />
+
+        {/* Corner glow */}
+        <div className="absolute bottom-0 left-0" style={{ width: "380px", height: "160px", background: "radial-gradient(ellipse at bottom left, rgba(255,80,10,0.18) 0%, transparent 70%)" }} />
+
+        {/* ── Card content — re-animated on active change ── */}
+        <div className="relative h-full max-w-7xl mx-auto px-6 md:px-14 flex flex-col justify-center" style={{ zIndex: 3 }}>
+          <div className="max-w-2xl">
+            <span
+              key={`tag-${active}`}
+              className="insight-tag-anim"
+              style={{ display: "inline-block", fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 500, color: "rgb(255,130,50)", border: "1px solid rgba(255,130,50,0.35)", background: "rgba(255,100,20,0.1)", borderRadius: "999px", padding: "5px 14px", marginBottom: "1.4rem" }}
+            >
+              {card.tag}
+            </span>
+
+            <h3
+              key={`title-${active}`}
+              className="font-display leading-tight mb-5 insight-title-anim"
+              style={{ fontSize: "clamp(2rem, 4vw, 3.4rem)", color: "#f0e8df" }}
+            >
+              {card.title}
+            </h3>
+
+            <p
+              key={`excerpt-${active}`}
+              className="insight-excerpt-anim"
+              style={{ fontSize: "clamp(0.875rem, 1.1vw, 1.05rem)", lineHeight: 1.75, color: "rgba(240,232,223,0.58)", maxWidth: "540px", marginBottom: "2.2rem" }}
+            >
+              {card.excerpt}
+            </p>
+
+            <div
+              key={`meta-${active}`}
+              className="flex items-center insight-meta-anim"
+            >
+              <Link
+                to="/insights"
+                onClick={(e) => e.stopPropagation()}
+                style={{ fontSize: "11px", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(255,130,50,0.9)" }}
+                className="hover:text-warm transition-colors"
+              >
+                Read more →
+              </Link>
             </div>
           </div>
         </div>
 
-        {leavingCard && (
-          <div className="absolute inset-0 w-full h-full" style={{ zIndex: 3, opacity: transitioning ? 0 : 1, transition: "opacity 0.6s ease" }}>
-            <img src={leavingCard.image} alt={leavingCard.title} className="absolute inset-0 w-full h-full object-cover" style={{ filter: "brightness(0.42) saturate(0.75) hue-rotate(8deg)" }} />
-            <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.08) 100%)" }} />
-            <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 42%)" }} />
-          </div>
-        )}
-
-        <button onClick={() => { goTo((active - 1 + total) % total); resetTimer(); }} aria-label="Previous" className="absolute left-5 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-11 h-11 rounded-full border border-white/12 bg-black/30 backdrop-blur-sm hover:border-orange-500/50 transition-all" style={{ color: "rgba(255,255,255,0.45)" }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        {/* ── Prev / Next arrow buttons ── */}
+        <button
+          onClick={(e) => { e.stopPropagation(); goTo(active - 1); }}
+          aria-label="Previous"
+          disabled={active === 0}
+          className="absolute left-5 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-11 h-11 rounded-full border border-white/10 bg-black/30 backdrop-blur-sm hover:border-orange-500/50 transition-all disabled:opacity-20"
+          style={{ color: "rgba(255,255,255,0.5)" }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+          </svg>
         </button>
-        <button onClick={() => { advance(); resetTimer(); }} aria-label="Next" className="absolute right-5 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-11 h-11 rounded-full border border-white/12 bg-black/30 backdrop-blur-sm hover:border-orange-500/50 transition-all" style={{ color: "rgba(255,255,255,0.45)" }}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <button
+          onClick={(e) => { e.stopPropagation(); goTo(active + 1); }}
+          aria-label="Next"
+          disabled={active === total - 1}
+          className="absolute right-5 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-11 h-11 rounded-full border border-white/10 bg-black/30 backdrop-blur-sm hover:border-orange-500/50 transition-all disabled:opacity-20"
+          style={{ color: "rgba(255,255,255,0.5)" }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+          </svg>
         </button>
 
-        <div className="absolute bottom-8 left-0 right-0 z-20 flex flex-col items-center gap-4 px-6">
+        {/* ── Bottom: progress bar + dots + scroll hint ── */}
+        <div className="absolute bottom-8 left-0 right-0 z-20 flex flex-col items-center gap-3 px-6">
+
+          {/* Progress bar */}
           <div className="w-full max-w-xs h-[1px] bg-white/10 rounded-full overflow-hidden">
-            <div key={`bar-${active}`} className="h-full rounded-full" style={{ background: "rgb(255,130,50)", animation: "progressBar 4.8s linear forwards" }} />
+            {!paused && (
+              <div
+                key={`bar-${active}`}
+                className="h-full rounded-full insight-progress-bar"
+                style={{ background: "rgb(255,130,50)" }}
+              />
+            )}
           </div>
+
+          {/* Dot nav */}
           <div className="flex items-center gap-2">
             {INSIGHT_CARDS.map((_, i) => (
-              <button key={i} onClick={() => { goTo(i); resetTimer(); }}
-                style={{ width: i === active ? "28px" : "7px", height: "7px", borderRadius: "4px", background: i === active ? "rgb(255,130,50)" : "rgba(255,255,255,0.2)", border: "none", cursor: "pointer", padding: 0, transition: "all 0.35s cubic-bezier(0.4,0,0.2,1)" }}
+              <button
+                key={i}
+                onClick={(e) => { e.stopPropagation(); goTo(i); }}
+                aria-label={`Go to insight ${i + 1}`}
+                style={{
+                  width: i === active ? "28px" : "7px",
+                  height: "7px",
+                  borderRadius: "4px",
+                  background: i === active ? "rgb(255,130,50)" : "rgba(255,255,255,0.2)",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0,
+                  transition: "all 0.35s cubic-bezier(0.4,0,0.2,1)",
+                }}
               />
             ))}
           </div>
+
+          {/* Scroll hint */}
+          <p style={{ fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: active === total - 1 ? "rgba(255,130,50,0.55)" : "rgba(255,255,255,0.25)", marginTop: "2px", transition: "color 0.4s ease" }}>
+        
+          </p>
         </div>
       </div>
 
-      <style>{`@keyframes progressBar { from { width: 0% } to { width: 100% } }`}</style>
+
     </section>
   );
 }
@@ -695,10 +687,7 @@ function Index() {
     <main className="bg-background text-foreground min-h-screen">
       <Nav />
       <Hero />
-
-      {/* ── PieterKoopt-style stacked Pillars ── */}
       <PillarsHowItWorks />
-
       <InsightFlashcards />
       <Industries />
       <Testimonials />
