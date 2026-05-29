@@ -323,126 +323,121 @@ const INSIGHT_CARDS = [
     tag: "AI Strategy",
     title: "Agentic AI: Beyond the Chatbot Era",
     excerpt: "How autonomous agents are rewriting the rules of enterprise automation—and what it means for your 2025 roadmap.",
-    date: "Apr 2025",
     image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1600&q=80",
   },
   {
     tag: "CX Innovation",
     title: "Sensory UX: Designing for the Post-Screen World",
     excerpt: "Voice, haptics, and ambient interfaces are converging. Here's how to lead the transition gracefully.",
-    date: "Mar 2025",
     image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=1600&q=80",
   },
   {
     tag: "Data & Cloud",
     title: "Sovereign Data for Regulated Industries",
     excerpt: "Building cloud-native platforms that satisfy compliance requirements without sacrificing product velocity.",
-    date: "Feb 2025",
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=80",
   },
   {
     tag: "Future of Work",
     title: "The Human-AI Operating Model",
     excerpt: "Rethinking org design when 40% of tasks are delegated to digital colleagues who never sleep.",
-    date: "Feb 2025",
     image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80",
   },
   {
     tag: "Platform Eng.",
     title: "Internal Developer Platforms That Get Adopted",
     excerpt: "Product thinking applied to infrastructure: why golden paths beat mandates every time.",
-    date: "Jan 2025",
     image: "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=1600&q=80",
   },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SCROLL-HIJACKED HORIZONTAL INSIGHT CAROUSEL
-// Vertical scroll → moves cards horizontally → releases when done
-// Click anywhere → pause / resume auto-advance
+// INSIGHT FLASHCARDS — scroll-hijack + directional slide wipe animation
 // ─────────────────────────────────────────────────────────────────────────────
 
 function InsightFlashcards() {
   const total = INSIGHT_CARDS.length;
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const [locked, setLocked] = useState(false); // true = section is "hijacking" scroll
 
-  // ── refs that don't need re-render ──
-  const activeRef = useRef(0);
-  const lockedRef = useRef(false);
-  const pausedRef = useRef(false);
-  const scrollAccum = useRef(0);       // accumulated wheel delta
-  const THRESHOLD = 80;                // px of scroll needed to advance one card
-  const isAnimating = useRef(false);
+  const [active, setActive]       = useState(0);
+  const [prev, setPrev]           = useState<number | null>(null);
+  const [dir, setDir]             = useState<"next" | "prev">("next");
+  const [animating, setAnimating] = useState(false);
+  const [paused, setPaused]       = useState(false);
 
-  const goTo = useCallback((next: number) => {
-    if (isAnimating.current) return;
+  // refs so event handlers always see fresh values
+  const activeRef    = useRef(0);
+  const lockedRef    = useRef(false);
+  const pausedRef    = useRef(false);
+  const animRef      = useRef(false);
+  const scrollAccum  = useRef(0);
+  const THRESHOLD    = 80;
+
+  // ── core navigation ──────────────────────────────────────────────────────
+  const goTo = useCallback((next: number, direction: "next" | "prev") => {
+    if (animRef.current) return;
     const clamped = Math.max(0, Math.min(total - 1, next));
+    if (clamped === activeRef.current) return;
+
+    setDir(direction);
+    setPrev(activeRef.current);
+    setAnimating(true);
+    animRef.current = true;
     activeRef.current = clamped;
     setActive(clamped);
     scrollAccum.current = 0;
-    isAnimating.current = true;
-    setTimeout(() => { isAnimating.current = false; }, 520);
+
+    // animation duration matches CSS (700ms)
+    setTimeout(() => {
+      setAnimating(false);
+      setPrev(null);
+      animRef.current = false;
+    }, 700);
   }, [total]);
 
-  // ── scroll-hijack wheel handler ──
+  // ── scroll hijack ────────────────────────────────────────────────────────
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const onWheel = (e: WheelEvent) => {
       if (!lockedRef.current) return;
-      // Always prevent default while locked so page doesn't scroll
       e.preventDefault();
-
-      if (pausedRef.current || isAnimating.current) return;
+      if (pausedRef.current || animRef.current) return;
 
       scrollAccum.current += e.deltaY;
 
       if (scrollAccum.current >= THRESHOLD) {
         const next = activeRef.current + 1;
         if (next >= total) {
-          // Release lock — let page scroll continue
           lockedRef.current = false;
-          setLocked(false);
           scrollAccum.current = 0;
           return;
         }
-        goTo(next);
+        goTo(next, "next");
       } else if (scrollAccum.current <= -THRESHOLD) {
         const next = activeRef.current - 1;
         if (next < 0) {
-          // Release lock upward
           lockedRef.current = false;
-          setLocked(false);
           scrollAccum.current = 0;
           return;
         }
-        goTo(next);
+        goTo(next, "prev");
       }
     };
 
-    // Passive: false so we can preventDefault
     section.addEventListener("wheel", onWheel, { passive: false });
     return () => section.removeEventListener("wheel", onWheel);
   }, [goTo, total]);
 
-  // ── IntersectionObserver: lock when section enters viewport ──
+  // ── intersection lock ─────────────────────────────────────────────────────
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
     const obs = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-          lockedRef.current = true;
-          setLocked(true);
-        } else if (!entry.isIntersecting) {
-          lockedRef.current = false;
-          setLocked(false);
-        }
+        lockedRef.current = entry.isIntersecting && entry.intersectionRatio >= 0.5;
       },
       { threshold: 0.5 }
     );
@@ -450,30 +445,29 @@ function InsightFlashcards() {
     return () => obs.disconnect();
   }, []);
 
-  // ── Auto-advance timer ──
-  useEffect(() => {
-    pausedRef.current = paused;
-  }, [paused]);
+  // ── auto-advance ──────────────────────────────────────────────────────────
+  useEffect(() => { pausedRef.current = paused; }, [paused]);
 
   useEffect(() => {
     if (paused) return;
     const id = setInterval(() => {
-      if (pausedRef.current || !lockedRef.current) return;
+      if (pausedRef.current || !lockedRef.current || animRef.current) return;
       const next = activeRef.current + 1;
-      if (next < total) goTo(next);
+      if (next < total) goTo(next, "next");
     }, 5000);
     return () => clearInterval(id);
   }, [paused, goTo, total]);
 
-  // ── touch swipe support ──
-  const touchStart = useRef(0);
-  const onTouchStart = (e: React.TouchEvent) => { touchStart.current = e.touches[0].clientX; };
-  const onTouchEnd = (e: React.TouchEvent) => {
-    const diff = touchStart.current - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 40) goTo(activeRef.current + (diff > 0 ? 1 : -1));
+  // ── touch swipe ───────────────────────────────────────────────────────────
+  const touchStartX = useRef(0);
+  const onTouchStart = (e: React.TouchEvent) => { touchStartX.current = e.touches[0].clientX; };
+  const onTouchEnd   = (e: React.TouchEvent) => {
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) goTo(activeRef.current + (diff > 0 ? 1 : -1), diff > 0 ? "next" : "prev");
   };
 
-  const card = INSIGHT_CARDS[active];
+  const card     = INSIGHT_CARDS[active];
+  const prevCard = prev !== null ? INSIGHT_CARDS[prev] : null;
 
   return (
     <section
@@ -485,27 +479,64 @@ function InsightFlashcards() {
       onTouchEnd={onTouchEnd}
     >
       <style>{`
-        @keyframes insightImgIn {
-          from { opacity: 0; transform: scale(1.06); }
-          to   { opacity: 1; transform: scale(1); }
+        /* ── Slide wipe keyframes ── */
+        @keyframes slideInRight {
+          from { transform: translateX(100%); }
+          to   { transform: translateX(0%);   }
         }
-        @keyframes insightTextIn {
-          from { opacity: 0; transform: translateY(22px); }
-          to   { opacity: 1; transform: translateY(0); }
+        @keyframes slideInLeft {
+          from { transform: translateX(-100%); }
+          to   { transform: translateX(0%);    }
         }
-        @keyframes insightBarGrow {
-          from { width: 0%; }
-          to   { width: 100%; }
+        @keyframes slideOutLeft {
+          from { transform: translateX(0%);    }
+          to   { transform: translateX(-100%); }
         }
-        .insight-img-anim { animation: insightImgIn 0.65s cubic-bezier(0.22,1,0.36,1) both; }
-        .insight-tag-anim { animation: insightTextIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.1s both; }
-        .insight-title-anim { animation: insightTextIn 0.55s cubic-bezier(0.22,1,0.36,1) 0.18s both; }
-        .insight-excerpt-anim { animation: insightTextIn 0.55s cubic-bezier(0.22,1,0.36,1) 0.26s both; }
-        .insight-meta-anim { animation: insightTextIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.33s both; }
-        .insight-progress-bar { animation: insightBarGrow 5s linear forwards; }
+        @keyframes slideOutRight {
+          from { transform: translateX(0%);   }
+          to   { transform: translateX(100%); }
+        }
+
+        /* Background image moves slightly slower = parallax depth */
+        @keyframes bgParallaxRight {
+          from { transform: translateX(6%) scale(1.06); }
+          to   { transform: translateX(0%) scale(1);    }
+        }
+        @keyframes bgParallaxLeft {
+          from { transform: translateX(-6%) scale(1.06); }
+          to   { transform: translateX(0%)  scale(1);    }
+        }
+
+        /* Text elements stagger up */
+        @keyframes textUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0);    }
+        }
+
+        /* Incoming card */
+        .ic-enter-next { animation: slideInRight  0.72s cubic-bezier(0.22,1,0.36,1) both; }
+        .ic-enter-prev { animation: slideInLeft   0.72s cubic-bezier(0.22,1,0.36,1) both; }
+
+        /* Outgoing card */
+        .ic-exit-next  { animation: slideOutLeft  0.65s cubic-bezier(0.4,0,0.6,1) both; }
+        .ic-exit-prev  { animation: slideOutRight 0.65s cubic-bezier(0.4,0,0.6,1) both; }
+
+        /* BG parallax */
+        .ic-bg-next { animation: bgParallaxRight 0.78s cubic-bezier(0.22,1,0.36,1) both; }
+        .ic-bg-prev { animation: bgParallaxLeft  0.78s cubic-bezier(0.22,1,0.36,1) both; }
+
+        /* Staggered text */
+        .ic-t1 { animation: textUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.12s both; }
+        .ic-t2 { animation: textUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.22s both; }
+        .ic-t3 { animation: textUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.30s both; }
+        .ic-t4 { animation: textUp 0.5s cubic-bezier(0.22,1,0.36,1) 0.37s both; }
+
+        /* Progress bar */
+        @keyframes barGrow { from { width: 0% } to { width: 100% } }
+        .ic-bar { animation: barGrow 5s linear forwards; }
       `}</style>
 
-      {/* ── Header ── */}
+      {/* ── Section header ── */}
       <div className="mx-auto max-w-7xl px-6 pt-28 pb-10">
         <div className="reveal flex flex-wrap items-end justify-between gap-4">
           <div>
@@ -526,144 +557,161 @@ function InsightFlashcards() {
         </div>
       </div>
 
-      {/* ── Full-viewport card stage ── */}
+      {/* ── Slide stage ── */}
       <div
         ref={trackRef}
         className="relative w-full overflow-hidden"
         style={{ height: "min(86vh, 620px)" }}
       >
-        {/* Background image — animated on change */}
-        <img
-          key={`img-${active}`}
-          src={card.image}
-          alt={card.title}
-          className="absolute inset-0 w-full h-full object-cover insight-img-anim"
-          style={{ filter: "brightness(0.38) saturate(0.7) hue-rotate(8deg)" }}
-        />
 
-        {/* Gradient overlays */}
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.93) 0%, rgba(0,0,0,0.58) 42%, rgba(0,0,0,0.06) 100%)" }} />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 44%)" }} />
+        {/* ── OUTGOING slide — exits while new one enters ── */}
+        {animating && prevCard && (
+          <div
+            className={`absolute inset-0 w-full h-full ${dir === "next" ? "ic-exit-next" : "ic-exit-prev"}`}
+            style={{ zIndex: 2, willChange: "transform" }}
+          >
+            <img
+              src={prevCard.image}
+              alt={prevCard.title}
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ filter: "brightness(0.38) saturate(0.7) hue-rotate(8deg)" }}
+            />
+            <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.93) 0%, rgba(0,0,0,0.58) 42%, rgba(0,0,0,0.06) 100%)" }} />
+            <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 44%)" }} />
+          </div>
+        )}
 
-        {/* Left accent bar */}
-        <div className="absolute top-0 bottom-0 left-0" style={{ width: "3px", background: "linear-gradient(to bottom, transparent 5%, rgba(255,110,30,0.85) 35%, rgba(255,110,30,0.85) 65%, transparent 95%)" }} />
+        {/* ── INCOMING slide — the active card ── */}
+        <div
+          key={active}
+          className={`absolute inset-0 w-full h-full ${animating ? (dir === "next" ? "ic-enter-next" : "ic-enter-prev") : ""}`}
+          style={{ zIndex: 3, willChange: "transform" }}
+        >
+          {/* Background image with parallax offset */}
+          <img
+            src={card.image}
+            alt={card.title}
+            className={`absolute inset-0 w-full h-full object-cover ${animating ? (dir === "next" ? "ic-bg-next" : "ic-bg-prev") : ""}`}
+            style={{ filter: "brightness(0.38) saturate(0.7) hue-rotate(8deg)", willChange: "transform" }}
+          />
 
-        {/* Bottom accent line */}
-        <div className="absolute bottom-0 left-0" style={{ width: "65%", height: "2px", background: "linear-gradient(to right, rgba(255,100,30,1) 0%, rgba(255,160,60,0.4) 60%, transparent 100%)" }} />
+          {/* Overlays */}
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to right, rgba(0,0,0,0.93) 0%, rgba(0,0,0,0.58) 42%, rgba(0,0,0,0.06) 100%)" }} />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 44%)" }} />
 
-        {/* Corner glow */}
-        <div className="absolute bottom-0 left-0" style={{ width: "380px", height: "160px", background: "radial-gradient(ellipse at bottom left, rgba(255,80,10,0.18) 0%, transparent 70%)" }} />
+          {/* Left accent bar */}
+          <div className="absolute top-0 bottom-0 left-0" style={{ width: "3px", background: "linear-gradient(to bottom, transparent 5%, rgba(255,110,30,0.85) 35%, rgba(255,110,30,0.85) 65%, transparent 95%)" }} />
+          {/* Bottom accent line */}
+          <div className="absolute bottom-0 left-0" style={{ width: "65%", height: "2px", background: "linear-gradient(to right, rgba(255,100,30,1) 0%, rgba(255,160,60,0.4) 60%, transparent 100%)" }} />
+          {/* Corner glow */}
+          <div className="absolute bottom-0 left-0" style={{ width: "380px", height: "160px", background: "radial-gradient(ellipse at bottom left, rgba(255,80,10,0.18) 0%, transparent 70%)" }} />
 
-        {/* ── Card content — re-animated on active change ── */}
-        <div className="relative h-full max-w-7xl mx-auto px-6 md:px-14 flex flex-col justify-center" style={{ zIndex: 3 }}>
-          <div className="max-w-2xl">
-            <span
-              key={`tag-${active}`}
-              className="insight-tag-anim"
-              style={{ display: "inline-block", fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", fontWeight: 500, color: "rgb(255,130,50)", border: "1px solid rgba(255,130,50,0.35)", background: "rgba(255,100,20,0.1)", borderRadius: "999px", padding: "5px 14px", marginBottom: "1.4rem" }}
-            >
-              {card.tag}
-            </span>
+          {/* ── Text content — staggered entrance ── */}
+          <div className="relative h-full max-w-7xl mx-auto px-6 md:px-14 flex flex-col justify-center" style={{ zIndex: 3 }}>
+            <div className="max-w-2xl">
 
-            <h3
-              key={`title-${active}`}
-              className="font-display leading-tight mb-5 insight-title-anim"
-              style={{ fontSize: "clamp(2rem, 4vw, 3.4rem)", color: "#f0e8df" }}
-            >
-              {card.title}
-            </h3>
-
-            <p
-              key={`excerpt-${active}`}
-              className="insight-excerpt-anim"
-              style={{ fontSize: "clamp(0.875rem, 1.1vw, 1.05rem)", lineHeight: 1.75, color: "rgba(240,232,223,0.58)", maxWidth: "540px", marginBottom: "2.2rem" }}
-            >
-              {card.excerpt}
-            </p>
-
-            <div
-              key={`meta-${active}`}
-              className="flex items-center insight-meta-anim"
-            >
-              <Link
-                to="/insights"
-                onClick={(e) => e.stopPropagation()}
-                style={{ fontSize: "11px", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(255,130,50,0.9)" }}
-                className="hover:text-warm transition-colors"
+              {/* Tag pill */}
+              <span
+                className="ic-t1"
+                style={{
+                  display: "inline-block",
+                  fontSize: "10px",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  fontWeight: 500,
+                  color: "rgb(255,130,50)",
+                  border: "1px solid rgba(255,130,50,0.35)",
+                  background: "rgba(255,100,20,0.1)",
+                  borderRadius: "999px",
+                  padding: "5px 14px",
+                  marginBottom: "1.4rem",
+                }}
               >
-                Read more →
-              </Link>
+                {card.tag}
+              </span>
+
+              {/* Title */}
+              <h3
+                className="font-display leading-tight mb-5 ic-t2"
+                style={{ fontSize: "clamp(2rem, 4vw, 3.4rem)", color: "#f0e8df" }}
+              >
+                {card.title}
+              </h3>
+
+              {/* Excerpt */}
+              <p
+                className="ic-t3"
+                style={{
+                  fontSize: "clamp(0.875rem, 1.1vw, 1.05rem)",
+                  lineHeight: 1.75,
+                  color: "rgba(240,232,223,0.58)",
+                  maxWidth: "540px",
+                  marginBottom: "2.2rem",
+                }}
+              >
+                {card.excerpt}
+              </p>
+
+              {/* CTA */}
+              <div className="flex items-center ic-t4">
+                <Link
+                  to="/insights"
+                  onClick={(e) => e.stopPropagation()}
+                  style={{ fontSize: "11px", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(255,130,50,0.9)" }}
+                  className="hover:text-warm transition-colors"
+                >
+                  Read more →
+                </Link>
+              </div>
+
             </div>
           </div>
         </div>
 
-        {/* ── Prev / Next arrow buttons ── */}
+        {/* ── Arrow buttons ── */}
         <button
-          onClick={(e) => { e.stopPropagation(); goTo(active - 1); }}
-          aria-label="Previous"
+          onClick={(e) => { e.stopPropagation(); goTo(active - 1, "prev"); }}
           disabled={active === 0}
+          aria-label="Previous"
           className="absolute left-5 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-11 h-11 rounded-full border border-white/10 bg-black/30 backdrop-blur-sm hover:border-orange-500/50 transition-all disabled:opacity-20"
           style={{ color: "rgba(255,255,255,0.5)" }}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
+            <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
           </svg>
         </button>
         <button
-          onClick={(e) => { e.stopPropagation(); goTo(active + 1); }}
-          aria-label="Next"
+          onClick={(e) => { e.stopPropagation(); goTo(active + 1, "next"); }}
           disabled={active === total - 1}
+          aria-label="Next"
           className="absolute right-5 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-11 h-11 rounded-full border border-white/10 bg-black/30 backdrop-blur-sm hover:border-orange-500/50 transition-all disabled:opacity-20"
           style={{ color: "rgba(255,255,255,0.5)" }}
         >
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
           </svg>
         </button>
 
-        {/* ── Bottom: progress bar + dots + scroll hint ── */}
+        {/* ── Bottom controls ── */}
         <div className="absolute bottom-8 left-0 right-0 z-20 flex flex-col items-center gap-3 px-6">
 
-          {/* Progress bar */}
-          <div className="w-full max-w-xs h-[1px] bg-white/10 rounded-full overflow-hidden">
-            {!paused && (
-              <div
-                key={`bar-${active}`}
-                className="h-full rounded-full insight-progress-bar"
-                style={{ background: "rgb(255,130,50)" }}
-              />
-            )}
-          </div>
+           
 
-          {/* Dot nav */}
-          <div className="flex items-center gap-2">
-            {INSIGHT_CARDS.map((_, i) => (
-              <button
-                key={i}
-                onClick={(e) => { e.stopPropagation(); goTo(i); }}
-                aria-label={`Go to insight ${i + 1}`}
-                style={{
-                  width: i === active ? "28px" : "7px",
-                  height: "7px",
-                  borderRadius: "4px",
-                  background: i === active ? "rgb(255,130,50)" : "rgba(255,255,255,0.2)",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: 0,
-                  transition: "all 0.35s cubic-bezier(0.4,0,0.2,1)",
-                }}
-              />
-            ))}
-          </div>
+        
 
           {/* Scroll hint */}
-          <p style={{ fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase", color: active === total - 1 ? "rgba(255,130,50,0.55)" : "rgba(255,255,255,0.25)", marginTop: "2px", transition: "color 0.4s ease" }}>
-        
+          <p style={{
+            fontSize: "9px",
+            letterSpacing: "0.3em",
+            textTransform: "uppercase",
+            color: active === total - 1 ? "rgba(255,130,50,0.55)" : "rgba(255,255,255,0.25)",
+            marginTop: "2px",
+            transition: "color 0.4s ease",
+          }}>
+          
           </p>
         </div>
       </div>
-
-
     </section>
   );
 }
