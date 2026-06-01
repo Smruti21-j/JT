@@ -163,7 +163,7 @@ export function Footer() {
   return (
     <footer className="relative border-t border-white/10 bg-black text-white overflow-hidden">
 
-      {/* ── Subtle dot grid background only ──────────────────────────────── */}
+      {/* ── Subtle dot grid background only ─────────────────────────────── */}
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
         <div
           className="absolute inset-0"
