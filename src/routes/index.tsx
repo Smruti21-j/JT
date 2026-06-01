@@ -347,7 +347,7 @@ const INSIGHT_CARDS = [
     tag: "Platform Eng.",
     title: "Internal Developer Platforms That Get Adopted",
     excerpt: "Product thinking applied to infrastructure: why golden paths beat mandates every time.",
-    image: "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=1600&q=80",
+    image: "/public/InsightsPE6.jpg",
   },
 ];
 

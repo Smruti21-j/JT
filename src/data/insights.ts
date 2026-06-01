@@ -1,14 +1,7 @@
-import i1 from "@/assets/insight-1.jpg";
-import i2 from "@/assets/insight-2.jpg";
-import i3 from "@/assets/insight-3.jpg";
-import i4 from "@/assets/insight-4.jpg";
-import i5 from "@/assets/insight-5.jpg";
-import i6 from "@/assets/insight-6.jpg";
-
 export const POSTS = [
   {
     slug: "generative-ai-enterprise-beyond-demo",
-    img: i1,
+    img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1600&q=80",
     tag: "Artificial Intelligence",
     date: "Apr 2026",
     title: "Generative AI in the enterprise - beyond the demo.",
@@ -36,7 +29,7 @@ export const POSTS = [
   },
   {
     slug: "modernising-legacy-stacks-without-breaking-business",
-    img: i2,
+    img: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=1600&q=80",
     tag: "Digital Transformation",
     date: "Mar 2026",
     title: "Modernising legacy stacks without breaking the business.",
@@ -64,7 +57,7 @@ export const POSTS = [
   },
   {
     slug: "cross-platform-vs-native-next-five-years",
-    img: i3,
+    img: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1600&q=80",
     tag: "Application Development",
     date: "Mar 2026",
     title: "Cross-platform vs native - choosing for the next 5 years.",
@@ -92,7 +85,7 @@ export const POSTS = [
   },
   {
     slug: "cloud-cost-as-product-metric",
-    img: i4,
+    img: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80",
     tag: "Managed Services",
     date: "Feb 2026",
     title: "Cloud cost as a product metric.",
@@ -120,7 +113,7 @@ export const POSTS = [
   },
   {
     slug: "analytics-to-action-experimentation-loop",
-    img: i5,
+    img: "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?w=1600&q=80",
     tag: "Performance & Growth",
     date: "Feb 2026",
     title: "From analytics to action - closing the experimentation loop.",
@@ -148,7 +141,7 @@ export const POSTS = [
   },
   {
     slug: "platform-engineering-product-led-growth",
-    img: i6,
+    img: "/public/InsightsPE6.jpg",
     tag: "Product Engineering",
     date: "Jan 2026",
     title: "Platform engineering for product-led growth.",
