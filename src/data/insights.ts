@@ -141,7 +141,7 @@ export const POSTS = [
   },
   {
     slug: "platform-engineering-product-led-growth",
-    img: "/public/InsightsPE6.jpg",
+    img: "InsightsPE6.jpg",
     tag: "Product Engineering",
     date: "Jan 2026",
     title: "Platform engineering for product-led growth.",
