@@ -106,8 +106,7 @@ export function Testimonials() {
         {/* Dot grid */}
         <div className="absolute inset-0 opacity-[0.18] grid-bg" />
 
-        {/* Star field */}
-        <div ref={starsRef} className="absolute inset-0" />
+         
 
         {/* Slow horizontal scanlines */}
         {[0, 1, 2].map((n) => (
