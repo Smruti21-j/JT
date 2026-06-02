@@ -323,7 +323,7 @@ const INSIGHT_CARDS = [
     tag: "AI Strategy",
     title: "Agentic AI: Beyond the Chatbot Era",
     excerpt: "How autonomous agents are rewriting the rules of enterprise automation—and what it means for your 2025 roadmap.",
-    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1600&q=80",
+    image: "Insights1.png",
   },
   {
     tag: "CX Innovation",

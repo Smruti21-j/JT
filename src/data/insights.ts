@@ -1,7 +1,7 @@
 export const POSTS = [
   {
     slug: "generative-ai-enterprise-beyond-demo",
-    img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1600&q=80",
+    img: "Insights1.png",
     tag: "Artificial Intelligence",
     date: "Apr 2026",
     title: "Generative AI in the enterprise - beyond the demo.",

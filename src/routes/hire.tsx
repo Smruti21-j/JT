@@ -21,6 +21,7 @@ import hireImage3 from "@/assets/hire-image3.jpg";
 import hireImage4 from "@/assets/hire-image4.jpg";
 import hireImage5 from "@/assets/hire-image5.jpg";
 import hireImage6 from "@/assets/hire-image6.jpg";
+import heroVideo10 from "@/assets/hero-video10.mp4";
 
 const REASONS = [
   {
