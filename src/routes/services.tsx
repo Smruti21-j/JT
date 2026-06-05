@@ -19,17 +19,6 @@ const CAROUSEL_IMAGES = [
   "/services-c5.png",
 ];
 
-const PANEL_BG = [
-  "#0a0a0a",
-  "#141414",
-  "#120a00",
-  "#0a0a0a",
-  "#141414",
-  "#120a00",
-  "#0a0a0a",
-  "#141414",
-];
-
 const PANEL_ACCENT = [
   "rgb(255,130,50)",
   "rgb(180,180,180)",
@@ -39,17 +28,6 @@ const PANEL_ACCENT = [
   "rgb(255,160,60)",
   "rgb(255,130,50)",
   "rgb(180,180,180)",
-];
-
-const PANEL_NUM_COLOR = [
-  "rgba(255,130,50,0.10)",
-  "rgba(255,255,255,0.06)",
-  "rgba(255,160,60,0.13)",
-  "rgba(255,130,50,0.10)",
-  "rgba(255,255,255,0.06)",
-  "rgba(255,160,60,0.13)",
-  "rgba(255,130,50,0.10)",
-  "rgba(255,255,255,0.06)",
 ];
 
 const SERVICE_GROUPS = [
@@ -217,22 +195,6 @@ const STYLES = `
     from { transform: scaleX(0); transform-origin: left; }
     to   { transform: scaleX(1); transform-origin: left; }
   }
-  @keyframes titleIn {
-    from { opacity: 0; transform: translateX(-60px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes imgRise {
-    from { opacity: 0; transform: translateY(60px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes numIn {
-    from { opacity: 0; transform: translateX(40px) scale(0.8); }
-    to   { opacity: 1; transform: translateX(0) scale(1); }
-  }
   @keyframes kenBurns {
     0%   { transform: scale(1)    translateX(0)    translateY(0); }
     25%  { transform: scale(1.06) translateX(-1%)  translateY(-0.5%); }
@@ -240,163 +202,160 @@ const STYLES = `
     75%  { transform: scale(1.07) translateX(-0.5%) translateY(1%); }
     100% { transform: scale(1)    translateX(0)    translateY(0); }
   }
-
-  /* ── Carousel ── */
-  .hero-carousel-slide {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: opacity;
-  }
-  .hero-carousel-slide.active {
-    opacity: 1;
-  }
-  .hero-carousel-slide .kb-inner {
-    position: absolute;
-    inset: -4%;
-    background-size: cover;
-    background-position: center;
-    filter: saturate(0.55) brightness(0.42);
-    animation: kenBurns 18s ease-in-out infinite;
-    will-change: transform;
-  }
-
-  /* Carousel dot/pill nav */
-  .carousel-pip {
-    height: 4px;
-    border-radius: 2px;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    transition: width 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s ease;
-    flex-shrink: 0;
-  }
-
-  /* Progress bar on active pip */
-  .carousel-pip-track {
-    position: absolute;
-    top: 0; left: 0; height: 100%;
-    border-radius: 2px;
-    background: rgb(255,130,50);
-    animation: pipProgress 4s linear forwards;
-  }
   @keyframes pipProgress {
     from { width: 0%; }
     to   { width: 100%; }
   }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
 
-  .p-title   { opacity: 0; }
-  .p-img-0   { opacity: 0; }
-  .p-img-1   { opacity: 0; }
-  .p-img-2   { opacity: 0; }
-  .p-img-3   { opacity: 0; }
-  .p-eyebrow { opacity: 0; }
-  .p-tagline { opacity: 0; }
-  .p-bignum  { opacity: 0; }
+  .hero-carousel-slide {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    opacity: 0;
+    transition: opacity 1.8s cubic-bezier(0.4,0,0.2,1);
+    will-change: opacity;
+  }
+  .hero-carousel-slide.active { opacity: 1; }
+  .hero-carousel-slide .kb-inner {
+    position: absolute; inset: -4%;
+    background-size: cover; background-position: center;
+    filter: saturate(0.55) brightness(0.42);
+    animation: kenBurns 18s ease-in-out infinite;
+    will-change: transform;
+  }
+  .carousel-pip {
+    height: 4px; border-radius: 2px; border: none; cursor: pointer;
+    padding: 0; transition: width 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s ease;
+    flex-shrink: 0;
+  }
+  .carousel-pip-track {
+    position: absolute; top: 0; left: 0; height: 100%;
+    border-radius: 2px; background: rgb(255,130,50);
+    animation: pipProgress 4s linear forwards;
+  }
 
-  .panel-entered .p-title   { animation: titleIn 0.72s cubic-bezier(0.16,1,0.3,1) 0.02s both; }
-  .panel-entered .p-img-0   { animation: imgRise  0.65s cubic-bezier(0.16,1,0.3,1) 0.08s both; }
-  .panel-entered .p-img-1   { animation: imgRise  0.65s cubic-bezier(0.16,1,0.3,1) 0.18s both; }
-  .panel-entered .p-img-2   { animation: imgRise  0.65s cubic-bezier(0.16,1,0.3,1) 0.28s both; }
-  .panel-entered .p-img-3   { animation: imgRise  0.65s cubic-bezier(0.16,1,0.3,1) 0.38s both; }
-  .panel-entered .p-eyebrow { animation: fadeUp   0.5s  cubic-bezier(0.16,1,0.3,1) 0.36s both; }
-  .panel-entered .p-tagline { animation: fadeUp   0.5s  cubic-bezier(0.16,1,0.3,1) 0.46s both; }
-  .panel-entered .p-bignum  { animation: numIn    0.7s  cubic-bezier(0.16,1,0.3,1) 0.12s both; }
+  /* ── Split layout ── */
+  .split-section {
+    display: flex;
+    min-height: 100vh;
+    background: #0a0a0a;
+    position: relative;
+  }
 
-  /* Image cards */
-  .svc-img-card {
+  /* LEFT — sticky text panel */
+  .split-left {
+    width: 42%;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(40px,6vw,90px) clamp(24px,4vw,60px) clamp(40px,6vw,90px) clamp(24px,5vw,80px);
+    border-right: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+  }
+
+  /* RIGHT — scrollable image panels */
+  .split-right {
     flex: 1;
     min-width: 0;
+  }
+
+  /* Each service block on the right takes full viewport height */
+  .svc-right-block {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(32px,5vh,64px) clamp(24px,4vw,56px);
+    gap: 12px;
     position: relative;
-    overflow: hidden;
-    border-radius: 3px;
-    background: #1a1a1a;
-    cursor: pointer;
+  }
+
+  /* Image grid inside each right block */
+  .svc-img-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    height: calc(100vh - clamp(64px,10vh,128px));
+  }
+
+  /* Image card */
+  .svc-img-card {
+    position: relative; overflow: hidden;
+    border-radius: 8px; background: #1a1a1a; cursor: pointer;
   }
   .svc-img-card img {
-    width: 100%; height: 100%;
-    object-fit: cover; display: block;
+    width: 100%; height: 100%; object-fit: cover; display: block;
     transition: transform 0.55s cubic-bezier(0.16,1,0.3,1);
   }
   .svc-img-card:hover img { transform: scale(1.07); }
   .svc-img-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: var(--accent);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.38s cubic-bezier(0.16,1,0.3,1);
-    z-index: 2;
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--accent); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.38s cubic-bezier(0.16,1,0.3,1); z-index: 2;
   }
   .svc-img-card:hover::before { transform: scaleX(1); }
   .svc-img-label {
     position: absolute; bottom: 0; left: 0; right: 0;
-    padding: 44px 14px 10px;
+    padding: 44px 14px 12px;
     background: linear-gradient(to top, rgba(0,0,0,0.88), transparent);
     font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
-    transition: color 0.2s, opacity 0.3s;
-    z-index: 1;
+    color: rgba(255,255,255,0.4); transition: color 0.2s; z-index: 1;
   }
-  .svc-img-card:hover .svc-img-label,
-  .svc-img-card.touched .svc-img-label { color: var(--accent); }
+  .svc-img-card:hover .svc-img-label { color: var(--accent); }
 
-  /* Slide-up overlay */
   .svc-img-overlay {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
+    position: absolute; bottom: 0; left: 0; right: 0;
     padding: 32px 14px 14px;
     background: linear-gradient(to top, rgba(0,0,0,0.97) 65%, rgba(0,0,0,0.7) 85%, transparent 100%);
     transform: translateY(100%);
-    transition: transform 0.48s cubic-bezier(0.16,1,0.3,1);
-    z-index: 4;
+    transition: transform 0.48s cubic-bezier(0.16,1,0.3,1); z-index: 4;
   }
-  .svc-img-card:hover .svc-img-overlay,
-  .svc-img-card.touched .svc-img-overlay {
-    transform: translateY(0%);
-  }
+  .svc-img-card:hover .svc-img-overlay { transform: translateY(0); }
   .svc-img-overlay-cat {
-    font-size: 8px;
-    letter-spacing: 0.30em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 7px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-size: 8px; letter-spacing: 0.30em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 7px;
+    display: flex; align-items: center; gap: 8px;
   }
   .svc-img-overlay-cat::before {
-    content: '';
-    display: inline-block;
-    width: 16px;
-    height: 1px;
-    background: var(--accent);
-    flex-shrink: 0;
+    content: ''; display: inline-block; width: 16px; height: 1px;
+    background: var(--accent); flex-shrink: 0;
   }
   .svc-img-overlay-text {
-    font-size: 10.5px;
-    line-height: 1.68;
-    color: rgba(255,255,255,0.76);
-    letter-spacing: 0.01em;
+    font-size: 10.5px; line-height: 1.68;
+    color: rgba(255,255,255,0.76); letter-spacing: 0.01em;
   }
 
-  /* Dot nav */
+  /* Left text animations triggered by .is-active on the block */
+  .left-content { transition: opacity 0.5s ease, transform 0.5s ease; }
+
+  /* progress dots */
   .svc-dot {
     width: 5px; height: 5px; border-radius: 50%;
     background: rgba(255,255,255,0.18);
-    transition: all 0.25s;
-    flex-shrink: 0;
+    transition: all 0.25s; flex-shrink: 0; cursor: pointer;
   }
-  .svc-dot.active {
-    transform: scale(1.5);
-  }
+  .svc-dot.active { transform: scale(1.6); }
 `;
 
+/* ── Video Hero (unchanged) ─────────────────────────────────────────────────── */
 function VideoHero() {
   const [current, setCurrent] = useState(0);
-  const [pipKey, setPipKey] = useState(0); // force re-mount to restart animation
+  const [pipKey, setPipKey] = useState(0);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -406,92 +365,34 @@ function VideoHero() {
     return () => clearInterval(id);
   }, []);
 
-  const handleDotClick = (i: number) => {
-    setCurrent(i);
-    setPipKey((k) => k + 1);
-  };
-
   return (
     <section style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden", background: "#050403" }}>
-
-      {/* ── Background image carousel ── */}
       {CAROUSEL_IMAGES.map((src, i) => (
-        <div
-          key={src}
-          className={`hero-carousel-slide${i === current ? " active" : ""}`}
-        >
-          <div
-            className="kb-inner"
-            style={{ backgroundImage: `url(${src})` }}
-          />
+        <div key={src} className={`hero-carousel-slide${i === current ? " active" : ""}`}>
+          <div className="kb-inner" style={{ backgroundImage: `url(${src})` }} />
         </div>
       ))}
-
-      {/* ── Gradient overlays ── */}
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,rgba(5,4,3,.35) 0%,rgba(5,4,3,.05) 30%,rgba(5,4,3,.65) 68%,rgba(5,4,3,1) 100%)" }} />
       <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,rgba(5,4,3,.6) 0%,transparent 65%)" }} />
-
-      {/* ── Grid texture ── */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
-
-      {/* ── Scan line ── */}
       <div style={{ position: "absolute", left: 0, right: 0, height: "1px", background: "linear-gradient(90deg,transparent,rgba(255,110,30,.5),transparent)", animation: "scanLine 8s ease-in-out infinite", pointerEvents: "none" }} />
-
-      {/* ── Left accent bar ── */}
       <div style={{ position: "absolute", top: "15%", bottom: "15%", left: 0, width: "2px", background: "linear-gradient(180deg,transparent,rgb(255,110,30) 30%,rgb(255,110,30) 70%,transparent)" }} />
-
-      {/* ── Carousel pip indicators (top-right) ── */}
-      <div style={{
-        position: "absolute",
-        top: 28,
-        right: "clamp(24px,5vw,80px)",
-        display: "flex",
-        gap: 6,
-        alignItems: "center",
-        zIndex: 20,
-      }}>
+      <div style={{ position: "absolute", top: 28, right: "clamp(24px,5vw,80px)", display: "flex", gap: 6, alignItems: "center", zIndex: 20 }}>
         {CAROUSEL_IMAGES.map((_, i) => (
-          <button
-            key={i}
-            className="carousel-pip"
-            onClick={() => handleDotClick(i)}
-            style={{
-              width: i === current ? 28 : 6,
-              background: i === current ? "rgba(255,130,50,0.25)" : "rgba(255,255,255,0.2)",
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            {i === current && (
-              <span key={pipKey} className="carousel-pip-track" />
-            )}
+          <button key={i} className="carousel-pip" onClick={() => { setCurrent(i); setPipKey(k => k + 1); }}
+            style={{ width: i === current ? 28 : 6, background: i === current ? "rgba(255,130,50,0.25)" : "rgba(255,255,255,0.2)", position: "relative", overflow: "hidden" }}>
+            {i === current && <span key={pipKey} className="carousel-pip-track" />}
           </button>
         ))}
       </div>
-
-      {/* ── Slide counter (bottom-right corner) ── */}
-      <div style={{
-        position: "absolute",
-        bottom: 80,
-        right: "clamp(24px,5vw,80px)",
-        display: "flex",
-        alignItems: "baseline",
-        gap: 4,
-        zIndex: 10,
-      }}>
-        <span style={{ fontSize: 22, fontWeight: 700, color: "rgb(255,130,50)", lineHeight: 1, letterSpacing: "-0.02em" }}>
-          {String(current + 1).padStart(2, "0")}
-        </span>
-        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", letterSpacing: "0.1em" }}>
-          / {String(CAROUSEL_IMAGES.length).padStart(2, "0")}
-        </span>
+      <div style={{ position: "absolute", bottom: 80, right: "clamp(24px,5vw,80px)", display: "flex", alignItems: "baseline", gap: 4, zIndex: 10 }}>
+        <span style={{ fontSize: 22, fontWeight: 700, color: "rgb(255,130,50)", lineHeight: 1 }}>{String(current + 1).padStart(2, "0")}</span>
+        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", letterSpacing: "0.1em" }}>/ {String(CAROUSEL_IMAGES.length).padStart(2, "0")}</span>
       </div>
-
-      {/* ── Hero text ── */}
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 clamp(24px,5vw,80px) 72px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28, animation: "heroIn .6s .3s both", opacity: 0 }}>
           <div style={{ width: 32, height: 1, background: "rgb(255,130,50)" }} />
-          <span style={{ fontSize: 10, letterSpacing: "0.4em", textTransform: "uppercase", color: "rgb(255,130,50)", fontWeight: 400 }}>What We Do</span>
+          <span style={{ fontSize: 10, letterSpacing: "0.4em", textTransform: "uppercase", color: "rgb(255,130,50)" }}>What We Do</span>
         </div>
         <h1 style={{ fontSize: "clamp(2.8rem,6vw,5.5rem)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.025em", color: "#f0e8df", marginBottom: 24, animation: "heroIn .7s .42s cubic-bezier(.4,0,.2,1) both", opacity: 0 }}>
           IMPACT <em style={{ fontStyle: "italic", fontWeight: 300, color: "rgb(255,130,50)" }}>WITNESSED</em>
@@ -501,243 +402,159 @@ function VideoHero() {
         </div>
         <div style={{ animation: "heroIn .6s .58s cubic-bezier(.4,0,.2,1) both", opacity: 0 }}>
           <p style={{ fontSize: "clamp(.9rem,1.3vw,1.05rem)", color: "rgba(240,232,220,.55)", lineHeight: 1.75, maxWidth: 560 }}>
-            See your future in action. Explore the missions where we turned bold ambition into scalable reality. These global leaders didn't just build software — they used our intelligence layer to gain decision authority and command their markets.
+            See your future in action. Explore the missions where we turned bold ambition into scalable reality.
           </p>
         </div>
-      </div>
-
-      {/* ── Scroll indicator ── */}
-      <div style={{ position: "absolute", bottom: 28, left: "50%", transform: "translateX(-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: 6, animation: "heroIn .6s 1.1s both", opacity: 0 }}>
-        <span style={{ fontSize: 8, letterSpacing: "0.3em", textTransform: "uppercase", color: "rgba(255,255,255,.25)" }}>Scroll</span>
-        <div style={{ width: 1, height: 32, background: "linear-gradient(to bottom,rgba(255,130,50,.6),transparent)", animation: "scanLine 2s ease-in-out infinite" }} />
       </div>
     </section>
   );
 }
 
-function SvcImgCard({
-  si,
-  idx,
-  itemText,
-}: {
-  si: { src: string; label: string };
-  idx: number;
-  itemText: string;
-}) {
-  const [touched, setTouched] = useState(false);
+/* ── Split Services Section ─────────────────────────────────────────────────── */
+function ServicesScrollSection() {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const blockRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const leftRef = useRef<HTMLDivElement>(null);
 
-  const colonIdx = itemText.indexOf(":");
-  const cat    = colonIdx > -1 ? itemText.slice(0, colonIdx).trim() : "";
-  const detail = colonIdx > -1 ? itemText.slice(colonIdx + 1).trim() : itemText;
-
-  return (
-    <div
-      className={`svc-img-card p-img-${idx}${touched ? " touched" : ""}`}
-      onTouchStart={() => setTouched((t) => !t)}
-    >
-      <img src={si.src} alt={si.label} loading="lazy" />
-      <div className="svc-img-label">{si.label}</div>
-      <div className="svc-img-overlay">
-        {cat && <div className="svc-img-overlay-cat">{cat}</div>}
-        <div className="svc-img-overlay-text">{detail}</div>
-      </div>
-    </div>
-  );
-}
-
-function ServicePanel({
-  g,
-  index,
-  total,
-}: {
-  g: (typeof SERVICE_GROUPS)[0];
-  index: number;
-  total: number;
-}) {
-  const wrapRef  = useRef<HTMLDivElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
-  const [entered, setEntered] = useState(index === 0);
-  const enteredRef = useRef(index === 0);
-
-  const bg     = PANEL_BG[index];
-  const accent = PANEL_ACCENT[index];
-  const numCol = PANEL_NUM_COLOR[index];
-  const isLast = index === total - 1;
-
+  // IntersectionObserver — whichever right block is most visible sets the left panel
   useEffect(() => {
-    if (enteredRef.current) return;
-    const el = panelRef.current;
-    if (!el) return;
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          enteredRef.current = true;
-          setEntered(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.08 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
+    const observers: IntersectionObserver[] = [];
+
+    blockRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const io = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveIdx(i);
+        },
+        { threshold: 0.5 }
+      );
+      io.observe(el);
+      observers.push(io);
+    });
+
+    return () => observers.forEach((io) => io.disconnect());
   }, []);
 
-  useEffect(() => {
-    const wrap  = wrapRef.current;
-    const panel = panelRef.current;
-    if (!wrap || !panel || isLast) return;
-
-    const onScroll = () => {
-      const rect = wrap.getBoundingClientRect();
-      const progress = Math.max(0, Math.min(1, -rect.top / window.innerHeight));
-      panel.style.clipPath = progress > 0
-        ? `inset(${progress * 100}% 0 0 0)`
-        : "inset(0% 0 0 0)";
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [isLast]);
+  const g = SERVICE_GROUPS[activeIdx];
+  const accent = PANEL_ACCENT[activeIdx];
 
   return (
-    <div
-      ref={wrapRef}
-      style={{ height: isLast ? "100vh" : "200vh", position: "relative" }}
-    >
-      <div style={{ position: "sticky", top: 0, height: "100vh", overflow: "hidden" }}>
+    <section className="split-section">
+      <style>{`
+        @keyframes leftFadeIn {
+          from { opacity: 0; transform: translateY(16px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        .left-animated {
+          animation: leftFadeIn 0.45s cubic-bezier(0.16,1,0.3,1) both;
+        }
+      `}</style>
+
+      {/* ── LEFT sticky panel ── */}
+      <div className="split-left" style={{ background: "#0a0a0a" }}>
+        {/* accent bar */}
+        <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 2, background: `linear-gradient(180deg, transparent, ${accent} 20%, ${accent} 80%, transparent)`, opacity: 0.7, transition: "background 0.5s ease" }} />
+
+        {/* grid texture */}
+        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
+
         <div
-          ref={panelRef}
-          className={entered ? "panel-entered" : ""}
-          style={{
-            "--accent"      : accent,
-            "--accent-faint": accent.replace("rgb", "rgba").replace(")", ",0.35)"),
-            "--accent-bg"   : accent.replace("rgb", "rgba").replace(")", ",0.06)"),
-            position        : "absolute",
-            inset           : 0,
-            background      : bg,
-            display         : "flex",
-            flexDirection   : "column",
-            padding         : "clamp(56px,7vh,90px) clamp(24px,5vw,80px) 56px",
-            gap             : "clamp(18px,2.8vh,32px)",
-            overflow        : "hidden",
-          } as React.CSSProperties}
+          key={activeIdx}   // re-mount = re-animate on service change
+          className="left-animated"
+          style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 20 }}
         >
-          {/* Grid texture */}
-          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
+          {/* index */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <span style={{ fontSize: 11, letterSpacing: "0.3em", color: accent, fontWeight: 600 }}>
+              {String(activeIdx + 1).padStart(2, "0")}
+            </span>
+            <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, ${accent}, transparent)`, opacity: 0.5 }} />
+            <span style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", letterSpacing: "0.2em" }}>
+              {String(SERVICE_GROUPS.length).padStart(2, "0")}
+            </span>
+          </div>
 
-          {/* Left accent bar */}
-          <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 2, background: `linear-gradient(180deg,transparent,${accent} 20%,${accent} 80%,transparent)`, opacity: 0.65 }} />
+          {/* eyebrow */}
+          <p style={{ fontSize: 9, letterSpacing: "0.38em", textTransform: "uppercase", color: accent, display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ display: "inline-block", width: 22, height: 1, background: accent, flexShrink: 0 }} />
+            {g.eyebrow}
+          </p>
 
-          {/* ── 1. TITLE ── */}
-          <h2
-            className="p-title"
-            style={{
-              fontSize     : "clamp(2.6rem,8vw,7.5rem)",
-              fontWeight   : 800,
-              lineHeight   : 1,
-              letterSpacing: "-0.035em",
-              color        : "#f0e8df",
-              flexShrink   : 0,
-              position     : "relative",
-              zIndex       : 1,
-            }}
-          >
+          {/* title */}
+          <h2 style={{ fontSize: "clamp(2rem,4vw,3.6rem)", fontWeight: 800, lineHeight: 1.05, letterSpacing: "-0.03em", color: "#f0e8df" }}>
             {g.title}
           </h2>
 
-          {/* ── 2. IMAGES ── */}
-          <div
-            style={{
-              display   : "flex",
-              gap       : "clamp(6px,0.9vw,14px)",
-              height    : "clamp(180px,26vh,295px)",
-              flexShrink: 0,
-              position  : "relative",
-              zIndex    : 1,
-            }}
-          >
-            {g.subImages.map((si, idx) => (
-              <SvcImgCard
-                key={idx}
-                si={si}
-                idx={idx}
-                itemText={g.items[idx] ?? ""}
+          {/* divider */}
+          <div style={{ height: 1, background: `linear-gradient(to right, ${accent}, transparent)`, opacity: 0.35, maxWidth: 280 }} />
+
+          {/* tagline */}
+          <p style={{ fontSize: "clamp(0.88rem,1.2vw,1.05rem)", lineHeight: 1.72, color: "rgba(240,232,220,0.6)", maxWidth: 380 }}>
+            {g.tagline}
+          </p>
+
+          {/* stat */}
+          <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginTop: 8 }}>
+            <span style={{ fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 800, color: accent, lineHeight: 1, letterSpacing: "-0.03em" }}>
+              {g.stat.value}
+            </span>
+            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+              {g.stat.label}
+            </span>
+          </div>
+
+          {/* dots nav */}
+          <div style={{ display: "flex", gap: 6, marginTop: 16 }}>
+            {SERVICE_GROUPS.map((_, di) => (
+              <button
+                key={di}
+                className={`svc-dot${di === activeIdx ? " active" : ""}`}
+                style={{
+                  background: di === activeIdx ? accent : "rgba(255,255,255,0.18)",
+                  border: "none", cursor: "pointer", padding: 0,
+                }}
+                onClick={() => {
+                  blockRefs.current[di]?.scrollIntoView({ behavior: "smooth" });
+                }}
               />
             ))}
           </div>
-
-          {/* ── 3. BOTTOM ROW ── */}
-          <div
-            style={{
-              display        : "flex",
-              alignItems     : "flex-end",
-              justifyContent : "space-between",
-              gap            : "clamp(20px,4vw,64px)",
-              position       : "relative",
-              zIndex         : 1,
-              flexShrink     : 0,
-            }}
-          >
-            {/* LEFT — eyebrow + tagline only */}
-            <div style={{ flex: 1, maxWidth: 560, display: "flex", flexDirection: "column", gap: 10 }}>
-              <p className="p-eyebrow" style={{ fontSize: 9, letterSpacing: "0.38em", textTransform: "uppercase", color: accent, display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
-                <span style={{ display: "inline-block", width: 22, height: 1, background: accent, flexShrink: 0 }} />
-                {g.eyebrow}
-              </p>
-              <p className="p-tagline" style={{ fontSize: "clamp(.95rem,1.5vw,1.25rem)", fontWeight: 600, lineHeight: 1.5, color: "rgba(240,232,220,.82)", flexShrink: 0 }}>
-                {g.tagline}
-              </p>
-            </div>
-
-            {/* RIGHT — ghost number */}
-            <div className="p-bignum" style={{ fontSize: "clamp(68px,10vw,138px)", fontWeight: 800, lineHeight: 1, letterSpacing: "-0.04em", color: numCol, userSelect: "none", flexShrink: 0, alignSelf: "flex-end" }}>
-              ({String(index + 1).padStart(2, "0")})
-            </div>
-          </div>
-
-          {/* ── Bottom bar ── */}
-          <div style={{
-            position: "absolute", bottom: 0, left: 0, right: 0, height: 48,
-            borderTop: "1px solid rgba(255,255,255,.07)",
-            background: `${bg}e0`,
-            backdropFilter: "blur(8px)",
-            display: "flex", alignItems: "center", justifyContent: "space-between",
-            padding: "0 clamp(24px,5vw,80px)",
-            zIndex: 10,
-          }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: accent }}>{String(index + 1).padStart(2, "0")}</span>
-              <div style={{ width: 1, height: 14, background: "rgba(255,255,255,.12)" }} />
-              <span style={{ fontSize: 12, color: "rgba(255,255,255,.20)", letterSpacing: "0.06em" }}>{String(total).padStart(2, "0")}</span>
-              <div style={{ width: 1, height: 14, background: "rgba(255,255,255,.06)" }} />
-              <span style={{ fontSize: 9, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(255,255,255,.24)" }}>{g.title}</span>
-            </div>
-            <div style={{ flex: 1, maxWidth: 280, height: 1, background: "rgba(255,255,255,.08)", margin: "0 clamp(16px,3vw,40px)", position: "relative", overflow: "hidden" }}>
-              <div style={{ position: "absolute", left: 0, top: 0, height: "100%", width: `${((index + 1) / total) * 100}%`, background: `linear-gradient(90deg,${accent},transparent)` }} />
-            </div>
-            <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-              {SERVICE_GROUPS.map((_, di) => (
-                <div
-                  key={di}
-                  className={`svc-dot${di === index ? " active" : ""}`}
-                  style={{ background: di === index ? accent : "rgba(255,255,255,.18)" }}
-                />
-              ))}
-            </div>
-          </div>
         </div>
       </div>
-    </div>
-  );
-}
 
-function ServicesScrollSection() {
-  return (
-    <section>
-      {SERVICE_GROUPS.map((g, i) => (
-        <ServicePanel key={g.title} g={g} index={i} total={SERVICE_GROUPS.length} />
-      ))}
+      {/* ── RIGHT scrollable blocks ── */}
+      <div className="split-right">
+        {SERVICE_GROUPS.map((svc, i) => {
+          const acc = PANEL_ACCENT[i];
+          return (
+            <div
+              key={svc.title}
+              ref={(el) => { blockRefs.current[i] = el; }}
+              className="svc-right-block"
+              style={{ "--accent": acc } as React.CSSProperties}
+            >
+              {/* 2×2 image grid */}
+              <div className="svc-img-grid">
+                {svc.subImages.map((si, idx) => {
+                  const colonIdx = svc.items[idx]?.indexOf(":") ?? -1;
+                  const cat    = colonIdx > -1 ? svc.items[idx].slice(0, colonIdx).trim() : "";
+                  const detail = colonIdx > -1 ? svc.items[idx].slice(colonIdx + 1).trim() : svc.items[idx] ?? "";
+                  return (
+                    <div key={si.label} className="svc-img-card">
+                      <img src={si.src} alt={si.label} loading="lazy" />
+                      <div className="svc-img-label">{si.label}</div>
+                      <div className="svc-img-overlay">
+                        {cat && <div className="svc-img-overlay-cat">{cat}</div>}
+                        <div className="svc-img-overlay-text">{detail}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </section>
   );
 }
@@ -749,7 +566,7 @@ export const Route = createFileRoute("/services")({
       { title: "Services — Jarvis Technolabs" },
       { name: "description", content: "Build, scale and modernise apps with our services." },
       { property: "og:title", content: "Services — Jarvis Technolabs" },
-      { property: "og:description", content: "A powerhouse of innovation, design and transformation fueled by disruptive technologies and agility." },
+      { property: "og:description", content: "A powerhouse of innovation, design and transformation." },
     ],
   }),
 });

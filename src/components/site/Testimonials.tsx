@@ -9,55 +9,163 @@ const TESTIMONIALS = [
 ];
 
 const STYLES = `
-  @keyframes orbFloat1 {
-    0%   { transform: translate(0px, 0px) scale(1); }
-    33%  { transform: translate(40px, -30px) scale(1.08); }
-    66%  { transform: translate(-20px, 20px) scale(0.95); }
-    100% { transform: translate(0px, 0px) scale(1); }
-  }
-  @keyframes orbFloat2 {
-    0%   { transform: translate(0px, 0px) scale(1); }
-    33%  { transform: translate(-35px, 25px) scale(1.05); }
-    66%  { transform: translate(25px, -20px) scale(0.97); }
-    100% { transform: translate(0px, 0px) scale(1); }
-  }
-  @keyframes orbFloat3 {
-    0%   { transform: translate(0px, 0px) scale(1); }
-    50%  { transform: translate(20px, 30px) scale(1.06); }
-    100% { transform: translate(0px, 0px) scale(1); }
-  }
   @keyframes fadeSlide {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(12px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0.15; }
-    50%       { opacity: 0.85; }
-  }
-  @keyframes drift {
-    0%   { transform: translateY(0px); }
-    50%  { transform: translateY(-6px); }
-    100% { transform: translateY(0px); }
-  }
-  @keyframes scanline {
-    0%   { transform: translateX(-100%); opacity: 0; }
-    10%  { opacity: 1; }
-    90%  { opacity: 1; }
-    100% { transform: translateX(100vw); opacity: 0; }
-  }
-  @keyframes ringPulse {
-    0%   { transform: translate(-50%, -50%) scale(0.4); opacity: 0.6; }
-    100% { transform: translate(-50%, -50%) scale(2.8); opacity: 0; }
+  @keyframes dotPulse {
+    0%, 100% { opacity: 0.35; transform: scale(1); }
+    50%       { opacity: 1;    transform: scale(1.4); }
   }
 `;
+
+function PlexusCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const rafRef = useRef<number>(0);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d")!;
+
+    let W = 0, H = 0;
+    const NODE_COUNT = 38;
+    const CONNECT_DIST = 260;
+
+    type Node = {
+      x: number; y: number;
+      vx: number; vy: number;
+      glowRadius: number;
+      brightness: number;
+    };
+
+    let nodes: Node[] = [];
+
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      W = canvas.offsetWidth;
+      H = canvas.offsetHeight;
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function init() {
+      nodes = Array.from({ length: NODE_COUNT }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.55,
+        vy: (Math.random() - 0.5) * 0.55,
+        glowRadius: Math.random() * 14 + 7,
+        brightness: Math.random() * 0.3 + 0.12,
+      }));
+    }
+
+    function drawGlowDot(x: number, y: number, r: number, bright: number) {
+      const g1 = ctx.createRadialGradient(x, y, 0, x, y, r * 3.0);
+      g1.addColorStop(0, `rgba(180,210,240,${(bright * 0.12).toFixed(3)})`);
+      g1.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.beginPath();
+      ctx.arc(x, y, r * 3.0, 0, Math.PI * 2);
+      ctx.fillStyle = g1;
+      ctx.fill();
+
+      const g2 = ctx.createRadialGradient(x, y, 0, x, y, r * 1.4);
+      g2.addColorStop(0, `rgba(220,235,255,${(bright * 0.28).toFixed(3)})`);
+      g2.addColorStop(1, "rgba(180,210,240,0)");
+      ctx.beginPath();
+      ctx.arc(x, y, r * 1.4, 0, Math.PI * 2);
+      ctx.fillStyle = g2;
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(x, y, r * 0.35, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(230,245,255,${(bright * 0.55).toFixed(3)})`;
+      ctx.fill();
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+
+      for (const n of nodes) {
+        n.x += n.vx;
+        n.y += n.vy;
+        const pad = 30;
+        if (n.x < -pad) n.x = W + pad;
+        if (n.x > W + pad) n.x = -pad;
+        if (n.y < -pad) n.y = H + pad;
+        if (n.y > H + pad) n.y = -pad;
+      }
+
+      for (let a = 0; a < nodes.length; a++) {
+        for (let b = a + 1; b < nodes.length; b++) {
+          const dx = nodes[a].x - nodes[b].x;
+          const dy = nodes[a].y - nodes[b].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < CONNECT_DIST) {
+            const t = 1 - dist / CONNECT_DIST;
+            const avgBright = (nodes[a].brightness + nodes[b].brightness) / 2;
+
+            const grad = ctx.createLinearGradient(
+              nodes[a].x, nodes[a].y, nodes[b].x, nodes[b].y
+            );
+            const alpha = (t * avgBright * 0.30).toFixed(3);
+            grad.addColorStop(0,   `rgba(170,200,235,${alpha})`);
+            grad.addColorStop(0.5, `rgba(195,220,250,${(parseFloat(alpha) * 1.2).toFixed(3)})`);
+            grad.addColorStop(1,   `rgba(170,200,235,${alpha})`);
+
+            ctx.beginPath();
+            ctx.moveTo(nodes[a].x, nodes[a].y);
+            ctx.lineTo(nodes[b].x, nodes[b].y);
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = t * avgBright * 1.2 + 0.2;
+            ctx.stroke();
+          }
+        }
+      }
+
+      for (const n of nodes) {
+        drawGlowDot(n.x, n.y, n.glowRadius, n.brightness);
+      }
+
+      rafRef.current = requestAnimationFrame(draw);
+    }
+
+    resize();
+    init();
+    draw();
+
+    const ro = new ResizeObserver(() => {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      resize();
+    });
+    ro.observe(canvas);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      ro.disconnect();
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        display: "block",
+      }}
+    />
+  );
+}
 
 export function Testimonials() {
   const [i, setI] = useState(0);
   const [animKey, setAnimKey] = useState(0);
   const timer = useRef<number | null>(null);
-  const starsRef = useRef<HTMLDivElement>(null);
 
-  // Auto-advance
   useEffect(() => {
     timer.current = window.setInterval(() => {
       setI((p) => (p + 1) % TESTIMONIALS.length);
@@ -68,157 +176,88 @@ export function Testimonials() {
     };
   }, []);
 
-  // Star field
-  useEffect(() => {
-    const container = starsRef.current;
-    if (!container) return;
-    for (let s = 0; s < 55; s++) {
-      const star = document.createElement("div");
-      const size = Math.random() * 2.5 + 0.8;
-      const twinkleDur = `${(Math.random() * 4 + 2).toFixed(2)}s`;
-      const driftDur = `${(Math.random() * 6 + 4).toFixed(2)}s`;
-      const delay = `${(Math.random() * -10).toFixed(2)}s`;
-      Object.assign(star.style, {
-        position: "absolute",
-        width: `${size}px`,
-        height: `${size}px`,
-        borderRadius: "50%",
-        background: "#fff",
-        top: `${Math.random() * 100}%`,
-        left: `${Math.random() * 100}%`,
-        opacity: (Math.random() * 0.5 + 0.1).toFixed(2),
-        animation: `twinkle ${twinkleDur} linear ${delay} infinite, drift ${driftDur} ease-in-out ${delay} infinite`,
-      });
-      container.appendChild(star);
-    }
-    return () => {
-      container.innerHTML = "";
-    };
-  }, []);
-
   return (
-    <section className="relative py-32 overflow-hidden">
+    <section
+      className="relative py-32 overflow-hidden"
+      style={{ background: "#000" }}
+    >
       <style>{STYLES}</style>
 
-      {/* ── Background layers ── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <PlexusCanvas />
 
-        {/* Dot grid */}
-        <div className="absolute inset-0 opacity-[0.18] grid-bg" />
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: `
+            linear-gradient(rgba(100,140,180,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(100,140,180,0.03) 1px, transparent 1px)
+          `,
+          backgroundSize: "60px 60px",
+        }} />
 
-         
-
-        {/* Slow horizontal scanlines */}
-        {[0, 1, 2].map((n) => (
-          <div
-            key={n}
-            style={{
-              position: "absolute",
-              top: `${28 + n * 22}%`,
-              left: 0,
-              width: "30%",
-              height: "1px",
-              background: "linear-gradient(to right, transparent, rgba(249,115,22,0.25), transparent)",
-              animation: `scanline ${18 + n * 7}s linear ${-(n * 5)}s infinite`,
-            }}
-          />
-        ))}
-
-        {/* Concentric ring pulses — bottom centre */}
-        {[0, 1, 2, 3].map((n) => (
-          <div
-            key={n}
-            style={{
-              position: "absolute",
-              bottom: "-15%",
-              left: "50%",
-              width: "320px",
-              height: "320px",
-              borderRadius: "50%",
-              border: "1px solid rgba(249,115,22,0.18)",
-              animation: `ringPulse 8s ease-out ${-(n * 2)}s infinite`,
-            }}
-          />
-        ))}
-
-        {/* Orb 1 — orange, left */}
-        <div
-          style={{
-            position: "absolute",
-            top: "20%",
-            left: "-5%",
-            width: "480px",
-            height: "480px",
-            borderRadius: "50%",
-            background: "rgba(234,88,12,0.22)",
-            filter: "blur(90px)",
-            animation: "orbFloat1 14s ease-in-out infinite",
-          }}
-        />
-
-        {/* Orb 2 — amber, right */}
-        <div
-          style={{
-            position: "absolute",
-            top: "10%",
-            right: "-8%",
-            width: "420px",
-            height: "420px",
-            borderRadius: "50%",
-            background: "rgba(249,115,22,0.16)",
-            filter: "blur(100px)",
-            animation: "orbFloat2 18s ease-in-out infinite",
-            animationDelay: "-6s",
-          }}
-        />
-
-        {/* Orb 3 — deep orange, bottom */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: "-10%",
-            left: "35%",
-            width: "360px",
-            height: "360px",
-            borderRadius: "50%",
-            background: "rgba(194,65,12,0.18)",
-            filter: "blur(80px)",
-            animation: "orbFloat3 20s ease-in-out infinite",
-            animationDelay: "-10s",
-          }}
-        />
+        <div style={{
+          position: "absolute",
+          inset: 0,
+          background: "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,0,0,0.65) 0%, transparent 100%)",
+        }} />
       </div>
 
-      {/* ── Content ── */}
       <div className="relative mx-auto max-w-6xl px-6">
 
-        {/* Header row */}
-        <div className="reveal flex items-center justify-between mb-12">
-          <p className="text-xs tracking-[0.3em] text-muted-foreground bracket-label">
+        <div className="flex items-center justify-between mb-12">
+          <p className="text-xs tracking-[0.3em]" style={{ color: "rgba(249,115,22,0.7)" }}>
             TESTIMONIALS · {String(i + 1).padStart(2, "0")} / {String(TESTIMONIALS.length).padStart(2, "0")}
           </p>
-          <div className="hidden md:flex items-center gap-3">
-            <span className="h-px w-10 bg-white/20" />
+
+          <div className="flex items-center gap-2">
+            {TESTIMONIALS.map((_, idx) => (
+              <button
+                key={idx}
+                aria-label={`Go to testimonial ${idx + 1}`}
+                onClick={() => { setI(idx); setAnimKey((p) => p + 1); }}
+                style={{
+                  width: idx === i ? "22px" : "6px",
+                  height: "6px",
+                  borderRadius: "3px",
+                  border: "none",
+                  padding: 0,
+                  background: idx === i ? "rgba(249,115,22,0.9)" : "rgba(255,255,255,0.2)",
+                  transition: "all 0.4s ease",
+                  cursor: "pointer",
+                  animation: idx === i ? "dotPulse 2s ease-in-out infinite" : "none",
+                }}
+              />
+            ))}
           </div>
         </div>
 
-        {/* Quote */}
         <div className="relative overflow-hidden">
           <blockquote
             key={animKey}
-            className="font-display text-2xl md:text-4xl leading-snug tracking-tight text-foreground max-w-4xl mx-auto text-center px-8 md:px-16 py-16 md:py-20"
-            style={{ animation: "fadeSlide 0.6s cubic-bezier(0.22,1,0.36,1) both" }}
+            className="text-2xl md:text-4xl leading-snug tracking-tight max-w-4xl mx-auto text-center px-8 md:px-16 py-16 md:py-20"
+            style={{
+              color: "rgba(255,255,255,0.93)",
+              fontFamily: "'Georgia', serif",
+              animation: "fadeSlide 0.6s cubic-bezier(0.22,1,0.36,1) both",
+            }}
           >
-            <span className="text-warm/70">"</span>
+            <span style={{ color: "rgba(249,115,22,0.65)", fontSize: "1.4em", lineHeight: 0, verticalAlign: "-0.1em" }}>"</span>
             {TESTIMONIALS[i]}
-            <span className="text-warm/70">"</span>
+            <span style={{ color: "rgba(249,115,22,0.65)", fontSize: "1.4em", lineHeight: 0, verticalAlign: "-0.1em" }}>"</span>
           </blockquote>
 
-          {/* Edge fades */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-20"
+            style={{ background: "linear-gradient(to right, rgba(0,0,0,0.8), transparent)" }} />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-20"
+            style={{ background: "linear-gradient(to left, rgba(0,0,0,0.8), transparent)" }} />
         </div>
 
+        <div style={{
+          height: "1px",
+          background: "linear-gradient(to right, transparent, rgba(249,115,22,0.3), transparent)",
+          marginTop: "0.5rem",
+        }} />
       </div>
     </section>
   );
