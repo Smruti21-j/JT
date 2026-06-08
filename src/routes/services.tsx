@@ -178,6 +178,41 @@ const SERVICE_GROUPS = [
   },
 ];
 
+/* ─── flat list of every card across all groups ─── */
+type CardEntry = {
+  src: string;
+  label: string;
+  itemTitle: string;
+  detail: string;
+  svcIdx: number;
+  acc: string;
+  svcTitle: string;
+  cardIdx: number; /* position within group */
+};
+
+function buildFlatCards(): CardEntry[] {
+  const out: CardEntry[] = [];
+  SERVICE_GROUPS.forEach((svc, si) => {
+    svc.subImages.forEach((img, ii) => {
+      const raw = svc.items[ii] ?? "";
+      const colon = raw.indexOf(":");
+      out.push({
+        src: img.src,
+        label: img.label,
+        itemTitle: colon > -1 ? raw.slice(0, colon).trim() : img.label,
+        detail: colon > -1 ? raw.slice(colon + 1).trim() : raw,
+        svcIdx: si,
+        acc: PANEL_ACCENT[si],
+        svcTitle: svc.title,
+        cardIdx: ii,
+      });
+    });
+  });
+  return out;
+}
+
+const FLAT_CARDS = buildFlatCards();
+
 const STYLES = `
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -206,22 +241,22 @@ const STYLES = `
     from { width: 0%; }
     to   { width: 100%; }
   }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
+  @keyframes leftFadeIn {
+    from { opacity: 0; transform: translateY(14px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-  @keyframes slideInRight {
-    from { opacity: 0; transform: translateX(40px); }
-    to   { opacity: 1; transform: translateX(0); }
+  @keyframes zoomIn {
+    from { opacity: 0; transform: scale(0.88); }
+    to   { opacity: 1; transform: scale(1); }
   }
-  @keyframes slideInLeft {
-    from { opacity: 0; transform: translateX(-40px); }
-    to   { opacity: 1; transform: translateX(0); }
+  @keyframes overlayIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
   }
 
+  /* ── HERO ── */
   .hero-carousel-slide {
     position: absolute; inset: 0;
-    background-size: cover; background-position: center;
     opacity: 0;
     transition: opacity 1.8s cubic-bezier(0.4,0,0.2,1);
     will-change: opacity;
@@ -245,17 +280,16 @@ const STYLES = `
     animation: pipProgress 4s linear forwards;
   }
 
-  /* ── Split layout ── */
+  /* ── SPLIT LAYOUT ── */
   .split-section {
     display: flex;
-    min-height: 100vh;
+    align-items: flex-start;
     background: #0a0a0a;
-    position: relative;
   }
 
-  /* LEFT — sticky text panel */
+  /* LEFT sticky panel */
   .split-left {
-    width: 42%;
+    width: 38%;
     flex-shrink: 0;
     position: sticky;
     top: 0;
@@ -263,96 +297,287 @@ const STYLES = `
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: clamp(40px,6vw,90px) clamp(24px,4vw,60px) clamp(40px,6vw,90px) clamp(24px,5vw,80px);
+    padding: 0 clamp(28px,4vw,60px) 0 clamp(28px,5vw,72px);
     border-right: 1px solid rgba(255,255,255,0.06);
     overflow: hidden;
+    background: #0a0a0a;
   }
-
-  /* RIGHT — scrollable image panels */
-  .split-right {
-    flex: 1;
-    min-width: 0;
+  .left-animated {
+    animation: leftFadeIn 0.45s cubic-bezier(0.16,1,0.3,1) both;
+    display: flex; flex-direction: column; gap: 18px;
+    position: relative; z-index: 1;
   }
-
-  /* Each service block on the right takes full viewport height */
-  .svc-right-block {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: clamp(32px,5vh,64px) clamp(24px,4vw,56px);
-    gap: 12px;
-    position: relative;
-  }
-
-  /* Image grid inside each right block */
-  .svc-img-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    height: calc(100vh - clamp(64px,10vh,128px));
-  }
-
-  /* Image card */
-  .svc-img-card {
-    position: relative; overflow: hidden;
-    border-radius: 8px; background: #1a1a1a; cursor: pointer;
-  }
-  .svc-img-card img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-    transition: transform 0.55s cubic-bezier(0.16,1,0.3,1);
-  }
-  .svc-img-card:hover img { transform: scale(1.07); }
-  .svc-img-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: var(--accent); transform: scaleX(0); transform-origin: left;
-    transition: transform 0.38s cubic-bezier(0.16,1,0.3,1); z-index: 2;
-  }
-  .svc-img-card:hover::before { transform: scaleX(1); }
-  .svc-img-label {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    padding: 44px 14px 12px;
-    background: linear-gradient(to top, rgba(0,0,0,0.88), transparent);
-    font-size: 9px; letter-spacing: 0.26em; text-transform: uppercase;
-    color: rgba(255,255,255,0.4); transition: color 0.2s; z-index: 1;
-  }
-  .svc-img-card:hover .svc-img-label { color: var(--accent); }
-
-  .svc-img-overlay {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    padding: 32px 14px 14px;
-    background: linear-gradient(to top, rgba(0,0,0,0.97) 65%, rgba(0,0,0,0.7) 85%, transparent 100%);
-    transform: translateY(100%);
-    transition: transform 0.48s cubic-bezier(0.16,1,0.3,1); z-index: 4;
-  }
-  .svc-img-card:hover .svc-img-overlay { transform: translateY(0); }
-  .svc-img-overlay-cat {
-    font-size: 8px; letter-spacing: 0.30em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 7px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .svc-img-overlay-cat::before {
-    content: ''; display: inline-block; width: 16px; height: 1px;
-    background: var(--accent); flex-shrink: 0;
-  }
-  .svc-img-overlay-text {
-    font-size: 10.5px; line-height: 1.68;
-    color: rgba(255,255,255,0.76); letter-spacing: 0.01em;
-  }
-
-  /* Left text animations triggered by .is-active on the block */
-  .left-content { transition: opacity 0.5s ease, transform 0.5s ease; }
-
-  /* progress dots */
   .svc-dot {
     width: 5px; height: 5px; border-radius: 50%;
     background: rgba(255,255,255,0.18);
-    transition: all 0.25s; flex-shrink: 0; cursor: pointer;
+    transition: all 0.25s; flex-shrink: 0;
+    cursor: pointer; border: none; padding: 0;
   }
   .svc-dot.active { transform: scale(1.6); }
+
+  /* RIGHT scrollable column */
+  .split-right {
+    flex: 1;
+    min-width: 0;
+    padding: 32px 36px;
+  }
+
+  /* Service group block */
+  .svc-service-block { margin-bottom: 4px; }
+
+  /* group heading */
+  .svc-group-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .svc-group-number {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.25em;
+    opacity: 0.7;
+  }
+  .svc-group-name {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+
+  /* divider between service groups */
+  .svc-service-divider {
+    height: 1px;
+    background: linear-gradient(to right, var(--accent), transparent);
+    opacity: 0.2;
+    margin: 18px 0 20px;
+  }
+
+  /* ── CARD: fixed height, image left, text right ── */
+  .svc-card {
+    display: flex;
+    align-items: stretch;
+    height: 120px;           /* fixed uniform height for all cards */
+    background: #111214;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 10px;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+  }
+  .svc-card:hover {
+    border-color: var(--accent);
+    background: #16181a;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  /* accent top bar */
+  .svc-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0;
+    height: 2px; z-index: 3;
+    background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+  }
+  .svc-card:hover::before { transform: scaleX(1); }
+
+  /* image thumbnail — fixed width, full card height */
+  .svc-card-img {
+    width: 160px;
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  .svc-card-img img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    filter: saturate(0.75) brightness(0.78);
+    transition: transform 0.55s cubic-bezier(0.16,1,0.3,1), filter 0.35s ease;
+  }
+  .svc-card:hover .svc-card-img img {
+    transform: scale(1.07);
+    filter: saturate(1) brightness(0.92);
+  }
+  /* numeric badge inside image */
+  .svc-card-num {
+    position: absolute; bottom: 8px; left: 10px;
+    font-size: 24px; font-weight: 800; line-height: 1;
+    color: rgba(255,255,255,0.15);
+    letter-spacing: -0.04em;
+    pointer-events: none; user-select: none;
+  }
+
+  /* text area */
+  .svc-card-body {
+    flex: 1; min-width: 0;
+    padding: 16px 20px;
+    display: flex; flex-direction: column;
+    justify-content: center; gap: 6px;
+  }
+  .svc-card-eyebrow {
+    font-size: 8.5px; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .svc-card-eyebrow::before {
+    content: ''; display: inline-block;
+    width: 14px; height: 1.5px;
+    background: var(--accent); flex-shrink: 0;
+  }
+  .svc-card-title {
+    font-size: 0.94rem; font-weight: 700;
+    color: #f0e8df; line-height: 1.25;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .svc-card-desc {
+    font-size: 0.8rem;
+    color: rgba(240,232,220,0.42);
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* view icon on right */
+  .svc-card-arrow {
+    width: 40px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.12);
+    transition: color 0.25s ease, transform 0.25s ease;
+    font-size: 18px;
+  }
+  .svc-card:hover .svc-card-arrow {
+    color: var(--accent);
+    transform: scale(1.2);
+  }
+
+  /* ── LIGHTBOX / ZOOM OVERLAY ── */
+  .svc-lightbox {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(5,4,3,0.92);
+    display: flex; align-items: center; justify-content: center;
+    animation: overlayIn 0.25s ease both;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    cursor: zoom-out;
+  }
+  .svc-lightbox-inner {
+    position: relative;
+    width: min(780px, 90vw);
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.7);
+    animation: zoomIn 0.3s cubic-bezier(0.16,1,0.3,1) both;
+    cursor: default;
+    background: #111214;
+  }
+  .svc-lightbox-img {
+    width: 100%;
+    height: 340px;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.85) brightness(0.88);
+  }
+  .svc-lightbox-body {
+    padding: 28px 32px 32px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .svc-lightbox-eyebrow {
+    font-size: 9px; letter-spacing: 0.38em; text-transform: uppercase;
+    font-weight: 600;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .svc-lightbox-eyebrow::before {
+    content: ''; display: inline-block;
+    width: 18px; height: 1.5px; flex-shrink: 0;
+    background: currentColor;
+  }
+  .svc-lightbox-title {
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-weight: 800; color: #f0e8df;
+    line-height: 1.1; letter-spacing: -0.025em;
+  }
+  .svc-lightbox-divider {
+    height: 1px;
+    opacity: 0.25;
+    border: none;
+    background: currentColor;
+  }
+  .svc-lightbox-desc {
+    font-size: 0.92rem;
+    color: rgba(240,232,220,0.55);
+    line-height: 1.72;
+  }
+  .svc-lightbox-close {
+    position: absolute; top: 14px; right: 14px;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.7); font-size: 16px; line-height: 1;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s ease, color 0.2s ease;
+    z-index: 10;
+  }
+  .svc-lightbox-close:hover { background: rgba(255,130,50,0.25); color: #fff; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 860px) {
+    .split-section { flex-direction: column; }
+    .split-left {
+      width: 100%; position: relative;
+      height: auto; min-height: 50vh;
+      padding: 48px 24px;
+    }
+    .split-right { padding: 20px 16px; }
+    .svc-card { height: auto; min-height: 100px; }
+    .svc-card-img { width: 120px; }
+  }
+  @media (max-width: 480px) {
+    .svc-card { flex-direction: column; height: auto; }
+    .svc-card-img { width: 100%; height: 140px; }
+    .svc-lightbox-img { height: 220px; }
+    .svc-lightbox-body { padding: 20px; }
+  }
 `;
 
-/* ── Video Hero (unchanged) ─────────────────────────────────────────────────── */
+/* ── Lightbox component ── */
+type LightboxCard = CardEntry | null;
+
+function Lightbox({ card, onClose }: { card: LightboxCard; onClose: () => void }) {
+  useEffect(() => {
+    if (!card) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [card, onClose]);
+
+  if (!card) return null;
+
+  return (
+    <div className="svc-lightbox" onClick={onClose}>
+      <div className="svc-lightbox-inner" onClick={(e) => e.stopPropagation()}>
+        <button className="svc-lightbox-close" onClick={onClose} aria-label="Close">✕</button>
+        <img className="svc-lightbox-img" src={card.src} alt={card.label} />
+        <div className="svc-lightbox-body">
+          <div className="svc-lightbox-eyebrow" style={{ color: card.acc }}>
+            {card.svcTitle} — {card.label}
+          </div>
+          <h3 className="svc-lightbox-title">{card.itemTitle}</h3>
+          <hr className="svc-lightbox-divider" style={{ background: card.acc }} />
+          {card.detail && <p className="svc-lightbox-desc">{card.detail}</p>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Video Hero ── */
 function VideoHero() {
   const [current, setCurrent] = useState(0);
   const [pipKey, setPipKey] = useState(0);
@@ -410,28 +635,22 @@ function VideoHero() {
   );
 }
 
-/* ── Split Services Section ─────────────────────────────────────────────────── */
+/* ── Services Split Section ── */
 function ServicesScrollSection() {
   const [activeIdx, setActiveIdx] = useState(0);
-  const blockRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const leftRef = useRef<HTMLDivElement>(null);
+  const [zoomedCard, setZoomedCard] = useState<CardEntry | null>(null);
+  const groupRefs = useRef<{ el: HTMLDivElement; svcIdx: number }[]>([]);
 
-  // IntersectionObserver — whichever right block is most visible sets the left panel
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
-
-    blockRefs.current.forEach((el, i) => {
-      if (!el) return;
+    groupRefs.current.forEach(({ el, svcIdx }) => {
       const io = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveIdx(i);
-        },
-        { threshold: 0.5 }
+        ([entry]) => { if (entry.isIntersecting) setActiveIdx(svcIdx); },
+        { threshold: 0.25, rootMargin: "-10% 0px -50% 0px" }
       );
       io.observe(el);
       observers.push(io);
     });
-
     return () => observers.forEach((io) => io.disconnect());
   }, []);
 
@@ -439,123 +658,137 @@ function ServicesScrollSection() {
   const accent = PANEL_ACCENT[activeIdx];
 
   return (
-    <section className="split-section">
-      <style>{`
-        @keyframes leftFadeIn {
-          from { opacity: 0; transform: translateY(16px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .left-animated {
-          animation: leftFadeIn 0.45s cubic-bezier(0.16,1,0.3,1) both;
-        }
-      `}</style>
+    <>
+      <section className="split-section">
+        {/* LEFT sticky panel */}
+        <div className="split-left">
+          <div style={{
+            position: "absolute", top: 0, left: 0, bottom: 0, width: 2,
+            background: `linear-gradient(180deg, transparent, ${accent} 20%, ${accent} 80%, transparent)`,
+            opacity: 0.7, transition: "background 0.5s ease",
+          }} />
+          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
 
-      {/* ── LEFT sticky panel ── */}
-      <div className="split-left" style={{ background: "#0a0a0a" }}>
-        {/* accent bar */}
-        <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 2, background: `linear-gradient(180deg, transparent, ${accent} 20%, ${accent} 80%, transparent)`, opacity: 0.7, transition: "background 0.5s ease" }} />
+          <div key={activeIdx} className="left-animated">
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <span style={{ fontSize: 11, letterSpacing: "0.3em", color: accent, fontWeight: 600 }}>
+                {String(activeIdx + 1).padStart(2, "0")}
+              </span>
+              <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, ${accent}, transparent)`, opacity: 0.45, maxWidth: 80 }} />
+              <span style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", letterSpacing: "0.2em" }}>
+                {String(SERVICE_GROUPS.length).padStart(2, "0")}
+              </span>
+            </div>
 
-        {/* grid texture */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
+            <p style={{ fontSize: 9, letterSpacing: "0.38em", textTransform: "uppercase", color: accent, display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{ display: "inline-block", width: 22, height: 1, background: accent, flexShrink: 0 }} />
+              {g.eyebrow}
+            </p>
 
-        <div
-          key={activeIdx}   // re-mount = re-animate on service change
-          className="left-animated"
-          style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", gap: 20 }}
-        >
-          {/* index */}
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <span style={{ fontSize: 11, letterSpacing: "0.3em", color: accent, fontWeight: 600 }}>
-              {String(activeIdx + 1).padStart(2, "0")}
-            </span>
-            <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, ${accent}, transparent)`, opacity: 0.5 }} />
-            <span style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", letterSpacing: "0.2em" }}>
-              {String(SERVICE_GROUPS.length).padStart(2, "0")}
-            </span>
-          </div>
+            <h2 style={{ fontSize: "clamp(2rem,3.8vw,3.4rem)", fontWeight: 800, lineHeight: 1.04, letterSpacing: "-0.03em", color: "#f0e8df" }}>
+              {g.title}
+            </h2>
 
-          {/* eyebrow */}
-          <p style={{ fontSize: 9, letterSpacing: "0.38em", textTransform: "uppercase", color: accent, display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ display: "inline-block", width: 22, height: 1, background: accent, flexShrink: 0 }} />
-            {g.eyebrow}
-          </p>
+            <div style={{ height: 1, background: `linear-gradient(to right, ${accent}, transparent)`, opacity: 0.3, maxWidth: 260 }} />
 
-          {/* title */}
-          <h2 style={{ fontSize: "clamp(2rem,4vw,3.6rem)", fontWeight: 800, lineHeight: 1.05, letterSpacing: "-0.03em", color: "#f0e8df" }}>
-            {g.title}
-          </h2>
+            <p style={{ fontSize: "clamp(0.82rem,1.1vw,0.98rem)", lineHeight: 1.76, color: "rgba(240,232,220,0.52)", maxWidth: 360 }}>
+              {g.tagline}
+            </p>
 
-          {/* divider */}
-          <div style={{ height: 1, background: `linear-gradient(to right, ${accent}, transparent)`, opacity: 0.35, maxWidth: 280 }} />
+            <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginTop: 4 }}>
+              <span style={{ fontSize: "clamp(1.8rem,3.5vw,2.8rem)", fontWeight: 800, color: accent, lineHeight: 1, letterSpacing: "-0.03em" }}>
+                {g.stat.value}
+              </span>
+              <span style={{ fontSize: 10, color: "rgba(255,255,255,0.32)", letterSpacing: "0.15em", textTransform: "uppercase" }}>
+                {g.stat.label}
+              </span>
+            </div>
 
-          {/* tagline */}
-          <p style={{ fontSize: "clamp(0.88rem,1.2vw,1.05rem)", lineHeight: 1.72, color: "rgba(240,232,220,0.6)", maxWidth: 380 }}>
-            {g.tagline}
-          </p>
-
-          {/* stat */}
-          <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginTop: 8 }}>
-            <span style={{ fontSize: "clamp(2rem,4vw,3rem)", fontWeight: 800, color: accent, lineHeight: 1, letterSpacing: "-0.03em" }}>
-              {g.stat.value}
-            </span>
-            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", letterSpacing: "0.12em", textTransform: "uppercase" }}>
-              {g.stat.label}
-            </span>
-          </div>
-
-          {/* dots nav */}
-          <div style={{ display: "flex", gap: 6, marginTop: 16 }}>
-            {SERVICE_GROUPS.map((_, di) => (
-              <button
-                key={di}
-                className={`svc-dot${di === activeIdx ? " active" : ""}`}
-                style={{
-                  background: di === activeIdx ? accent : "rgba(255,255,255,0.18)",
-                  border: "none", cursor: "pointer", padding: 0,
-                }}
-                onClick={() => {
-                  blockRefs.current[di]?.scrollIntoView({ behavior: "smooth" });
-                }}
-              />
-            ))}
+            <div style={{ display: "flex", gap: 6, marginTop: 12, flexWrap: "wrap" }}>
+              {SERVICE_GROUPS.map((_, di) => {
+                const firstGroup = groupRefs.current.find((c) => c.svcIdx === di);
+                return (
+                  <button
+                    key={di}
+                    className={`svc-dot${di === activeIdx ? " active" : ""}`}
+                    style={{ background: di === activeIdx ? accent : "rgba(255,255,255,0.18)" }}
+                    onClick={() => firstGroup?.el.scrollIntoView({ behavior: "smooth" })}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* ── RIGHT scrollable blocks ── */}
-      <div className="split-right">
-        {SERVICE_GROUPS.map((svc, i) => {
-          const acc = PANEL_ACCENT[i];
-          return (
-            <div
-              key={svc.title}
-              ref={(el) => { blockRefs.current[i] = el; }}
-              className="svc-right-block"
-              style={{ "--accent": acc } as React.CSSProperties}
-            >
-              {/* 2×2 image grid */}
-              <div className="svc-img-grid">
-                {svc.subImages.map((si, idx) => {
-                  const colonIdx = svc.items[idx]?.indexOf(":") ?? -1;
-                  const cat    = colonIdx > -1 ? svc.items[idx].slice(0, colonIdx).trim() : "";
-                  const detail = colonIdx > -1 ? svc.items[idx].slice(colonIdx + 1).trim() : svc.items[idx] ?? "";
+        {/* RIGHT — scrollable card list */}
+        <div className="split-right">
+          {SERVICE_GROUPS.map((svc, si) => {
+            const acc = PANEL_ACCENT[si];
+            return (
+              <div
+                key={svc.title}
+                className="svc-service-block"
+                ref={(el) => { if (el) groupRefs.current.push({ el, svcIdx: si }); }}
+              >
+                {si > 0 && (
+                  <div className="svc-service-divider" style={{ "--accent": acc } as React.CSSProperties} />
+                )}
+
+                {/* group heading */}
+                <div className="svc-group-heading">
+                  <span className="svc-group-number" style={{ color: acc }}>
+                    {String(si + 1).padStart(2, "0")}
+                  </span>
+                  <div style={{ width: 18, height: 1, background: acc, opacity: 0.4 }} />
+                  <span className="svc-group-name">{svc.title}</span>
+                </div>
+
+                {/* cards */}
+                {svc.subImages.map((img, ii) => {
+                  const raw = svc.items[ii] ?? "";
+                  const colon = raw.indexOf(":");
+                  const itemTitle = colon > -1 ? raw.slice(0, colon).trim() : img.label;
+                  const detail = colon > -1 ? raw.slice(colon + 1).trim() : raw;
+                  const cardEntry: CardEntry = { src: img.src, label: img.label, itemTitle, detail, svcIdx: si, acc, svcTitle: svc.title, cardIdx: ii };
+
                   return (
-                    <div key={si.label} className="svc-img-card">
-                      <img src={si.src} alt={si.label} loading="lazy" />
-                      <div className="svc-img-label">{si.label}</div>
-                      <div className="svc-img-overlay">
-                        {cat && <div className="svc-img-overlay-cat">{cat}</div>}
-                        <div className="svc-img-overlay-text">{detail}</div>
+                    <div
+                      key={img.label}
+                      className="svc-card"
+                      style={{ "--accent": acc } as React.CSSProperties}
+                      onClick={() => setZoomedCard(cardEntry)}
+                    >
+                      {/* image left */}
+                      <div className="svc-card-img">
+                        <img src={img.src} alt={img.label} loading={si === 0 && ii === 0 ? "eager" : "lazy"} />
+                        <div className="svc-card-num">{String(ii + 1).padStart(2, "0")}</div>
+                      </div>
+
+                      {/* text right */}
+                      <div className="svc-card-body">
+                        <div className="svc-card-eyebrow" style={{ "--accent": acc } as React.CSSProperties}>
+                          {img.label}
+                        </div>
+                        <div className="svc-card-title">{itemTitle}</div>
+                        {detail && <div className="svc-card-desc">{detail}</div>}
+                      </div>
+
+                      {/* arrow */}
+                      <div className="svc-card-arrow" style={{ "--accent": acc } as React.CSSProperties}>
+                        ↗
                       </div>
                     </div>
                   );
                 })}
               </div>
-            </div>
-          );
-        })}
-      </div>
-    </section>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Lightbox */}
+      <Lightbox card={zoomedCard} onClose={() => setZoomedCard(null)} />
+    </>
   );
 }
 
