@@ -5,6 +5,7 @@ import { AnimatedHero } from "@/components/site/AnimatedHero";
 import { useReveal } from "@/hooks/use-reveal";
 import { useEffect, useRef, useState, useCallback } from "react";
 import aboutImg from "@/assets/page-about.jpg";
+import aboutImg2 from "/public/About1.jpg";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const VMV = [

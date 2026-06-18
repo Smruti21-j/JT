@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { useReveal } from "@/hooks/use-reveal";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import dataAiImg from "@/assets/service-data-ai.jpg";
 import digitalImg from "@/assets/service-digital.jpg";
 import productImg from "@/assets/service-product.jpg";
@@ -12,27 +12,21 @@ import growthImg from "@/assets/service-growth.jpg";
 import managedImg from "@/assets/service-managed.jpg";
 
 const CAROUSEL_IMAGES = [
-  "/services-c1.png",
-  "/services-c2.png",
-  "/services-c3.png",
-  "/services-c4.png",
-  "/services-c5.png",
+  "/services-c1.png", "/services-c2.png", "/services-c3.png",
+  "/services-c4.png", "/services-c5.png",
 ];
 
 const PANEL_ACCENT = [
-  "rgb(255,130,50)",
-  "rgb(180,180,180)",
-  "rgb(255,160,60)",
-  "rgb(255,130,50)",
-  "rgb(180,180,180)",
-  "rgb(255,160,60)",
-  "rgb(255,130,50)",
-  "rgb(180,180,180)",
+  "rgb(255,130,50)", "rgb(160,200,255)", "rgb(255,160,60)",
+  "rgb(255,100,80)", "rgb(140,220,180)", "rgb(255,160,60)",
+  "rgb(255,130,50)", "rgb(160,200,255)",
 ];
 
 const SERVICE_GROUPS = [
   {
     title: "Artificial Intelligence",
+    titleTop: "ARTIFICIAL",
+    titleBtm: "Intelligence",
     image: dataAiImg,
     eyebrow: "Neural Command Layer",
     tagline: "Move from AI that talks to AI that acts. We build the proactive engines that reason, plan, and execute missions across your entire business.",
@@ -52,6 +46,8 @@ const SERVICE_GROUPS = [
   },
   {
     title: "Digital Transformation",
+    titleTop: "DIGITAL",
+    titleBtm: "Transformation",
     image: digitalImg,
     eyebrow: "Enterprise Singularity",
     tagline: "Reclaim your digital destiny. We transform legacy chaos into a self-evolving operating model where you own the data and the results.",
@@ -71,6 +67,8 @@ const SERVICE_GROUPS = [
   },
   {
     title: "Product Engineering",
+    titleTop: "PRODUCT",
+    titleBtm: "Engineering",
     image: productImg,
     eyebrow: "Precision Build Matrix",
     tagline: "Forge the impossible with future-fit engineering. We build resilient digital products designed for your infinite scale.",
@@ -90,6 +88,8 @@ const SERVICE_GROUPS = [
   },
   {
     title: "Application Transformation",
+    titleTop: "APPLICATION",
+    titleBtm: "Transformation",
     image: appImg,
     eyebrow: "Omniscreen Deployment",
     tagline: "High-velocity platforms for a real-time world. We deploy the composable applications you need to optimize operations in near-real-time.",
@@ -108,6 +108,8 @@ const SERVICE_GROUPS = [
   },
   {
     title: "UI / UX Design",
+    titleTop: "UI / UX",
+    titleBtm: "Design",
     image: uiuxImg,
     eyebrow: "Neuro-Experience Design",
     tagline: "Interfaces that sense human intent. We design the human-AI symbiosis that makes your brand feel natural and inevitable.",
@@ -125,6 +127,8 @@ const SERVICE_GROUPS = [
   },
   {
     title: "Consulting",
+    titleTop: "STRATEGIC",
+    titleBtm: "Consulting",
     image: consultingImg,
     eyebrow: "Strategic Foresight Engine",
     tagline: "Turn technical complexity into unvarnished business clarity. We provide the blueprint for your world's most important decisions.",
@@ -142,6 +146,8 @@ const SERVICE_GROUPS = [
   },
   {
     title: "Performance & Growth",
+    titleTop: "PERFORMANCE",
+    titleBtm: "& Growth",
     image: growthImg,
     eyebrow: "Perpetual Optimisation Loop",
     tagline: "Stop chasing vanity metrics; start commanding results. Activate a continuous cycle of optimization that drives your growth.",
@@ -159,6 +165,8 @@ const SERVICE_GROUPS = [
   },
   {
     title: "Autonomous Ops",
+    titleTop: "AUTONOMOUS",
+    titleBtm: "Ops",
     image: managedImg,
     eyebrow: "Autonomous Operations Grid",
     tagline: "The self-healing backbone for your digital core. We keep your IT secure and invisible so you can focus purely on your scale.",
@@ -178,616 +186,600 @@ const SERVICE_GROUPS = [
   },
 ];
 
-/* ─── flat list of every card across all groups ─── */
-type CardEntry = {
-  src: string;
-  label: string;
-  itemTitle: string;
-  detail: string;
-  svcIdx: number;
-  acc: string;
-  svcTitle: string;
-  cardIdx: number; /* position within group */
-};
+type Step =
+  | { type: "wipe"; svcIdx: number }
+  | { type: "card"; svcIdx: number; cardIdx: number };
 
-function buildFlatCards(): CardEntry[] {
-  const out: CardEntry[] = [];
+function buildSteps(): Step[] {
+  const out: Step[] = [];
   SERVICE_GROUPS.forEach((svc, si) => {
-    svc.subImages.forEach((img, ii) => {
-      const raw = svc.items[ii] ?? "";
-      const colon = raw.indexOf(":");
-      out.push({
-        src: img.src,
-        label: img.label,
-        itemTitle: colon > -1 ? raw.slice(0, colon).trim() : img.label,
-        detail: colon > -1 ? raw.slice(colon + 1).trim() : raw,
-        svcIdx: si,
-        acc: PANEL_ACCENT[si],
-        svcTitle: svc.title,
-        cardIdx: ii,
-      });
+    if (si > 0) out.push({ type: "wipe", svcIdx: si });
+    svc.subImages.forEach((_, ci) => {
+      out.push({ type: "card", svcIdx: si, cardIdx: ci });
     });
   });
   return out;
 }
+const STEPS = buildSteps();
+const SCROLL_PER_STEP = 350;
 
-const FLAT_CARDS = buildFlatCards();
+function parseItem(raw: string) {
+  const c = raw.indexOf(":");
+  return {
+    title: c > -1 ? raw.slice(0, c).trim() : raw,
+    detail: c > -1 ? raw.slice(c + 1).trim() : "",
+  };
+}
 
 const STYLES = `
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,300;1,400&display=swap');
 
-  @keyframes heroIn {
-    from { opacity: 0; transform: translateY(28px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes scanLine {
-    0%   { top: -2px; opacity: 0; }
-    10%  { opacity: 1; }
-    90%  { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
-  }
-  @keyframes lineExpand {
-    from { transform: scaleX(0); transform-origin: left; }
-    to   { transform: scaleX(1); transform-origin: left; }
-  }
-  @keyframes kenBurns {
-    0%   { transform: scale(1)    translateX(0)    translateY(0); }
-    25%  { transform: scale(1.06) translateX(-1%)  translateY(-0.5%); }
-    50%  { transform: scale(1.04) translateX(1%)   translateY(0.5%); }
-    75%  { transform: scale(1.07) translateX(-0.5%) translateY(1%); }
-    100% { transform: scale(1)    translateX(0)    translateY(0); }
-  }
-  @keyframes pipProgress {
-    from { width: 0%; }
-    to   { width: 100%; }
-  }
-  @keyframes leftFadeIn {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes zoomIn {
-    from { opacity: 0; transform: scale(0.88); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-  @keyframes overlayIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* ── HERO ── */
-  .hero-carousel-slide {
-    position: absolute; inset: 0;
-    opacity: 0;
-    transition: opacity 1.8s cubic-bezier(0.4,0,0.2,1);
-    will-change: opacity;
-  }
-  .hero-carousel-slide.active { opacity: 1; }
-  .hero-carousel-slide .kb-inner {
-    position: absolute; inset: -4%;
-    background-size: cover; background-position: center;
-    filter: saturate(0.55) brightness(0.42);
-    animation: kenBurns 18s ease-in-out infinite;
-    will-change: transform;
-  }
-  .carousel-pip {
-    height: 4px; border-radius: 2px; border: none; cursor: pointer;
-    padding: 0; transition: width 0.4s cubic-bezier(0.16,1,0.3,1), background 0.4s ease;
-    flex-shrink: 0;
-  }
-  .carousel-pip-track {
-    position: absolute; top: 0; left: 0; height: 100%;
-    border-radius: 2px; background: rgb(255,130,50);
-    animation: pipProgress 4s linear forwards;
-  }
+@keyframes heroIn    { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:none} }
+@keyframes lineExp   { from{transform:scaleX(0);transform-origin:left} to{transform:scaleX(1)} }
+@keyframes kenBurns  { 0%{transform:scale(1) translate(0,0)} 50%{transform:scale(1.07) translate(-1%,-0.6%)} 100%{transform:scale(1) translate(0,0)} }
+@keyframes pipFill   { from{width:0%} to{width:100%} }
+@keyframes scanLine  { 0%{top:-2px;opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{top:100%;opacity:0} }
+@keyframes cardIn {
+  0%   { opacity:0; transform:translateY(24px) scale(0.97); }
+  100% { opacity:1; transform:translateY(0) scale(1); }
+}
+@keyframes panelTextIn  { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
+@keyframes panelTextInL { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:none} }
+@keyframes panelFadeIn  { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+@keyframes panelFadeOut { from{opacity:1;transform:translateY(0)} to{opacity:0;transform:translateY(-14px)} }
+@keyframes shimmer { 0%{background-position:200% center} 100%{background-position:-200% center} }
+@keyframes ticker  { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+@keyframes overlayIn { from{opacity:0} to{opacity:1} }
+@keyframes zoomIn    { from{opacity:0;transform:scale(0.88)} to{opacity:1;transform:scale(1)} }
+@keyframes dotPulse  { 0%,100%{box-shadow:0 0 0 0 rgba(255,130,50,0)} 50%{box-shadow:0 0 0 4px rgba(255,130,50,0.2)} }
 
-  /* ── SPLIT LAYOUT ── */
-  .split-section {
-    display: flex;
-    align-items: flex-start;
-    background: #0a0a0a;
-  }
+/* ─── Hero ─── */
+.hs-slide { position:absolute;inset:0;opacity:0;transition:opacity 1.8s cubic-bezier(.4,0,.2,1); }
+.hs-slide.active { opacity:1; }
+.hs-slide .kb { position:absolute;inset:-4%;background-size:cover;background-position:center;filter:saturate(0.5) brightness(0.38);animation:kenBurns 22s ease-in-out infinite; }
+.hs-pip { height:3px;border-radius:2px;border:none;cursor:pointer;padding:0;flex-shrink:0;overflow:hidden;position:relative;transition:width .4s cubic-bezier(.16,1,.3,1); }
+.hs-pip-fill { position:absolute;top:0;left:0;height:100%;border-radius:2px;background:rgb(255,130,50);animation:pipFill 4s linear forwards; }
 
-  /* LEFT sticky panel */
-  .split-left {
-    width: 38%;
-    flex-shrink: 0;
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 clamp(28px,4vw,60px) 0 clamp(28px,5vw,72px);
-    border-right: 1px solid rgba(255,255,255,0.06);
-    overflow: hidden;
-    background: #0a0a0a;
-  }
-  .left-animated {
-    animation: leftFadeIn 0.45s cubic-bezier(0.16,1,0.3,1) both;
-    display: flex; flex-direction: column; gap: 18px;
-    position: relative; z-index: 1;
-  }
-  .svc-dot {
-    width: 5px; height: 5px; border-radius: 50%;
-    background: rgba(255,255,255,0.18);
-    transition: all 0.25s; flex-shrink: 0;
-    cursor: pointer; border: none; padding: 0;
-  }
-  .svc-dot.active { transform: scale(1.6); }
+/* ─── Intro ─── */
+.sv-intro { background:#050505;padding:100px clamp(28px,5vw,72px) 0;display:flex;align-items:flex-end;justify-content:space-between;gap:40px; }
+.sv-intro-eyebrow { font-size:9px;letter-spacing:.42em;text-transform:uppercase;color:rgb(255,130,50);font-weight:700;display:flex;align-items:center;gap:12px;margin-bottom:20px; }
+.sv-intro-eyebrow::before { content:'';width:28px;height:1.5px;background:currentColor;flex-shrink:0; }
+.sv-intro-title { font-size:clamp(2.4rem,5vw,4.2rem);font-weight:900;color:#f0e8df;line-height:1.03;letter-spacing:-.04em;margin-bottom:14px; }
+.sv-intro-title em { font-style:italic;font-weight:300;color:rgb(255,130,50);font-family:'Playfair Display',Georgia,serif;letter-spacing:-.02em; }
+.sv-intro-sub { font-size:clamp(.84rem,1.1vw,.96rem);color:rgba(240,232,220,.38);line-height:1.78;max-width:430px; }
+.sv-intro-count-num { font-size:clamp(3rem,7vw,5.5rem);font-weight:900;line-height:1;letter-spacing:-.06em;color:rgba(255,255,255,.05); }
+.sv-intro-count-label { font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.14); }
 
-  /* RIGHT scrollable column */
-  .split-right {
-    flex: 1;
-    min-width: 0;
-    padding: 32px 36px;
-  }
+/* ─── Scroll container: 100vh sticky, everything fits in viewport ─── */
+.sv-outer { position:relative;background:#050505; }
+.sv-sticky {
+  position:sticky;top:0;
+  height:100vh;
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:48px 1fr;
+  grid-template-rows:2px 1fr 38px;
+}
 
-  /* Service group block */
-  .svc-service-block { margin-bottom: 4px; }
+.sv-progress { grid-column:1/-1;grid-row:1;background:rgba(255,255,255,.05); }
+.sv-progress-fill { height:100%;transition:width .12s linear;background:linear-gradient(to right,var(--acc,rgb(255,130,50)),rgba(255,180,80,.3)); }
 
-  /* group heading */
-  .svc-group-heading {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
-  .svc-group-number {
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.25em;
-    opacity: 0.7;
-  }
-  .svc-group-name {
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 0.18em; text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
-  }
+.sv-rail { grid-column:1;grid-row:2;border-right:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0; }
+.sv-rail-label { writing-mode:vertical-rl;font-size:8px;letter-spacing:.34em;text-transform:uppercase;color:rgba(255,255,255,.15);font-weight:600;user-select:none; }
+.sv-rail-sep { width:1px;height:28px;background:rgba(255,255,255,.08);margin:10px 0; }
+.sv-rail-cur { font-size:11px;font-weight:800;letter-spacing:.04em; }
+.sv-rail-total { font-size:9px;color:rgba(255,255,255,.18); }
 
-  /* divider between service groups */
-  .svc-service-divider {
-    height: 1px;
-    background: linear-gradient(to right, var(--accent), transparent);
-    opacity: 0.2;
-    margin: 18px 0 20px;
-  }
+/* panels fills the grid cell exactly; its children are absolute-positioned panels */
+.sv-panels { grid-column:2;grid-row:2;position:relative;overflow:hidden; }
 
-  /* ── CARD: fixed height, image left, text right ── */
-  .svc-card {
-    display: flex;
-    align-items: stretch;
-    height: 120px;           /* fixed uniform height for all cards */
-    background: #111214;
-    border: 1px solid rgba(255,255,255,0.06);
-    border-radius: 8px;
-    overflow: hidden;
-    margin-bottom: 10px;
-    cursor: pointer;
-    position: relative;
-    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
-  }
-  .svc-card:hover {
-    border-color: var(--accent);
-    background: #16181a;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-  }
-  /* accent top bar */
-  .svc-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0;
-    height: 2px; z-index: 3;
-    background: var(--accent);
-    transform: scaleX(0); transform-origin: left;
-    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
-  }
-  .svc-card:hover::before { transform: scaleX(1); }
+.sv-ticker { grid-column:1/-1;grid-row:3;overflow:hidden;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;background:rgba(5,5,5,.8);backdrop-filter:blur(4px); }
+.sv-ticker-track { display:flex;animation:ticker 35s linear infinite;white-space:nowrap; }
+.sv-ticker-item { display:flex;align-items:center;gap:0;font-size:8px;letter-spacing:.32em;text-transform:uppercase;color:rgba(255,255,255,.1);padding:0 24px;flex-shrink:0; }
+.sv-ticker-dot { width:3px;height:3px;border-radius:50%;background:rgba(255,130,50,.35);margin-right:24px; }
 
-  /* image thumbnail — fixed width, full card height */
-  .svc-card-img {
-    width: 160px;
-    flex-shrink: 0;
-    overflow: hidden;
-    position: relative;
-  }
-  .svc-card-img img {
-    width: 100%; height: 100%;
-    object-fit: cover; display: block;
-    filter: saturate(0.75) brightness(0.78);
-    transition: transform 0.55s cubic-bezier(0.16,1,0.3,1), filter 0.35s ease;
-  }
-  .svc-card:hover .svc-card-img img {
-    transform: scale(1.07);
-    filter: saturate(1) brightness(0.92);
-  }
-  /* numeric badge inside image */
-  .svc-card-num {
-    position: absolute; bottom: 8px; left: 10px;
-    font-size: 24px; font-weight: 800; line-height: 1;
-    color: rgba(255,255,255,0.15);
-    letter-spacing: -0.04em;
-    pointer-events: none; user-select: none;
-  }
+/* ─── Panels ─── */
+.sv-panel {
+  position:absolute;inset:0;
+  display:grid;
+  grid-template-columns:48% 1fr;
+  grid-template-rows:100%;   /* single row, both cols fill full height */
+  pointer-events:none;
+  opacity:0;
+  will-change:opacity,transform;
+  min-height:0;              /* prevent grid blowout */
+}
+.sv-panel.sv-current { pointer-events:auto;opacity:1;z-index:2; }
+.sv-panel.sv-wipe-in  { animation:panelFadeIn  0.6s cubic-bezier(.16,1,.3,1) both;z-index:3; }
+.sv-panel.sv-wipe-out { animation:panelFadeOut 0.5s cubic-bezier(.4,0,.2,1) both;z-index:1; }
 
-  /* text area */
-  .svc-card-body {
-    flex: 1; min-width: 0;
-    padding: 16px 20px;
-    display: flex; flex-direction: column;
-    justify-content: center; gap: 6px;
-  }
-  .svc-card-eyebrow {
-    font-size: 8.5px; letter-spacing: 0.32em; text-transform: uppercase;
-    color: var(--accent); font-weight: 600;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .svc-card-eyebrow::before {
-    content: ''; display: inline-block;
-    width: 14px; height: 1.5px;
-    background: var(--accent); flex-shrink: 0;
-  }
-  .svc-card-title {
-    font-size: 0.94rem; font-weight: 700;
-    color: #f0e8df; line-height: 1.25;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .svc-card-desc {
-    font-size: 0.8rem;
-    color: rgba(240,232,220,0.42);
-    line-height: 1.55;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+/* ─── Left image ─── */
+.sv-img { position:relative;overflow:hidden; }
+.sv-img img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(0.55) brightness(0.5);animation:kenBurns 24s ease-in-out infinite; }
+.sv-img-grad { position:absolute;inset:0;z-index:1;background:linear-gradient(100deg,transparent 38%,#050505 100%),linear-gradient(180deg,rgba(5,5,5,.25) 0%,transparent 30%,rgba(5,5,5,.5) 100%); }
+.sv-img-stripes { position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.08;background-image:repeating-linear-gradient(-45deg,rgba(255,255,255,.06) 0px,rgba(255,255,255,.06) 1px,transparent 1px,transparent 12px); }
+.sv-img-index { position:absolute;bottom:32px;left:36px;z-index:3;font-size:clamp(4rem,8vw,7rem);font-weight:900;line-height:1;letter-spacing:-.07em;color:rgba(255,255,255,.06);user-select:none; }
+.sv-stat { position:absolute;top:36px;left:36px;z-index:3; }
+.sv-stat-val { display:block;font-size:clamp(2.6rem,4.5vw,3.8rem);font-weight:900;line-height:1;letter-spacing:-.05em;background:linear-gradient(90deg,#f0e8df 0%,var(--acc,rgb(255,130,50)) 40%,#f0e8df 60%,var(--acc,rgb(255,130,50)) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite; }
+.sv-stat-lbl { font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:rgba(240,232,220,.4);margin-top:4px;display:block; }
 
-  /* view icon on right */
-  .svc-card-arrow {
-    width: 40px; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    color: rgba(255,255,255,0.12);
-    transition: color 0.25s ease, transform 0.25s ease;
-    font-size: 18px;
-  }
-  .svc-card:hover .svc-card-arrow {
-    color: var(--accent);
-    transform: scale(1.2);
-  }
+/* ─── Right content: fills full panel height, scrolls internally if needed ─── */
+.sv-content {
+  display:flex;
+  flex-direction:column;
+  padding:clamp(20px,2.5vh,36px) 28px clamp(16px,2vh,28px) 36px;
+  position:relative;
+  background:#050505;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:none;
+  height:100%;              /* fill the grid cell */
+  min-height:0;             /* allow shrinking below content size */
+  justify-content:center;   /* vertically center when content is shorter than panel */
+}
+.sv-content::-webkit-scrollbar { display:none; }
+.sv-content::before { content:'';position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:26px 26px; }
+.sv-content-bar { position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent,var(--acc,rgb(255,130,50)) 25%,var(--acc,rgb(255,130,50)) 75%,transparent); }
+.sv-content-inner { position:relative;z-index:1;display:flex;flex-direction:column;gap:0; }
 
-  /* ── LIGHTBOX / ZOOM OVERLAY ── */
-  .svc-lightbox {
-    position: fixed; inset: 0; z-index: 9999;
-    background: rgba(5,4,3,0.92);
-    display: flex; align-items: center; justify-content: center;
-    animation: overlayIn 0.25s ease both;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    cursor: zoom-out;
-  }
-  .svc-lightbox-inner {
-    position: relative;
-    width: min(780px, 90vw);
-    border-radius: 14px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 32px 80px rgba(0,0,0,0.7);
-    animation: zoomIn 0.3s cubic-bezier(0.16,1,0.3,1) both;
-    cursor: default;
-    background: #111214;
-  }
-  .svc-lightbox-img {
-    width: 100%;
-    height: 340px;
-    object-fit: cover;
-    display: block;
-    filter: saturate(0.85) brightness(0.88);
-  }
-  .svc-lightbox-body {
-    padding: 28px 32px 32px;
-    display: flex; flex-direction: column; gap: 10px;
-  }
-  .svc-lightbox-eyebrow {
-    font-size: 9px; letter-spacing: 0.38em; text-transform: uppercase;
-    font-weight: 600;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .svc-lightbox-eyebrow::before {
-    content: ''; display: inline-block;
-    width: 18px; height: 1.5px; flex-shrink: 0;
-    background: currentColor;
-  }
-  .svc-lightbox-title {
-    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
-    font-weight: 800; color: #f0e8df;
-    line-height: 1.1; letter-spacing: -0.025em;
-  }
-  .svc-lightbox-divider {
-    height: 1px;
-    opacity: 0.25;
-    border: none;
-    background: currentColor;
-  }
-  .svc-lightbox-desc {
-    font-size: 0.92rem;
-    color: rgba(240,232,220,0.55);
-    line-height: 1.72;
-  }
-  .svc-lightbox-close {
-    position: absolute; top: 14px; right: 14px;
-    width: 34px; height: 34px; border-radius: 50%;
-    background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.12);
-    color: rgba(255,255,255,0.7); font-size: 16px; line-height: 1;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s ease, color 0.2s ease;
-    z-index: 10;
-  }
-  .svc-lightbox-close:hover { background: rgba(255,130,50,0.25); color: #fff; }
+/* ─── Eyebrow ─── */
+.sv-eyebrow { font-size:8.5px;letter-spacing:.38em;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-shrink:0;animation:panelTextInL .45s .0s cubic-bezier(.16,1,.3,1) both; }
+.sv-slash { font-size:1rem;font-weight:200;color:rgba(255,255,255,.14);margin:0 4px; }
 
-  /* ── RESPONSIVE ── */
-  @media (max-width: 860px) {
-    .split-section { flex-direction: column; }
-    .split-left {
-      width: 100%; position: relative;
-      height: auto; min-height: 50vh;
-      padding: 48px 24px;
-    }
-    .split-right { padding: 20px 16px; }
-    .svc-card { height: auto; min-height: 100px; }
-    .svc-card-img { width: 120px; }
-  }
-  @media (max-width: 480px) {
-    .svc-card { flex-direction: column; height: auto; }
-    .svc-card-img { width: 100%; height: 140px; }
-    .svc-lightbox-img { height: 220px; }
-    .svc-lightbox-body { padding: 20px; }
-  }
+/* ─── Title ─── */
+.sv-title { line-height:1.0;letter-spacing:-.03em;margin-bottom:8px;flex-shrink:0;animation:panelTextIn .5s .06s cubic-bezier(.16,1,.3,1) both; }
+.sv-title-top { display:block;font-size:clamp(1.4rem,2.4vw,2.6rem);font-weight:900;color:#f0e8df;letter-spacing:-.04em;text-transform:uppercase;line-height:1.0; }
+.sv-title-btm { display:block;font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.2rem,2.1vw,2.3rem);font-weight:300;font-style:italic;color:rgba(240,232,220,.62);letter-spacing:-.01em;line-height:1.1;margin-top:2px; }
+
+/* ─── Tagline ─── */
+.sv-tagline { font-size:clamp(.74rem,.9vw,.86rem);color:rgba(240,232,220,.36);line-height:1.65;max-width:400px;margin-bottom:10px;flex-shrink:0;animation:panelTextIn .5s .12s cubic-bezier(.16,1,.3,1) both; }
+
+/* ─── Rule ─── */
+.sv-rule { height:1px;width:100%;max-width:260px;margin-bottom:12px;flex-shrink:0;background:rgba(255,255,255,.07);position:relative;overflow:hidden;animation:panelTextIn .4s .16s ease both; }
+.sv-rule::after { content:'';position:absolute;inset:0;background:linear-gradient(to right,var(--acc,rgb(255,130,50)),transparent);transform:scaleX(0);transform-origin:left;animation:lineExp .8s .35s cubic-bezier(.16,1,.3,1) both; }
+
+/* ─── Cards grid: tighter gap ─── */
+.sv-cards {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  flex-shrink:0;
+}
+
+/* ─── Card ─── */
+.sv-card {
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:12px;overflow:hidden;cursor:pointer;
+  background:#111114;position:relative;
+  display:flex;flex-direction:column;
+  opacity:0;
+  transition:border-color .3s ease,box-shadow .3s ease,transform .3s ease;
+}
+.sv-card:hover { border-color:rgba(255,255,255,.28);box-shadow:0 14px 48px rgba(0,0,0,.6);transform:translateY(-3px); }
+.sv-card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--acc,rgb(255,130,50));transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.16,1,.3,1);z-index:2; }
+.sv-card:hover::before { transform:scaleX(1); }
+.sv-card.sv-card-visible { animation:cardIn .65s cubic-bezier(.16,1,.3,1) both; }
+
+/* ─── Card image: clamp height so cards never overflow the panel ─── */
+.sv-card-img { width:100%;height:clamp(90px,12vh,140px);overflow:hidden;flex-shrink:0;position:relative; }
+.sv-card-img img { width:100%;height:100%;object-fit:cover;display:block;filter:saturate(0.5) brightness(0.58);transition:filter .4s ease,transform .5s cubic-bezier(.16,1,.3,1); }
+.sv-card:hover .sv-card-img img { filter:saturate(.9) brightness(.85);transform:scale(1.06); }
+.sv-card-img::after { content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,transparent 30%,rgba(17,17,20,.9) 100%); }
+
+/* ─── Card body: tighter padding so card fits within viewport ─── */
+.sv-card-body { padding:10px 14px 12px;flex:1;display:flex;flex-direction:column;gap:4px; }
+
+/* FIX: label now clearly visible with accent color at full opacity */
+.sv-card-label {
+  font-size:8px;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  font-weight:700;
+  color:var(--acc,rgb(255,130,50));
+  opacity:1;
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+.sv-card-label::before { content:'';width:9px;height:1px;background:currentColor;flex-shrink:0; }
+
+/* FIX: title is now fully opaque warm white — was getting lost on dark bg */
+.sv-card-title {
+  font-size:.88rem;
+  font-weight:800;
+  color:#e8dfd4;
+  line-height:1.25;
+  letter-spacing:-.01em;
+  opacity:1;
+}
+
+/* FIX: detail text opacity raised from .38 to .70 — much more readable */
+.sv-card-detail {
+  font-size:.74rem;
+  color:rgba(232,223,212,.70);
+  line-height:1.62;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.sv-card-arrow { margin-top:8px;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--acc,rgb(255,130,50));opacity:0;transform:translateY(4px);transition:opacity .25s ease,transform .25s ease;display:flex;align-items:center;gap:4px; }
+.sv-card-arrow::after { content:'↗';font-size:11px; }
+.sv-card:hover .sv-card-arrow { opacity:1;transform:none; }
+
+/* ─── Step badge ─── */
+.sv-step-badge { display:flex;align-items:baseline;gap:6px;flex-shrink:0;padding-top:10px;margin-top:2px; }
+.sv-step-cur { font-size:1.9rem;font-weight:900;line-height:1;letter-spacing:-.05em; }
+.sv-step-label { font-size:8px;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.2); }
+
+/* ─── Nav dots ─── */
+.sv-dots { position:absolute;right:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:10; }
+.sv-dot-wrap { position:relative;display:flex;align-items:center;width:20px;height:20px;cursor:pointer;justify-content:center; }
+.sv-dot { width:5px;height:5px;border-radius:50%;border:none;padding:0;background:rgba(255,255,255,.16);cursor:pointer;transition:all .3s ease; }
+.sv-dot.active { background:rgb(255,130,50);box-shadow:0 0 8px rgba(255,130,50,.6);animation:dotPulse 2s ease infinite; }
+.sv-dot-wrap:hover .sv-dot { background:rgba(255,255,255,.5);transform:scale(1.5); }
+.sv-dot-tip { position:absolute;right:24px;top:50%;transform:translateY(-50%);background:rgba(8,8,8,.92);border:1px solid rgba(255,255,255,.09);border-radius:4px;padding:4px 9px;white-space:nowrap;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.65);opacity:0;pointer-events:none;transition:opacity .2s ease; }
+.sv-dot-wrap:hover .sv-dot-tip { opacity:1; }
+
+/* ─── Lightbox ─── */
+.lb-overlay { position:fixed;inset:0;z-index:9999;background:rgba(3,3,3,.93);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;animation:overlayIn .22s ease both;cursor:zoom-out; }
+.lb-box { position:relative;width:min(820px,92vw);border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 40px 100px rgba(0,0,0,.8);animation:zoomIn .3s cubic-bezier(.16,1,.3,1) both;cursor:default;background:#0e0e10; }
+.lb-img { width:100%;height:320px;object-fit:cover;display:block;filter:saturate(.8) brightness(.85); }
+.lb-body { padding:26px 32px 32px;display:flex;flex-direction:column;gap:10px; }
+.lb-eyebrow { font-size:9px;letter-spacing:.36em;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:9px; }
+.lb-eyebrow::before { content:'';width:14px;height:1.5px;background:currentColor;flex-shrink:0; }
+.lb-title { font-size:clamp(1.4rem,2.6vw,1.9rem);font-weight:900;color:#f0e8df;line-height:1.08;letter-spacing:-.03em; }
+.lb-rule { height:1px;opacity:.18;border:none; }
+.lb-desc { font-size:.9rem;color:rgba(240,232,220,.62);line-height:1.78; }
+.lb-close { position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s ease,color .2s ease;z-index:10; }
+.lb-close:hover { background:rgba(255,130,50,.3);color:#fff; }
+
+/* ─── Responsive ─── */
+@media (max-width:1024px) {
+  .sv-panel { grid-template-columns:42% 1fr; }
+  .sv-content { padding:clamp(16px,2vh,28px) 18px clamp(14px,1.5vh,22px) 26px; }
+  .sv-card-img { height:clamp(80px,10vh,120px); }
+}
+@media (max-width:700px) {
+  .sv-panel { grid-template-columns:1fr; }
+  .sv-img { display:none; }
+  .sv-sticky { grid-template-columns:32px 1fr; height:100vh; }
+  .sv-content { padding:16px 14px 16px 18px;justify-content:flex-start; }
+  .sv-cards { grid-template-columns:1fr;gap:8px; }
+  .sv-card-img { height:clamp(100px,14vh,150px); }
+  .sv-dots { right:6px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  *,*::before,*::after { animation-duration:.01ms !important;transition-duration:.01ms !important; }
+}
 `;
 
-/* ── Lightbox component ── */
-type LightboxCard = CardEntry | null;
+type LBItem = { src: string; label: string; title: string; detail: string; acc: string; svcTitle: string };
 
-function Lightbox({ card, onClose }: { card: LightboxCard; onClose: () => void }) {
+function Lightbox({ item, onClose }: { item: LBItem | null; onClose: () => void }) {
   useEffect(() => {
-    if (!card) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    document.addEventListener("keydown", onKey);
+    if (!item) return;
+    const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", h);
     document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [card, onClose]);
-
-  if (!card) return null;
-
+    return () => { document.removeEventListener("keydown", h); document.body.style.overflow = ""; };
+  }, [item, onClose]);
+  if (!item) return null;
   return (
-    <div className="svc-lightbox" onClick={onClose}>
-      <div className="svc-lightbox-inner" onClick={(e) => e.stopPropagation()}>
-        <button className="svc-lightbox-close" onClick={onClose} aria-label="Close">✕</button>
-        <img className="svc-lightbox-img" src={card.src} alt={card.label} />
-        <div className="svc-lightbox-body">
-          <div className="svc-lightbox-eyebrow" style={{ color: card.acc }}>
-            {card.svcTitle} — {card.label}
+    <div className="lb-overlay" onClick={onClose}>
+      <div className="lb-box" onClick={e => e.stopPropagation()}>
+        <button className="lb-close" onClick={onClose}>✕</button>
+        <img className="lb-img" src={item.src} alt={item.label} />
+        <div className="lb-body">
+          <div className="lb-eyebrow" style={{ color: item.acc }}>
+            {item.svcTitle}<span style={{ opacity:.35, margin:"0 6px" }}>/</span>{item.label}
           </div>
-          <h3 className="svc-lightbox-title">{card.itemTitle}</h3>
-          <hr className="svc-lightbox-divider" style={{ background: card.acc }} />
-          {card.detail && <p className="svc-lightbox-desc">{card.detail}</p>}
+          <div className="lb-title">{item.title}</div>
+          <hr className="lb-rule" style={{ background: item.acc }} />
+          {item.detail && <p className="lb-desc">{item.detail}</p>}
         </div>
       </div>
     </div>
   );
 }
 
-/* ── Video Hero ── */
 function VideoHero() {
   const [current, setCurrent] = useState(0);
   const [pipKey, setPipKey] = useState(0);
-
   useEffect(() => {
     const id = setInterval(() => {
-      setCurrent((c) => (c + 1) % CAROUSEL_IMAGES.length);
-      setPipKey((k) => k + 1);
+      setCurrent(c => (c + 1) % CAROUSEL_IMAGES.length);
+      setPipKey(k => k + 1);
     }, 4000);
     return () => clearInterval(id);
   }, []);
-
   return (
-    <section style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden", background: "#050403" }}>
+    <section style={{ position:"relative", width:"100%", height:"100vh", overflow:"hidden", background:"#040403" }}>
       {CAROUSEL_IMAGES.map((src, i) => (
-        <div key={src} className={`hero-carousel-slide${i === current ? " active" : ""}`}>
-          <div className="kb-inner" style={{ backgroundImage: `url(${src})` }} />
+        <div key={src} className={`hs-slide${i === current ? " active" : ""}`}>
+          <div className="kb" style={{ backgroundImage:`url(${src})` }} />
         </div>
       ))}
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,rgba(5,4,3,.35) 0%,rgba(5,4,3,.05) 30%,rgba(5,4,3,.65) 68%,rgba(5,4,3,1) 100%)" }} />
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,rgba(5,4,3,.6) 0%,transparent 65%)" }} />
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
-      <div style={{ position: "absolute", left: 0, right: 0, height: "1px", background: "linear-gradient(90deg,transparent,rgba(255,110,30,.5),transparent)", animation: "scanLine 8s ease-in-out infinite", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", top: "15%", bottom: "15%", left: 0, width: "2px", background: "linear-gradient(180deg,transparent,rgb(255,110,30) 30%,rgb(255,110,30) 70%,transparent)" }} />
-      <div style={{ position: "absolute", top: 28, right: "clamp(24px,5vw,80px)", display: "flex", gap: 6, alignItems: "center", zIndex: 20 }}>
+      <div style={{ position:"absolute", inset:0, background:"linear-gradient(180deg,rgba(4,4,3,.4) 0%,rgba(4,4,3,0) 25%,rgba(4,4,3,.55) 65%,rgba(4,4,3,1) 100%)" }} />
+      <div style={{ position:"absolute", inset:0, background:"linear-gradient(90deg,rgba(4,4,3,.65) 0%,transparent 60%)" }} />
+      <div style={{ position:"absolute", inset:0, pointerEvents:"none", backgroundImage:"linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px)", backgroundSize:"80px 80px" }} />
+      <div style={{ position:"absolute", inset:0, pointerEvents:"none", overflow:"hidden" }}>
+        <div style={{ position:"absolute", left:0, right:0, height:"1px", background:"linear-gradient(90deg,transparent,rgba(255,110,30,.4),transparent)", animation:"scanLine 9s ease-in-out infinite" }} />
+      </div>
+      <div style={{ position:"absolute", top:"14%", bottom:"14%", left:0, width:"2px", background:"linear-gradient(180deg,transparent,rgb(255,110,30) 30%,rgb(255,110,30) 70%,transparent)" }} />
+      <div style={{ position:"absolute", top:28, right:"clamp(24px,5vw,80px)", display:"flex", gap:6, alignItems:"center", zIndex:20 }}>
         {CAROUSEL_IMAGES.map((_, i) => (
-          <button key={i} className="carousel-pip" onClick={() => { setCurrent(i); setPipKey(k => k + 1); }}
-            style={{ width: i === current ? 28 : 6, background: i === current ? "rgba(255,130,50,0.25)" : "rgba(255,255,255,0.2)", position: "relative", overflow: "hidden" }}>
-            {i === current && <span key={pipKey} className="carousel-pip-track" />}
+          <button key={i} className="hs-pip"
+            onClick={() => { setCurrent(i); setPipKey(k => k + 1); }}
+            style={{ width:i===current?28:5, background:i===current?"rgba(255,130,50,.2)":"rgba(255,255,255,.18)" }}>
+            {i === current && <span key={pipKey} className="hs-pip-fill" />}
           </button>
         ))}
       </div>
-      <div style={{ position: "absolute", bottom: 80, right: "clamp(24px,5vw,80px)", display: "flex", alignItems: "baseline", gap: 4, zIndex: 10 }}>
-        <span style={{ fontSize: 22, fontWeight: 700, color: "rgb(255,130,50)", lineHeight: 1 }}>{String(current + 1).padStart(2, "0")}</span>
-        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", letterSpacing: "0.1em" }}>/ {String(CAROUSEL_IMAGES.length).padStart(2, "0")}</span>
+      <div style={{ position:"absolute", bottom:78, right:"clamp(24px,5vw,80px)", display:"flex", alignItems:"baseline", gap:4, zIndex:10 }}>
+        <span style={{ fontSize:20, fontWeight:800, color:"rgb(255,130,50)", lineHeight:1 }}>{String(current+1).padStart(2,"0")}</span>
+        <span style={{ fontSize:10, color:"rgba(255,255,255,.18)", letterSpacing:".1em" }}>/ {String(CAROUSEL_IMAGES.length).padStart(2,"0")}</span>
       </div>
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 clamp(24px,5vw,80px) 72px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 28, animation: "heroIn .6s .3s both", opacity: 0 }}>
-          <div style={{ width: 32, height: 1, background: "rgb(255,130,50)" }} />
-          <span style={{ fontSize: 10, letterSpacing: "0.4em", textTransform: "uppercase", color: "rgb(255,130,50)" }}>What We Do</span>
+      <div style={{ position:"absolute", bottom:0, left:0, right:0, padding:"0 clamp(24px,5vw,80px) 64px" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:22, animation:"heroIn .6s .3s both", opacity:0 }}>
+          <div style={{ width:26, height:1, background:"rgb(255,130,50)" }} />
+          <span style={{ fontSize:9, letterSpacing:".42em", textTransform:"uppercase", color:"rgb(255,130,50)" }}>What We Do</span>
         </div>
-        <h1 style={{ fontSize: "clamp(2.8rem,6vw,5.5rem)", fontWeight: 700, lineHeight: 1.04, letterSpacing: "-0.025em", color: "#f0e8df", marginBottom: 24, animation: "heroIn .7s .42s cubic-bezier(.4,0,.2,1) both", opacity: 0 }}>
-          IMPACT <em style={{ fontStyle: "italic", fontWeight: 300, color: "rgb(255,130,50)" }}>WITNESSED</em>
+        <h1 style={{ fontSize:"clamp(2.8rem,6.5vw,5.8rem)", fontWeight:900, lineHeight:1.0, letterSpacing:"-.032em", color:"#f0e8df", marginBottom:20, animation:"heroIn .7s .42s cubic-bezier(.4,0,.2,1) both", opacity:0 }}>
+          IMPACT <em style={{ fontStyle:"italic", fontWeight:300, color:"rgb(255,130,50)" }}>WITNESSED</em>
         </h1>
-        <div style={{ position: "relative", height: 1, background: "rgba(255,255,255,.08)", marginBottom: 24, maxWidth: 480, overflow: "hidden" }}>
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right,rgb(255,130,50),rgba(255,180,80,.3))", animation: "lineExpand 1s .9s cubic-bezier(.4,0,.2,1) both", transformOrigin: "left" }} />
+        <div style={{ position:"relative", height:1, background:"rgba(255,255,255,.06)", marginBottom:20, maxWidth:450, overflow:"hidden" }}>
+          <div style={{ position:"absolute", inset:0, background:"linear-gradient(to right,rgb(255,130,50),rgba(255,180,80,.22))", animation:"lineExp 1s .9s cubic-bezier(.4,0,.2,1) both", transformOrigin:"left" }} />
         </div>
-        <div style={{ animation: "heroIn .6s .58s cubic-bezier(.4,0,.2,1) both", opacity: 0 }}>
-          <p style={{ fontSize: "clamp(.9rem,1.3vw,1.05rem)", color: "rgba(240,232,220,.55)", lineHeight: 1.75, maxWidth: 560 }}>
-            See your future in action. Explore the missions where we turned bold ambition into scalable reality.
-          </p>
-        </div>
+        <p style={{ fontSize:"clamp(.88rem,1.25vw,1rem)", color:"rgba(240,232,220,.48)", lineHeight:1.75, maxWidth:510, animation:"heroIn .6s .58s cubic-bezier(.4,0,.2,1) both", opacity:0 }}>
+          See your future in action. Explore the missions where we turned bold ambition into scalable reality.
+        </p>
       </div>
     </section>
   );
 }
 
-/* ── Services Split Section ── */
-function ServicesScrollSection() {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [zoomedCard, setZoomedCard] = useState<CardEntry | null>(null);
-  const groupRefs = useRef<{ el: HTMLDivElement; svcIdx: number }[]>([]);
+function ServicesSection() {
+  const outerRef = useRef<HTMLDivElement>(null);
+  const [svcIdx, setSvcIdx] = useState(0);
+  const [wipingIn, setWipingIn] = useState<number | null>(null);
+  const [wipingOut, setWipingOut] = useState<number | null>(null);
+  const [visibleCards, setVisibleCards] = useState<Map<number, Set<number>>>(
+    () => new Map([[0, new Set()]])
+  );
+  const [progress, setProgress] = useState(0);
+  const [lightboxItem, setLightboxItem] = useState<LBItem | null>(null);
 
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-    groupRefs.current.forEach(({ el, svcIdx }) => {
-      const io = new IntersectionObserver(
-        ([entry]) => { if (entry.isIntersecting) setActiveIdx(svcIdx); },
-        { threshold: 0.25, rootMargin: "-10% 0px -50% 0px" }
-      );
-      io.observe(el);
-      observers.push(io);
-    });
-    return () => observers.forEach((io) => io.disconnect());
+  const prevStepRef = useRef(-1);
+  const prevSvcRef = useRef(0);
+  const wipeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const totalScrollBudget = STEPS.length * SCROLL_PER_STEP;
+  const outerHeight = totalScrollBudget + window.innerHeight;
+
+  const triggerWipe = useCallback((newSvcIdx: number, oldSvcIdx: number) => {
+    if (wipeTimerRef.current) clearTimeout(wipeTimerRef.current);
+    setWipingIn(newSvcIdx);
+    setWipingOut(oldSvcIdx);
+    wipeTimerRef.current = setTimeout(() => {
+      setSvcIdx(newSvcIdx);
+      setWipingIn(null);
+      setWipingOut(null);
+      // FIX: pre-populate the first card of the incoming service so cards
+      // are visible immediately after the wipe animation completes
+      setVisibleCards(prev => {
+        const next = new Map(prev);
+        if (!next.has(newSvcIdx)) next.set(newSvcIdx, new Set());
+        return next;
+      });
+    }, 600);
   }, []);
 
-  const g = SERVICE_GROUPS[activeIdx];
-  const accent = PANEL_ACCENT[activeIdx];
+  const onScroll = useCallback(() => {
+    if (!outerRef.current) return;
+    const scrolled = -(outerRef.current.getBoundingClientRect().top);
+    if (scrolled < 0) return;
+    const stepIdx = Math.min(Math.floor(scrolled / SCROLL_PER_STEP), STEPS.length - 1);
+    setProgress(Math.min(1, scrolled / totalScrollBudget));
+    if (stepIdx === prevStepRef.current) return;
+    prevStepRef.current = stepIdx;
+    const step = STEPS[stepIdx];
+    if (step.type === "wipe") {
+      const old = prevSvcRef.current;
+      if (step.svcIdx !== old) { prevSvcRef.current = step.svcIdx; triggerWipe(step.svcIdx, old); }
+    } else {
+      const { svcIdx: si } = step;
+      // Build visible cards map from all steps up to and including current
+      const newMap = new Map<number, Set<number>>();
+      for (let i = 0; i <= stepIdx; i++) {
+        const s = STEPS[i];
+        if (s.type === "card") {
+          if (!newMap.has(s.svcIdx)) newMap.set(s.svcIdx, new Set());
+          newMap.get(s.svcIdx)!.add(s.cardIdx);
+        }
+      }
+      setVisibleCards(newMap);
+      if (si !== prevSvcRef.current) { prevSvcRef.current = si; setSvcIdx(si); }
+    }
+  }, [totalScrollBudget, triggerWipe]);
+
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (wipeTimerRef.current) clearTimeout(wipeTimerRef.current);
+    };
+  }, [onScroll]);
+
+  function scrollToService(targetSvcIdx: number) {
+    if (!outerRef.current) return;
+    const firstStep = STEPS.findIndex(s => s.type === "card" && s.svcIdx === targetSvcIdx);
+    if (firstStep === -1) return;
+    const top = outerRef.current.getBoundingClientRect().top + window.scrollY + firstStep * SCROLL_PER_STEP;
+    window.scrollTo({ top, behavior: "smooth" });
+  }
+
+  const acc = PANEL_ACCENT[svcIdx];
 
   return (
     <>
-      <section className="split-section">
-        {/* LEFT sticky panel */}
-        <div className="split-left">
-          <div style={{
-            position: "absolute", top: 0, left: 0, bottom: 0, width: 2,
-            background: `linear-gradient(180deg, transparent, ${accent} 20%, ${accent} 80%, transparent)`,
-            opacity: 0.7, transition: "background 0.5s ease",
-          }} />
-          <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
+      <div className="sv-intro">
+        <div>
+          <div className="sv-intro-eyebrow">What We Do</div>
+          <h2 className="sv-intro-title">Services Built For <em>Scale</em></h2>
+          <p className="sv-intro-sub">Eight capability areas. Every service engineered to compound — each mission we complete builds leverage for the next.</p>
+        </div>
+        <div style={{ textAlign:"right", flexShrink:0 }}>
+          <div className="sv-intro-count-num">{SERVICE_GROUPS.length}</div>
+          <div className="sv-intro-count-label">Service Pillars</div>
+        </div>
+      </div>
 
-          <div key={activeIdx} className="left-animated">
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <span style={{ fontSize: 11, letterSpacing: "0.3em", color: accent, fontWeight: 600 }}>
-                {String(activeIdx + 1).padStart(2, "0")}
-              </span>
-              <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, ${accent}, transparent)`, opacity: 0.45, maxWidth: 80 }} />
-              <span style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", letterSpacing: "0.2em" }}>
-                {String(SERVICE_GROUPS.length).padStart(2, "0")}
-              </span>
-            </div>
+      <div ref={outerRef} className="sv-outer" style={{ height: outerHeight }}>
+        <div className="sv-sticky" style={{ ["--acc" as string]: acc }}>
 
-            <p style={{ fontSize: 9, letterSpacing: "0.38em", textTransform: "uppercase", color: accent, display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ display: "inline-block", width: 22, height: 1, background: accent, flexShrink: 0 }} />
-              {g.eyebrow}
-            </p>
+          <div className="sv-progress">
+            <div className="sv-progress-fill" style={{ width:`${progress * 100}%` }} />
+          </div>
 
-            <h2 style={{ fontSize: "clamp(2rem,3.8vw,3.4rem)", fontWeight: 800, lineHeight: 1.04, letterSpacing: "-0.03em", color: "#f0e8df" }}>
-              {g.title}
-            </h2>
+          <div className="sv-rail">
+            <span className="sv-rail-label">Services</span>
+            <div className="sv-rail-sep" />
+            <span className="sv-rail-cur" style={{ color:acc }}>{String(svcIdx+1).padStart(2,"0")}</span>
+            <div className="sv-rail-sep" />
+            <span className="sv-rail-total">{String(SERVICE_GROUPS.length).padStart(2,"0")}</span>
+          </div>
 
-            <div style={{ height: 1, background: `linear-gradient(to right, ${accent}, transparent)`, opacity: 0.3, maxWidth: 260 }} />
+          <div className="sv-panels">
+            {SERVICE_GROUPS.map((svc, si) => {
+              const svcAcc = PANEL_ACCENT[si];
+              const isCurrent = si === svcIdx && wipingIn === null;
+              const isWipingIn = si === wipingIn;
+              const isWipingOut = si === wipingOut;
+              const revealed = visibleCards.get(si) ?? new Set<number>();
+              let panelClass = "sv-panel";
+              if (isCurrent)    panelClass += " sv-current";
+              if (isWipingIn)   panelClass += " sv-wipe-in";
+              if (isWipingOut)  panelClass += " sv-wipe-out";
 
-            <p style={{ fontSize: "clamp(0.82rem,1.1vw,0.98rem)", lineHeight: 1.76, color: "rgba(240,232,220,0.52)", maxWidth: 360 }}>
-              {g.tagline}
-            </p>
+              return (
+                <div key={svc.title} className={panelClass} style={{ ["--acc" as string]: svcAcc }}>
 
-            <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginTop: 4 }}>
-              <span style={{ fontSize: "clamp(1.8rem,3.5vw,2.8rem)", fontWeight: 800, color: accent, lineHeight: 1, letterSpacing: "-0.03em" }}>
-                {g.stat.value}
-              </span>
-              <span style={{ fontSize: 10, color: "rgba(255,255,255,0.32)", letterSpacing: "0.15em", textTransform: "uppercase" }}>
-                {g.stat.label}
-              </span>
-            </div>
+                  {/* Left: hero image */}
+                  <div className="sv-img">
+                    <img src={svc.image as unknown as string} alt={svc.title} loading={si < 2 ? "eager" : "lazy"} />
+                    <div className="sv-img-grad" />
+                    <div className="sv-img-stripes" />
+                    <div className="sv-img-index">{String(si+1).padStart(2,"0")}</div>
+                    <div className="sv-stat">
+                      <span className="sv-stat-val">{svc.stat.value}</span>
+                      <span className="sv-stat-lbl">{svc.stat.label}</span>
+                    </div>
+                  </div>
 
-            <div style={{ display: "flex", gap: 6, marginTop: 12, flexWrap: "wrap" }}>
-              {SERVICE_GROUPS.map((_, di) => {
-                const firstGroup = groupRefs.current.find((c) => c.svcIdx === di);
-                return (
+                  {/* Right: content column */}
+                  <div className="sv-content">
+                    <div className="sv-content-bar" />
+                    <div className="sv-content-inner" key={`content-${si}-${isWipingIn?"in":"stable"}`}>
+
+                      {/* Eyebrow */}
+                      <div className="sv-eyebrow" style={{ color:svcAcc }}>
+                        <div style={{ width:18, height:"1.5px", background:"currentColor", flexShrink:0 }} />
+                        {svc.eyebrow}
+                        <span className="sv-slash">/</span>
+                        <span style={{ color:"rgba(255,255,255,.18)", fontWeight:400 }}>
+                          {String(si+1).padStart(2,"0")}&nbsp;of&nbsp;{String(SERVICE_GROUPS.length).padStart(2,"0")}
+                        </span>
+                      </div>
+
+                      {/* Title */}
+                      <div className="sv-title">
+                        <span className="sv-title-top">{svc.titleTop}</span>
+                        <span className="sv-title-btm">{svc.titleBtm}</span>
+                      </div>
+
+                      {/* Tagline */}
+                      <p className="sv-tagline">{svc.tagline}</p>
+
+                      {/* Rule */}
+                      <div className="sv-rule" />
+
+                      {/* Cards */}
+                      <div className="sv-cards">
+                        {svc.subImages.map((img, ci) => {
+                          const { title, detail } = parseItem(svc.items[ci] ?? "");
+                          const isVisible = revealed.has(ci);
+                          return (
+                            <div
+                              key={img.label}
+                              className={`sv-card${isVisible ? " sv-card-visible" : ""}`}
+                              style={{ ["--acc" as string]: svcAcc, animationDelay: isVisible ? `${ci * 0.08}s` : "0s" }}
+                              onClick={() => isVisible && setLightboxItem({ src:img.src, label:img.label, title, detail, acc:svcAcc, svcTitle:svc.title })}
+                            >
+                              <div className="sv-card-img">
+                                <img src={img.src} alt={img.label} loading={si < 2 ? "eager" : "lazy"} />
+                              </div>
+                              <div className="sv-card-body">
+                                <div className="sv-card-label">{img.label}</div>
+                                <div className="sv-card-title">{title}</div>
+                                {detail && <div className="sv-card-detail">{detail}</div>}
+                                <div className="sv-card-arrow">Explore</div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Step badge */}
+                      <div className="sv-step-badge">
+                        <span className="sv-step-cur" style={{ color:svcAcc }}>
+                          {String(revealed.size).padStart(2,"0")}
+                          <span style={{ fontSize:"0.9rem", fontWeight:300, color:"rgba(255,255,255,.18)", margin:"0 4px" }}>/</span>
+                          {String(svc.subImages.length).padStart(2,"0")}
+                        </span>
+                        <span className="sv-step-label">Capabilities</span>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Nav dots */}
+            <div className="sv-dots">
+              {SERVICE_GROUPS.map((svc, di) => (
+                <div key={di} className="sv-dot-wrap" onClick={() => scrollToService(di)}>
                   <button
-                    key={di}
-                    className={`svc-dot${di === activeIdx ? " active" : ""}`}
-                    style={{ background: di === activeIdx ? accent : "rgba(255,255,255,0.18)" }}
-                    onClick={() => firstGroup?.el.scrollIntoView({ behavior: "smooth" })}
+                    className={`sv-dot${di === svcIdx ? " active" : ""}`}
+                    style={{ background: di === svcIdx ? PANEL_ACCENT[di] : undefined }}
                   />
-                );
-              })}
+                  <div className="sv-dot-tip">{svc.title}</div>
+                </div>
+              ))}
             </div>
           </div>
+
+          <div className="sv-ticker">
+            <div className="sv-ticker-track">
+              {[...Array(6)].flatMap((_, ri) =>
+                SERVICE_GROUPS.map(s => (
+                  <div key={`${ri}-${s.title}`} className="sv-ticker-item">
+                    <div className="sv-ticker-dot" />{s.title}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
         </div>
+      </div>
 
-        {/* RIGHT — scrollable card list */}
-        <div className="split-right">
-          {SERVICE_GROUPS.map((svc, si) => {
-            const acc = PANEL_ACCENT[si];
-            return (
-              <div
-                key={svc.title}
-                className="svc-service-block"
-                ref={(el) => { if (el) groupRefs.current.push({ el, svcIdx: si }); }}
-              >
-                {si > 0 && (
-                  <div className="svc-service-divider" style={{ "--accent": acc } as React.CSSProperties} />
-                )}
-
-                {/* group heading */}
-                <div className="svc-group-heading">
-                  <span className="svc-group-number" style={{ color: acc }}>
-                    {String(si + 1).padStart(2, "0")}
-                  </span>
-                  <div style={{ width: 18, height: 1, background: acc, opacity: 0.4 }} />
-                  <span className="svc-group-name">{svc.title}</span>
-                </div>
-
-                {/* cards */}
-                {svc.subImages.map((img, ii) => {
-                  const raw = svc.items[ii] ?? "";
-                  const colon = raw.indexOf(":");
-                  const itemTitle = colon > -1 ? raw.slice(0, colon).trim() : img.label;
-                  const detail = colon > -1 ? raw.slice(colon + 1).trim() : raw;
-                  const cardEntry: CardEntry = { src: img.src, label: img.label, itemTitle, detail, svcIdx: si, acc, svcTitle: svc.title, cardIdx: ii };
-
-                  return (
-                    <div
-                      key={img.label}
-                      className="svc-card"
-                      style={{ "--accent": acc } as React.CSSProperties}
-                      onClick={() => setZoomedCard(cardEntry)}
-                    >
-                      {/* image left */}
-                      <div className="svc-card-img">
-                        <img src={img.src} alt={img.label} loading={si === 0 && ii === 0 ? "eager" : "lazy"} />
-                        <div className="svc-card-num">{String(ii + 1).padStart(2, "0")}</div>
-                      </div>
-
-                      {/* text right */}
-                      <div className="svc-card-body">
-                        <div className="svc-card-eyebrow" style={{ "--accent": acc } as React.CSSProperties}>
-                          {img.label}
-                        </div>
-                        <div className="svc-card-title">{itemTitle}</div>
-                        {detail && <div className="svc-card-desc">{detail}</div>}
-                      </div>
-
-                      {/* arrow */}
-                      <div className="svc-card-arrow" style={{ "--accent": acc } as React.CSSProperties}>
-                        ↗
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Lightbox */}
-      <Lightbox card={zoomedCard} onClose={() => setZoomedCard(null)} />
+      <Lightbox item={lightboxItem} onClose={() => setLightboxItem(null)} />
     </>
   );
 }
@@ -811,7 +803,7 @@ function ServicesPage() {
       <style>{STYLES}</style>
       <Nav />
       <VideoHero />
-      <ServicesScrollSection />
+      <ServicesSection />
     </main>
   );
 }

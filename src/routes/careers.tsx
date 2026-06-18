@@ -5,6 +5,7 @@ import { AnimatedHero } from "@/components/site/AnimatedHero";
 import { useReveal } from "@/hooks/use-reveal";
 import { useEffect, useRef } from "react";
 import careersImg from "@/assets/page-careers.jpg";
+import careers1Img from "@/assets/careers1.jpg";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -71,13 +72,13 @@ const PERKS = [
 // Stories / culture gallery items — using PieterKoopt CDN images
 const CULTURE_STORIES = [
   {
-    image: "https://cdn.prod.website-files.com/67890d3b1a9365a1173c957d/69b2d258af2586a7adf74112_Samuel%20van%20Hoogstraten.webp",
+    image: "/careers1.jpg",
     title: "The studio",
     sub: "Ahmedabad",
     tag: "Inside Jarvis",
   },
   {
-    image: "https://cdn.prod.website-files.com/67890d3b1a9365a1173c957d/691c4f6d714c75246f5529ea_Dion_Doornik_4K9A9899%20kopie%202.webp",
+    image: "careers2.png",
     title: "Workshop Wednesdays",
     sub: "Weekly rituals",
     tag: "Culture",

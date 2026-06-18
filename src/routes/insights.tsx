@@ -10,22 +10,12 @@ export const Route = createFileRoute("/insights")({
   head: () => ({
     meta: [
       { title: "Insights - Jarvis Technolabs" },
-      {
-        name: "description",
-        content:
-          "Field notes on AI, digital transformation and product engineering - from the team shipping for D2C brands and enterprises.",
-      },
+      { name: "description", content: "Field notes on AI, digital transformation and product engineering - from the team shipping for D2C brands and enterprises." },
       { property: "og:title", content: "Insights - Jarvis Technolabs" },
-      {
-        property: "og:description",
-        content:
-          "Field notes on AI, digital transformation and product engineering.",
-      },
+      { property: "og:description", content: "Field notes on AI, digital transformation and product engineering." },
     ],
   }),
 });
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 interface PostSection {
   type: "heading" | "subheading" | "paragraph" | "quote" | "list" | "divider";
@@ -40,8 +30,6 @@ interface PostContent {
   tags: string[];
   sections: PostSection[];
 }
-
-// ─── Content ─────────────────────────────────────────────────────────────────
 
 const POST_CONTENT: PostContent[] = [
   {
@@ -150,7 +138,7 @@ const POST_CONTENT: PostContent[] = [
   },
 ];
 
-// ─── Post Detail (full white page) ───────────────────────────────────────────
+// ─── Post Detail ──────────────────────────────────────────────────────────────
 
 function PostDetail({
   post,
@@ -173,432 +161,85 @@ function PostDetail({
     }));
 
   return (
-    <div style={{ background: "#ffffff", minHeight: "100vh" }}>
-      {/* Breadcrumb */}
-      <div
-        style={{
-          background: "#ffffff",
-          borderBottom: "1px solid #e8e8e8",
-          padding: "0.8rem 1.5rem",
-          position: "sticky",
-          top: 0,
-          zIndex: 40,
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1100px",
-            margin: "0 auto",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            fontSize: "0.72rem",
-            color: "#aaa",
-          }}
-        >
-          <button
-            onClick={onBack}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "#888",
-              fontSize: "0.72rem",
-              padding: 0,
-              transition: "color 0.15s",
-            }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#c2692a")}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#888")}
-          >
+    <div style={{ background: "#0a0a0a", minHeight: "100vh" }}>
+      <div style={{ background: "#0d0d0d", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "0.8rem 1.5rem", position: "sticky", top: 0, zIndex: 40 }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.72rem", color: "rgba(255,255,255,0.3)" }}>
+          <button onClick={onBack} style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.4)", fontSize: "0.72rem", padding: 0, transition: "color 0.15s" }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "rgb(255,130,50)")}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.4)")}>
             Insights
           </button>
-          <span style={{ color: "#ccc" }}>/</span>
-          <span style={{ color: "#aaa" }}>{post.tag}</span>
-          <span style={{ color: "#ccc" }}>/</span>
-          <span
-            style={{
-              color: "#444",
-              fontWeight: 500,
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-              maxWidth: "400px",
-            }}
-          >
-            {content.title}
-          </span>
+          <span style={{ color: "rgba(255,255,255,0.15)" }}>/</span>
+          <span style={{ color: "rgba(255,255,255,0.3)" }}>{post.tag}</span>
+          <span style={{ color: "rgba(255,255,255,0.15)" }}>/</span>
+          <span style={{ color: "rgba(255,255,255,0.55)", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "400px" }}>{content.title}</span>
         </div>
       </div>
 
-      {/* Main layout */}
-      <div
-        className="post-page-layout"
-        style={{
-          maxWidth: "1100px",
-          margin: "0 auto",
-          padding: "3rem 1.5rem 7rem",
-          display: "grid",
-          gridTemplateColumns: "1fr 260px",
-          gap: "4rem",
-          alignItems: "start",
-          background: "#ffffff",
-        }}
-      >
-        {/* Article */}
-        <article style={{ minWidth: 0, background: "#ffffff" }}>
-          {/* Tags */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginBottom: "1.25rem" }}>
+      <div className="post-page-layout" style={{ maxWidth: "1100px", margin: "0 auto", padding: "3.5rem 1.5rem 8rem", display: "grid", gridTemplateColumns: "1fr 240px", gap: "4rem", alignItems: "start" }}>
+        <article style={{ minWidth: 0 }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginBottom: "1.5rem" }}>
             {content.tags.map((tag) => (
-              <span
-                key={tag}
-                style={{
-                  fontSize: "0.6rem",
-                  letterSpacing: "0.18em",
-                  fontWeight: 500,
-                  color: "#555",
-                  background: "#f2f2f2",
-                  padding: "0.28rem 0.65rem",
-                  borderRadius: "0.25rem",
-                  border: "1px solid #e0e0e0",
-                  textTransform: "capitalize",
-                }}
-              >
-                {tag}
-              </span>
+              <span key={tag} style={{ fontSize: "0.58rem", letterSpacing: "0.2em", fontWeight: 600, color: "rgb(255,130,50)", background: "rgba(255,130,50,0.1)", padding: "0.3rem 0.7rem", borderRadius: "4px", border: "1px solid rgba(255,130,50,0.2)", textTransform: "uppercase" }}>{tag}</span>
             ))}
           </div>
-
-          {/* Title */}
-          <h1
-            style={{
-              fontFamily: "var(--font-display, Georgia, serif)",
-              fontSize: "clamp(1.9rem, 4.5vw, 2.8rem)",
-              fontWeight: 400,
-              lineHeight: 1.18,
-              letterSpacing: "-0.03em",
-              color: "#0f0f0f",
-              marginBottom: "1rem",
-            }}
-          >
-            {content.title}
-          </h1>
-
-          {/* Subtitle */}
-          <p
-            style={{
-              fontSize: "1.05rem",
-              color: "#555",
-              lineHeight: 1.65,
-              marginBottom: "1.75rem",
-            }}
-          >
-            {content.subtitle}
-          </p>
-
-          {/* Author row */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.85rem",
-              paddingBottom: "2rem",
-              marginBottom: "2.5rem",
-              borderBottom: "1px solid #ebebeb",
-            }}
-          >
-            <div
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "50%",
-                background: "linear-gradient(135deg, #c2692a, #8b3a10)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "0.85rem",
-                fontWeight: 700,
-                color: "#fff",
-                flexShrink: 0,
-              }}
-            >
-              J
-            </div>
-            <div>
-              <p style={{ margin: 0, fontSize: "0.82rem", fontWeight: 600, color: "#111" }}>
-                Jarvis Team
-              </p>
-              <p style={{ margin: 0, fontSize: "0.7rem", color: "#999", marginTop: "0.1rem" }}>
-                {post.date}
-              </p>
-            </div>
+          <h1 style={{ fontSize: "clamp(2rem, 5vw, 3.2rem)", fontWeight: 800, lineHeight: 1.12, letterSpacing: "-0.03em", color: "#f0e8df", marginBottom: "1rem" }}>{content.title}</h1>
+          <p style={{ fontSize: "1.05rem", color: "rgba(240,232,220,0.5)", lineHeight: 1.7, marginBottom: "2rem" }}>{content.subtitle}</p>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem", paddingBottom: "2rem", marginBottom: "2.5rem", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+            <span style={{ fontSize: "0.68rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgb(255,130,50)", fontWeight: 600 }}>{post.tag}</span>
+            <span style={{ color: "rgba(255,255,255,0.15)", fontSize: "0.7rem" }}>·</span>
+            <span style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.35)", letterSpacing: "0.1em" }}>{post.date}</span>
           </div>
-
-          {/* Hero image */}
-          <div
-            style={{
-              width: "100%",
-              aspectRatio: "16/9",
-              borderRadius: "0.75rem",
-              overflow: "hidden",
-              marginBottom: "2.75rem",
-              border: "1px solid #ebebeb",
-            }}
-          >
-            <img
-              src={post.img}
-              alt={content.title}
-              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-            />
+          <div style={{ width: "100%", aspectRatio: "16/9", borderRadius: "10px", overflow: "hidden", marginBottom: "3rem", border: "1px solid rgba(255,255,255,0.08)" }}>
+            <img src={post.img} alt={content.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: "saturate(0.85) brightness(0.9)" }} />
           </div>
-
-          {/* Body */}
           {content.sections.map((section, i) => {
-            if (section.type === "divider") {
-              return (
-                <hr key={i} style={{ border: "none", borderTop: "1px solid #ebebeb", margin: "2.5rem 0" }} />
-              );
-            }
+            if (section.type === "divider") return <hr key={i} style={{ border: "none", borderTop: "1px solid rgba(255,255,255,0.08)", margin: "2.5rem 0" }} />;
             if (section.type === "heading") {
               const id = section.text!.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-              return (
-                <h2
-                  key={i}
-                  id={id}
-                  style={{
-                    fontFamily: "var(--font-display, Georgia, serif)",
-                    fontSize: "1.35rem",
-                    fontWeight: 400,
-                    color: "#111",
-                    marginTop: "2.75rem",
-                    marginBottom: "0.9rem",
-                    letterSpacing: "-0.015em",
-                    scrollMarginTop: "5rem",
-                  }}
-                >
-                  {section.text}
-                </h2>
-              );
+              return <h2 key={i} id={id} style={{ fontSize: "1.4rem", fontWeight: 700, color: "#f0e8df", marginTop: "2.75rem", marginBottom: "0.9rem", letterSpacing: "-0.02em", scrollMarginTop: "5rem" }}>{section.text}</h2>;
             }
-            if (section.type === "paragraph") {
-              return (
-                <p
-                  key={i}
-                  style={{
-                    fontSize: "1rem",
-                    lineHeight: 1.85,
-                    color: "#333",
-                    marginBottom: "1.35rem",
-                  }}
-                >
-                  {section.text}
-                </p>
-              );
-            }
-            if (section.type === "quote") {
-              return (
-                <blockquote
-                  key={i}
-                  style={{
-                    margin: "2.25rem 0",
-                    padding: "1.25rem 1.75rem",
-                    borderLeft: "3px solid #c2692a",
-                    background: "rgba(194,105,42,0.04)",
-                    borderRadius: "0 0.5rem 0.5rem 0",
-                  }}
-                >
-                  <p
-                    style={{
-                      fontFamily: "var(--font-display, Georgia, serif)",
-                      fontSize: "1.1rem",
-                      lineHeight: 1.75,
-                      color: "#222",
-                      fontStyle: "italic",
-                      margin: 0,
-                    }}
-                  >
-                    "{section.text}"
-                  </p>
-                </blockquote>
-              );
-            }
-            if (section.type === "list" && section.items) {
-              return (
-                <ul
-                  key={i}
-                  style={{
-                    listStyle: "none",
-                    padding: 0,
-                    margin: "1.25rem 0 1.75rem",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "0.9rem",
-                  }}
-                >
-                  {section.items.map((item, j) => (
-                    <li
-                      key={j}
-                      style={{
-                        display: "flex",
-                        gap: "0.85rem",
-                        fontSize: "0.975rem",
-                        lineHeight: 1.75,
-                        color: "#333",
-                      }}
-                    >
-                      <span
-                        style={{
-                          flexShrink: 0,
-                          marginTop: "0.65rem",
-                          width: "5px",
-                          height: "5px",
-                          borderRadius: "50%",
-                          background: "#c2692a",
-                        }}
-                      />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              );
-            }
+            if (section.type === "paragraph") return <p key={i} style={{ fontSize: "1rem", lineHeight: 1.88, color: "rgba(240,232,220,0.62)", marginBottom: "1.35rem" }}>{section.text}</p>;
+            if (section.type === "quote") return (
+              <blockquote key={i} style={{ margin: "2.25rem 0", padding: "1.25rem 1.75rem", borderLeft: "3px solid rgb(255,130,50)", background: "rgba(255,130,50,0.05)", borderRadius: "0 8px 8px 0" }}>
+                <p style={{ fontSize: "1.08rem", lineHeight: 1.75, color: "rgba(240,232,220,0.75)", fontStyle: "italic", margin: 0 }}>"{section.text}"</p>
+              </blockquote>
+            );
+            if (section.type === "list" && section.items) return (
+              <ul key={i} style={{ listStyle: "none", padding: 0, margin: "1.25rem 0 1.75rem", display: "flex", flexDirection: "column", gap: "0.9rem" }}>
+                {section.items.map((item, j) => (
+                  <li key={j} style={{ display: "flex", gap: "0.85rem", fontSize: "0.975rem", lineHeight: 1.78, color: "rgba(240,232,220,0.6)" }}>
+                    <span style={{ flexShrink: 0, marginTop: "0.68rem", width: "5px", height: "5px", borderRadius: "50%", background: "rgb(255,130,50)" }} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            );
             return null;
           })}
-
-          {/* Back */}
-          <div
-            style={{
-              marginTop: "4rem",
-              paddingTop: "2rem",
-              borderTop: "1px solid #ebebeb",
-            }}
-          >
-            <button
-              onClick={onBack}
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                fontSize: "0.7rem",
-                letterSpacing: "0.2em",
-                textTransform: "uppercase",
-                color: "#c2692a",
-                fontWeight: 600,
-                padding: 0,
-              }}
-            >
-              ← All articles
-            </button>
+          <div style={{ marginTop: "4rem", paddingTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+            <button onClick={onBack} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "0.68rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgb(255,130,50)", fontWeight: 700, padding: 0 }}>← All articles</button>
           </div>
         </article>
 
-        {/* Sidebar */}
         <aside className="post-sidebar" style={{ position: "sticky", top: "4.5rem" }}>
-          {/* TOC */}
           {headings.length > 0 && (
-            <div
-              style={{
-                padding: "1.4rem",
-                border: "1px solid #e8e8e8",
-                borderRadius: "0.75rem",
-                marginBottom: "1.25rem",
-                background: "#fafafa",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: "0.58rem",
-                  letterSpacing: "0.22em",
-                  textTransform: "uppercase",
-                  fontWeight: 700,
-                  color: "#aaa",
-                  marginBottom: "0.85rem",
-                  margin: "0 0 0.85rem 0",
-                }}
-              >
-                On this page
-              </p>
-              <ol
-                style={{
-                  listStyle: "none",
-                  padding: 0,
-                  margin: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.5rem",
-                }}
-              >
+            <div style={{ padding: "1.4rem", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "10px", background: "#111214" }}>
+              <p style={{ fontSize: "0.58rem", letterSpacing: "0.22em", textTransform: "uppercase", fontWeight: 700, color: "rgba(255,255,255,0.25)", margin: "0 0 1rem 0" }}>On this page</p>
+              <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.55rem" }}>
                 {headings.map((h, i) => (
                   <li key={i}>
-                    <a
-                      href={`#${h.id}`}
-                      style={{
-                        fontSize: "0.78rem",
-                        lineHeight: 1.5,
-                        color: "#555",
-                        textDecoration: "none",
-                        display: "block",
-                        transition: "color 0.15s",
-                      }}
-                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "#c2692a")}
-                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "#555")}
-                    >
+                    <button onClick={() => document.getElementById(h.id)?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                      style={{ fontSize: "0.78rem", lineHeight: 1.5, color: "rgba(255,255,255,0.4)", textDecoration: "none", display: "block", transition: "color 0.15s", background: "none", border: "none", cursor: "pointer", padding: 0, textAlign: "left", width: "100%" }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "rgb(255,130,50)")}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.4)")}>
                       {i + 1}. {h.text}
-                    </a>
+                    </button>
                   </li>
                 ))}
               </ol>
             </div>
           )}
-
-          {/* Author card */}
-          <div
-            style={{
-              padding: "1.4rem",
-              border: "1px solid #e8e8e8",
-              borderRadius: "0.75rem",
-              background: "#fafafa",
-            }}
-          >
-            <div
-              style={{
-                width: "44px",
-                height: "44px",
-                borderRadius: "50%",
-                background: "linear-gradient(135deg, #c2692a, #8b3a10)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "0.9rem",
-                fontWeight: 700,
-                color: "#fff",
-                marginBottom: "0.85rem",
-              }}
-            >
-              J
-            </div>
-            <p style={{ margin: 0, fontSize: "0.82rem", fontWeight: 600, color: "#111" }}>
-              Jarvis Team
-            </p>
-            <p
-              style={{
-                margin: "0.2rem 0 0.75rem",
-                fontSize: "0.7rem",
-                color: "#999",
-              }}
-            >
-              Jarvis Technolabs
-            </p>
-            <p
-              style={{
-                margin: 0,
-                fontSize: "0.78rem",
-                lineHeight: 1.6,
-                color: "#666",
-              }}
-            >
-              The team behind 150+ AI and commerce projects for D2C brands and enterprises.
-            </p>
-          </div>
         </aside>
       </div>
 
@@ -612,7 +253,7 @@ function PostDetail({
   );
 }
 
-// ─── Page ────────────────────────────────────────────────────────────────────
+// ─── Page ─────────────────────────────────────────────────────────────────────
 
 function InsightsPage() {
   useReveal();
@@ -627,6 +268,7 @@ function InsightsPage() {
 
   const handleOpen = useCallback((index: number) => {
     setActiveIndex(index);
+    window.history.pushState({ __insightPost: index }, "");
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, []);
 
@@ -635,157 +277,159 @@ function InsightsPage() {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, []);
 
-  // ── POST DETAIL PAGE ──
+  useEffect(() => {
+    const onPopState = () => {
+      setActiveIndex((prev) => {
+        if (prev !== null) {
+          window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+          return null;
+        }
+        return prev;
+      });
+    };
+    if (activeIndex !== null) {
+      window.addEventListener("popstate", onPopState);
+      return () => window.removeEventListener("popstate", onPopState);
+    }
+  }, [activeIndex]);
+
   if (activeIndex !== null && POST_CONTENT[activeIndex]) {
     return (
-      <main style={{ background: "#ffffff" }}>
+      <main style={{ background: "#0a0a0a" }}>
         <Nav />
-        <PostDetail
-          post={POSTS[activeIndex]}
-          content={POST_CONTENT[activeIndex]}
-          onBack={handleBack}
-        />
+        <PostDetail post={POSTS[activeIndex]} content={POST_CONTENT[activeIndex]} onBack={handleBack} />
         <Footer />
       </main>
     );
   }
 
-  // ── LIST PAGE ──
   return (
-    <main className="bg-background text-foreground min-h-screen">
+    <main style={{ background: "#0a0a0a", color: "#f0e8df", minHeight: "100vh" }}>
       <Nav />
 
       {/* VIDEO HERO */}
-      <section
-        style={{
-          position: "relative",
-          minHeight: "60vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "hidden",
-        }}
-      >
+      <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: "#0a0a0a" }}>
         <video
           ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            zIndex: 0,
-          }}
+          autoPlay loop muted playsInline
+          style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0, opacity: 0.4, filter: "saturate(0.35) brightness(0.45)" }}
         >
-          <source src="/Insights-v.mp4" type="video/mp4" />
+          <source src="/Insights-2.mp4" type="video/mp4" />
         </video>
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "rgba(0,0,0,0.52)",
-            zIndex: 1,
-          }}
-        />
-        <div
-          style={{
-            position: "relative",
-            zIndex: 2,
-            textAlign: "center",
-            color: "white",
-            padding: "6rem 1.5rem",
-            maxWidth: "56rem",
-            margin: "0 auto",
-          }}
-        >
-          <p
-            style={{
-              fontSize: "0.75rem",
-              letterSpacing: "0.3em",
-              textTransform: "uppercase",
-              marginBottom: "1.5rem",
-              color: "rgba(255,255,255,0.55)",
-            }}
-          >
-            [ INSIGHTS · FIELD NOTES ]
+
+        {/* Overlays */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,rgba(10,10,10,0.25) 0%,rgba(10,10,10,0.05) 35%,rgba(10,10,10,0.8) 80%,#0a0a0a 100%)", zIndex: 1 }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,rgba(10,10,10,0.4) 0%,transparent 60%)", zIndex: 1 }} />
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
+
+        {/* Hero text — centered, exactly matching reference */}
+        <div style={{ position: "relative", zIndex: 3, textAlign: "center", padding: "0 clamp(24px, 6vw, 80px)", width: "100%" }}>
+
+          {/* Bracketed eyebrow */}
+          <p style={{
+            fontSize: "0.65rem",
+            letterSpacing: "0.28em",
+            textTransform: "uppercase",
+            color: "rgba(255,180,120,0.6)",
+            marginBottom: "2rem",
+            fontWeight: 400,
+          }}>
+            [ Insights · Field Notes ]
           </p>
-          <h1 className="font-display text-5xl md:text-7xl tracking-tight leading-tight mb-6">
-            Ideas worth{" "}
-            <em className="text-shimmer not-italic font-light">building on.</em>
+
+          {/* Main headline — single line, mixed weight */}
+          <h1 style={{
+            margin: 0,
+            fontSize: "clamp(2.8rem, 7vw, 6.5rem)",
+            lineHeight: 1.08,
+            letterSpacing: "-0.025em",
+          }}>
+            <span style={{
+              fontWeight: 300,
+              color: "#f0e8df",
+              fontFamily: "'Georgia', serif",
+            }}>
+              Ideas worth{" "}
+            </span>
+            <span style={{
+              fontWeight: 300,
+              color: "rgb(255,130,50)",
+              fontFamily: "'Georgia', serif",
+              fontStyle: "italic",
+            }}>
+              building on.
+            </span>
           </h1>
-          <p
-            style={{
-              fontSize: "1rem",
-              maxWidth: "42rem",
-              margin: "0 auto",
-              lineHeight: 1.7,
-              color: "rgba(255,255,255,0.65)",
-            }}
-          >
-            Perspectives on AI, transformation, and the craft of shipping
-            software — written by the team behind 150+ projects.
+
+          {/* Divider */}
+          <div style={{
+            height: "1px",
+            background: "linear-gradient(to right, transparent, rgba(255,130,50,0.4), transparent)",
+            maxWidth: "420px",
+            margin: "2.5rem auto",
+          }} />
+
+          {/* Subtitle */}
+          <p style={{
+            fontSize: "clamp(0.85rem, 1.2vw, 1rem)",
+            color: "rgba(240,232,220,0.45)",
+            lineHeight: 1.85,
+            maxWidth: "520px",
+            margin: "0 auto",
+            fontWeight: 400,
+          }}>
+            Perspectives on AI, transformation, and the craft of shipping software — written by the team behind 150+ projects.
           </p>
         </div>
       </section>
 
-      {/* POSTS GRID — original 3-column layout */}
-      <section className="section-light border-t border-black/5">
-        <div className="mx-auto max-w-7xl px-6 py-24">
-          <div className="reveal mb-14 flex flex-wrap items-end justify-between gap-6">
+      {/* POSTS GRID */}
+      <section style={{ background: "#0a0a0a", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "6rem 1.5rem 8rem" }}>
+
+          <div className="reveal" style={{ marginBottom: "3.5rem", display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: "1.5rem" }}>
             <div>
-              <p className="text-xs tracking-[0.3em] bracket-label mb-6 text-muted-foreground">
-                LATEST
-              </p>
-              <h2 className="font-display text-4xl md:text-5xl tracking-tight">
-                From the studio.
-              </h2>
+              <p style={{ fontSize: "0.62rem", letterSpacing: "0.32em", textTransform: "uppercase", marginBottom: "0.9rem", color: "rgba(255,255,255,0.28)" }}>LATEST</p>
+              <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, letterSpacing: "-0.035em", color: "#f0e8df", lineHeight: 1.08 }}>From the studio.</h2>
             </div>
             <Link
               to="/contact"
-              className="text-[11px] tracking-[0.25em] uppercase border border-current/15 rounded-md px-5 py-3 hover:text-warm transition-colors"
+              style={{ fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", border: "1px solid rgba(255,255,255,0.14)", borderRadius: "6px", padding: "0.72rem 1.2rem", color: "rgba(255,255,255,0.5)", textDecoration: "none", transition: "color 0.2s, border-color 0.2s" }}
+              onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.color = "rgb(255,130,50)"; el.style.borderColor = "rgb(255,130,50)"; }}
+              onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.color = "rgba(255,255,255,0.5)"; el.style.borderColor = "rgba(255,255,255,0.14)"; }}
             >
               Subscribe →
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: "1.5rem" }}>
             {POSTS.map((p, index) => (
               <div
                 key={p.title}
+                className="reveal"
                 onClick={() => handleOpen(index)}
-                className="reveal group rounded-2xl overflow-hidden border border-black/10 bg-white hover:-translate-y-1 transition-transform duration-500 flash-card cursor-pointer"
-                style={{ animationDelay: `${index * 90}ms` }}
+                style={{ borderRadius: "12px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", background: "#111214", cursor: "pointer", transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.25s ease, box-shadow 0.3s ease", animationDelay: `${index * 90}ms` }}
+                onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.transform = "translateY(-4px)"; el.style.borderColor = "rgba(255,130,50,0.35)"; el.style.boxShadow = "0 16px 48px rgba(0,0,0,0.5)"; }}
+                onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.transform = "translateY(0)"; el.style.borderColor = "rgba(255,255,255,0.07)"; el.style.boxShadow = "none"; }}
               >
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src={p.img}
-                    alt={p.title}
-                    width={1200}
-                    height={800}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                <div style={{ position: "relative", aspectRatio: "4/3", overflow: "hidden" }}>
+                  <img src={p.img} alt={p.title} loading="lazy"
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: "saturate(0.8) brightness(0.8)", transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease" }}
+                    onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.transform = "scale(1.06)"; el.style.filter = "saturate(1) brightness(0.9)"; }}
+                    onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.transform = "scale(1)"; el.style.filter = "saturate(0.8) brightness(0.8)"; }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,10,10,0.7) 0%, transparent 55%)" }} />
                 </div>
-                <div className="p-7">
-                  <div className="flex items-center gap-3 text-[10px] tracking-[0.25em] uppercase mb-4">
-                    <span className="text-warm">{p.tag}</span>
-                    <span className="text-black/30">·</span>
-                    <span className="text-black/45">{p.date}</span>
+                <div style={{ padding: "1.5rem 1.75rem 1.75rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.85rem", fontSize: "0.58rem", letterSpacing: "0.25em", textTransform: "uppercase" }}>
+                    <span style={{ color: "rgb(255,130,50)" }}>{p.tag}</span>
+                    <span style={{ color: "rgba(255,255,255,0.18)" }}>·</span>
+                    <span style={{ color: "rgba(255,255,255,0.28)" }}>{p.date}</span>
                   </div>
-                  <h3 className="font-display text-2xl leading-snug group-hover:text-warm transition-colors">
-                    {p.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {p.excerpt}
-                  </p>
-                  <div className="mt-5 text-[11px] tracking-[0.25em] uppercase text-warm">
-                    Read note →
+                  <h3 style={{ fontSize: "clamp(1rem, 1.5vw, 1.2rem)", fontWeight: 700, lineHeight: 1.28, color: "#f0e8df", marginBottom: "0.6rem", letterSpacing: "-0.015em" }}>{p.title}</h3>
+                  <p style={{ fontSize: "0.82rem", lineHeight: 1.68, color: "rgba(240,232,220,0.38)", marginBottom: "1.1rem" }}>{p.excerpt}</p>
+                  <div style={{ fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgb(255,130,50)", display: "flex", alignItems: "center", gap: "6px" }}>
+                    Read note <span style={{ fontSize: "13px" }}>→</span>
                   </div>
                 </div>
               </div>
@@ -796,14 +440,7 @@ function InsightsPage() {
 
       <CTA
         eyebrow="STAY IN THE LOOP"
-        title={
-          <>
-            Field notes,{" "}
-            <em className="text-warm not-italic font-light">
-              straight to your inbox.
-            </em>
-          </>
-        }
+        title={<>Field notes, <em style={{ color: "rgb(255,130,50)", fontStyle: "normal", fontWeight: 300 }}>straight to your inbox.</em></>}
         description="One thoughtful note a month on AI, modernisation and shipping. No fluff, no spam."
         primaryLabel="Subscribe →"
         secondaryLabel="Browse services"
