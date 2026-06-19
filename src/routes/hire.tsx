@@ -13,15 +13,15 @@ import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
 import { useCallback, useEffect, useRef, useState } from "react";
-import heroVideo from "@/assets/hero-video.mp4";
-import secondaryVideo from "@/hero-video.mp4";
-import hireImage1 from "@/assets/hire-image1.jpg";
-import hireImage2 from "@/assets/hire-image2.jpg";
-import hireImage3 from "@/assets/hire-image3.jpg";
-import hireImage4 from "@/assets/hire-image4.jpg";
-import hireImage5 from "@/assets/hire-image5.jpg";
-import hireImage6 from "@/assets/hire-image6.jpg";
-import heroVideo10 from "@/assets/hero-video10.mp4";
+import hireCover1 from "@/assets/hire-cover1.jpg";
+import hireCover2 from "@/assets/hire-cover2.jpg";
+import hireCover3 from "@/assets/hire-cover3.jpg";
+import hireBox1 from "@/assets/hire-box1.jpg";
+import hireBox2 from "@/assets/hire-box2.jpg";
+import hireBox3 from "@/assets/hire-box3.jpg";
+import hireBox4 from "@/assets/hire-box4.jpg";
+import hireBox5 from "@/assets/hire-box5.jpg";
+import hireBox6 from "@/assets/hire-box6.jpg";
 
 const REASONS = [
   {
@@ -29,42 +29,42 @@ const REASONS = [
     title: "Agentic Workforce",
     kicker: "We don't just use AI tools; we build and deploy autonomous agents.",
     body: "Our specialists ensure your systems move beyond simple chat prompts to action logic - AI that reasons, plans, and executes missions independently while your team focuses on strategy.",
-    image: hireImage1,
+    image: hireBox1,
   },
   {
     n: "02",
     title: "Digital Sovereignty by Design",
     kicker: "Reclaim your digital destiny.",
     body: "Unlike agencies that lock you into black box platforms, our team forges the sovereign backbone you need. We build systems you own, manage, and evolve, ensuring your data remains your most private and powerful asset.",
-    image: hireImage2,
+    image: hireBox2,
   },
   {
     n: "03",
     title: "High-Velocity Substrate",
     kicker: "Nearly a decade of high-stakes engineering.",
     body: "With almost a decade of shipping into regulated and high-velocity markets, our playbook is already battle-tested. We skip the experimentation phase and move you directly to scaled impact.",
-    image: hireImage3,
+    image: hireBox3,
   },
   {
     n: "04",
     title: "Human-AI Symbiosis",
     kicker: "The Collective Mind approach.",
     body: "We don't replace humans; we amplify them. Our mission-ready squads are built on Human-AI Symbiosis: a seamless blend of intuition and precision that accelerates your time-to-market by 40%.",
-    image: hireImage4,
+    image: hireBox4,
   },
   {
     n: "05",
     title: "Architectural Resilience",
     kicker: "Engineered for infinite scale.",
     body: "We build on a composable, modular architecture. Whether you are disrupting a local market or entering a global frontier, our digital core is designed to adapt to 6G, edge computing, and whatever comes next.",
-    image: hireImage5,
+    image: hireBox5,
   },
   {
     n: "06",
     title: "Deciphered Outcomes",
     kicker: "Unvarnished business clarity.",
     body: "We cut through the AI hype to deliver measurable ROI. Every specialist we provide is trained to link technical performance to commercial return, giving you the receipts of impact you need to lead your industry.",
-    image: hireImage6,
+    image: hireBox6,
   },
 ];
 
@@ -130,7 +130,6 @@ const HIRE_STYLES = `
 .hire-story-card{transform-style:preserve-3d;will-change:transform,opacity,filter}
 .hire-story-card:after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(120deg,transparent 18%,rgba(255,255,255,.12),transparent 46%);transform:translateX(-125%);transition:transform .8s cubic-bezier(.22,1,.36,1)}
 .hire-story-card.is-front:hover:after{transform:translateX(125%)}
-.hire-story-image{clip-path:polygon(16% 0,100% 0,100% 100%,0 100%)}
 .hire-story-title{overflow-wrap:anywhere;word-break:normal}
 .hire-deck-glow{animation:hireCardGlow 4.2s ease-in-out infinite}
 .hire-control-card{background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.1);box-shadow:0 28px 90px -56px rgba(0,0,0,.95)}
@@ -228,14 +227,21 @@ function StoryDeck() {
                   : "transform .58s cubic-bezier(.22,1,.36,1), opacity .35s ease, filter .35s ease",
             }}
           >
-            <div className="hire-story-image absolute right-0 top-0 h-36 w-44 overflow-hidden opacity-35">
+            <div className="hire-story-image absolute inset-0 h-full w-full overflow-hidden">
               <img
                 src={reason.image}
                 alt=""
                 className="h-full w-full object-cover"
                 loading="lazy"
               />
-              <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#f1eadf]/35 to-[#f1eadf]" />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: isFront
+                    ? "linear-gradient(180deg, rgba(241,234,223,.18) 0%, rgba(241,234,223,.62) 38%, rgba(207,196,178,.94) 100%)"
+                    : "linear-gradient(180deg, rgba(241,234,223,.35) 0%, rgba(138,126,108,.78) 50%, rgba(138,126,108,.95) 100%)",
+                }}
+              />
             </div>
             <div className="relative z-10 flex h-full flex-col">
               <div className="mb-10 flex items-center justify-between">
@@ -296,13 +302,10 @@ function HirePage() {
       <Nav />
 
       <section className="relative min-h-screen overflow-hidden bg-black">
-        <video
+        <img
           className="hire-video absolute inset-0 h-full w-full object-cover opacity-45"
-          src={heroVideo}
-          autoPlay
-          muted
-          loop
-          playsInline
+          src={hireCover1}
+          alt=""
           aria-hidden="true"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.9)_0%,rgba(0,0,0,0.62)_45%,rgba(0,0,0,0.38)_100%)]" />
@@ -340,13 +343,10 @@ function HirePage() {
 
             <div className="hire-video-stack reveal relative min-h-[520px]">
               <div className="absolute right-0 top-0 h-[68%] w-[74%] overflow-hidden rounded-lg border border-white/12 bg-white/5 shadow-2xl">
-                <video
+                <img
                   className="h-full w-full object-cover opacity-80"
-                  src={secondaryVideo}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
+                  src={hireCover2}
+                  alt=""
                   aria-hidden="true"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
@@ -356,13 +356,10 @@ function HirePage() {
                 </div>
               </div>
               <div className="absolute bottom-8 left-0 h-[48%] w-[58%] overflow-hidden rounded-lg border border-orange-400/25 bg-black shadow-2xl">
-                <video
+                <img
                   className="h-full w-full object-cover opacity-70"
-                  src="/hero-video-7.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
+                  src={hireCover3}
+                  alt=""
                   aria-hidden="true"
                 />
                 <div className="absolute inset-0 bg-black/30" />

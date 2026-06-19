@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import logo from "@/assets/JarvisTechnolabs_Logo_white.png";
+import logo from "@/assets/JT_white.png";
 
 const LINKS = [
   { to: "/", label: "Home" },
@@ -38,7 +38,7 @@ export function Nav() {
           "background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease",
       }}
     >
-      <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+      <div className="mx-auto max-w-7xl px-8 py-6 flex items-center justify-between">
 
         {/* LOGO */}
         <Link
@@ -49,22 +49,15 @@ export function Nav() {
           <img
             src={logo}
             alt="Jarvis Technolabs"
-            className="h-10 w-auto object-contain"
+            className="h-16 w-auto object-contain"
             width={420}
             height={92}
-            style={{
-              // Force the logo to always be fully visible on dark backgrounds.
-              // drop-shadow adds a subtle dark halo so the light parts of the
-              // logo pop even against a near-black hero.
-              mixBlendMode: "screen" as const,
-              filter: "brightness(1.3) contrast(1.1) saturate(1.2)",
-            }}
           />
           <span className="sr-only">Jarvis Technolabs</span>
         </Link>
 
         {/* NAV LINKS */}
-        <nav className="hidden md:flex items-center gap-8 text-[11px] tracking-[0.2em] uppercase">
+        <nav className="hidden md:flex items-center gap-8 text-[12px] tracking-[0.2em] uppercase">
           {LINKS.map((l) => (
             <Link
               key={l.to}
@@ -88,7 +81,7 @@ export function Nav() {
         {/* CTA BUTTON */}
         <Link
           to="/contact"
-          className="motion-link text-[11px] tracking-[0.2em] uppercase rounded-md px-5 py-3 transition-colors"
+          className="motion-link text-[12px] tracking-[0.2em] uppercase rounded-md px-6 py-3.5 transition-colors"
           style={{
             border: scrolled
               ? "1px solid rgba(255,255,255,0.15)"

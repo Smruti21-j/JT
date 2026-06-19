@@ -85,54 +85,40 @@ function TestimonialCard({ quote, state }: { quote: React.ReactNode; state: Card
   }
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: "50%",
-        top: "50%",
-        width: "440px",
-        height: "440px",
-        background: "rgba(8,8,8,0.95)",
-        border: "1px solid rgba(249,115,22,0.25)",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "3rem",
-        boxSizing: "border-box",
-        boxShadow: "0 40px 100px rgba(0,0,0,0.8), 0 0 0 1px rgba(249,115,22,0.08)",
-        willChange: "transform, opacity",
-        transform,
-        opacity,
-        transition,
-        zIndex: state === "idle" ? 2 : 1,
-      }}
-    >
-      {/* Orange top accent */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: "3rem",
-          right: "3rem",
-          height: "2px",
-          background:
-            "linear-gradient(to right, rgba(249,115,22,0.9), rgba(249,115,22,0.15))",
-        }}
-      />
+   <div
+  style={{
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    width: "900px",
+    maxWidth: "80%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    willChange: "transform, opacity",
+    transform,
+    opacity,
+    transition,
+    zIndex: state === "idle" ? 2 : 1,
+  }}
+>
+       
 
-      <blockquote
-        style={{
-          fontSize: "1.05rem",
-          lineHeight: 1.75,
-          color: "rgba(255,255,255,0.88)",
-          fontFamily: "'Georgia', 'Times New Roman', serif",
-          fontStyle: "italic",
-          margin: 0,
-          padding: 0,
-          textAlign: "center",
-        }}
-      >
+     <blockquote
+  style={{
+    fontSize: "clamp(2rem, 3.8vw, 3rem)",
+    lineHeight: 1.45,
+    color: "#fff",
+    fontFamily: "'Georgia', 'Times New Roman', serif",
+    fontStyle: "italic",
+    fontWeight: 300,
+    textAlign: "center",
+    margin: 0,
+    maxWidth: "1100px",
+    letterSpacing: "-0.02em",
+  }}
+>
         <span
           style={{
             color: "rgba(249,115,22,0.65)",
@@ -265,20 +251,32 @@ export function Testimonials() {
   const SCROLL_THRESHOLD = 80;
 
   const navigate = useCallback(
-    (dir: 1 | -1) => {
-      if (transitioning) return;
-      const next = (current + dir + TESTIMONIALS.length) % TESTIMONIALS.length;
-      setDirection(dir);
-      setTransitioning(true);
-      setPrev(current);
+  (dir: 1 | -1) => {
+    if (transitioning) return;
+
+    // Stop at last testimonial
+    if (dir === 1 && current === TESTIMONIALS.length - 1) return;
+
+    // Stop at first testimonial
+    if (dir === -1 && current === 0) return;
+
+    const next = current + dir;
+
+    setDirection(dir);
+    setTransitioning(true);
+    setPrev(current);
+
+    setTimeout(() => {
+      setCurrent(next);
+      setPrev(null);
+
       setTimeout(() => {
-        setCurrent(next);
-        setPrev(null);
-        setTimeout(() => setTransitioning(false), 700);
-      }, 500);
-    },
-    [current, transitioning]
-  );
+        setTransitioning(false);
+      }, 700);
+    }, 500);
+  },
+  [current, transitioning]
+);
 
   // Auto-advance
   useEffect(() => {
@@ -330,17 +328,14 @@ export function Testimonials() {
         maxHeight: "900px",
       }}
     >
-      {/* Plexus */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-        <PlexusCanvas />
-        <div
-          style={{
-            position: "absolute", inset: 0,
-            backgroundImage: `linear-gradient(rgba(100,140,180,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(100,140,180,0.03) 1px,transparent 1px)`,
-            backgroundSize: "60px 60px",
-          }}
-        />
-      </div>
+     {/* Solid Black Background */}
+<div
+  style={{
+    position: "absolute",
+    inset: 0,
+    background: "#000",
+  }}
+/>
 
       {/* Background TESTIMONIALS text — sized to always fit full width */}
       <div

@@ -3,8 +3,8 @@ import { Nav } from "@/components/site/Nav";
 import { CTA, Footer } from "@/components/site/CTA";
 import { AnimatedHero } from "@/components/site/AnimatedHero";
 import { useReveal } from "@/hooks/use-reveal";
-import { useEffect, useRef } from "react";
-import careersImg from "@/assets/page-careers.jpg";
+import { useEffect, useRef, useState } from "react";
+import careersImg from "@/assets/page-careers1.png";
 import careers1Img from "@/assets/careers1.jpg";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -767,35 +767,28 @@ function PerksSection() {
 }
 
 // ─── Open Roles ────────────────────────────────────────────────────────────────
+// FIX: rows were stuck at opacity:0 because they only ever became visible
+// when an IntersectionObserver event fired. If that observer never fires
+// for an element (e.g. it's already in the viewport when the effect runs,
+// or a fast route transition / StrictMode double-mount drops the event),
+// the row stays invisible forever — which is exactly the empty gap you saw
+// between the table borders. The fix below adds an immediate visibility
+// check on mount as a safety net, and unobserves each row individually
+// once revealed instead of relying on one shared observer.
 function OpenRoles() {
   const headerRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLUListElement>(null);
+  // Mount-time reveal — no IntersectionObserver. This guarantees the rows
+  // become visible a beat after the component mounts, regardless of scroll
+  // position, ancestor overflow/sticky context, or observer timing quirks.
+  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
     const hEl = headerRef.current;
     if (hEl) {
-      const obs = new IntersectionObserver(
-        ([e]) => { if (e.isIntersecting) { hEl.style.animation = "fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) both"; obs.disconnect(); } },
-        { threshold: 0.15 }
-      );
-      obs.observe(hEl);
+      hEl.style.animation = "fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) both";
     }
-    const lEl = listRef.current;
-    if (lEl) {
-      const rows = lEl.querySelectorAll(".role-row");
-      const obs = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((e, i) => {
-            if (e.isIntersecting) {
-              setTimeout(() => e.target.classList.add("r-vis"), i * 100);
-            }
-          });
-        },
-        { threshold: 0.1 }
-      );
-      rows.forEach((r) => obs.observe(r));
-      return () => obs.disconnect();
-    }
+    const t = setTimeout(() => setRevealed(true), 150);
+    return () => clearTimeout(t);
   }, []);
 
   return (
@@ -840,7 +833,6 @@ function OpenRoles() {
         </div>
 
         <ul
-          ref={listRef}
           style={{
             listStyle: "none", padding: 0, margin: 0,
             borderTop: "1px solid rgba(255,255,255,0.06)",
@@ -850,7 +842,6 @@ function OpenRoles() {
           {ROLES.map((r, i) => (
             <li
               key={r.title}
-              className="role-row"
               style={{
                 padding: "32px 0",
                 display: "flex",
@@ -859,8 +850,9 @@ function OpenRoles() {
                 justifyContent: "space-between",
                 gap: "24px",
                 borderBottom: i < ROLES.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
-                opacity: 0,
-                transition: "padding 0.3s ease",
+                opacity: revealed ? 1 : 0,
+                transform: revealed ? "translateY(0)" : "translateY(20px)",
+                transition: `opacity 0.6s ease ${i * 0.1}s, transform 0.6s ease ${i * 0.1}s, padding 0.3s ease`,
               }}
             >
               <div>

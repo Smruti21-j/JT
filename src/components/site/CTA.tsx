@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import logo from "@/assets/JarvisTechnolabs_Logo_white.png";
+import logo from "@/assets/JT_white.png";
 import { useEffect, useRef } from "react";
 import { Linkedin, Instagram, Twitter, Youtube, Facebook, Mail, Phone, MapPin } from "lucide-react";
 
@@ -215,9 +215,9 @@ export function Footer() {
       <div className="relative max-w-7xl mx-auto px-6 py-20" style={{ zIndex: 10 }}>
         <div className="grid lg:grid-cols-12 gap-12 border-b border-white/10 pb-16">
           <div className="lg:col-span-5">
-            <Link to="/"><img src={logo} alt="Jarvis Technolabs" className="h-12 mb-6" /></Link>
+            <Link to="/"><img src={logo} alt="Jarvis Technolabs" className="h-20 w-auto object-contain mb-6" /></Link>
             <p className="text-2xl md:text-3xl font-semibold leading-tight max-w-md mb-4">
-              Orchestrating Your Autonomous<span className="text-orange-500"> Future</span>
+              Orchestrating Your <span className="text-orange-500">Autonomous</span> Future
             </p>
             <p className="text-sm leading-relaxed max-w-sm mb-8" style={{ color: "rgba(255,255,255,0.45)" }}>
               We are an AI-native digital engineering company helping enterprises and high-growth brands build intelligent products, automate operations, and deliver exceptional customer experiences.
