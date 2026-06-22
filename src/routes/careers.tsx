@@ -12,7 +12,7 @@ import careers1Img from "@/assets/careers1.jpg";
 const PERKS = [
   {
     num: "01",
-    titlePlain: "Flexible work options",
+    titlePlain: "Non-Linear",
     titleItalic: "Timeframes",
     desc: "Forget the 9-to-5 grind. With flexible work options, you define your own peak productivity hours.",
     stat: { value: "", label: "" },
@@ -20,7 +20,7 @@ const PERKS = [
   },
   {
     num: "02",
-    titlePlain: "No hidden policies",
+    titlePlain: "Zero-Lag",
     titleItalic: "Communication",
     desc: "We operate with no hidden policies, ensuring complete transparency across every layer of the organization.",
     stat: { value: "", label: "" },
@@ -28,46 +28,45 @@ const PERKS = [
   },
   {
     num: "03",
-    titlePlain: "Vibrant work culture",
+    titlePlain: "Sustainable",
+    titleItalic: "Innovation",
+    desc: "To keep your creative engine running, we prioritize work-life balance as a core functional requirement.",
+    stat: { value: "", label: "" },
+    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=85",
+  },
+  {
+    num: "04",
+    titlePlain: "The Hive",
     titleItalic: "Mind",
-    desc: "You’ll be surrounded by awesome team members in a vibrant work culture designed to spark eureka  moments daily.",
+    desc: "You’ll be surrounded by awesome team members in a vibrant work culture designed to spark \"eureka\" moments daily.",
     stat: { value: "", label: "" },
     image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=85",
   },
   {
-    num: "04",
-    titlePlain: "Individual Achievement Perks",
+    num: "05",
+    titlePlain: "Personal",
     titleItalic: "Breakthroughs",
     desc: "We celebrate your unique contributions with individual achievement perks.",
     stat: { value: "", label: "" },
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=85",
   },
-    {
-    num: "05",
-    titlePlain: "Team Performance Perks",
+  {
+    num: "06",
+    titlePlain: "Collective",
     titleItalic: "Victory",
     desc: "When the team wins, everyone wins. Our team performance perks ensure our shared success translates into shared rewards.",
     stat: { value: "", label: "" },
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=85",
   },
-    {
-    num: "06",
-    titlePlain: "Festival Celebrations",
+  {
+    num: "07",
+    titlePlain: "Moments of",
     titleItalic: "Connection",
     desc: "We pause to recharge and reconnect through meaningful festival celebrations.",
     stat: { value: "", label: "" },
     image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=85",
   },
-  {
-    num: "07",
-    titlePlain: "Sustainable Innovation",
-    titleItalic: "Connection",
-    desc: "To keep your creative engine running, we prioritize work-life balance as a core functional requirement.",
-    stat: { value: "", label: "" },
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=85",
-  },
 ];
-
 
 // Stories / culture gallery items — using PieterKoopt CDN images
 const CULTURE_STORIES = [
@@ -122,7 +121,7 @@ const CULTURE_STORIES = [
 ];
 
 const ROLES = [
-  { title: "MERN Developer", exp: "3 – 5+ years of experience", loc: "Ahmedabad · In-office" },
+  { title: "BDE", exp: "2 – 5+ years of experience", loc: "Ahmedabad · In-office" },
   { title: "Quality Analyst", exp: "0 – 3+ years of experience", loc: "Ahmedabad · In-office" },
 ];
 
@@ -622,13 +621,6 @@ function PerksSection() {
 
                 {/* Bottom block */}
                 <div style={{ position: "relative", zIndex: 1 }}>
-                  <p className="perk-txt" style={{
-                    fontSize: "9px", letterSpacing: "0.3em", textTransform: "uppercase",
-                    color: "rgb(255,130,50)", marginBottom: "12px", opacity: 0,
-                  }}>
-                    {perk.titlePlain}
-                  </p>
-
                   <h3 className="perk-txt" style={{ margin: 0, lineHeight: 1, marginBottom: "20px", opacity: 0 }}>
                     <span style={{
                       display: "block",
@@ -812,7 +804,7 @@ function OpenRoles() {
             margin: 0,
             marginBottom: "16px",
           }}>
-            CURRENTLY{" "}
+            Are you the missing variable in {" "}
             <em style={{
               fontFamily: "Georgia, serif",
               fontStyle: "italic",
@@ -820,10 +812,11 @@ function OpenRoles() {
               color: "rgb(255,130,50)",
               textTransform: "none",
             }}>
-              hiring.
+              Jarvis Equation.
             </em>
           </h2>
           <p style={{ fontSize: "15px", lineHeight: 1.7, color: "rgba(240,232,223,0.38)", maxWidth: "480px" }}>
+            Ready to synchronize with our team? If you reside in Ahmedabad, we want to hear from you.Join Jarvis Technolabs today and turn your technical prowess into a legacy.
             Share your updated resume at{" "}
             <a href="mailto:talent@jarvistechnolabs.com" style={{ color: "rgb(255,130,50)" }}>
               talent@jarvistechnolabs.com
@@ -906,8 +899,8 @@ function OpenRoles() {
           marginTop: "32px", fontSize: "13px", lineHeight: 1.7,
           color: "rgba(240,232,223,0.3)",
         }}>
-          * All roles are <em style={{ color: "rgba(240,232,223,0.55)", fontStyle: "normal" }}>in-office at our Ahmedabad office</em>;
-          we are considering only candidates residing in Ahmedabad.
+          * Please note that these are <em style={{ color: "rgba(240,232,223,0.55)", fontStyle: "normal" }}>in-office</em>;
+          positions, and we are exclusively seeking local visionaries residing in Ahmedabad, Gujarat.
         </p>
       </div>
     </section>
@@ -922,7 +915,7 @@ export const Route = createFileRoute("/careers")({
       { title: "Careers — Jarvis Technolabs" },
       {
         name: "description",
-        content: "Build a future you believe in. Join Jarvis Technolabs in Ahmedabad — open MERN Developer and Quality Analyst roles.",
+        content: "Build a future you believe in. Join Jarvis Technolabs in Ahmedabad — open BDE and Quality Analyst roles.",
       },
       { property: "og:title", content: "Careers — Jarvis Technolabs" },
       {
