@@ -77,7 +77,7 @@ const PERKS = [
 // Stories / culture gallery items — served from /public, so paths are absolute from root
 const CULTURE_STORIES = [
   {
-    image: "/careers1.jpg",
+    image: "/careers1.png",
     title: "The studio",
     sub: "Ahmedabad",
     tag: "Inside Jarvis",
