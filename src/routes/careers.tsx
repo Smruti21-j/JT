@@ -5,7 +5,6 @@ import { AnimatedHero } from "@/components/site/AnimatedHero";
 import { useReveal } from "@/hooks/use-reveal";
 import { useEffect, useRef, useState } from "react";
 import careersImg from "@/assets/page-careers1.png";
-import careers1Img from "@/assets/careers1.jpg";
 import career01 from "@/assets/career01.png";
 import career02 from "@/assets/career02.png";
 import career03 from "@/assets/career03.png";
@@ -75,7 +74,7 @@ const PERKS = [
   },
 ];
 
-// Stories / culture gallery items — using PieterKoopt CDN images
+// Stories / culture gallery items — served from /public, so paths are absolute from root
 const CULTURE_STORIES = [
   {
     image: "/careers1.jpg",
@@ -84,45 +83,45 @@ const CULTURE_STORIES = [
     tag: "Inside Jarvis",
   },
   {
-    image: "careers2.png",
-    title: "Workshop Wednesdays",
-    sub: "Weekly rituals",
+    image: "/careers2.png",
+    title: "Sacred Soirée",
+    sub: "Timeless Traditions",
     tag: "Culture",
   },
   {
-    image: "careers3.png",
-    title: "Festival Nights",
-    sub: "Diwali 2025",
+    image: "/careers3.png",
+    title: "Carnival Corner",
+    sub: "Grand Arcade",
     tag: "Celebrations",
   },
   {
-    image: "careers4.png",
-    title: "Team Sprint",
-    sub: "Q4 Launch",
+    image: "/careers4.jpg",
+    title: " Corporate Escape",
+    sub: "Team Odyssey",
     tag: "Delivery",
   },
   {
-    image: "careers7.png",
-    title: "Brainstorm Day",
-    sub: "Design system v3",
+    image: "/careers7.png",
+    title: "Adventure Retreat",
+    sub: "Travel Chronicles",
     tag: "Workshop",
   },
   {
-    image: "careers5.png",
-    title: "Year-end Party",
-    sub: "December 2024",
+    image: "/careers5.jpg",
+    title: "Frosted Festivities",
+    sub: "Year-End Affair",
     tag: "Celebrations",
   },
   {
-    image: "careers6.png",
-    title: "Valentine's Day",
-    sub: "Team of builders",
+    image: "/careers6.png",
+    title: "Smile Connect",
+    sub: "Wellness check",
     tag: "People",
   },
   {
-    image: "careers8.png",
-    title: "Quiet Hours",
-    sub: "Deep work sessions",
+    image: "/careers8.jpg",
+    title: "Cultural Connect",
+    sub: "Rooted by Traditions",
     tag: "Focus",
   },
 ];
@@ -166,6 +165,14 @@ const KEYFRAMES = `
     from { opacity: 0; transform: translateY(32px); }
     to   { opacity: 1; transform: translateY(0); }
   }
+  @keyframes lightboxFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes lightboxImgIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
+  }
 
   /* Story gallery */
   .story-card {
@@ -205,12 +212,141 @@ const KEYFRAMES = `
   }
 `;
 
+// ─── Lightbox ──────────────────────────────────────────────────────────────
+// Full-image viewer. Opens when a culture story card is clicked. Closes on
+// Escape key, backdrop click, or the close button. Click on the image itself
+// does NOT close it (stopPropagation), only clicking the dark backdrop does.
+function Lightbox({
+  image,
+  title,
+  sub,
+  onClose,
+}: {
+  image: string;
+  title: string;
+  sub: string;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    // Lock background scroll while lightbox is open
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose]);
 
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 1000,
+        background: "rgba(8,6,4,0.92)",
+        backdropFilter: "blur(6px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "5vh 5vw",
+        animation: "lightboxFadeIn 0.25s ease both",
+      }}
+    >
+      {/* Close button */}
+      <button
+        onClick={onClose}
+        aria-label="Close"
+        style={{
+          position: "absolute",
+          top: "24px",
+          right: "28px",
+          width: "40px",
+          height: "40px",
+          borderRadius: "50%",
+          border: "1px solid rgba(255,255,255,0.15)",
+          background: "rgba(255,255,255,0.04)",
+          color: "rgba(240,232,223,0.7)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+          transition: "border-color 0.2s, background 0.2s, color 0.2s",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,130,50,0.6)";
+          (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,90,20,0.1)";
+          (e.currentTarget as HTMLButtonElement).style.color = "rgb(255,160,90)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.15)";
+          (e.currentTarget as HTMLButtonElement).style.background = "rgba(255,255,255,0.04)";
+          (e.currentTarget as HTMLButtonElement).style.color = "rgba(240,232,223,0.7)";
+        }}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+
+      {/* Image + caption — click inside does not close the lightbox */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          maxWidth: "min(1100px, 92vw)",
+          maxHeight: "88vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          animation: "lightboxImgIn 0.35s cubic-bezier(0.22,1,0.36,1) both",
+        }}
+      >
+        <img
+          src={image}
+          alt={title}
+          style={{
+            maxWidth: "100%",
+            maxHeight: "78vh",
+            width: "auto",
+            height: "auto",
+            objectFit: "contain",
+            borderRadius: "4px",
+            boxShadow: "0 30px 80px rgba(0,0,0,0.6)",
+          }}
+        />
+        <div style={{ marginTop: "18px", textAlign: "center" }}>
+          <h3 style={{
+            fontFamily: "Georgia, serif",
+            fontStyle: "italic",
+            fontSize: "18px",
+            color: "#f0e8df",
+            margin: 0,
+            marginBottom: "4px",
+          }}>
+            {title}
+          </h3>
+          <p style={{
+            fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase",
+            color: "rgba(255,255,255,0.35)", margin: 0,
+          }}>
+            {sub}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 // ─── Stories Gallery (PieterKoopt /stories style) ─────────────────────────────
 function CultureGallery() {
   const headerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+  const [activeStory, setActiveStory] = useState<number | null>(null);
 
   useEffect(() => {
     // Header animation
@@ -277,7 +413,6 @@ function CultureGallery() {
               Always.
             </em>
           </h2>
-          
         </div>
       </div>
 
@@ -300,6 +435,7 @@ function CultureGallery() {
             <div
               key={story.title}
               className="story-card"
+              onClick={() => setActiveStory(i)}
               style={{
                 gridColumn: isFeatured ? "span 2" : "span 1",
                 gridRow: isFeatured || isTall ? "span 2" : "span 1",
@@ -400,6 +536,16 @@ function CultureGallery() {
       }}>
         Scroll through our culture
       </div>
+
+      {/* Lightbox — renders on top of everything when a story is selected */}
+      {activeStory !== null && (
+        <Lightbox
+          image={CULTURE_STORIES[activeStory].image}
+          title={CULTURE_STORIES[activeStory].title}
+          sub={CULTURE_STORIES[activeStory].sub}
+          onClose={() => setActiveStory(null)}
+        />
+      )}
     </section>
   );
 }
@@ -713,18 +859,6 @@ function PerksSection() {
                   background: "linear-gradient(to bottom, transparent 5%, rgba(255,110,30,0.8) 35%, rgba(255,110,30,0.8) 65%, transparent 95%)",
                   pointerEvents: "none",
                 }} />
-                {/* Badge */}
-                <div style={{
-                  position: "absolute", top: "20px", right: "20px",
-                  padding: "4px 12px",
-                  background: "rgba(255,90,20,0.08)",
-                  border: "1px solid rgba(255,110,30,0.2)",
-                  borderRadius: "999px",
-                  fontSize: "8px", letterSpacing: "0.25em", textTransform: "uppercase",
-                  color: "rgba(255,200,140,0.55)",
-                }}>
-                  {perk.titlePlain}
-                </div>
               </div>
             </div>
           ))}
@@ -821,8 +955,8 @@ function OpenRoles() {
               Jarvis Equation.
             </em>
           </h2>
-          <p style={{ fontSize: "15px", lineHeight: 1.7, color: "rgba(240,232,223,0.38)", maxWidth: "480px" }}>
-            Ready to synchronize with our team? If you reside in Ahmedabad, we want to hear from you.Join Jarvis Technolabs today and turn your technical prowess into a legacy.
+          <p style={{ fontSize: "15px", lineHeight: 1.7, color: "rgba(240,232,223,0.38)", maxWidth: "640px" }}>
+            Ready to synchronize with our team? If you reside in Ahmedabad, we want to hear from you. Join Jarvis Technolabs today and turn your technical prowess into a legacy.{" "}
             Share your updated resume at{" "}
             <a href="mailto:talent@jarvistechnolabs.com" style={{ color: "rgb(255,130,50)" }}>
               talent@jarvistechnolabs.com
