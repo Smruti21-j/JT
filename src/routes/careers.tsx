@@ -6,6 +6,13 @@ import { useReveal } from "@/hooks/use-reveal";
 import { useEffect, useRef, useState } from "react";
 import careersImg from "@/assets/page-careers1.png";
 import careers1Img from "@/assets/careers1.jpg";
+import career01 from "@/assets/career01.png";
+import career02 from "@/assets/career02.png";
+import career03 from "@/assets/career03.png";
+import career04 from "@/assets/career04.png";
+import career05 from "@/assets/career05.png";
+import career06 from "@/assets/career06.png";
+import career07 from "@/assets/career07.png";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -16,7 +23,7 @@ const PERKS = [
     titleItalic: "Timeframes",
     desc: "Forget the 9-to-5 grind. With flexible work options, you define your own peak productivity hours.",
     stat: { value: "", label: "" },
-    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1400&q=85",
+    image: career01,
   },
   {
     num: "02",
@@ -24,7 +31,7 @@ const PERKS = [
     titleItalic: "Communication",
     desc: "We operate with no hidden policies, ensuring complete transparency across every layer of the organization.",
     stat: { value: "", label: "" },
-    image: "https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?w=1400&q=85",
+    image: career02,
   },
   {
     num: "03",
@@ -32,7 +39,7 @@ const PERKS = [
     titleItalic: "Innovation",
     desc: "To keep your creative engine running, we prioritize work-life balance as a core functional requirement.",
     stat: { value: "", label: "" },
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=85",
+    image: career03,
   },
   {
     num: "04",
@@ -40,7 +47,7 @@ const PERKS = [
     titleItalic: "Mind",
     desc: "You’ll be surrounded by awesome team members in a vibrant work culture designed to spark \"eureka\" moments daily.",
     stat: { value: "", label: "" },
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1400&q=85",
+    image: career04,
   },
   {
     num: "05",
@@ -48,7 +55,7 @@ const PERKS = [
     titleItalic: "Breakthroughs",
     desc: "We celebrate your unique contributions with individual achievement perks.",
     stat: { value: "", label: "" },
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=85",
+    image: career05,
   },
   {
     num: "06",
@@ -56,7 +63,7 @@ const PERKS = [
     titleItalic: "Victory",
     desc: "When the team wins, everyone wins. Our team performance perks ensure our shared success translates into shared rewards.",
     stat: { value: "", label: "" },
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=85",
+    image: career06,
   },
   {
     num: "07",
@@ -64,7 +71,7 @@ const PERKS = [
     titleItalic: "Connection",
     desc: "We pause to recharge and reconnect through meaningful festival celebrations.",
     stat: { value: "", label: "" },
-    image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1400&q=85",
+    image: career07,
   },
 ];
 
@@ -83,37 +90,37 @@ const CULTURE_STORIES = [
     tag: "Culture",
   },
   {
-    image: "https://cdn.prod.website-files.com/67890d3b1a9365a1173c957d/691c4d8b22aff485a6ca46a9_Dion_Doornik_4K9A9906%20kopie%202.webp",
+    image: "careers3.png",
     title: "Festival Nights",
     sub: "Diwali 2025",
     tag: "Celebrations",
   },
   {
-    image: "https://cdn.prod.website-files.com/67890d3b1a9365a1173c957d/691c4e7246d8c647dc57cdfb_Dion_Doornik_4K9A9901%20kopie%202.webp",
+    image: "careers4.png",
     title: "Team Sprint",
     sub: "Q4 Launch",
     tag: "Delivery",
   },
   {
-    image: "https://cdn.prod.website-files.com/67890d3b1a9365a1173c957d/691c4ed522aff485a6cab7ca_Dion_Doornik_4K9A9900%20kopie%202.webp",
+    image: "careers7.png",
     title: "Brainstorm Day",
     sub: "Design system v3",
     tag: "Workshop",
   },
   {
-    image: "https://cdn.prod.website-files.com/67890d3b1a9365a1173c957d/691c4fb01c9e660bdfc1fdc6_Dion_Doornik_4K9A9905%20kopie%202.webp",
+    image: "careers5.png",
     title: "Year-end Party",
     sub: "December 2024",
     tag: "Celebrations",
   },
   {
-    image: "https://cdn.prod.website-files.com/67890d3b1a9365a1173c957d/691c4df8d7840c1a31b13fed_Dion_Doornik_4K9A9897%20kopie%202.webp",
-    title: "Office Portraits",
+    image: "careers6.png",
+    title: "Valentine's Day",
     sub: "Team of builders",
     tag: "People",
   },
   {
-    image: "https://cdn.prod.website-files.com/67890d3b1a9365a1173c957d/691d7d68dc73e7c9ab2b8bc0_IMG_5227%20kopienew.webp",
+    image: "careers8.png",
     title: "Quiet Hours",
     sub: "Deep work sessions",
     tag: "Focus",
@@ -764,9 +771,8 @@ function PerksSection() {
 // for an element (e.g. it's already in the viewport when the effect runs,
 // or a fast route transition / StrictMode double-mount drops the event),
 // the row stays invisible forever — which is exactly the empty gap you saw
-// between the table borders. The fix below adds an immediate visibility
-// check on mount as a safety net, and unobserves each row individually
-// once revealed instead of relying on one shared observer.
+// between the table borders. The fix below uses a mount-time reveal
+// instead, with no dependency on scroll position or observer timing.
 function OpenRoles() {
   const headerRef = useRef<HTMLDivElement>(null);
   // Mount-time reveal — no IntersectionObserver. This guarantees the rows

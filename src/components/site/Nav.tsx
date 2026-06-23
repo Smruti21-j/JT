@@ -78,32 +78,29 @@ export function Nav() {
           ))}
         </nav>
 
-        {/* CTA BUTTON */}
+        {/* CTA BUTTON — orange by default, brightens/fills on hover */}
         <Link
           to="/contact"
           className="motion-link text-[12px] tracking-[0.2em] uppercase rounded-md px-6 py-3.5 transition-colors"
           style={{
-            border: scrolled
-              ? "1px solid rgba(255,255,255,0.15)"
-              : "1px solid rgba(255,255,255,0.35)",
-            color: scrolled
-              ? "rgba(255,255,255,0.65)"
-              : "rgba(255,255,255,0.9)",
+            border: "1px solid rgba(255,130,50,0.6)",
+            color: "rgb(255,130,50)",
             boxShadow: scrolled ? "none" : "0 1px 12px rgba(0,0,0,0.4)",
-            transition: "border-color 0.3s, color 0.3s, box-shadow 0.3s",
+            transition: "border-color 0.3s, color 0.3s, background-color 0.3s, box-shadow 0.3s",
           }}
           onMouseEnter={(e) => {
             (e.currentTarget as HTMLElement).style.borderColor =
+              "rgb(255,150,70)";
+            (e.currentTarget as HTMLElement).style.color = "#0a0806";
+            (e.currentTarget as HTMLElement).style.backgroundColor =
               "rgb(255,130,50)";
-            (e.currentTarget as HTMLElement).style.color = "rgb(255,130,50)";
           }}
           onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.borderColor = scrolled
-              ? "rgba(255,255,255,0.15)"
-              : "rgba(255,255,255,0.35)";
-            (e.currentTarget as HTMLElement).style.color = scrolled
-              ? "rgba(255,255,255,0.65)"
-              : "rgba(255,255,255,0.9)";
+            (e.currentTarget as HTMLElement).style.borderColor =
+              "rgba(255,130,50,0.6)";
+            (e.currentTarget as HTMLElement).style.color = "rgb(255,130,50)";
+            (e.currentTarget as HTMLElement).style.backgroundColor =
+              "transparent";
           }}
         >
           Let's talk
