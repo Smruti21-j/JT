@@ -12,7 +12,7 @@ import {
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import hireCover1 from "@/assets/hire-cover1.jpg";
 import hireCover2 from "@/assets/hire-cover2.jpg";
 import hireCover3 from "@/assets/hire-cover3.jpg";
@@ -119,162 +119,402 @@ const DNA_GROUPS = [
 ];
 
 const HIRE_STYLES = `
-@keyframes hireVideoDrift{0%,100%{transform:scale(1.04) translate3d(0,0,0)}50%{transform:scale(1.1) translate3d(-1.5%,-1%,0)}}
-@keyframes hirePulseLine{0%{transform:translateX(-100%);opacity:0}18%,70%{opacity:1}100%{transform:translateX(280%);opacity:0}}
-@keyframes hireOrbit{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-@keyframes hireSignal{0%,100%{opacity:.28;transform:scale(.96)}50%{opacity:.78;transform:scale(1)}}
-@keyframes hireCardGlow{0%,100%{opacity:.35}50%{opacity:.85}}
-.hire-video{animation:hireVideoDrift 18s ease-in-out infinite}
-.hire-title{text-wrap:balance}
-.hire-story-deck{perspective:1100px;perspective-origin:50% 35%}
-.hire-story-card{transform-style:preserve-3d;will-change:transform,opacity,filter}
-.hire-story-card:after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(120deg,transparent 18%,rgba(255,255,255,.12),transparent 46%);transform:translateX(-125%);transition:transform .8s cubic-bezier(.22,1,.36,1)}
-.hire-story-card.is-front:hover:after{transform:translateX(125%)}
-.hire-story-title{overflow-wrap:anywhere;word-break:normal}
-.hire-deck-glow{animation:hireCardGlow 4.2s ease-in-out infinite}
-.hire-control-card{background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.1);box-shadow:0 28px 90px -56px rgba(0,0,0,.95)}
-.hire-control-card:before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 12%,rgba(255,130,50,.12),transparent 46%);transform:translateX(-120%);transition:transform .8s cubic-bezier(.22,1,.36,1)}
-.hire-control-card:hover:before{transform:translateX(120%)}
-.hire-flow-line{position:absolute;left:18px;right:18px;top:50%;height:1px;overflow:hidden;background:rgba(255,255,255,.08)}
-.hire-flow-line:after{content:"";position:absolute;inset-block:0;width:42%;background:linear-gradient(90deg,transparent,rgba(255,130,50,.9),transparent);animation:hirePulseLine 3.8s ease-in-out infinite}
-.hire-dna-panel{background:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.015));background-size:34px 34px,34px 34px,100% 100%;border:1px solid rgba(255,255,255,.1)}
-.hire-ring{position:absolute;inset:12%;border:1px solid rgba(255,130,50,.2);border-radius:999px;animation:hireSignal 4.5s ease-in-out infinite}
-.hire-ring:nth-child(2){inset:25%;animation-delay:.8s}.hire-ring:nth-child(3){inset:38%;animation-delay:1.6s}.hire-orbit{animation:hireOrbit 26s linear infinite}
-@media(max-width:900px){.hire-hero-grid,.hire-sync-grid,.hire-dna-grid{grid-template-columns:1fr!important}.hire-video-stack{min-height:360px!important}.hire-flow-line{display:none}}
-@media(max-width:640px){.hire-hero-shell{padding-top:8rem!important}.hire-title{font-size:clamp(2.35rem,13vw,4rem)!important}}
+  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap');
+
+  .hire-root {
+    --cream: #F7F5F1;
+    --ink: #0C0C0B;
+    --orange: #E85D26;
+    --muted: #8A8680;
+    --rule: rgba(12,12,11,0.12);
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ── MARQUEE ── */
+  @keyframes hireMarquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+  .hire-marquee-track { animation: hireMarquee 22s linear infinite; white-space: nowrap; }
+
+  /* ── REASON ROW hover image reveal ── */
+  .hire-reason-row { position: relative; }
+  .hire-reason-img {
+    position: absolute;
+    right: 0; top: 50%;
+    transform: translateY(-50%) scale(0.96);
+    width: 340px; height: 220px;
+    object-fit: cover;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.38s ease, transform 0.38s ease;
+    z-index: 10;
+  }
+  .hire-reason-row:hover .hire-reason-img {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+  }
+  .hire-reason-row:hover .hire-reason-num {
+    color: var(--orange);
+  }
+
+  /* ── DNA tag hover ── */
+  .hire-dna-tag { transition: background 0.18s, color 0.18s; }
+  .hire-dna-tag:hover { background: var(--orange); color: #fff; }
+
+  /* ── SYNC metric ── */
+  .hire-sync-metric {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+  }
+
+  /* ── hero image composite ── */
+  @keyframes hireFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .hire-img-float { animation: hireFloat 7s ease-in-out infinite; }
+  .hire-img-float2 { animation: hireFloat 9s ease-in-out infinite 1.5s; }
+
+  /* ── SYNC SECTION ANIMATIONS ── */
+
+  /* count-up number — slides up from below on enter */
+  @keyframes syncNumEnter {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .sync-num-anim {
+    opacity: 0;
+  }
+  .sync-num-anim.is-visible {
+    animation: syncNumEnter 0.85s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+
+  /* label slides up after number */
+  @keyframes syncLabelEnter {
+    from { opacity: 0; transform: translateY(12px); letter-spacing: 0.5em; }
+    to   { opacity: 1; transform: translateY(0);    letter-spacing: 0.3em; }
+  }
+  .sync-label-anim {
+    opacity: 0;
+  }
+  .sync-label-anim.is-visible {
+    animation: syncLabelEnter 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+
+  /* card body content fades up */
+  @keyframes syncBodyEnter {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .sync-body-anim {
+    opacity: 0;
+  }
+  .sync-body-anim.is-visible {
+    animation: syncBodyEnter 0.75s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+
+  /* column border draws down */
+  @keyframes syncBorderDraw {
+    from { clip-path: inset(0 0 100% 0); }
+    to   { clip-path: inset(0 0 0% 0); }
+  }
+  .sync-col-border {
+    position: relative;
+  }
+  .sync-col-border::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 1px; height: 100%;
+    background: rgba(247,245,241,0.1);
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 0s;
+  }
+  .sync-col-border.is-visible::before {
+    animation: syncBorderDraw 1s cubic-bezier(0.22,1,0.36,1) forwards;
+  }
+
+  /* icon pulse on enter */
+  @keyframes syncIconPulse {
+    0%   { opacity: 0; transform: scale(0.5); }
+    60%  { transform: scale(1.2); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+  .sync-icon-anim {
+    opacity: 0;
+  }
+  .sync-icon-anim.is-visible {
+    animation: syncIconPulse 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  }
+
+  .sync-card:hover .sync-accent-line {
+    transform: scaleX(1) !important;
+  }
+    transition: background 0.25s ease;
+    cursor: default;
+  }
+  .sync-card:hover {
+    background: rgba(247,245,241,0.04);
+  }
+  .sync-card:hover .sync-num-val {
+    color: var(--orange) !important;
+    transition: color 0.3s ease;
+  }
+
+  @media (max-width: 768px) {
+    .hire-hero-cols { flex-direction: column !important; }
+    .hire-reason-img { display: none; }
+    .hire-sync-cols { flex-direction: column !important; }
+    .hire-dna-cols { flex-direction: column !important; }
+  }
 `;
 
-const DECK_OFFSETS = [
-  { x: 34, y: -34, scale: 0.84, rotate: 5, brightness: 0.55 },
-  { x: 22, y: -23, scale: 0.9, rotate: 3, brightness: 0.68 },
-  { x: 10, y: -11, scale: 0.96, rotate: 1.2, brightness: 0.82 },
-  { x: 0, y: 0, scale: 1, rotate: 0, brightness: 1 },
-];
+/* ── Animated sync card ── */
+function SyncCard({
+  pt,
+  index,
+  Icon,
+}: {
+  pt: (typeof SYNC_POINTS)[0];
+  index: number;
+  Icon: React.ElementType;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  const [displayNum, setDisplayNum] = useState("0");
 
-function StoryDeck() {
-  const [deck, setDeck] = useState(REASONS.map((_, i) => i));
-  const [falling, setFalling] = useState(false);
-  const pausedRef = useRef(false);
-  const movingRef = useRef(false);
-
-  const advance = useCallback(() => {
-    if (movingRef.current) return;
-    movingRef.current = true;
-    setFalling(true);
-    window.setTimeout(() => {
-      setDeck((prev) => {
-        const next = [...prev];
-        next.unshift(next.pop()!);
-        return next;
-      });
-      setFalling(false);
-      movingRef.current = false;
-    }, 560);
-  }, []);
+  // Parse numeric value from metric string like "24h", "1", "0"
+  const numMatch = pt.metric.match(/\d+/);
+  const numericVal = numMatch ? parseInt(numMatch[0], 10) : 0;
+  const suffix = pt.metric.replace(/\d+/, "");
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      if (!pausedRef.current) advance();
-    }, 3900);
-    return () => window.clearInterval(timer);
-  }, [advance]);
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.25 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
-  const visible = deck.slice(-4);
-  const active = deck[deck.length - 1];
+  // Count-up animation when visible
+  useEffect(() => {
+    if (!visible || numericVal === 0) {
+      setDisplayNum(pt.metric);
+      return;
+    }
+    const duration = 1200;
+    const steps = 40;
+    const interval = duration / steps;
+    let step = 0;
+    const timer = setInterval(() => {
+      step++;
+      const progress = step / steps;
+      // Ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(eased * numericVal);
+      setDisplayNum(`${current}${suffix}`);
+      if (step >= steps) {
+        clearInterval(timer);
+        setDisplayNum(pt.metric);
+      }
+    }, interval);
+    return () => clearInterval(timer);
+  }, [visible]);
+
+  const delay = index * 150;
 
   return (
     <div
-      className="hire-story-deck relative mx-auto h-[520px] w-full max-w-[430px]"
-      onMouseEnter={() => {
-        pausedRef.current = true;
-      }}
-      onMouseLeave={() => {
-        pausedRef.current = false;
+      ref={ref}
+      className={`sync-card sync-col-border${visible ? " is-visible" : ""}`}
+      style={{
+        flex: 1,
+        padding: "2rem 2.5rem",
+        borderRight: "1px solid rgba(247,245,241,0.1)",
       }}
     >
-      <div className="hire-deck-glow pointer-events-none absolute inset-8 rounded-full bg-orange-500/20 blur-3xl" />
-      {visible.map((reasonIndex, position) => {
-        const reason = REASONS[reasonIndex];
-        const isFront = position === visible.length - 1;
-        const off = DECK_OFFSETS[position + (DECK_OFFSETS.length - visible.length)];
-        const transform =
-          falling && isFront
-            ? `translate3d(${off.x}px, ${off.y + 46}px, 0) rotateX(58deg) rotateZ(${off.rotate - 5}deg) scale(.83)`
-            : `translate3d(${off.x}px, ${off.y}px, 0) rotateX(0deg) rotateZ(${off.rotate}deg) scale(${off.scale})`;
+      {/* top row: index + icon */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "2.5rem" }}>
+        <span
+          className={`sync-body-anim${visible ? " is-visible" : ""}`}
+          style={{
+            fontSize: "0.65rem",
+            letterSpacing: "0.3em",
+            color: "rgba(247,245,241,0.25)",
+            transitionDelay: `${delay}ms`,
+            animationDelay: `${delay}ms`,
+          }}
+        >
+          {pt.n}
+        </span>
+        <span
+          className={`sync-icon-anim${visible ? " is-visible" : ""}`}
+          style={{ animationDelay: `${delay + 100}ms` }}
+        >
+          <Icon size={16} color="var(--orange)" />
+        </span>
+      </div>
 
-        return (
-          <article
-            key={reasonIndex}
-            className={`hire-story-card absolute inset-0 overflow-hidden rounded-lg border p-7 ${isFront ? "is-front cursor-pointer" : ""}`}
-            onClick={() => {
-              if (isFront) advance();
-            }}
-            style={{
-              zIndex: position + 1,
-              background: isFront
-                ? "linear-gradient(145deg, #f1eadf, #cfc4b2)"
-                : "linear-gradient(145deg, rgba(241,234,223,.54), rgba(138,126,108,.46))",
-              borderColor: isFront ? "rgba(255,255,255,.35)" : "rgba(255,255,255,.16)",
-              boxShadow: isFront ? "0 34px 90px rgba(0,0,0,.42)" : "none",
-              color: "#150d03",
-              filter: `brightness(${off.brightness})`,
-              opacity: falling && isFront ? 0 : 1,
-              transform,
-              transformOrigin: "center top",
-              transition:
-                falling && isFront
-                  ? "transform .5s cubic-bezier(.55,0,1,.45), opacity .28s ease .12s"
-                  : "transform .58s cubic-bezier(.22,1,.36,1), opacity .35s ease, filter .35s ease",
-            }}
-          >
-            <div className="hire-story-image absolute inset-0 h-full w-full overflow-hidden">
-              <img
-                src={reason.image}
-                alt=""
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-              <div
-                className="absolute inset-0"
+      {/* big metric */}
+      <div
+        className={`sync-num-anim sync-num-val${visible ? " is-visible" : ""}`}
+        style={{
+          fontFamily: "'EB Garamond', serif",
+          fontStyle: "italic",
+          fontSize: "clamp(3.5rem, 6vw, 6rem)",
+          color: "var(--cream)",
+          lineHeight: 1,
+          marginBottom: "0.3rem",
+          animationDelay: `${delay + 80}ms`,
+          transition: "color 0.3s ease",
+        }}
+      >
+        {displayNum}
+      </div>
+
+      {/* metric label — letter-spacing animates in */}
+      <div
+        className={`sync-label-anim${visible ? " is-visible" : ""}`}
+        style={{
+          fontSize: "0.62rem",
+          letterSpacing: "0.3em",
+          textTransform: "uppercase",
+          color: "var(--orange)",
+          marginBottom: "1.5rem",
+          animationDelay: `${delay + 200}ms`,
+        }}
+      >
+        {pt.metricLabel}
+      </div>
+
+      {/* title */}
+      <h3
+        className={`sync-body-anim${visible ? " is-visible" : ""}`}
+        style={{
+          fontFamily: "'EB Garamond', serif",
+          fontSize: "1.35rem",
+          fontWeight: 400,
+          color: "var(--cream)",
+          marginBottom: "0.75rem",
+          animationDelay: `${delay + 260}ms`,
+        }}
+      >
+        {pt.label}
+      </h3>
+
+      {/* body */}
+      <p
+        className={`sync-body-anim${visible ? " is-visible" : ""}`}
+        style={{
+          fontSize: "0.85rem",
+          lineHeight: 1.75,
+          color: "rgba(247,245,241,0.4)",
+          minHeight: "7rem",
+          animationDelay: `${delay + 320}ms`,
+        }}
+      >
+        {pt.d}
+      </p>
+
+      {/* bottom accent line — draws right on hover via CSS */}
+      <div style={{ marginTop: "1.5rem", height: "1px", background: "rgba(247,245,241,0.06)", position: "relative", overflow: "hidden" }}>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: "var(--orange)",
+            transform: "scaleX(0)",
+            transformOrigin: "left",
+            transition: "transform 0.5s cubic-bezier(0.22,1,0.36,1)",
+          }}
+          className="sync-accent-line"
+        />
+      </div>
+    </div>
+  );
+}
+
+/* ── Reason rows (irinamoi work-list style) ── */
+function ReasonList() {
+  return (
+    <div>
+      {REASONS.map((r, i) => (
+        <div
+          key={r.n}
+          className="hire-reason-row group"
+          style={{
+            borderTop: i === 0 ? "1px solid var(--rule)" : undefined,
+            borderBottom: "1px solid var(--rule)",
+            position: "relative",
+            padding: "2rem 0",
+            cursor: "default",
+          }}
+        >
+          {/* hover image */}
+          <img src={r.image} alt="" className="hire-reason-img" aria-hidden="true" />
+
+          <div style={{ display: "grid", gridTemplateColumns: "4rem 1fr auto", gap: "1.5rem", alignItems: "start", paddingRight: "360px" }}>
+            {/* number */}
+            <span
+              className="hire-reason-num"
+              style={{
+                fontFamily: "'EB Garamond', serif",
+                fontSize: "1rem",
+                color: "var(--muted)",
+                paddingTop: "0.15rem",
+                transition: "color 0.2s",
+                letterSpacing: "0.06em",
+              }}
+            >
+              {r.n}
+            </span>
+
+            {/* content */}
+            <div>
+              <h3
                 style={{
-                  background: isFront
-                    ? "linear-gradient(180deg, rgba(241,234,223,.18) 0%, rgba(241,234,223,.62) 38%, rgba(207,196,178,.94) 100%)"
-                    : "linear-gradient(180deg, rgba(241,234,223,.35) 0%, rgba(138,126,108,.78) 50%, rgba(138,126,108,.95) 100%)",
+                  fontFamily: "'EB Garamond', serif",
+                  fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)",
+                  fontWeight: 400,
+                  lineHeight: 1.05,
+                  color: "var(--ink)",
+                  margin: 0,
                 }}
-              />
-            </div>
-            <div className="relative z-10 flex h-full flex-col">
-              <div className="mb-10 flex items-center justify-between">
-                <span className="font-mono text-[11px] tracking-[0.3em] text-black/32">
-                  {reason.n} / 06
-                </span>
-                <span className="h-2 w-2 rounded-full bg-orange-600/70" />
-              </div>
-              <h3 className="hire-story-title max-w-[92%] font-display text-[clamp(1.9rem,3.2vw,2.75rem)] uppercase leading-[0.98] text-black">
-                {reason.title}
+              >
+                {r.title}
               </h3>
-              <div className="mt-auto pt-8">
-                <p className="font-display text-lg leading-6 text-black/70">{reason.kicker}</p>
-                <div className="my-5 h-px bg-black/10" />
-                <p className="text-sm leading-7 text-black/52">{reason.body}</p>
-                <div className="mt-6 flex items-center justify-between">
-                  <span className="text-[10px] uppercase tracking-[0.24em] text-black/30">
-                    Click for next
-                  </span>
-                  <div className="flex gap-1.5">
-                    {REASONS.map((_, i) => (
-                      <span
-                        key={i}
-                        className={`h-1.5 w-1.5 rounded-full ${active === i ? "bg-black/55" : "bg-black/15"}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
+              <p
+                style={{
+                  marginTop: "0.6rem",
+                  fontSize: "0.82rem",
+                  color: "var(--muted)",
+                  letterSpacing: "0.03em",
+                  maxWidth: "480px",
+                  lineHeight: 1.7,
+                }}
+              >
+                {r.kicker} — {r.body}
+              </p>
             </div>
-          </article>
-        );
-      })}
+
+            {/* arrow on hover */}
+            <span
+              style={{
+                opacity: 0,
+                transition: "opacity 0.2s",
+                color: "var(--orange)",
+                paddingTop: "0.3rem",
+              }}
+              className="group-hover:opacity-100"
+            >
+              <ArrowRight size={18} />
+            </span>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -297,252 +537,537 @@ function HirePage() {
   useReveal();
 
   return (
-    <main className="bg-background text-foreground min-h-screen">
+    <main className="hire-root" style={{ background: "var(--cream)", color: "var(--ink)", minHeight: "100vh" }}>
       <style>{HIRE_STYLES}</style>
       <Nav />
 
-      <section className="relative min-h-screen overflow-hidden bg-black">
+      {/* ════════════════════════════════════════
+          HERO
+      ════════════════════════════════════════ */}
+      <section
+        style={{
+          minHeight: "100svh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-end",
+          padding: "0",
+          position: "relative",
+          overflow: "hidden",
+          background: "var(--ink)",
+        }}
+      >
+        {/* large background image */}
         <img
-          className="hire-video absolute inset-0 h-full w-full object-cover opacity-45"
           src={hireCover1}
           alt=""
           aria-hidden="true"
+          style={{
+            position: "absolute", inset: 0,
+            width: "100%", height: "100%",
+            objectFit: "cover",
+            opacity: 0.28,
+          }}
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.9)_0%,rgba(0,0,0,0.62)_45%,rgba(0,0,0,0.38)_100%)]" />
-        <div className="absolute inset-0 grid-bg opacity-60" />
-        <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-background to-transparent" />
+        {/* vertical label — left edge */}
+        <div
+          style={{
+            position: "absolute",
+            left: "2rem",
+            top: "50%",
+            transform: "translateY(-50%) rotate(-90deg)",
+            transformOrigin: "center center",
+            fontSize: "0.65rem",
+            letterSpacing: "0.38em",
+            color: "rgba(247,245,241,0.35)",
+            textTransform: "uppercase",
+          }}
+        >
+           
+        </div>
 
-        <div className="hire-hero-shell relative mx-auto grid min-h-screen max-w-7xl items-center gap-12 px-6 py-32 md:px-12">
-          <div className="hire-hero-grid grid items-center gap-14 lg:grid-cols-[1.08fr_0.92fr]">
-            <div className="reveal max-w-3xl">
-              <p className="bracket-label mb-6 text-xs tracking-[0.34em] text-warm">
-                GLOBAL TALENT PODS
-              </p>
-              <h1 className="hire-title font-display text-[clamp(3rem,6.7vw,6.4rem)] font-semibold uppercase leading-[0.94] text-white">
-                Are you ready to initialize the next sequence of
-                <em className="mt-2 block not-italic text-warm">global growth?</em>
-              </h1>
-              <p className="mt-8 max-w-xl text-base leading-8 text-white/58 md:text-lg">
-                From your ambition to unvarnished impact. Enter the Impact Hub - a high-velocity
-                studio designed for the world's most important decisions. Deploy a team that thinks
-                like a partner and acts like an agent, turning your boldest ideas into autonomous
-                reality.
-              </p>
-              <div className="mt-10 flex flex-wrap items-center gap-4">
-                <Link
-                  to="/contact"
-                  className="motion-link inline-flex items-center gap-3 rounded-md bg-orange-500 px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-black"
-                >
-                  Deploy your team <ArrowRight size={16} />
-                </Link>
-                <span className="text-xs uppercase tracking-[0.24em] text-white/35">
-                  Start in 7 days
-                </span>
-              </div>
-            </div>
+        {/* hero body */}
+        <div
+          style={{
+            position: "relative",
+            zIndex: 2,
+            maxWidth: "1280px",
+            margin: "0 auto",
+            width: "100%",
+            padding: "10rem 3rem 4rem",
+          }}
+        >
+          {/* spaced label */}
+          <p
+            style={{
+              fontSize: "0.68rem",
+              letterSpacing: "0.36em",
+              textTransform: "uppercase",
+              color: "var(--orange)",
+              marginBottom: "2rem",
+            }}
+          >
+            H I R E &nbsp; J A R V I S
+          </p>
 
-            <div className="hire-video-stack reveal relative min-h-[520px]">
-              <div className="absolute right-0 top-0 h-[68%] w-[74%] overflow-hidden rounded-lg border border-white/12 bg-white/5 shadow-2xl">
-                <img
-                  className="h-full w-full object-cover opacity-80"
-                  src={hireCover2}
-                  alt=""
-                  aria-hidden="true"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
-                <div className="absolute bottom-5 left-5 right-5 flex items-center justify-between text-[10px] uppercase tracking-[0.24em] text-white/62">
-                  <span>Live build room</span>
-                  <span className="text-warm">Online</span>
-                </div>
-              </div>
-              <div className="absolute bottom-8 left-0 h-[48%] w-[58%] overflow-hidden rounded-lg border border-orange-400/25 bg-black shadow-2xl">
-                <img
-                  className="h-full w-full object-cover opacity-70"
-                  src={hireCover3}
-                  alt=""
-                  aria-hidden="true"
-                />
-                <div className="absolute inset-0 bg-black/30" />
-                <div className="absolute inset-x-5 top-5 h-px overflow-hidden bg-white/10">
-                  <span
-                    className="block h-full w-1/2 bg-gradient-to-r from-transparent via-orange-400 to-transparent"
-                    style={{ animation: "hirePulseLine 3s ease-in-out infinite" }}
-                  />
-                </div>
-              </div>
-              <div className="absolute bottom-0 right-6 w-56 rounded-lg border border-white/10 bg-black/75 p-5 backdrop-blur-xl">
-                <p className="text-[10px] uppercase tracking-[0.24em] text-white/35">Throughput</p>
-                <div className="mt-3 flex items-end gap-3">
-                  <span className="font-display text-5xl text-white">3x</span>
-                  <span className="pb-2 text-xs uppercase tracking-[0.18em] text-warm">
-                    delivery lanes
-                  </span>
-                </div>
-              </div>
+          {/* massive title */}
+          <h1
+            style={{
+              fontFamily: "'EB Garamond', serif",
+              fontSize: "clamp(3.6rem, 9vw, 9rem)",
+              fontWeight: 400,
+              lineHeight: 0.92,
+              color: "var(--cream)",
+              maxWidth: "900px",
+              margin: 0,
+            }}
+          >
+            Initialize
+            <br />
+            <em style={{ fontStyle: "italic", color: "var(--orange)" }}>global growth.</em>
+          </h1>
+
+          {/* bottom row */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-end",
+              justifyContent: "space-between",
+              marginTop: "6rem",
+              paddingBottom: "2rem",
+              borderTop: "1px solid rgba(247,245,241,0.12)",
+              paddingTop: "1.5rem",
+              gap: "2rem",
+              flexWrap: "wrap",
+            }}
+          >
+            <p
+              style={{
+                maxWidth: "460px",
+                fontSize: "1rem",
+                lineHeight: 1.75,
+                color: "rgba(247,245,241,0.52)",
+                margin: 0,
+              }}
+            >
+              Deploy a team that thinks like a partner and acts like an agent — turning your boldest
+              ideas into autonomous reality. Enter the Impact Hub.
+            </p>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
+              <span
+                style={{
+                  fontSize: "0.68rem",
+                  letterSpacing: "0.26em",
+                  textTransform: "uppercase",
+                  color: "rgba(247,245,241,0.28)",
+                }}
+              >
+                
+              </span>
+              <Link
+                to="/contact"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.75rem",
+                  background: "var(--orange)",
+                  color: "#fff",
+                  padding: "0.9rem 1.8rem",
+                  fontSize: "0.72rem",
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  textDecoration: "none",
+                  fontWeight: 500,
+                }}
+              >
+                Deploy your team <ArrowRight size={14} />
+              </Link>
             </div>
           </div>
         </div>
-      </section>
 
-      <section className="relative overflow-hidden border-t border-white/5">
-        <div className="absolute inset-0 grid-bg opacity-35" />
-        <div className="absolute right-0 top-0 h-96 w-96 bg-orange-500/10 blur-3xl" />
-        <div className="relative mx-auto max-w-7xl px-6 py-24 md:px-12 md:py-32">
-          <div className="grid items-center gap-14 lg:grid-cols-[0.92fr_1.08fr]">
-            <div className="reveal">
-              <p className="bracket-label mb-6 text-xs tracking-[0.3em] text-warm">
-                WHY HIRE JARVIS
-              </p>
-              <h2 className="font-display text-4xl leading-tight md:text-6xl">
-                Why hire a team that follows tickets when you can deploy a collective that
-                <em className="block not-italic text-warm">orchestrates outcomes?</em>
-              </h2>
-              <p className="mt-8 max-w-2xl text-lg leading-8 text-muted-foreground">
-                Stop fighting for headcount and start acquiring decision authority. We provide the
-                mission-ready experts needed to turn technical complexity into your unique
-                competitive power.
-              </p>
-            </div>
-
-            <div className="reveal">
-              <StoryDeck />
-            </div>
-          </div>
+        {/* floating image composite — top right */}
+        <div
+          style={{
+            position: "absolute",
+            right: "4rem",
+            top: "12%",
+            zIndex: 1,
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+          }}
+          className="hire-img-float"
+        >
+          <img
+            src={hireCover2}
+            alt=""
+            style={{ width: 240, height: 160, objectFit: "cover", opacity: 0.6 }}
+          />
+          <img
+            src={hireCover3}
+            alt=""
+            style={{ width: 180, height: 120, objectFit: "cover", opacity: 0.45, alignSelf: "flex-end" }}
+            className="hire-img-float2"
+          />
         </div>
       </section>
 
-      <section className="relative overflow-hidden border-t border-white/5">
-        <div className="absolute inset-0 grid-bg opacity-45" />
-        <div className="relative mx-auto max-w-7xl px-6 py-24 md:px-12 md:py-32">
-          <div className="reveal mb-16 grid gap-8 md:grid-cols-[0.9fr_1.1fr] md:items-end">
+      {/* ════════════════════════════════════════
+          MARQUEE DIVIDER
+      ════════════════════════════════════════ */}
+      <div
+        style={{
+          background: "var(--orange)",
+          overflow: "hidden",
+          padding: "0.75rem 0",
+        }}
+      >
+        <div className="hire-marquee-track" style={{ display: "inline-flex", gap: "3rem" }}>
+          {Array(12).fill("AGENTIC  ·  SOVEREIGN  ·  BATTLE-TESTED  ·  HUMAN-AI  ·  RESILIENT  ·  ROI-DRIVEN  ·").map((t, i) => (
+            <span
+              key={i}
+              style={{
+                fontSize: "0.65rem",
+                letterSpacing: "0.28em",
+                textTransform: "uppercase",
+                color: "#fff",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {t}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ════════════════════════════════════════
+          WHY HIRE — editorial list
+      ════════════════════════════════════════ */}
+      <section style={{ background: "var(--cream)", padding: "6rem 0" }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 3rem" }}>
+
+          {/* section header */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "3rem",
+              alignItems: "end",
+              marginBottom: "4rem",
+              paddingBottom: "2.5rem",
+              borderBottom: "1px solid var(--rule)",
+            }}
+          >
             <div>
-              <p className="bracket-label mb-6 text-xs tracking-[0.3em] text-warm">
-                GLOBAL SYNCHRONICITY ENGINE
+              <p
+                style={{
+                  fontSize: "0.65rem",
+                  letterSpacing: "0.34em",
+                  textTransform: "uppercase",
+                  color: "var(--muted)",
+                  marginBottom: "1.2rem",
+                }}
+              >
+                W H Y &nbsp; H I R E &nbsp; J A R V I S
               </p>
-              <h2 className="font-display text-4xl leading-tight md:text-6xl">
-                Engineering without borders.
-                <em className="block not-italic text-warm">Innovation without sleep.</em>
+              <h2
+                style={{
+                  fontFamily: "'EB Garamond', serif",
+                  fontSize: "clamp(2.4rem, 4.5vw, 4.5rem)",
+                  fontWeight: 400,
+                  lineHeight: 1.02,
+                  margin: 0,
+                  color: "var(--ink)",
+                }}
+              >
+                Why follow tickets
+                <br />
+                when you can
+                <br />
+                <em style={{ fontStyle: "italic", color: "var(--orange)" }}>orchestrate outcomes?</em>
               </h2>
             </div>
-            <p className="max-w-2xl text-lg leading-8 text-muted-foreground">
-              In a world that never stops, your development shouldn't either. We've transcended the
-              traditional outsourcing model to build a Global Synchronicity Engine. We don't just
-              fill seats; we stitch together a high-velocity talent fabric across India, Europe, the
-              Middle East and Africa (EMEA), and the Americas to ensure your product evolves while
-              you sleep.
-              <br />
-              <br />
-              Why wait for tomorrow when progress is happening now? We leverage the rotation of the
-              Earth to turn linear timelines into exponential output.
+            <p
+              style={{
+                fontSize: "1rem",
+                lineHeight: 1.8,
+                color: "var(--muted)",
+                maxWidth: "400px",
+                alignSelf: "end",
+              }}
+            >
+              Stop fighting for headcount and start acquiring decision authority. We provide
+              mission-ready experts who turn technical complexity into your unique competitive power.
             </p>
           </div>
 
-          <div className="hire-sync-grid grid gap-5 lg:grid-cols-3">
+          {/* reason list */}
+          <ReasonList />
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════
+          GLOBAL SYNCHRONICITY
+      ════════════════════════════════════════ */}
+      <section style={{ background: "var(--ink)", padding: "7rem 0", overflow: "hidden" }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 3rem" }}>
+
+          {/* label */}
+          <p
+            style={{
+              fontSize: "0.65rem",
+              letterSpacing: "0.34em",
+              textTransform: "uppercase",
+              color: "rgba(247,245,241,0.35)",
+              marginBottom: "3rem",
+            }}
+          >
+            G L O B A L &nbsp; S Y N C H R O N I C I T Y &nbsp; E N G I N E
+          </p>
+
+          {/* title + body split */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: "4rem",
+              alignItems: "end",
+              marginBottom: "5rem",
+              paddingBottom: "4rem",
+              borderBottom: "1px solid rgba(247,245,241,0.1)",
+            }}
+          >
+            <h2
+              style={{
+                fontFamily: "'EB Garamond', serif",
+                fontSize: "clamp(2.6rem, 5vw, 5rem)",
+                fontWeight: 400,
+                lineHeight: 1.0,
+                color: "var(--cream)",
+                margin: 0,
+              }}
+            >
+              Engineering
+              <br />without borders.
+              <br />
+              <em style={{ color: "var(--orange)" }}>Innovation without sleep.</em>
+            </h2>
+            <p style={{ fontSize: "1rem", lineHeight: 1.85, color: "rgba(247,245,241,0.45)" }}>
+              In a world that never stops, your development shouldn't either. We've transcended the
+              traditional outsourcing model to build a Global Synchronicity Engine — stitching
+              together high-velocity talent across India, EMEA, and the Americas so your product
+              evolves while you sleep.
+            </p>
+          </div>
+
+          {/* three sync metrics */}
+          <div
+            className="hire-sync-cols"
+            style={{ display: "flex", gap: 0 }}
+          >
             {SYNC_POINTS.map((pt, i) => {
               const Icon = pt.icon;
               return (
-                <article
-                  key={pt.n}
-                  className="hire-control-card reveal relative overflow-hidden rounded-lg p-7"
-                  style={{ animationDelay: `${i * 80}ms` }}
-                >
-                  <div className="relative z-10">
-                    <div className="mb-10 flex items-center justify-between">
-                      <span className="font-mono text-[11px] tracking-[0.3em] text-white/32">
-                        {pt.n}
-                      </span>
-                      <span className="grid h-11 w-11 place-items-center rounded-md border border-orange-400/25 bg-orange-500/10 text-warm">
-                        <Icon size={20} />
-                      </span>
-                    </div>
-                    <div className="mb-8">
-                      <div className="font-display text-6xl leading-none text-white">
-                        {pt.metric}
-                      </div>
-                      <div className="mt-2 text-[10px] uppercase tracking-[0.24em] text-warm/80">
-                        {pt.metricLabel}
-                      </div>
-                    </div>
-                    <h3 className="font-display text-2xl text-white">{pt.label}</h3>
-                    <p className="mt-5 min-h-32 text-sm leading-7 text-white/48">{pt.d}</p>
-                  </div>
-                </article>
+                <SyncCard key={pt.n} pt={pt} index={i} Icon={Icon} />
               );
             })}
-          </div>
-
-          <div className="relative mt-12 hidden h-20 lg:block">
-            <div className="hire-flow-line" />
-            <div className="absolute left-[15%] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-orange-400 bg-background" />
-            <div className="absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-orange-400 bg-background" />
-            <div className="absolute right-[15%] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border border-orange-400 bg-background" />
           </div>
         </div>
       </section>
 
-      <section className="border-t border-white/5">
-        <div className="mx-auto max-w-7xl px-6 py-24 md:px-12 md:py-32">
-          <div className="hire-dna-grid grid gap-8 lg:grid-cols-[0.78fr_1.22fr]">
-            <div className="reveal">
-              <p className="bracket-label mb-6 text-xs tracking-[0.3em] text-muted-foreground">
-                TECHNOLOGICAL DNA
-              </p>
-              <h2 className="font-display text-4xl leading-tight md:text-6xl">
-                Forging Vision into
-                <em className="block not-italic text-warm">Shipped Reality.</em>
-              </h2>
-              <p className="mt-7 max-w-md text-base leading-8 text-muted-foreground">
-                Every pod is composed around product velocity, platform resilience and AI-enabled
-                engineering workflows.
-              </p>
-            </div>
+      {/* ════════════════════════════════════════
+          TECHNOLOGICAL DNA
+      ════════════════════════════════════════ */}
+      <section style={{ background: "var(--cream)", padding: "7rem 0" }}>
+        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 3rem" }}>
 
-            <div className="hire-dna-panel reveal relative overflow-hidden rounded-lg p-6 md:p-8">
-              <div className="pointer-events-none absolute right-8 top-8 h-52 w-52">
-                <div className="hire-ring" />
-                <div className="hire-ring" />
-                <div className="hire-ring" />
-                <div className="hire-orbit absolute inset-0 rounded-full border border-dashed border-orange-400/20" />
-              </div>
-              <div className="relative grid gap-4 sm:grid-cols-2">
-                {DNA_GROUPS.map((group) => {
-                  const Icon = group.icon;
-                  return (
-                    <article
-                      key={group.title}
-                      className="rounded-lg border border-white/10 bg-black/28 p-5 backdrop-blur-sm"
-                    >
-                      <div className="mb-6 flex items-center justify-between">
-                        <h3 className="font-display text-xl text-white">{group.title}</h3>
-                        <span className="grid h-10 w-10 place-items-center rounded-md bg-white/6 text-warm">
-                          <Icon size={19} />
-                        </span>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {group.stack.map((item) => (
-                          <span
-                            key={item}
-                            className="rounded-md border border-white/10 bg-white/[0.035] px-3 py-2 text-xs text-white/58 transition-colors hover:border-orange-400/40 hover:text-warm"
-                          >
-                            {item}
-                          </span>
-                        ))}
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
-              <div className="relative mt-6 grid gap-4 rounded-lg border border-orange-400/20 bg-orange-500/[0.06] p-5 md:grid-cols-3">
+          {/* top label row */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "baseline",
+              justifyContent: "space-between",
+              marginBottom: "4rem",
+              paddingBottom: "2rem",
+              borderBottom: "1px solid var(--rule)",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "0.65rem",
+                letterSpacing: "0.34em",
+                textTransform: "uppercase",
+                color: "var(--muted)",
+              }}
+            >
+              T E C H N O L O G I C A L &nbsp; D N A
+            </p>
+            <span
+              style={{
+                fontFamily: "'EB Garamond', serif",
+                fontStyle: "italic",
+                fontSize: "1rem",
+                color: "var(--muted)",
+              }}
+            >
+              Forging Vision into Shipped Reality.
+            </span>
+          </div>
+
+          {/* two-col: heading left, grid right */}
+          <div
+            className="hire-dna-cols"
+            style={{ display: "flex", gap: "5rem", alignItems: "start" }}
+          >
+            <div style={{ flexShrink: 0, width: "300px" }}>
+              <h2
+                style={{
+                  fontFamily: "'EB Garamond', serif",
+                  fontSize: "clamp(2.2rem, 3.5vw, 3.6rem)",
+                  fontWeight: 400,
+                  lineHeight: 1.05,
+                  color: "var(--ink)",
+                  marginBottom: "1.5rem",
+                }}
+              >
+                Every pod is built around product velocity.
+              </h2>
+              <p style={{ fontSize: "0.88rem", lineHeight: 1.8, color: "var(--muted)" }}>
+                Composable squads. Platform resilience. AI-enabled engineering workflows from day one.
+              </p>
+
+              <div style={{ marginTop: "3rem", display: "flex", flexDirection: "column", gap: "0.8rem" }}>
                 {["AI-assisted QA", "Cloud cost control", "Security by default"].map((item) => (
-                  <div key={item} className="flex items-center gap-3 text-sm text-white/62">
-                    <span className="h-2 w-2 rounded-full bg-orange-400" />
+                  <div
+                    key={item}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.75rem",
+                      fontSize: "0.82rem",
+                      color: "var(--muted)",
+                    }}
+                  >
+                    <span style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--orange)", flexShrink: 0 }} />
                     {item}
                   </div>
                 ))}
               </div>
             </div>
+
+            {/* DNA groups */}
+            <div style={{ flex: 1 }}>
+              {DNA_GROUPS.map((group, i) => {
+                const Icon = group.icon;
+                return (
+                  <div
+                    key={group.title}
+                    style={{
+                      borderTop: i === 0 ? "1px solid var(--rule)" : undefined,
+                      borderBottom: "1px solid var(--rule)",
+                      padding: "1.6rem 0",
+                      display: "grid",
+                      gridTemplateColumns: "180px 1fr auto",
+                      gap: "1.5rem",
+                      alignItems: "center",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        fontFamily: "'EB Garamond', serif",
+                        fontSize: "1.2rem",
+                        fontWeight: 400,
+                        color: "var(--ink)",
+                        margin: 0,
+                      }}
+                    >
+                      {group.title}
+                    </h3>
+
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+                      {group.stack.map((item) => (
+                        <span
+                          key={item}
+                          className="hire-dna-tag"
+                          style={{
+                            fontSize: "0.72rem",
+                            padding: "0.3rem 0.8rem",
+                            border: "1px solid var(--rule)",
+                            color: "var(--muted)",
+                            cursor: "default",
+                          }}
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+
+                    <Icon size={16} color="var(--muted)" />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
+      </section>
+
+      {/* ════════════════════════════════════════
+          CTA STRIP
+      ════════════════════════════════════════ */}
+      <section
+        style={{
+          background: "var(--orange)",
+          padding: "5rem 3rem",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
+          gap: "2rem",
+        }}
+      >
+        <p
+          style={{
+            fontSize: "0.65rem",
+            letterSpacing: "0.34em",
+            textTransform: "uppercase",
+            color: "rgba(255,255,255,0.6)",
+          }}
+        >
+          S E E &nbsp; Y O U
+        </p>
+        <h2
+          style={{
+            fontFamily: "'EB Garamond', serif",
+            fontSize: "clamp(2.8rem, 6vw, 6rem)",
+            fontWeight: 400,
+            lineHeight: 0.95,
+            color: "#fff",
+            maxWidth: "700px",
+            margin: 0,
+          }}
+        >
+          Ready to deploy your global pod?
+        </h2>
+        <Link
+          to="/contact"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.75rem",
+            background: "var(--ink)",
+            color: "var(--cream)",
+            padding: "1rem 2.2rem",
+            fontSize: "0.72rem",
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            textDecoration: "none",
+            fontWeight: 500,
+            marginTop: "0.5rem",
+          }}
+        >
+          Start the conversation <ArrowRight size={14} />
+        </Link>
       </section>
 
       <Footer />
