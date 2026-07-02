@@ -16,12 +16,12 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import hireCover1 from "@/assets/hire-cover1.jpg";
 import hireCover2 from "@/assets/hire-cover2.jpg";
 import hireCover3 from "@/assets/hire-cover3.jpg";
-import hireBox1 from "@/assets/hire-box1.jpg";
-import hireBox2 from "@/assets/hire-box2.jpg";
+import hireBox1 from "@/assets/hire-box1.png";
+import hireBox2 from "@/assets/hire-box2.png";
 import hireBox3 from "@/assets/hire-box3.jpg";
-import hireBox4 from "@/assets/hire-box4.jpg";
-import hireBox5 from "@/assets/hire-box5.jpg";
-import hireBox6 from "@/assets/hire-box6.jpg";
+import hireBox4 from "@/assets/hire-box4.png";
+import hireBox5 from "@/assets/hire-box5.png";
+import hireBox6 from "@/assets/hire-box6.png";
 
 const REASONS = [
   {

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+ import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { useReveal } from "@/hooks/use-reveal";
 import { useEffect, useRef, useState, useCallback } from "react";

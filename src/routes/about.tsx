@@ -1,68 +1,44 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
-import { AnimatedHero } from "@/components/site/AnimatedHero";
-import { useReveal } from "@/hooks/use-reveal";
 import { useEffect, useRef, useState, useCallback } from "react";
-import aboutImg from "@/assets/page-about.jpg";
-import aboutImg2 from "/public/About1.jpg";
+
+// ─── Image assets ─────────────────────────────────────────────────────────────
+const IMAGES = {
+  hero: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e6294/6a060cd7503d72ff714e65f2_405c5347b7528106c9da19b52991b959_template-img-11.avif",
+  studioA: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e6294/6a060cd7503d72ff714e6522_9fe2584dffc769833f62af721c87891c_template-default-image.avif",
+  studioB: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e6294/6a060cd7503d72ff714e654b_c867a87cf8ce66dae84c6816be227b28_template-default-img.avif",
+  studioC: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e6294/6a060cd7503d72ff714e65eb_43cf149531ad742914381340bb01fd4a_default-image-tiny-3.avif",
+  studioD: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e6294/6a060cd7503d72ff714e65e4_03e6bb447bac5610614f4ff2fe54d051_vert-1.avif",
+  principles: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e6294/6a060cd7503d72ff714e65a5_6e16db245e0860324599e869fed2c635_template-default-img.avif",
+  manifesto: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e6294/6a060cd7503d72ff714e6539_bbed3a321b78f03a78aca1785b589c5b_template-default-img.avif",
+  fullBleed: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e6294/6a060cd7503d72ff714e65ff_48c19f09c8468d5bc67a2efb745438e2_template-img-3.avif",
+  dir1: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e629a/6a0b555a9896f08c0ede8603_staircase-1.avif",
+  dir2: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e629a/6a0b55154e49860ec2fb8469_interior-design-10.avif",
+  dir3: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e629a/6a0b5508c60c76eabf4898f7_interior-service-43.avif",
+  dir4: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e629a/6a108b2049a6a6dca89fb586_homestaging-5.avif",
+  dir5: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e629a/6a0b54cf47e90151576ed31f_interior-shot-6.avif",
+};
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const VMV = [
   {
     label: "Vision",
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <circle cx="12" cy="12" r="2" />
-        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-      </svg>
-    ),
+    number: "01",
     body: "To cultivate a legacy of trust by transmuting complex challenges into excellent value — building an enduring enterprise that makes the impossible the industry benchmark.",
+    img: IMAGES.dir4,
   },
   {
     label: "Mission",
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-      </svg>
-    ),
+    number: "02",
     body: "To ignite disruptive growth through the seamless integration of digital innovation and human ingenuity — enabling businesses to leverage technology as an unfair advantage.",
+    img: IMAGES.dir5,
   },
   {
     label: "Values",
-    icon: (
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      </svg>
-    ),
+    number: "03",
     body: "Integrity is not a line in a contract — it is the bedrock upon which every grand ambition is built. Transparency, dignity, and trust are the mortar between every stone we lay.",
+    img: IMAGES.manifesto,
   },
 ];
 
@@ -71,19 +47,22 @@ const STORY_CHAPTERS = [
     n: "01",
     heading: "The Philosophy",
     sub: "Approach",
-    body: "Imagine a world where software isn't a cost centre, but a scalable engine for economic value. This isn't about building tools — it's about engineering outcomes. By stripping away technical noise, the focus remains on clarity and measurable impact. Every architecture is a bridge to the future, designed to turn complex bottlenecks into streamlined, automated pathways.",
+    body: "Imagine a world where software isn't a cost centre, but a scalable engine for economic value. This isn't about building tools — it's about engineering outcomes. By stripping away technical noise, the focus remains on clarity and measurable impact.",
+    img: IMAGES.dir1,
   },
   {
     n: "02",
     heading: "The North Star",
     sub: "Vision & Mission",
     body: "The Vision: To cultivate a legacy of trust by transmuting complex challenges into excellent value. The Mission: To ignite disruptive growth through the seamless integration of digital innovation and human ingenuity.",
+    img: IMAGES.dir2,
   },
   {
     n: "03",
     heading: "The Ethos",
     sub: "Values",
-    body: "Integrity is not a line in a contract; it is the bedrock upon which every grand ambition is built. In a world of shifting sands, transparency acts as the mortar — invisible yet essential. By honouring every interaction with dignity, a fortress of trust is constructed, ensuring the foundation remains unshakable as the enterprise scales.",
+    body: "Integrity is not a line in a contract; it is the bedrock upon which every grand ambition is built. In a world of shifting sands, transparency acts as the mortar — invisible yet essential.",
+    img: IMAGES.dir3,
   },
 ];
 
@@ -94,19 +73,7 @@ const DIRECTIVES = [
     question: "Does the signal reach the horizon?",
     body: "In the hunt for digital transformation, the goal isn't to 'finish' a task, but to create a permanent ripple. If the solution doesn't fundamentally shift the trajectory of the business, it is merely noise. True innovation is measured by the resonance it leaves behind — long after the code is deployed.",
     ask: "Is this a temporary fix, or a permanent evolution?",
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      >
-        <circle cx="12" cy="12" r="2" />
-        <path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14" />
-      </svg>
-    ),
+    img: IMAGES.dir1,
   },
   {
     n: "02",
@@ -114,59 +81,23 @@ const DIRECTIVES = [
     question: "Thinking beyond the human limit.",
     body: "The era of 'using' tools is over. The new standard is an AI-native pulse — a seamless blend of seasoned wisdom and algorithmic speed. By embedding automation into the very DNA of the strategy, the 'impossible' is decoded in real-time.",
     ask: "What could happen if your strategy thought a thousand times faster than your competitors?",
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      >
-        <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44L5 12h2M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44L19 12h-2" />
-      </svg>
-    ),
+    img: IMAGES.dir2,
   },
   {
     n: "03",
     title: "The Infinite Blueprint",
     question: "Engineering the immortality of success.",
-    body: "To scale is to ensure that brilliance never fades. By capturing 'lightning in a bottle' and turning it into a living, breathing digital map, success is no longer a lucky strike — it is a repeatable harvest. These scalable solutions ensure that today's peak becomes tomorrow's basecamp.",
+    body: "To scale is to ensure that brilliance never fades. By capturing 'lightning in a bottle' and turning it into a living, breathing digital map, success is no longer a lucky strike — it is a repeatable harvest.",
     ask: "Are you building a monument that stands still, or a city that grows itself?",
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      >
-        <rect x="3" y="3" width="7" height="7" />
-        <rect x="14" y="3" width="7" height="7" />
-        <rect x="14" y="14" width="7" height="7" />
-        <rect x="3" y="14" width="7" height="7" />
-      </svg>
-    ),
+    img: IMAGES.dir3,
   },
   {
     n: "04",
     title: "The Velocity Paradox",
     question: "Doing less to achieve everything.",
-    body: "The future belongs to the precise, not the busy. By isolating the 'Heart-Line' — the vital few movements that spark 80% of the value — innovation is delivered at a pace that feels like magic. It is the art of arriving at the destination while others are still packing their bags.",
+    body: "The future belongs to the precise, not the busy. By isolating the 'Heart-Line' — the vital few movements that spark 80% of the value — innovation is delivered at a pace that feels like magic.",
     ask: "If you could only keep one feature to save the company, which one would it be?",
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      >
-        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-      </svg>
-    ),
+    img: IMAGES.dir4,
   },
   {
     n: "05",
@@ -174,270 +105,918 @@ const DIRECTIVES = [
     question: "The shortest path to the summit.",
     body: "Complexity often hides in the shadows of 'polite' feedback. Transformation requires the unvarnished truth. This is a partnership built on radical transparency — the kind that prioritises the health of the enterprise over the comfort of the boardroom.",
     ask: "Would you rather hear a beautiful lie, or see the map to a real solution?",
-    icon: (
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-      >
-        <circle cx="12" cy="12" r="5" />
-        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-      </svg>
-    ),
+    img: IMAGES.dir5,
   },
 ];
 
-// ─── Global styles ─────────────────────────────────────────────────────────────
-const ABOUT_STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap');
+// ─── Global styles ────────────────────────────────────────────────────────────
+const STYLES = `
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@300;400;500&family=Barlow+Condensed:wght@300;400;600;700&display=swap');
 
-  @keyframes abt-fadeUp {
-    from { opacity: 0; transform: translateY(36px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes abt-fadeLeft {
-    from { opacity: 0; transform: translateX(-28px); }
-    to   { opacity: 1; transform: translateX(0); }
-  }
-  @keyframes abt-lineGrow {
-    from { transform: scaleX(0); }
-    to   { transform: scaleX(1); }
-  }
-  @keyframes abt-lineGrowY {
-    from { transform: scaleY(0); }
-    to   { transform: scaleY(1); }
-  }
-  @keyframes abt-numIn {
-    from { opacity: 0; transform: translateY(20px) skewY(4deg); }
-    to   { opacity: 1; transform: translateY(0) skewY(0deg); }
-  }
-  @keyframes abt-glowPulse {
-    0%, 100% { opacity: 0.06; }
-    50%       { opacity: 0.12; }
-  }
-  @keyframes abt-counterUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes abt-marquee {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-  @keyframes abt-chapterReveal {
-    from { opacity: 0; transform: translateY(24px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes abt-orbFloat {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    40%       { transform: translate(20px, -15px) scale(1.04); }
-    70%       { transform: translate(-15px, 10px) scale(0.97); }
-  }
-  @keyframes abt-scanLine {
-    from { transform: translateX(-100%); }
-    to   { transform: translateX(200%); }
-  }
-  @keyframes abt-gridIn {
-    from { opacity: 0; }
-    to   { opacity: 0.03; }
-  }
-  @keyframes abt-particleDrift {
-    0%   { transform: translateY(0) translateX(0); opacity: 0; }
-    10%  { opacity: 1; }
-    90%  { opacity: 1; }
-    100% { transform: translateY(-120px) translateX(30px); opacity: 0; }
-  }
-  @keyframes abt-borderPulse {
-    0%, 100% { border-color: rgba(255,110,30,0.12); }
-    50%       { border-color: rgba(255,110,30,0.35); }
-  }
-  @keyframes abt-numberRoll {
-    from { transform: translateY(40px); opacity: 0; }
-    to   { transform: translateY(0); opacity: 1; }
-  }
-  @keyframes abt-lineExpand {
-    from { width: 0; }
-    to   { width: 100%; }
-  }
-  @keyframes abt-activeGlow {
-    0%, 100% { box-shadow: 0 0 20px rgba(255,90,20,0.15); }
-    50%       { box-shadow: 0 0 40px rgba(255,90,20,0.3); }
-  }
-  @keyframes abt-progressFill {
-    from { width: 0; }
-    to   { width: 100%; }
-  }
-  @keyframes abt-cardFloat {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(-6px); }
-  }
-  @keyframes abt-heatBloom {
-    0%, 100% { transform: translate3d(-4%, 4%, 0) scale(0.95) rotate(-2deg); opacity: 0.22; }
-    40% { transform: translate3d(5%, -3%, 0) scale(1.08) rotate(5deg); opacity: 0.52; }
-    70% { transform: translate3d(1%, 5%, 0) scale(1.02) rotate(-4deg); opacity: 0.36; }
-  }
-  @keyframes abt-titleFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-  @keyframes abt-sparkFall {
-    from { transform: translateY(-120px); opacity: 0; }
-    18%, 72% { opacity: 0.75; }
-    to { transform: translateY(620px); opacity: 0; }
+  .abt-root, .abt-root *, .abt-root *::before, .abt-root *::after {
+    box-sizing: border-box;
   }
 
-  .abt-vis {
-    animation: abt-fadeUp 0.85s cubic-bezier(0.22,1,0.36,1) both;
-  }
-  .abt-vis-left {
-    animation: abt-fadeLeft 0.7s cubic-bezier(0.22,1,0.36,1) both;
-  }
-
-  /* Chapter row hover */
-  .chapter-row {
-    transition: background 0.3s ease;
-    cursor: default;
-  }
-  .chapter-row:hover { background: rgba(255,90,20,0.03) !important; }
-  .chapter-row:hover .chapter-num { opacity: 0.35 !important; color: rgb(255,130,50) !important; }
-  .chapter-row:hover .chapter-accent { opacity: 1 !important; transform: scaleY(1) !important; }
-
-  /* VMV card hover */
-  .vmv-card {
-    transition: background 0.3s ease, transform 0.35s cubic-bezier(0.4,0,0.2,1), box-shadow 0.35s ease;
-  }
-  .vmv-card:hover {
-    background: rgba(255,90,20,0.04) !important;
-    transform: translateY(-4px);
-    box-shadow: 0 24px 48px -8px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,110,30,0.12) !important;
-  }
-  .vmv-card:hover .vmv-icon {
-    background: rgba(255,90,20,0.16) !important;
-    border-color: rgba(255,110,30,0.5) !important;
-    box-shadow: 0 0 20px rgba(255,90,10,0.2) !important;
+  .abt-root {
+    background: #0a0a09;
+    color: #f5f3ef;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    min-height: 100vh;
   }
 
-  /* Directive card — new card-based design */
-  .dir-card {
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal.in { opacity: 1; transform: none; }
+
+  .img-zoom { overflow: hidden; }
+  .img-zoom img {
+    transition: transform 1.1s cubic-bezier(0.4,0,0.2,1);
+    transform: scale(1.02);
+  }
+  .img-zoom:hover img { transform: scale(1.07); }
+
+  .hero {
     position: relative;
-    transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
-    cursor: pointer;
+    min-height: 100svh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    overflow: hidden;
+    background: #0a0a09;
+    margin: 0;
   }
-  .dir-card:hover .dir-card-num {
-    color: rgba(255,130,50,0.6) !important;
-  }
-  .dir-card.is-active {
-    animation: abt-activeGlow 3s ease-in-out infinite;
-  }
-  .dir-card-progress {
+  .hero-img {
     position: absolute;
-    bottom: 0; left: 0; height: 2px;
-    background: linear-gradient(to right, rgba(255,110,30,0.8), rgba(255,60,0,0.4));
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.4;
+    transform: scale(1.04);
+    animation: heroScale 14s ease-out forwards;
+  }
+  @keyframes heroScale {
+    to { transform: scale(1); }
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,10,9,0.92) 0%, rgba(10,10,9,0.35) 50%, rgba(10,10,9,0.55) 100%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,5rem) clamp(3rem,6vw,5rem);
+  }
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(245,243,239,0.45);
+    margin: 0 0 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: rgba(245,243,239,0.35);
+    flex-shrink: 0;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(3rem, 8vw, 7.5rem);
+    font-weight: 400;
+    line-height: 1.0;
+    color: #f5f3ef;
+    letter-spacing: -0.02em;
+    max-width: 14ch;
+    margin: 0;
+  }
+  .hero-title em {
+    font-style: italic;
+    font-weight: 400;
+  }
+  .hero-desc {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(13px, 1.4vw, 15px);
+    line-height: 1.8;
+    color: rgba(245,243,239,0.5);
+    max-width: 42ch;
+    margin-top: 1.75rem;
+  }
+
+  .section { padding: clamp(5rem,9vw,8rem) 0; border-top: 1px solid rgba(245,243,239,0.08); margin: 0; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 clamp(1.5rem,5vw,5rem); }
+
+  .eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(245,243,239,0.35);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0 0 1.5rem;
+  }
+  .eyebrow::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: rgba(245,243,239,0.25);
+    flex-shrink: 0;
+  }
+
+  .manifesto-grid {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(3rem,6vw,6rem);
+    align-items: start;
+  }
+  .manifesto-h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.75rem);
+    font-weight: 400;
+    line-height: 1.05;
+    color: #f5f3ef;
+    letter-spacing: -0.02em;
+    margin: 0;
+    position: relative;
+  }
+  .manifesto-h2 em { font-style: italic; }
+  .manifesto-quote-mark {
+    position: absolute;
+    top: -2.5rem;
+    left: -0.75rem;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(6rem, 12vw, 11rem);
+    line-height: 1;
+    color: rgba(245,243,239,0.05);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+  .manifesto-rule {
+    margin-top: 2.5rem;
+    height: 1px;
+    background: rgba(245,243,239,0.14);
     transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 1.1s cubic-bezier(0.16,1,0.3,1) 0.5s;
+  }
+  .manifesto-rule.in { transform: scaleX(1); }
+  .manifesto-body p {
+    font-size: 15px;
+    line-height: 1.9;
+    color: rgba(245,243,239,0.5);
+    margin: 0 0 1.25rem;
+  }
+  .manifesto-body p em { color: #f5f3ef; font-style: italic; }
+
+  .manifesto-imgcol {
+    position: relative;
+    padding-bottom: clamp(2.5rem, 8vw, 5rem);
+    padding-right: clamp(1.5rem, 6vw, 3.5rem);
+  }
+  .manifesto-img-main {
+    position: relative;
+    aspect-ratio: 4/5;
+    border-radius: 2px;
+    overflow: hidden;
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 1.2s cubic-bezier(0.65,0,0.2,1);
+  }
+  .manifesto-img-main.in { clip-path: inset(0 0 0% 0); }
+  .manifesto-img-main img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: scale(1.1);
+    transition: transform 1.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .manifesto-img-main.in img { transform: scale(1); }
+  .manifesto-img-accent {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 48%;
+    aspect-ratio: 5/4;
+    border-radius: 2px;
+    overflow: hidden;
+    border: 6px solid #0a0a09;
+    box-shadow: 0 24px 48px -12px rgba(0,0,0,0.6);
+    opacity: 0;
+    transform: translate(36px, 28px) scale(0.96);
+    transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.45s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.45s;
+  }
+  .manifesto-img-accent.in { opacity: 1; transform: translate(0,0) scale(1); }
+  .manifesto-img-accent img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  }
+  .manifesto-img-accent:hover img { transform: scale(1.08); }
+  .manifesto-img-tag {
+    position: absolute;
+    top: 1.25rem;
+    left: 1.25rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(245,243,239,0.7);
+    background: rgba(10,10,9,0.45);
+    backdrop-filter: blur(6px);
+    padding: 6px 12px;
+    border: 1px solid rgba(245,243,239,0.18);
+    border-radius: 999px;
+    opacity: 0;
+    transition: opacity 0.7s ease 0.8s;
+  }
+  .manifesto-img-main.in ~ .manifesto-img-tag,
+  .manifesto-img-tag.in { opacity: 1; }
+
+  .studio-grid {
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    gap: clamp(3rem,6vw,6rem);
+    align-items: center;
+  }
+  .studio-h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.75rem,3vw,2.75rem);
+    font-weight: 400;
+    line-height: 1.2;
+    color: #f5f3ef;
+    letter-spacing: -0.015em;
+    margin: 0 0 1.5rem;
+  }
+  .studio-h2 em { font-style: italic; }
+  .studio-p {
+    font-size: 15px;
+    line-height: 1.9;
+    color: rgba(245,243,239,0.5);
+    margin: 0;
+  }
+  .studio-img-wrap {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+  }
+  .studio-vert-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(245,243,239,0.32);
+    padding-right: 1.25rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .studio-img-frame {
+    position: relative;
+    flex: 1;
+    aspect-ratio: 4/5;
+    border-radius: 2px;
+    overflow: hidden;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+  .studio-img-frame img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: scale(1.12);
+    transition: transform 1.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .studio-img-frame.in img { transform: scale(1); }
+  .studio-float-card {
+    position: absolute;
+    left: -1.5rem;
+    bottom: 2rem;
+    background: #0a0a09;
+    border: 1px solid rgba(245,243,239,0.12);
+    padding: 1.5rem 1.75rem;
+    max-width: 230px;
+    box-shadow: 0 20px 44px -10px rgba(0,0,0,0.55);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1) 0.5s, transform 0.8s cubic-bezier(0.16,1,0.3,1) 0.5s;
+  }
+  .studio-float-card.in { opacity: 1; transform: translateY(0); }
+  .studio-float-card-n {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.8rem,3vw,2.4rem);
+    color: rgb(255,150,90);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .studio-float-card-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(245,243,239,0.5);
+    line-height: 1.5;
+  }
+
+  .story-section {
+    padding: clamp(5rem,9vw,8rem) 0;
+    border-top: 1px solid rgba(245,243,239,0.08);
+    margin: 0;
+  }
+  .story-header {
+    max-width: 1280px;
+    margin: 0 auto clamp(3rem,6vw,5rem);
+    padding: 0 clamp(1.5rem,5vw,5rem);
+  }
+  .story-chapters-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 clamp(1.5rem,5vw,5rem);
+  }
+  .story-chapter-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 420px;
+    gap: 0;
+    border-bottom: 1px solid rgba(245,243,239,0.08);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: background 0.4s ease;
+    margin: 0;
+  }
+  .story-chapter-row:first-of-type { border-top: 1px solid rgba(245,243,239,0.08); }
+  .story-chapter-row:hover { background: rgba(245,243,239,0.02); }
+  .story-chapter-row:hover .story-chapter-bar { transform: scaleY(1); }
+  .story-chapter-row:hover .story-chapter-n { color: rgba(245,243,239,0.28); }
+
+  .story-chapter-bar {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: #f5f3ef;
+    transform-origin: top;
+    transform: scaleY(0);
+    transition: transform 0.55s cubic-bezier(0.16,1,0.3,1);
+  }
+  .story-chapter-n {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(2rem,4vw,3.5rem);
+    color: rgba(245,243,239,0.12);
+    line-height: 1;
+    padding: 2.5rem 0;
+    align-self: center;
+    transition: color 0.4s ease;
+    flex-shrink: 0;
+    margin: 0;
+  }
+  .story-chapter-meta {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    padding: 2.5rem 2.5rem 2.5rem 0;
+  }
+  .story-chapter-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(245,243,239,0.32);
+  }
+  .story-chapter-heading {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.2rem,2.2vw,1.8rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+    color: #f5f3ef;
+    margin-bottom: 0.6rem;
+  }
+  .story-chapter-body {
+    font-size: 13px;
+    line-height: 1.85;
+    color: rgba(245,243,239,0.42);
+    max-width: 44ch;
+    margin: 0;
+  }
+
+  .story-chapter-img-wrap {
+    position: relative;
+    overflow: hidden;
+    height: 220px;
+    align-self: stretch;
+  }
+  .story-chapter-img-wrap img {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transform: scale(1.18);
+    transition: transform 1.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .story-chapter-row.curtain-open .story-chapter-img-wrap img {
+    transform: scale(1.0);
+  }
+  .story-chapter-row:hover .story-chapter-img-wrap img {
+    transform: scale(1.08);
+  }
+  .story-curtain {
+    position: absolute;
+    inset: 0;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background: #0a0a09;
+    z-index: 2;
+    transition: transform 1.1s cubic-bezier(0.65,0,0.35,1);
+  }
+  .story-curtain.left { left: 0; transform: translateX(0); }
+  .story-curtain.right { right: 0; transform: translateX(0); }
+  .story-chapter-row.curtain-open .story-curtain.left { transform: translateX(-100%); }
+  .story-chapter-row.curtain-open .story-curtain.right { transform: translateX(100%); }
+  .story-chapter-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, #0a0a09 0%, transparent 30%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .story-img-num {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 1rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(3rem,7vw,6rem);
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(245,243,239,0.1);
+    user-select: none;
+    letter-spacing: -0.04em;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.6s ease 0.6s;
+    margin: 0;
+  }
+  .story-chapter-row.curtain-open .story-img-num { opacity: 1; }
+  .story-curtain-seam {
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: rgba(245,243,239,0.4);
+    z-index: 3;
+    opacity: 0;
+    transform: scaleY(0);
+    transition: opacity 0.3s ease 0.1s, transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.1s;
+  }
+  .story-chapter-row.curtain-open .story-curtain-seam {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  .full-bleed {
+    position: relative;
+    height: clamp(420px,55vw,640px);
+    overflow: hidden;
+    background: #0a0a09;
+    margin: 0;
+  }
+  .full-bleed img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    opacity: 0.65;
+    margin: 0;
+  }
+  .full-bleed-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(10,10,9,0.65) 0%, rgba(10,10,9,0.25) 35%, rgba(10,10,9,0.35) 65%, rgba(10,10,9,0.85) 100%);
+  }
+  .full-bleed-text {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 1.25rem;
+    text-align: center;
+    padding: 2rem clamp(1.5rem,5vw,5rem);
+  }
+  .full-bleed-h {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.25rem,5.5vw,4.75rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: #f5f3ef;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .full-bleed-h em { font-style: italic; }
+
+  /* ── VMV hover-reveal image grid ─────────────────────────────────────── */
+  .vmv-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin: 0;
+  }
+  .vmv-tile {
+    position: relative;
+    overflow: hidden;
+    height: clamp(360px, 36vw, 520px);
+    cursor: default;
+    background: #0a0a09;
+  }
+  .vmv-tile img {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.55) brightness(0.62);
+    transform: scale(1.06);
+    transition: transform 1s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease;
+  }
+  .vmv-tile:hover img {
+    transform: scale(1.12);
+    filter: grayscale(0) brightness(0.4);
+  }
+  .vmv-tile-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,10,9,0.92) 0%, rgba(10,10,9,0.35) 55%, rgba(10,10,9,0.15) 100%);
+    transition: background 0.5s ease;
+  }
+  .vmv-tile-base {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 1.75rem 1.75rem;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1);
+  }
+  .vmv-tile:hover .vmv-tile-base {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .vmv-tile-n {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(245,243,239,0.5);
+  }
+  .vmv-tile-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.2rem,2.2vw,1.7rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #f5f3ef;
+  }
+  .vmv-tile-body-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem 1.85rem;
+    opacity: 0;
+    transition: opacity 0.5s ease 0.05s;
+  }
+  .vmv-tile:hover .vmv-tile-body-wrap { opacity: 1; }
+  .vmv-tile-body-n {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: rgba(255,150,90,0.85);
+    margin-bottom: 8px;
+    transform: translateY(14px);
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s;
+  }
+  .vmv-tile:hover .vmv-tile-body-n { transform: translateY(0); }
+  .vmv-tile-body-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.2rem,2.2vw,1.7rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #f5f3ef;
+    margin-bottom: 12px;
+    transform: translateY(18px);
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.12s;
+  }
+  .vmv-tile:hover .vmv-tile-body-label { transform: translateY(0); }
+  .vmv-tile-body-text {
+    font-size: 13.5px;
+    line-height: 1.8;
+    color: rgba(245,243,239,0.72);
+    max-width: 32ch;
+    transform: translateY(22px);
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.16s;
+  }
+  .vmv-tile:hover .vmv-tile-body-text { transform: translateY(0); }
+  .vmv-tile-rule {
+    width: 36px;
+    height: 1px;
+    background: rgba(255,150,90,0.7);
+    margin: 14px 0 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s;
+  }
+  .vmv-tile:hover .vmv-tile-rule { transform: scaleX(1); }
+
+  .dir-grid {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    border-top: 1px solid rgba(245,243,239,0.08);
+    margin: 0;
+  }
+  .dir-sidebar { border-right: 1px solid rgba(245,243,239,0.08); margin: 0; }
+  .dir-tab {
+    display: block;
+    width: 100%;
+    padding: 1.75rem 1.5rem;
+    border: none;
+    border-bottom: 1px solid rgba(245,243,239,0.06);
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s ease;
+    color: inherit;
+    margin: 0;
+  }
+  .dir-tab:hover { background: rgba(245,243,239,0.03); }
+  .dir-tab.active { background: rgba(245,243,239,0.045); }
+  .dir-tab-bar {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 1.5px;
+    background: #f5f3ef;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .dir-tab.active .dir-tab-bar { transform: scaleY(1); }
+  .dir-tab-progress {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 1px;
+    background: rgba(245,243,239,0.4);
     transition: width 0.05s linear;
   }
-
-  /* Statement marquee */
-  .abt-marquee {
-    animation: abt-marquee 30s linear infinite;
+  .dir-tab-n {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: rgba(245,243,239,0.3);
+    margin-bottom: 6px;
+    transition: color 0.3s ease;
   }
-
-  /* Glow bg */
-  .abt-glow {
-    animation: abt-glowPulse 5s ease-in-out infinite;
+  .dir-tab.active .dir-tab-n { color: rgba(245,243,239,0.6); }
+  .dir-tab-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(245,243,239,0.42);
+    margin-bottom: 3px;
+    transition: color 0.3s ease;
   }
-
-  /* Particle */
-  .abt-particle {
-    animation: abt-particleDrift linear infinite;
+  .dir-tab.active .dir-tab-title { color: #f5f3ef; }
+  .dir-tab-q {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: rgba(245,243,239,0.3);
+    line-height: 1.5;
+    margin: 0;
   }
-  .abt-forge-glow {
+  .dir-panel {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    min-height: 440px;
+    animation: fadeUp 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+    margin: 0;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: none; }
+  }
+  .dir-content {
+    padding: clamp(2.5rem,5vw,4rem) clamp(2rem,4vw,3.5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1px solid rgba(245,243,239,0.08);
+  }
+  .dir-directive-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(245,243,239,0.32);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .dir-directive-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(245,243,239,0.12);
+  }
+  .dir-h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem,4vw,3.5rem);
+    font-weight: 400;
+    line-height: 1.0;
+    color: #f5f3ef;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.5rem;
+  }
+  .dir-question {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: rgba(245,243,239,0.4);
+    margin: 0 0 2rem;
+  }
+  .dir-body {
+    font-size: 14px;
+    line-height: 1.95;
+    color: rgba(245,243,239,0.55);
+    max-width: 46ch;
+    margin: 0;
+  }
+  .dir-ask {
+    margin-top: 2.5rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid rgba(245,243,239,0.08);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: rgba(245,243,239,0.5);
+    line-height: 1.7;
+  }
+  .dir-dots {
+    display: flex;
+    gap: 6px;
+    margin-top: 2rem;
+    align-items: center;
+  }
+  .dir-dot {
+    border: none;
+    cursor: pointer;
+    background: rgba(245,243,239,0.16);
+    height: 5px;
+    border-radius: 3px;
+    transition: all 0.4s ease;
+    padding: 0;
+    margin: 0;
+  }
+  .dir-dot.active { background: #f5f3ef; width: 22px !important; }
+  .dir-img-panel {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+  }
+  .dir-img-panel img {
     position: absolute;
-    inset: 6% 8% auto auto;
-    width: min(820px, 70vw);
-    height: 480px;
-    border-radius: 999px;
-    background:
-      radial-gradient(circle at 24% 42%, rgba(255, 208, 122, 0.22), transparent 22%),
-      radial-gradient(circle at 48% 52%, rgba(255, 116, 38, 0.38), transparent 27%),
-      radial-gradient(circle at 76% 34%, rgba(255, 90, 20, 0.24), transparent 24%);
-    filter: blur(42px);
-    mix-blend-mode: screen;
-    animation: abt-heatBloom 14s ease-in-out infinite;
-    pointer-events: none;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 1.1s cubic-bezier(0.4,0,0.2,1);
+    margin: 0;
   }
-  .abt-forge-title {
-    animation: abt-titleFloat 8s ease-in-out infinite;
-  }
-  .abt-spark {
+  .dir-img-panel:hover img { transform: scale(1.05); }
+  .dir-img-num {
     position: absolute;
-    top: 0;
-    width: 2px;
-    height: 92px;
-    background: linear-gradient(to bottom, transparent, rgba(255,130,50,.58), transparent);
-    animation: abt-sparkFall 8s linear infinite;
-    pointer-events: none;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(4rem,10vw,9rem);
+    font-weight: 700;
+    line-height: 1;
+    color: rgba(245,243,239,0.09);
+    user-select: none;
+    letter-spacing: -0.04em;
+    margin: 0;
+  }
+
+  /* ── CTA BAND — simple split layout: image left, text right ─────────── */
+  .cta-band {
+    background: #0a0a09;
+    border-top: 1px solid rgba(245,243,239,0.08);
+    margin: 0;
+  }
+  .cta-band-inner {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    align-items: stretch;
+    min-height: clamp(360px, 42vw, 520px);
+  }
+  .cta-band-img {
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-band-img img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .cta-band-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 2.25rem;
+    padding: clamp(3rem,6vw,5rem) clamp(2rem,5vw,5rem);
+  }
+  .cta-h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem,4.5vw,3.5rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: #f5f3ef;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .cta-h2 em { font-style: italic; }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #f5f3ef;
+    background: transparent;
+    border: 1px solid rgba(245,243,239,0.3);
+    padding: 14px 32px;
+    cursor: pointer;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    text-decoration: none;
+    margin: 0;
+  }
+  .cta-btn:hover { background: rgba(245,243,239,0.08); border-color: rgba(245,243,239,0.6); }
+  .cta-btn svg { width: 14px; height: 14px; }
+
+  @media (max-width: 800px) {
+    .cta-band-inner { grid-template-columns: 1fr; }
+    .cta-band-img { min-height: 280px; }
+  }
+
+  @media (max-width: 900px) {
+    .manifesto-grid, .studio-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .manifesto-imgcol { padding-right: 0; }
+    .manifesto-img-accent { width: 56%; }
+    .studio-img-wrap { flex-direction: column; }
+    .studio-vert-label { writing-mode: horizontal-tb; transform: none; padding-right: 0; padding-bottom: 0.75rem; }
+    .studio-float-card { left: 1rem; right: 1rem; max-width: none; }
+    .story-chapter-row { grid-template-columns: 56px 1fr; }
+    .story-chapter-img-wrap { display: none; }
+    .vmv-grid { grid-template-columns: 1fr; }
+    .vmv-tile { height: 320px; }
+    .dir-grid { grid-template-columns: 1fr; }
+    .dir-sidebar { display: none; }
+    .dir-panel { grid-template-columns: 1fr; }
+    .dir-img-panel { min-height: 240px; }
+  }
+  @media (max-width: 600px) {
+    .story-chapter-row { grid-template-columns: 48px 1fr; }
   }
 `;
 
-// ─── Animated counter ─────────────────────────────────────────────────────────
-function Counter({
-  to,
-  suffix = "",
-  decimals = 0,
-}: {
-  to: number;
-  suffix?: string;
-  decimals?: number;
-}) {
-  const [val, setVal] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const started = useRef(false);
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting && !started.current) {
-          started.current = true;
-          const start = Date.now();
-          const dur = 1800;
-          const tick = () => {
-            const p = Math.min(1, (Date.now() - start) / dur);
-            const ease = 1 - Math.pow(1 - p, 3);
-            setVal(parseFloat((ease * to).toFixed(decimals)));
-            if (p < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-        }
-      },
-      { threshold: 0.4 },
-    );
-    if (ref.current) obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [to, decimals]);
-
-  return (
-    <span ref={ref}>
-      {val.toFixed(decimals)}
-      {suffix}
-    </span>
-  );
-}
-
-// ─── useInView helper ─────────────────────────────────────────────────────────
-function useInView(threshold = 0.15): [React.RefObject<HTMLDivElement>, boolean] {
+// ─── useInView ────────────────────────────────────────────────────────────────
+function useInView(threshold = 0.12): [React.RefObject<HTMLDivElement>, boolean] {
   const ref = useRef<HTMLDivElement>(null);
   const [vis, setVis] = useState(false);
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          setVis(true);
-          obs.disconnect();
-        }
-      },
+      ([e]) => { if (e.isIntersecting) { setVis(true); obs.disconnect(); } },
       { threshold },
     );
     if (ref.current) obs.observe(ref.current);
@@ -446,123 +1025,56 @@ function useInView(threshold = 0.15): [React.RefObject<HTMLDivElement>, boolean]
   return [ref, vis];
 }
 
-// ─── Chapter row ──────────────────────────────────────────────────────────────
-function ChapterRow({ ch, index }: { ch: (typeof STORY_CHAPTERS)[0]; index: number }) {
+// ─── VMV — hover-reveal image grid ───────────────────────────────────────────
+// On rest, each tile shows only the number + label over the photo. On hover,
+// the full Vision/Mission/Values copy slides up and fades in over a darkened,
+// slightly zoomed version of that same image.
+function VmvImageGrid() {
   const [ref, vis] = useInView(0.1);
+
   return (
-    <div
-      ref={ref}
-      className="chapter-row"
-      style={{
-        display: "grid",
-        gridTemplateColumns: "100px 1fr 1fr",
-        gap: "0",
-        borderBottom: "1px solid rgba(255,255,255,0.05)",
-        background: "#0c0a07",
-        opacity: vis ? 1 : 0,
-        transform: vis ? "none" : "translateY(24px)",
-        transition: `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${index * 0.1}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${index * 0.1}s, background 0.3s ease`,
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* Left orange accent line */}
-      <div
-        className="chapter-accent"
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          bottom: 0,
-          width: "2px",
-          background: "linear-gradient(to bottom, transparent, rgba(255,110,30,0.7), transparent)",
-          transformOrigin: "top",
-          transform: "scaleY(0)",
-          opacity: 0,
-          transition: "transform 0.5s ease, opacity 0.3s ease",
-        }}
-      />
-
-      {/* Number */}
-      <div style={{ padding: "44px 40px 44px 44px", display: "flex", alignItems: "flex-start" }}>
-        <span
-          className="chapter-num"
+    <div ref={ref} className="vmv-grid">
+      {VMV.map((item, i) => (
+        <div
+          key={item.label}
+          className="vmv-tile"
           style={{
-            fontFamily: "Georgia, 'Times New Roman', serif",
-            fontSize: "clamp(3.5rem,6vw,5.5rem)",
-            fontWeight: 400,
-            fontStyle: "italic",
-            lineHeight: 1,
-            color: "rgba(255,130,50,0.12)",
-            letterSpacing: "-0.02em",
-            transition: "opacity 0.3s ease, color 0.3s ease",
-            userSelect: "none",
+            opacity: vis ? 1 : 0,
+            transform: vis ? "none" : "translateY(28px)",
+            transition: `opacity 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 0.12}s, transform 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 0.12}s`,
           }}
         >
-          {ch.n}
-        </span>
-      </div>
+          <img src={item.img} alt={item.label} loading="lazy" />
+          <div className="vmv-tile-scrim" />
 
-      {/* Heading */}
-      <div
-        style={{
-          padding: "44px 40px",
-          borderLeft: "1px solid rgba(255,255,255,0.05)",
-          borderRight: "1px solid rgba(255,255,255,0.05)",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-        }}
-      >
-        <span
-          style={{
-            fontSize: "8px",
-            letterSpacing: "0.3em",
-            textTransform: "uppercase",
-            color: "rgb(255,130,50)",
-            marginBottom: "10px",
-          }}
-        >
-          {ch.sub}
-        </span>
-        <h3
-          style={{
-            fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-            fontSize: "clamp(22px, 2.5vw, 34px)",
-            fontWeight: 700,
-            textTransform: "uppercase",
-            letterSpacing: "0.02em",
-            lineHeight: 1.05,
-            color: "#f0e8df",
-            margin: 0,
-          }}
-        >
-          {ch.heading}
-        </h3>
-      </div>
+          {/* Resting state label */}
+          <div className="vmv-tile-base">
+            <span className="vmv-tile-n">{item.number}</span>
+            <span className="vmv-tile-label">{item.label}</span>
+          </div>
 
-      {/* Body */}
-      <div style={{ padding: "44px 44px 44px 40px", display: "flex", alignItems: "center" }}>
-        <p
-          style={{ fontSize: "13px", lineHeight: 1.85, color: "rgba(240,232,220,0.4)", margin: 0 }}
-        >
-          {ch.body}
-        </p>
-      </div>
+          {/* Hover-revealed copy */}
+          <div className="vmv-tile-body-wrap">
+            <span className="vmv-tile-body-n">{item.number}</span>
+            <span className="vmv-tile-body-label">{item.label}</span>
+            <p className="vmv-tile-body-text">{item.body}</p>
+            <span className="vmv-tile-rule" />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
 
-// ─── NEW: Directive Card (cinematic card-based design) ─────────────────────────
+// ─── Directive Cards ──────────────────────────────────────────────────────────
 function DirectiveCards() {
   const [activeIdx, setActiveIdx] = useState(0);
   const [progress, setProgress] = useState(0);
   const [paused, setPaused] = useState(false);
-  const intervalRef = useRef<number | null>(null);
-  const progressRef = useRef<number>(0);
-  const lastTimeRef = useRef<number>(0);
+  const progressRef = useRef(0);
+  const lastTimeRef = useRef(0);
   const rafRef = useRef<number | null>(null);
-  const DURATION = 6000; // ms per card
+  const DURATION = 6000;
 
   const goTo = useCallback((idx: number) => {
     setActiveIdx(idx);
@@ -572,10 +1084,7 @@ function DirectiveCards() {
   }, []);
 
   useEffect(() => {
-    if (paused) {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      return;
-    }
+    if (paused) { if (rafRef.current) cancelAnimationFrame(rafRef.current); return; }
     const tick = (now: number) => {
       if (!lastTimeRef.current) lastTimeRef.current = now;
       const delta = now - lastTimeRef.current;
@@ -595,9 +1104,7 @@ function DirectiveCards() {
     };
     lastTimeRef.current = 0;
     rafRef.current = requestAnimationFrame(tick);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, [paused, activeIdx]);
 
   const [sectionRef, sectionVis] = useInView(0.1);
@@ -608,363 +1115,156 @@ function DirectiveCards() {
       ref={sectionRef}
       style={{
         opacity: sectionVis ? 1 : 0,
-        transform: sectionVis ? "none" : "translateY(40px)",
-        transition:
-          "opacity 1s cubic-bezier(0.22,1,0.36,1), transform 1s cubic-bezier(0.22,1,0.36,1)",
+        transform: sectionVis ? "none" : "translateY(32px)",
+        transition: "opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)",
       }}
     >
-      {/* Main layout: sidebar tabs + feature card */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "300px 1fr",
-          gap: "2px",
-          border: "1px solid rgba(255,255,255,0.06)",
-          borderRadius: "12px",
-          overflow: "hidden",
-          background: "rgba(255,255,255,0.02)",
-        }}
-      >
-        {/* ── LEFT: Tab list ──────────────────────────────────────────────── */}
-        <div style={{ borderRight: "1px solid rgba(255,255,255,0.06)", background: "#0b0908" }}>
-          {DIRECTIVES.map((d, i) => {
-            const isActive = i === activeIdx;
-            return (
-              <div
-                key={d.n}
-                onClick={() => {
-                  goTo(i);
-                  setPaused(false);
-                }}
-                onMouseEnter={() => setPaused(true)}
-                onMouseLeave={() => setPaused(false)}
-                className="dir-card"
-                style={{
-                  padding: "22px 24px",
-                  borderBottom: "1px solid rgba(255,255,255,0.04)",
-                  background: isActive ? "rgba(255,90,20,0.06)" : "transparent",
-                  position: "relative",
-                  overflow: "hidden",
-                  cursor: "pointer",
-                }}
-              >
-                {/* Active left bar */}
-                <div
-                  style={{
-                    position: "absolute",
-                    left: 0,
-                    top: 0,
-                    bottom: 0,
-                    width: "3px",
-                    background: isActive
-                      ? "linear-gradient(to bottom, rgba(255,110,30,0.9), rgba(255,60,0,0.5))"
-                      : "transparent",
-                    transition: "background 0.4s ease",
-                  }}
-                />
-
-                {/* Progress bar at bottom */}
-                {isActive && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      bottom: 0,
-                      left: 0,
-                      height: "1.5px",
-                      width: `${progress}%`,
-                      background:
-                        "linear-gradient(to right, rgba(255,110,30,0.9), rgba(255,60,0,0.4))",
-                      transition: "width 0.05s linear",
-                    }}
-                  />
-                )}
-
-                <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
-                  <span
-                    className="dir-card-num"
-                    style={{
-                      fontFamily: "Georgia, serif",
-                      fontStyle: "italic",
-                      fontSize: "11px",
-                      color: isActive ? "rgba(255,130,50,0.7)" : "rgba(255,255,255,0.2)",
-                      transition: "color 0.3s ease",
-                      flexShrink: 0,
-                      marginTop: "2px",
-                    }}
-                  >
-                    {d.n}
-                  </span>
-                  <div>
-                    <div
-                      style={{
-                        fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                        fontSize: "15px",
-                        fontWeight: 700,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.04em",
-                        color: isActive ? "rgb(255,150,60)" : "rgba(240,232,220,0.55)",
-                        lineHeight: 1.2,
-                        transition: "color 0.3s ease",
-                      }}
-                    >
-                      {d.title}
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: "Georgia, serif",
-                        fontStyle: "italic",
-                        fontSize: "11px",
-                        color: "rgba(240,232,220,0.22)",
-                        marginTop: "3px",
-                        lineHeight: 1.4,
-                      }}
-                    >
-                      {d.question}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+      <div className="dir-grid">
+        <div className="dir-sidebar">
+          {DIRECTIVES.map((d, i) => (
+            <button
+              key={d.n}
+              className={`dir-tab ${i === activeIdx ? "active" : ""}`}
+              onClick={() => { goTo(i); setPaused(false); }}
+              onMouseEnter={() => setPaused(true)}
+              onMouseLeave={() => setPaused(false)}
+            >
+              <div className="dir-tab-bar" />
+              {i === activeIdx && (
+                <div className="dir-tab-progress" style={{ width: `${progress}%` }} />
+              )}
+              <div className="dir-tab-n">{d.n}</div>
+              <div className="dir-tab-title">{d.title}</div>
+              <div className="dir-tab-q">{d.question}</div>
+            </button>
+          ))}
         </div>
 
-        {/* ── RIGHT: Feature panel ─────────────────────────────────────────── */}
         <div
           key={activeIdx}
+          className="dir-panel"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
-          style={{
-            position: "relative",
-            padding: "48px 52px",
-            background: "#0d0b09",
-            overflow: "hidden",
-            minHeight: "420px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            animation: "abt-fadeUp 0.5s cubic-bezier(0.22,1,0.36,1) forwards",
-          }}
         >
-          {/* Ambient orb */}
-          <div
-            style={{
-              position: "absolute",
-              top: "-20%",
-              right: "-10%",
-              width: "400px",
-              height: "400px",
-              borderRadius: "50%",
-              background: "radial-gradient(circle, rgba(255,90,20,0.07) 0%, transparent 65%)",
-              animation: "abt-orbFloat 10s ease-in-out infinite",
-              pointerEvents: "none",
-            }}
-          />
+          <div className="dir-content">
+            <div>
+              <div className="dir-directive-label">Directive {active.n}</div>
+              <h3 className="dir-h3">{active.title}</h3>
+              <p className="dir-question">"{active.question}"</p>
+              <p className="dir-body">{active.body}</p>
+            </div>
+            <div>
+              <p className="dir-ask">{active.ask}</p>
+              <div className="dir-dots">
+                {DIRECTIVES.map((_, i) => (
+                  <button
+                    key={i}
+                    className={`dir-dot ${i === activeIdx ? "active" : ""}`}
+                    onClick={() => goTo(i)}
+                    style={{ width: i === activeIdx ? "22px" : "5px" }}
+                    aria-label={`Go to directive ${i + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
 
-          {/* Scan line */}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              height: "1px",
-              background:
-                "linear-gradient(to right, transparent, rgba(255,130,50,0.4), transparent)",
-              animation: "abt-scanLine 3s linear infinite",
-              pointerEvents: "none",
-            }}
-          />
-
-          {/* Floating particles */}
-          {[...Array(5)].map((_, i) => (
+          <div className="dir-img-panel img-zoom">
+            <img src={active.img} alt="" />
             <div
-              key={i}
-              className="abt-particle"
               style={{
-                position: "absolute",
-                width: "2px",
-                height: "2px",
-                borderRadius: "50%",
-                background: "rgba(255,130,50,0.4)",
-                left: `${20 + i * 15}%`,
-                bottom: "10%",
-                animationDuration: `${3 + i * 0.8}s`,
-                animationDelay: `${i * 0.6}s`,
+                position: "absolute", inset: 0,
+                background: "linear-gradient(to right, rgba(10,10,9,0.05) 0%, transparent 40%)",
               }}
             />
-          ))}
-
-          <div style={{ position: "relative", zIndex: 1 }}>
-            {/* Number + icon */}
-            <div
-              style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "28px" }}
-            >
-              <div
-                style={{
-                  width: "48px",
-                  height: "48px",
-                  borderRadius: "10px",
-                  border: "1px solid rgba(255,110,30,0.25)",
-                  background: "rgba(255,90,20,0.08)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "rgb(255,130,50)",
-                  flexShrink: 0,
-                }}
-              >
-                {active.icon}
-              </div>
-              <div>
-                <span
-                  style={{
-                    fontFamily: "Georgia, serif",
-                    fontStyle: "italic",
-                    fontSize: "12px",
-                    color: "rgba(255,130,50,0.5)",
-                    display: "block",
-                    marginBottom: "2px",
-                  }}
-                >
-                  Directive {active.n}
-                </span>
-                <div
-                  style={{
-                    height: "1px",
-                    width: "60px",
-                    background: "linear-gradient(to right, rgba(255,110,30,0.6), transparent)",
-                    animation: "abt-lineExpand 0.8s cubic-bezier(0.22,1,0.36,1) forwards",
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Title */}
-            <h3
-              style={{
-                fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                fontSize: "clamp(32px, 3.5vw, 52px)",
-                fontWeight: 800,
-                textTransform: "uppercase",
-                letterSpacing: "-0.01em",
-                lineHeight: 0.95,
-                color: "#f0e8df",
-                margin: "0 0 8px",
-              }}
-            >
-              {active.title}
-            </h3>
-            <p
-              style={{
-                fontFamily: "Georgia, serif",
-                fontStyle: "italic",
-                fontSize: "14px",
-                color: "rgba(255,160,80,0.5)",
-                margin: "0 0 28px",
-              }}
-            >
-              "{active.question}"
-            </p>
-
-            {/* Body */}
-            <p
-              style={{
-                fontSize: "14px",
-                lineHeight: 1.9,
-                color: "rgba(240,232,220,0.48)",
-                maxWidth: "520px",
-              }}
-            >
-              {active.body}
-            </p>
-          </div>
-
-          {/* Bottom ask card */}
-          <div
-            style={{
-              position: "relative",
-              zIndex: 1,
-              marginTop: "36px",
-              padding: "20px 24px",
-              borderRadius: "8px",
-              background: "rgba(255,100,20,0.05)",
-              border: "1px solid rgba(255,100,20,0.14)",
-              display: "flex",
-              gap: "14px",
-              alignItems: "flex-start",
-              animation: "abt-borderPulse 4s ease-in-out infinite",
-            }}
-          >
-            <div
-              style={{
-                width: "28px",
-                height: "28px",
-                borderRadius: "50%",
-                border: "1px solid rgba(255,110,30,0.3)",
-                background: "rgba(255,90,20,0.08)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-                marginTop: "1px",
-              }}
-            >
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="rgb(255,130,50)"
-                strokeWidth="2"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="12" />
-                <line x1="12" y1="16" x2="12.01" y2="16" />
-              </svg>
-            </div>
-            <span
-              style={{
-                fontFamily: "Georgia, serif",
-                fontStyle: "italic",
-                fontSize: "13px",
-                color: "rgba(255,180,100,0.65)",
-                lineHeight: 1.75,
-              }}
-            >
-              {active.ask}
-            </span>
-          </div>
-
-          {/* Nav dots */}
-          <div
-            style={{
-              position: "absolute",
-              bottom: "24px",
-              right: "28px",
-              display: "flex",
-              gap: "6px",
-              alignItems: "center",
-              zIndex: 2,
-            }}
-          >
-            {DIRECTIVES.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                style={{
-                  width: i === activeIdx ? "20px" : "6px",
-                  height: "6px",
-                  borderRadius: "3px",
-                  background: i === activeIdx ? "rgb(255,130,50)" : "rgba(255,255,255,0.15)",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: 0,
-                  transition: "all 0.4s ease",
-                }}
-              />
-            ))}
+            <div className="dir-img-num">{active.n}</div>
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Story Chapters with curtain-reveal animation ────────────────────────────
+function StoryChapters() {
+  const [ref, vis] = useInView(0.1);
+
+  return (
+    <section className="story-section">
+      <div className="story-header">
+        <div ref={ref}>
+          <p
+            className="eyebrow"
+            style={{
+              opacity: vis ? 1 : 0,
+              transition: "opacity 0.7s ease",
+            }}
+          >
+            The Evolution · Our Story
+          </p>
+          <h2
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontSize: "clamp(2.2rem,5vw,4.25rem)",
+              fontWeight: 400,
+              lineHeight: 1.05,
+              letterSpacing: "-0.02em",
+              color: "#f5f3ef",
+              margin: "0 0 clamp(2.5rem,5vw,4rem)",
+              opacity: vis ? 1 : 0,
+              transform: vis ? "none" : "translateY(24px)",
+              transition: "opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s",
+            }}
+          >
+            Beyond the code.<br />
+            <em style={{ fontStyle: "italic" }}>The Narrative.</em>
+          </h2>
+        </div>
+      </div>
+
+      <div className="story-chapters-wrap">
+        {STORY_CHAPTERS.map((ch, i) => (
+          <StoryChapterRow key={ch.n} ch={ch} i={i} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function StoryChapterRow({ ch, i }: { ch: typeof STORY_CHAPTERS[0]; i: number }) {
+  const [ref, vis] = useInView(0.15);
+  const [curtainOpen, setCurtainOpen] = useState(false);
+
+  useEffect(() => {
+    if (!vis) return;
+    const t = setTimeout(() => setCurtainOpen(true), 220 + i * 120);
+    return () => clearTimeout(t);
+  }, [vis, i]);
+
+  return (
+    <div
+      ref={ref}
+      className={`story-chapter-row${curtainOpen ? " curtain-open" : ""}`}
+      style={{
+        opacity: vis ? 1 : 0,
+        transform: vis ? "none" : "translateY(20px)",
+        transition: `opacity 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 0.12}s, transform 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 0.12}s`,
+      }}
+    >
+      <div className="story-chapter-bar" />
+      <span className="story-chapter-n">{ch.n}</span>
+      <div className="story-chapter-meta">
+        <span className="story-chapter-sub">{ch.sub}</span>
+        <span className="story-chapter-heading">{ch.heading}</span>
+        <p className="story-chapter-body">{ch.body}</p>
+      </div>
+      <div className="story-chapter-img-wrap">
+        <img src={ch.img} alt="" loading="lazy" />
+        <div className="story-chapter-img-overlay" />
+        <div className="story-img-num">{ch.n}</div>
+        <div className="story-curtain left" />
+        <div className="story-curtain right" />
+        <div className="story-curtain-seam" />
       </div>
     </div>
   );
@@ -976,436 +1276,278 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About — Jarvis Technolabs" },
-      {
-        name: "description",
-        content: "The Catalyst, Not the Vendor. Stop chasing the digital curve — chart it.",
-      },
+      { name: "description", content: "The Catalyst, Not the Vendor. Stop chasing the digital curve — chart it." },
       { property: "og:title", content: "About — Jarvis Technolabs" },
-      {
-        property: "og:description",
-        content: "Technology is never a line item — it is an unfair advantage.",
-      },
+      { property: "og:description", content: "Technology is never a line item — it is an unfair advantage." },
     ],
   }),
 });
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 function AboutPage() {
-  useReveal();
+  const [heroContentRef, heroVis] = useInView(0.05);
+  const [manifestoRef, manifestoVis] = useInView(0.1);
+  const [studioRef, studioVis] = useInView(0.1);
+  const [fullBleedRef, fullBleedVis] = useInView(0.1);
+  const [dirHeaderRef, dirHeaderVis] = useInView(0.1);
+  const [vmvHeaderRef, vmvHeaderVis] = useInView(0.1);
 
-  const manifestoRef = useRef<HTMLElement>(null);
-  const [manifestoVis, setManifestoVis] = useState(false);
-  const vmvRef = useRef<HTMLDivElement>(null);
-  const [vmvVis, setVmvVis] = useState(false);
-  const directivesHeaderRef = useRef<HTMLDivElement>(null);
-  const [dirHeaderVis, setDirHeaderVis] = useState(false);
-
+  const ruleRef = useRef<HTMLDivElement>(null);
+  const [ruleVis, setRuleVis] = useState(false);
   useEffect(() => {
-    const entries: [React.RefObject<HTMLElement | HTMLDivElement>, (v: boolean) => void][] = [
-      [manifestoRef, setManifestoVis],
-      [vmvRef, setVmvVis],
-      [directivesHeaderRef, setDirHeaderVis],
-    ];
-    const observers = entries.map(([ref, setter]) => {
-      const obs = new IntersectionObserver(
-        ([e]) => {
-          if (e.isIntersecting) {
-            setter(true);
-            obs.disconnect();
-          }
-        },
-        { threshold: 0.12 },
-      );
-      if (ref.current) obs.observe(ref.current);
-      return obs;
-    });
-    return () => observers.forEach((o) => o.disconnect());
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setRuleVis(true); obs.disconnect(); } }, { threshold: 0.5 });
+    if (ruleRef.current) obs.observe(ruleRef.current);
+    return () => obs.disconnect();
   }, []);
 
   return (
-    <main className="bg-background text-foreground min-h-screen" style={{ background: "#0a0806" }}>
-      <style>{ABOUT_STYLES}</style>
+    <main className="abt-root">
+      <style>{STYLES}</style>
       <Nav />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <AnimatedHero
-        bgImage={aboutImg}
-        eyebrow="ABOUT US"
-        title={
-          <>
-            The Catalyst, <em className="text-shimmer not-italic font-light">Not the Vendor.</em>
-          </>
-        }
-        description="Stop chasing the digital curve — chart it. The world has enough vendors; it craves a catalyst."
-      />
+      <section className="hero">
+        <img className="hero-img" src={IMAGES.hero} alt="Modern interior" />
+        <div className="hero-overlay" />
 
-      {/* ── MANIFESTO — full-bleed two-col editorial ─────────────────────── */}
-      <section
-        ref={manifestoRef}
-        style={{
-          borderTop: "1px solid rgba(255,255,255,0.05)",
-          position: "relative",
-          overflow: "hidden",
-          paddingTop: "7rem",
-          paddingBottom: "7rem",
-        }}
-      >
-        {/* Ambient background glow */}
-        <div
-          className="abt-glow"
-          style={{
-            position: "absolute",
-            top: "-10%",
-            left: "-5%",
-            width: "600px",
-            height: "600px",
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(255,90,20,0.09) 0%, transparent 65%)",
-            pointerEvents: "none",
-          }}
-        />
-
-        {/* Decorative large faint text */}
-        <div
-          style={{
-            position: "absolute",
-            right: "-20px",
-            top: "50%",
-            transform: "translateY(-50%)",
-            fontFamily: "'Barlow Condensed', sans-serif",
-            fontSize: "clamp(100px, 16vw, 220px)",
-            fontWeight: 900,
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,0.018)",
-            letterSpacing: "-0.04em",
-            userSelect: "none",
-            pointerEvents: "none",
-            lineHeight: 1,
-          }}
-        >
-          CATALYST
-        </div>
-
-        <div className="mx-auto max-w-7xl px-6" style={{ position: "relative", zIndex: 1 }}>
-          {/* Eyebrow */}
+        <div className="hero-content" ref={heroContentRef as React.RefObject<HTMLDivElement>}>
           <p
+            className="hero-eyebrow"
             style={{
-              fontSize: "9px",
-              letterSpacing: "0.35em",
-              textTransform: "uppercase",
-              color: "rgba(255,130,50,0.65)",
-              marginBottom: "56px",
-              opacity: manifestoVis ? 1 : 0,
-              transform: manifestoVis ? "none" : "translateY(14px)",
-              transition: "opacity 0.7s ease, transform 0.7s ease",
+              opacity: heroVis ? 1 : 0,
+              transform: heroVis ? "none" : "translateY(14px)",
+              transition: "opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s",
             }}
           >
-            THE CATALYST MANIFESTO
+            About Us
           </p>
-
-          {/* Main layout */}
-          <div
+          <h1
+            className="hero-title"
             style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "80px",
-              alignItems: "start",
+              opacity: heroVis ? 1 : 0,
+              transform: heroVis ? "none" : "translateY(28px)",
+              transition: "opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.35s",
             }}
           >
-            {/* LEFT */}
+            The Catalyst,<br />
+            <em>Not the Vendor.</em>
+          </h1>
+          <p
+            className="hero-desc"
+            style={{
+              opacity: heroVis ? 1 : 0,
+              transform: heroVis ? "none" : "translateY(20px)",
+              transition: "opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.5s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.5s",
+            }}
+          >
+            Stop chasing the digital curve — chart it. The world has enough vendors; it craves a catalyst.
+          </p>
+        </div>
+      </section>
+
+      {/* ── MANIFESTO ────────────────────────────────────────────────────── */}
+      <section className="section">
+        <div className="wrap">
+          <div ref={manifestoRef as React.RefObject<HTMLDivElement>} className="manifesto-grid">
             <div
               style={{
                 opacity: manifestoVis ? 1 : 0,
-                transform: manifestoVis ? "none" : "translateY(40px)",
-                transition:
-                  "opacity 0.9s cubic-bezier(0.22,1,0.36,1) 0.1s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.1s",
+                transform: manifestoVis ? "none" : "translateY(36px)",
+                transition: "opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)",
               }}
             >
-              <h2
-                style={{
-                  fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                  fontSize: "clamp(44px, 6.5vw, 90px)",
-                  fontWeight: 800,
-                  textTransform: "uppercase",
-                  letterSpacing: "-0.02em",
-                  lineHeight: 0.92,
-                  color: "#f0e8df",
-                  margin: 0,
-                }}
-              >
-                THE REACTIVE
-                <br />
-                <span
-                  style={{
-                    color: "rgb(255,130,50)",
-                    fontWeight: 300,
-                    fontFamily: "Georgia, serif",
-                    fontStyle: "italic",
-                    textTransform: "none",
-                    fontSize: "0.82em",
-                  }}
-                >
-                  "break-fix"
-                </span>
-                <br />
-                SCRIPT BELONGS
-                <br />
-                TO THE PAST.
+              <p className="eyebrow">The Catalyst Manifesto</p>
+              <h2 className="manifesto-h2">
+                <span className="manifesto-quote-mark" aria-hidden="true">&ldquo;</span>
+                The reactive<br />
+                <em>"break-fix"</em><br />
+                script belongs<br />
+                to the past.
               </h2>
+              <div ref={ruleRef} className={`manifesto-rule ${ruleVis ? "in" : ""}`} />
 
-              <div
-                style={{
-                  marginTop: "40px",
-                  height: "1px",
-                  width: "80%",
-                  background: "linear-gradient(to right, rgba(255,110,30,0.6), transparent)",
-                  transformOrigin: "left",
-                  transform: manifestoVis ? "scaleX(1)" : "scaleX(0)",
-                  transition: "transform 1s cubic-bezier(0.22,1,0.36,1) 0.5s",
-                }}
-              />
+              <div className="manifesto-body" style={{ marginTop: "2.5rem" }}>
+                <p>
+                  The world has enough vendors; it craves a catalyst. While the industry obsesses
+                  over mere uptime, the real work lies in architecting what's next.
+                </p>
+                <p>
+                  Technology is never a line item — it is an <em>unfair advantage</em>. By merging
+                  radical foresight with technical grit, the "impossible" is transmuted into a
+                  scalable industry benchmark.
+                </p>
+                <p>
+                  To us, technology isn't a line item — it's your unfair advantage. By merging
+                  radical foresight with technical grit, we turn your "impossible" into the industry
+                  benchmark.
+                </p>
+              </div>
             </div>
 
-            {/* RIGHT */}
+            {/* Overlapping image collage */}
+            <div className="manifesto-imgcol">
+              <div className={`manifesto-img-main${manifestoVis ? " in" : ""}`}>
+                <img src={IMAGES.studioA} alt="Studio interior" />
+              </div>
+              <div className={`manifesto-img-accent${manifestoVis ? " in" : ""}`}>
+                <img src={IMAGES.dir4} alt="" loading="lazy" />
+                <span className={`manifesto-img-tag${manifestoVis ? " in" : ""}`}>At work</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── STUDIO PROSE + IMAGE ─────────────────────────────────────────── */}
+      <section className="section" style={{ paddingTop: 0, borderTop: "none" }}>
+        <div className="wrap">
+          <div ref={studioRef as React.RefObject<HTMLDivElement>} className="studio-grid">
+            <div className="studio-img-wrap">
+              <span className="studio-vert-label">Considered, not rushed</span>
+              <div
+                className={`studio-img-frame${studioVis ? " in" : ""}`}
+                style={{
+                  opacity: studioVis ? 1 : 0,
+                  transition: "opacity 0.8s ease",
+                }}
+              >
+                <img src={IMAGES.studioB} alt="" />
+                <div className={`studio-float-card${studioVis ? " in" : ""}`}>
+                  <div className="studio-float-card-n">01</div>
+                  <div className="studio-float-card-label">
+                    Engagement at a time, given full attention
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div
               style={{
-                opacity: manifestoVis ? 1 : 0,
-                transform: manifestoVis ? "none" : "translateY(40px)",
-                transition:
-                  "opacity 0.9s cubic-bezier(0.22,1,0.36,1) 0.22s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.22s",
+                opacity: studioVis ? 1 : 0,
+                transform: studioVis ? "none" : "translateY(32px)",
+                transition: "opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.18s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.18s",
               }}
             >
-              <p
-                style={{
-                  fontSize: "15px",
-                  lineHeight: 1.85,
-                  color: "rgba(240,232,220,0.48)",
-                  marginBottom: "20px",
-                }}
-              >
-                The world has enough vendors; it craves a catalyst. While the industry obsesses over
-                mere uptime, the real work lies in architecting what's next.
-              </p>
-              <p
-                style={{
-                  fontSize: "15px",
-                  lineHeight: 1.85,
-                  color: "rgba(240,232,220,0.48)",
-                  marginBottom: "20px",
-                }}
-              >
-                Technology is never a line item — it is an{" "}
-                <span style={{ color: "#f0e8df", fontStyle: "italic" }}>unfair advantage</span>. By
-                merging radical foresight with technical grit, the "impossible" is transmuted into a
-                scalable industry benchmark.
-              </p>
-              <p
-                style={{
-                  fontSize: "15px",
-                  lineHeight: 1.85,
-                  color: "rgba(240,232,220,0.48)",
-                  marginBottom: "40px",
-                }}
-              >
-                To us, technology isn't a line item — it's your unfair advantage. By merging radical
-                foresight with technical grit, we turn your "impossible" into the industry
-                benchmark.
+              <h2 className="studio-h2">
+                We work slowly and carefully, on a limited number of engagements at a time.
+                <em> That focus is the point.</em>
+              </h2>
+              <p className="studio-p">
+                It is how the work stays considered, and how the relationship with each client stays
+                direct. Every architecture is a bridge to the future, designed to turn complex
+                bottlenecks into streamlined, automated pathways.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── STORY CHAPTERS ────────────────────────────────────────────────── */}
-      <section style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <div
-            className="reveal"
-            style={{
-              marginBottom: "48px",
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "60px",
-              alignItems: "end",
-            }}
-          >
-            <div>
-              <p
-                style={{
-                  fontSize: "9px",
-                  letterSpacing: "0.35em",
-                  textTransform: "uppercase",
-                  color: "rgba(240,232,223,0.3)",
-                  marginBottom: "18px",
-                }}
-              >
-                THE EVOLUTION · OUR STORY
-              </p>
-              <h2
-                style={{
-                  fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                  fontSize: "clamp(38px, 5.5vw, 72px)",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "-0.015em",
-                  lineHeight: 0.92,
-                  color: "#f0e8df",
-                  margin: 0,
-                }}
-              >
-                BEYOND THE CODE.
-                <br />
-                <em
-                  style={{
-                    fontFamily: "Georgia, serif",
-                    fontStyle: "italic",
-                    fontWeight: 300,
-                    color: "rgb(255,130,50)",
-                    textTransform: "none",
-                    fontSize: "0.82em",
-                  }}
-                >
-                  The Narrative.
-                </em>
-              </h2>
-            </div>
+      {/* ── STORY CHAPTERS (curtain-reveal images) ─────────────────────────── */}
+      <StoryChapters />
+
+      {/* ── FULL-BLEED IMAGE BREAK ───────────────────────────────────────── */}
+      <div
+        ref={fullBleedRef as React.RefObject<HTMLDivElement>}
+        className="full-bleed"
+        style={{
+          opacity: fullBleedVis ? 1 : 0,
+          transition: "opacity 1.2s ease",
+        }}
+      >
+        <img src={IMAGES.fullBleed} alt="" loading="lazy" />
+        <div className="full-bleed-overlay" />
+        <div className="full-bleed-text">
+          <p className="eyebrow" style={{ color: "rgba(245,243,239,0.35)", justifyContent: "center" }}>
+            Built on Trust
+          </p>
+          <h2 className="full-bleed-h">
+            Precision over pace.<br />
+            <em>Excellence, always.</em>
+          </h2>
+        </div>
+      </div>
+
+      {/* ── VISION / MISSION / VALUES — hover-reveal image grid ────────────── */}
+      <section className="section">
+        <div className="wrap">
+          <div ref={vmvHeaderRef as React.RefObject<HTMLDivElement>}>
             <p
+              className="eyebrow"
+              style={{ opacity: vmvHeaderVis ? 1 : 0, transition: "opacity 0.7s ease" }}
+            >
+              Foundation · Vision Mission Values
+            </p>
+            <h2
               style={{
-                fontSize: "14px",
-                lineHeight: 1.8,
-                color: "rgba(240,232,220,0.38)",
-                paddingBottom: "4px",
+                fontFamily: "'Playfair Display', serif",
+                fontSize: "clamp(2.2rem,5vw,4.25rem)",
+                fontWeight: 400,
+                lineHeight: 1.05,
+                letterSpacing: "-0.02em",
+                color: "#f5f3ef",
+                margin: "0 0 1rem",
+                opacity: vmvHeaderVis ? 1 : 0,
+                transform: vmvHeaderVis ? "none" : "translateY(24px)",
+                transition: "opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s",
               }}
             >
-              In an era where "digital transformation" is often a buzzword for mere survival, the
-              real quest is for enduring relevance. The journey begins with one question: what
-              stands between your current scale and your ultimate potential? This narrative isn't
-              about a company's history — it is about the unfolding chapters of your future, powered
-              by innovation that refuses to settle for the status quo.
+              The bedrock<br />
+              <em style={{ fontStyle: "italic" }}>of every decision.</em>
+            </h2>
+            <p
+              style={{
+                fontSize: "13px",
+                letterSpacing: "0.04em",
+                color: "rgba(245,243,239,0.38)",
+                margin: "0 0 clamp(2.5rem,5vw,4rem)",
+                opacity: vmvHeaderVis ? 1 : 0,
+                transition: "opacity 0.9s ease 0.2s",
+              }}
+            >
+              Hover over each image to read it in full.
             </p>
           </div>
 
-          <div
-            style={{
-              border: "1px solid rgba(255,255,255,0.05)",
-              borderRadius: "8px",
-              overflow: "hidden",
-            }}
-          >
-            {STORY_CHAPTERS.map((ch, i) => (
-              <ChapterRow key={ch.n} ch={ch} index={i} />
-            ))}
-          </div>
+          <VmvImageGrid />
         </div>
       </section>
 
-      {/* ── PRIME DIRECTIVES — cinematic auto-rotating card layout ─────────── */}
-      <section
-        style={{
-          borderTop: "1px solid rgba(255,255,255,0.05)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div className="abt-forge-glow" />
-        {[9, 18, 31, 47, 63, 79, 92].map((left, i) => (
-          <span
-            key={left}
-            className="abt-spark"
-            style={{ left: `${left}%`, animationDelay: `${i * 0.65}s` }}
-          />
-        ))}
-        {/* Bg image */}
-        <img
-          src={aboutImg}
-          alt=""
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            opacity: 0.03,
-            filter: "saturate(0.15)",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "radial-gradient(ellipse 50% 60% at 85% 40%, rgba(255,80,0,0.06) 0%, transparent 60%)",
-          }}
-        />
-
-        <div className="relative mx-auto max-w-7xl px-6 py-20" style={{ zIndex: 1 }}>
-          {/* Header */}
+      {/* ── PRIME DIRECTIVES ─────────────────────────────────────────────── */}
+      <section className="section">
+        <div className="wrap">
           <div
-            ref={directivesHeaderRef}
+            ref={dirHeaderRef as React.RefObject<HTMLDivElement>}
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
-              gap: "80px",
+              gap: "clamp(3rem,6vw,7rem)",
+              marginBottom: "clamp(2.5rem,5vw,4rem)",
               alignItems: "end",
-              marginBottom: "56px",
               opacity: dirHeaderVis ? 1 : 0,
               transform: dirHeaderVis ? "none" : "translateY(28px)",
-              transition:
-                "opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1)",
+              transition: "opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)",
             }}
           >
             <div>
-              <p
-                style={{
-                  fontSize: "9px",
-                  letterSpacing: "0.35em",
-                  textTransform: "uppercase",
-                  color: "rgba(255,130,50,0.65)",
-                  marginBottom: "18px",
-                }}
-              >
-                THE PRIME DIRECTIVES
-              </p>
+              <p className="eyebrow">The Prime Directives</p>
               <h2
-                className="abt-forge-title"
                 style={{
-                  fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                  fontSize: "clamp(38px, 5.5vw, 72px)",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "-0.015em",
-                  lineHeight: 0.92,
-                  color: "#f0e8df",
+                  fontFamily: "'Playfair Display', serif",
+                  fontSize: "clamp(2.2rem,5vw,4.25rem)",
+                  fontWeight: 400,
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.02em",
+                  color: "#f5f3ef",
                   margin: 0,
                 }}
               >
-                HOW THE FUTURE
-                <br />
-                IS FORGED,
-                <br />
-                <em
-                  style={{
-                    fontFamily: "Georgia, serif",
-                    fontStyle: "italic",
-                    fontWeight: 300,
-                    color: "rgb(255,130,50)",
-                    textTransform: "none",
-                    fontSize: "0.78em",
-                  }}
-                >
-                  day by day.
-                </em>
+                How the future<br />
+                is forged,<br />
+                <em style={{ fontStyle: "italic" }}>day by day.</em>
               </h2>
             </div>
-            <div style={{ paddingBottom: "6px" }}>
-              <p
-                style={{
-                  fontSize: "14px",
-                  lineHeight: 1.85,
-                  color: "rgba(240,232,220,0.38)",
-                  margin: 0,
-                }}
-              >
+            <div>
+              <p style={{ fontSize: "15px", lineHeight: 1.85, color: "rgba(245,243,239,0.5)", margin: 0 }}>
                 Five governing principles that shape every decision, every architecture, every
                 partnership. Not guidelines — prime directives. Each one cycles automatically, or
                 navigate at your own pace.
@@ -1413,10 +1555,31 @@ function AboutPage() {
             </div>
           </div>
 
-          {/* Directive Cards */}
           <DirectiveCards />
         </div>
       </section>
+
+      {/* ── CTA BAND — simple split layout: image + text ─────────────────── */}
+      <div className="cta-band">
+        <div className="cta-band-inner">
+          <div className="cta-band-img">
+            <img src={IMAGES.fullBleed} alt="" loading="lazy" />
+          </div>
+          <div className="cta-band-text">
+            <p className="eyebrow" style={{ marginBottom: 0 }}>Get in touch</p>
+            <h2 className="cta-h2">
+              Have a project in mind?<br />
+              <em>Let us hear about it.</em>
+            </h2>
+            <a href="/contact" className="cta-btn">
+              <span>Start a conversation</span>
+              <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M1 7h12M8 3l5 4-5 4" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
 
       <Footer />
     </main>
