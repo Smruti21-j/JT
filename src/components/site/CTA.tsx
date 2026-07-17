@@ -22,6 +22,7 @@ import guardbay from "@/assets/brands/image203.png";
 import sail from "@/assets/brands/image204.png";
 import roleplayLabs from "@/assets/brands/image24.png";
 import homeMark from "@/assets/brands/image97.png";
+import accreditations from "@/assets/acredtions.png";
 
 const BRANDS = [
   { name: "Esnaad",            logo: esnaad,         bg: "#f0f0f0" },
@@ -158,6 +159,80 @@ function BrandsCarousel() {
             />
           </div>
         ))}
+      </div>
+    </section>
+  );
+}
+
+/* ─── Accreditations ──────────────────────────────────────────────────────── */
+// Combined ISO 9001 / ISO 27001 badge image. The source PNG is white/mono
+// line-art, so it's placed inside a subtle card so it doesn't look like a
+// stray white rectangle sitting directly on the black background.
+export function Accreditations() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    el.style.opacity = "0";
+    el.style.transform = "translateY(24px)";
+    el.style.transition = "opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)";
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.style.opacity = "1";
+          el.style.transform = "none";
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <section style={{ background: "#000", padding: "80px 0 100px" }}>
+      <div ref={sectionRef} style={{ textAlign: "center" }}>
+        <p
+          style={{
+            fontSize: "11px",
+            letterSpacing: "0.3em",
+            color: "rgba(255,255,255,0.4)",
+            textTransform: "uppercase",
+            marginBottom: "10px",
+          }}
+        >
+          [Accreditations]
+        </p>
+        <h2
+          style={{
+            fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)",
+            fontWeight: 700,
+            color: "#fff",
+            marginBottom: "40px",
+          }}
+        >
+          Certified <span style={{ color: "rgb(249,115,22)" }}>Standards</span>
+        </h2>
+
+        <div
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: "16px",
+            padding: "28px 48px",
+          }}
+        >
+          <img
+            src={accreditations}
+            alt="ISO 9001 and ISO 27001 Certified"
+            style={{ height: "84px", width: "auto", maxWidth: "100%" }}
+          />
+        </div>
       </div>
     </section>
   );

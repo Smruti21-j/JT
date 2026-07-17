@@ -103,7 +103,7 @@ const CONTACT_STYLES = `
     letter-spacing: 0.02em;
   }
   .ct-input::placeholder {
-    color: rgba(240,232,220,0.2);
+    color: rgba(240,232,220,0.35);
     font-style: italic;
     font-size: 12px;
   }
@@ -190,6 +190,119 @@ const CONTACT_STYLES = `
   }
   .ct-submit-btn:active {
     transform: translateY(-1px);
+  }
+
+  .ct-directions-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  .ct-directions-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%);
+    transform: translateX(-100%) skewX(-20deg);
+    transition: transform 0.5s ease;
+  }
+  .ct-directions-btn:hover::before {
+    transform: translateX(150%) skewX(-20deg);
+  }
+  .ct-directions-btn:hover {
+    border-color: rgba(255,130,50,0.5) !important;
+    background: rgba(255,90,20,0.08) !important;
+    transform: translateY(-2px);
+  }
+
+  /* ── Location section (map + card, devxlabs-style layout) ─────────────── */
+  .ct-loc-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 40px;
+    align-items: stretch;
+  }
+  @media (max-width: 980px) {
+    .ct-loc-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .ct-map-frame {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: #0d0906;
+    min-height: 380px;
+  }
+  .ct-map-dotgrid {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px);
+    background-size: 16px 16px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, black 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, black 40%, transparent 100%);
+  }
+  .ct-map-pin {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translate(-50%, -100%);
+  }
+  .ct-map-pin-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgb(255,130,50);
+    box-shadow: 0 0 0 4px rgba(255,130,50,0.18), 0 0 24px 4px rgba(255,110,30,0.5);
+    position: relative;
+    z-index: 2;
+  }
+  .ct-map-pin-ring {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,130,50,0.6);
+    animation: ct-pulseRing 2.2s ease-out infinite;
+  }
+  .ct-map-pin-label {
+    margin-top: 10px;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(255,180,110,0.85);
+    white-space: nowrap;
+    background: rgba(10,8,6,0.75);
+    border: 1px solid rgba(255,130,50,0.25);
+    border-radius: 3px;
+    padding: 5px 10px;
+  }
+
+  .ct-loc-card {
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.015);
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .ct-loc-card:hover {
+    border-color: rgba(255,130,50,0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 44px -20px rgba(255,90,20,0.35);
+  }
+  .ct-loc-card-tag {
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgb(255,180,110);
+    background: rgba(255,90,20,0.08);
+    border: 1px solid rgba(255,130,50,0.35);
+    border-radius: 3px;
+    padding: 5px 9px;
+    display: inline-block;
   }
 
   .ct-coord-dot {
@@ -398,7 +511,7 @@ function FileUpload() {
         <p
           style={{
             fontSize: "11px",
-            color: "rgba(240,232,220,0.2)",
+            color: "rgba(240,232,220,0.35)",
             fontStyle: "italic",
             margin: 0,
             letterSpacing: "0.05em",
@@ -482,6 +595,220 @@ function ChannelItem({
         {value}
       </a>
     </div>
+  );
+}
+
+/* ─── Location Section (devxlabs-style: map visual + location card) ─────── */
+// NOTE: replace GOOGLE_MAPS_QUERY with your exact place name / business listing
+// if you want the pin to land precisely — a "share" link's query param from
+// Google Maps works best. This uses a free text query, no API key required.
+const GOOGLE_MAPS_QUERY = "Titanium Business Park, Makarba, Ahmedabad, Gujarat 380051";
+const GOOGLE_MAPS_DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+  GOOGLE_MAPS_QUERY,
+)}`;
+const GOOGLE_MAPS_EMBED_SRC = `https://www.google.com/maps?q=${encodeURIComponent(
+  GOOGLE_MAPS_QUERY,
+)}&output=embed`;
+
+function LocationSection() {
+  const [ref, vis] = useInView(0.08);
+
+  return (
+    <section
+      ref={ref}
+      style={{
+        position: "relative",
+        borderTop: "1px solid rgba(255,255,255,0.05)",
+        paddingTop: "90px",
+        paddingBottom: "110px",
+        opacity: vis ? 1 : 0,
+        transform: vis ? "none" : "translateY(30px)",
+        transition:
+          "opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1)",
+      }}
+    >
+      {/* ambient glow */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "-10%",
+          right: "-8%",
+          width: "600px",
+          height: "600px",
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(255,80,10,0.07) 0%, transparent 65%)",
+          animation: "ct-glowPulse 9s ease-in-out infinite",
+          pointerEvents: "none",
+        }}
+      />
+
+      <div className="relative mx-auto max-w-6xl px-6" style={{ zIndex: 1 }}>
+        {/* Section heading */}
+        <div style={{ marginBottom: "40px" }}>
+          <p
+            style={{
+              fontSize: "9px",
+              letterSpacing: "0.4em",
+              textTransform: "uppercase",
+              color: "rgba(255,130,50,0.6)",
+              marginBottom: "14px",
+            }}
+          >
+            OUR LOCATION
+          </p>
+          <h2
+            style={{
+              fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
+              fontSize: "clamp(32px, 4vw, 52px)",
+              fontWeight: 800,
+              textTransform: "uppercase",
+              letterSpacing: "-0.02em",
+              lineHeight: 0.95,
+              color: "#f0e8df",
+              margin: 0,
+            }}
+          >
+            WHERE THE SIGNAL ORIGINATES.
+          </h2>
+          <div
+            style={{
+              marginTop: "16px",
+              height: "1px",
+              width: "120px",
+              background: "linear-gradient(to right, rgba(255,110,30,0.7), transparent)",
+              transformOrigin: "left",
+              transform: vis ? "scaleX(1)" : "scaleX(0)",
+              transition: "transform 1s cubic-bezier(0.22,1,0.36,1) 0.3s",
+            }}
+          />
+        </div>
+
+        <div className="ct-loc-grid">
+          {/* ── Map visual ─────────────────────────────────────────────── */}
+          <div className="ct-map-frame">
+            <div className="ct-map-dotgrid" />
+
+            {/* live embedded map, dimmed to sit behind the dot texture */}
+            <iframe
+              title="Jarvis Technolabs Location"
+              src={GOOGLE_MAPS_EMBED_SRC}
+              width="100%"
+              height="100%"
+              style={{
+                position: "absolute",
+                inset: 0,
+                border: 0,
+                filter:
+                  "grayscale(1) invert(92%) contrast(85%) brightness(0.85) hue-rotate(180deg)",
+                opacity: 0.9,
+              }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+
+            {/* tint overlay to match theme */}
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(160deg, rgba(255,90,20,0.12) 0%, transparent 45%, rgba(10,8,6,0.35) 100%)",
+                pointerEvents: "none",
+              }}
+            />
+
+            {/* pin marker + label, positioned over the map */}
+            <div className="ct-map-pin" style={{ left: "50%", top: "48%" }}>
+              <div style={{ position: "relative", width: "12px", height: "12px" }}>
+                <div className="ct-map-pin-dot" />
+                <div className="ct-map-pin-ring" />
+              </div>
+              <span className="ct-map-pin-label">AHMEDABAD, INDIA</span>
+            </div>
+
+            <ScanLine />
+          </div>
+
+          {/* ── Location card ──────────────────────────────────────────── */}
+          <div className="ct-loc-card">
+            <div style={{ padding: "22px 22px 26px", display: "flex", flexDirection: "column", flex: 1 }}>
+              <span className="ct-loc-card-tag" style={{ alignSelf: "flex-start", marginBottom: "14px" }}>
+                [ Headquarters ]
+              </span>
+              <h3
+                style={{
+                  fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                  fontSize: "26px",
+                  fontWeight: 800,
+                  textTransform: "uppercase",
+                  letterSpacing: "-0.01em",
+                  color: "#f0e8df",
+                  margin: "0 0 10px",
+                }}
+              >
+                Ahmedabad
+              </h3>
+
+              <p
+                style={{
+                  fontSize: "13px",
+                  lineHeight: 1.85,
+                  color: "rgba(240,232,220,0.75)",
+                  margin: "0 0 20px",
+                  fontFamily: "Georgia, serif",
+                  flex: 1,
+                }}
+              >
+                B-603, Titanium Business Park,
+                <br />
+                Near Makarba Underbridge, Corporate Road,
+                <br />
+                Ahmedabad, Gujarat - 380051, India
+              </p>
+
+              <a
+                href={GOOGLE_MAPS_DIRECTIONS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ct-directions-btn"
+                style={{
+                  alignSelf: "flex-start",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  border: "1px solid rgba(255,255,255,0.14)",
+                  borderRadius: "4px",
+                  padding: "12px 20px",
+                  fontSize: "10px",
+                  letterSpacing: "0.3em",
+                  textTransform: "uppercase",
+                  fontFamily: "'Barlow Condensed', sans-serif",
+                  fontWeight: 700,
+                  color: "rgba(240,232,220,0.75)",
+                  textDecoration: "none",
+                  background: "rgba(255,255,255,0.02)",
+                }}
+              >
+                GET DIRECTIONS
+                <svg
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -651,7 +978,7 @@ function ContactPage() {
               maxWidth: "640px",
               fontSize: "15px",
               lineHeight: 1.85,
-              color: "rgba(240,232,220,0.4)",
+              color: "rgba(240,232,220,0.6)",
               marginTop: "28px",
               fontFamily: "Georgia, 'Times New Roman', serif",
               fontWeight: 400,
@@ -1028,7 +1355,7 @@ function ContactPage() {
                   style={{
                     fontSize: "13px",
                     lineHeight: 1.85,
-                    color: "rgba(240,232,220,0.5)",
+                    color: "rgba(240,232,220,0.75)",
                     margin: "0 0 20px",
                     fontFamily: "Georgia, serif",
                   }}
@@ -1051,7 +1378,7 @@ function ContactPage() {
                       fontSize: "12px",
                       fontFamily: "Georgia, serif",
                       fontStyle: "italic",
-                      color: "rgba(255,180,100,0.5)",
+                      color: "rgba(255,180,100,0.65)",
                       margin: "0 0 6px",
                       lineHeight: 1.6,
                     }}
@@ -1063,7 +1390,7 @@ function ContactPage() {
                       fontSize: "9px",
                       letterSpacing: "0.25em",
                       textTransform: "uppercase",
-                      color: "rgba(255,255,255,0.2)",
+                      color: "rgba(255,255,255,0.4)",
                       margin: 0,
                     }}
                   >
@@ -1075,6 +1402,9 @@ function ContactPage() {
           </div>
         </div>
       </section>
+
+      {/* ── LOCATION SECTION (map + card, devxlabs-style) ────────────────── */}
+      <LocationSection />
 
       <Footer />
     </main>

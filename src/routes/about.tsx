@@ -2,6 +2,18 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
 import { useEffect, useRef, useState, useCallback } from "react";
+import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
+
+// ─── Local image imports (Prime Directives + Story Chapters) ─────────────────
+import philosophyImg from "@/assets/Philosophy.png";
+import northStarImg from "@/assets/northstar.png";
+import ethosImg from "@/assets/ethos.png";
+
+import impactEchoImg from "@/assets/impactecho.png";
+import syntheticIntuitionImg from "@/assets/syntheticintuition.png";
+import infiniteBlueprintImg from "@/assets/infiniteblueprint.png";
+import velocityParadoxImg from "@/assets/velocityparadox.png";
+import unfilteredLightImg from "@/assets/unfilteredlight.png";
 
 // ─── Image assets ─────────────────────────────────────────────────────────────
 const IMAGES = {
@@ -48,21 +60,21 @@ const STORY_CHAPTERS = [
     heading: "The Philosophy",
     sub: "Approach",
     body: "Imagine a world where software isn't a cost centre, but a scalable engine for economic value. This isn't about building tools — it's about engineering outcomes. By stripping away technical noise, the focus remains on clarity and measurable impact.",
-    img: IMAGES.dir1,
+    img: philosophyImg,
   },
   {
     n: "02",
     heading: "The North Star",
     sub: "Vision & Mission",
     body: "The Vision: To cultivate a legacy of trust by transmuting complex challenges into excellent value. The Mission: To ignite disruptive growth through the seamless integration of digital innovation and human ingenuity.",
-    img: IMAGES.dir2,
+    img: northStarImg,
   },
   {
     n: "03",
     heading: "The Ethos",
     sub: "Values",
     body: "Integrity is not a line in a contract; it is the bedrock upon which every grand ambition is built. In a world of shifting sands, transparency acts as the mortar — invisible yet essential.",
-    img: IMAGES.dir3,
+    img: ethosImg,
   },
 ];
 
@@ -73,7 +85,7 @@ const DIRECTIVES = [
     question: "Does the signal reach the horizon?",
     body: "In the hunt for digital transformation, the goal isn't to 'finish' a task, but to create a permanent ripple. If the solution doesn't fundamentally shift the trajectory of the business, it is merely noise. True innovation is measured by the resonance it leaves behind — long after the code is deployed.",
     ask: "Is this a temporary fix, or a permanent evolution?",
-    img: IMAGES.dir1,
+    img: impactEchoImg,
   },
   {
     n: "02",
@@ -81,7 +93,7 @@ const DIRECTIVES = [
     question: "Thinking beyond the human limit.",
     body: "The era of 'using' tools is over. The new standard is an AI-native pulse — a seamless blend of seasoned wisdom and algorithmic speed. By embedding automation into the very DNA of the strategy, the 'impossible' is decoded in real-time.",
     ask: "What could happen if your strategy thought a thousand times faster than your competitors?",
-    img: IMAGES.dir2,
+    img: syntheticIntuitionImg,
   },
   {
     n: "03",
@@ -89,7 +101,7 @@ const DIRECTIVES = [
     question: "Engineering the immortality of success.",
     body: "To scale is to ensure that brilliance never fades. By capturing 'lightning in a bottle' and turning it into a living, breathing digital map, success is no longer a lucky strike — it is a repeatable harvest.",
     ask: "Are you building a monument that stands still, or a city that grows itself?",
-    img: IMAGES.dir3,
+    img: infiniteBlueprintImg,
   },
   {
     n: "04",
@@ -97,7 +109,7 @@ const DIRECTIVES = [
     question: "Doing less to achieve everything.",
     body: "The future belongs to the precise, not the busy. By isolating the 'Heart-Line' — the vital few movements that spark 80% of the value — innovation is delivered at a pace that feels like magic.",
     ask: "If you could only keep one feature to save the company, which one would it be?",
-    img: IMAGES.dir4,
+    img: velocityParadoxImg,
   },
   {
     n: "05",
@@ -105,7 +117,7 @@ const DIRECTIVES = [
     question: "The shortest path to the summit.",
     body: "Complexity often hides in the shadows of 'polite' feedback. Transformation requires the unvarnished truth. This is a partnership built on radical transparency — the kind that prioritises the health of the enterprise over the comfort of the boardroom.",
     ask: "Would you rather hear a beautiful lie, or see the map to a real solution?",
-    img: IMAGES.dir5,
+    img: unfilteredLightImg,
   },
 ];
 
@@ -592,156 +604,6 @@ const STYLES = `
     transform: scaleY(1);
   }
 
-  .full-bleed {
-    position: relative;
-    height: clamp(420px,55vw,640px);
-    overflow: hidden;
-    background: #0a0a09;
-    margin: 0;
-  }
-  .full-bleed img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    object-position: center 35%;
-    opacity: 0.65;
-    margin: 0;
-  }
-  .full-bleed-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to bottom, rgba(10,10,9,0.65) 0%, rgba(10,10,9,0.25) 35%, rgba(10,10,9,0.35) 65%, rgba(10,10,9,0.85) 100%);
-  }
-  .full-bleed-text {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 1.25rem;
-    text-align: center;
-    padding: 2rem clamp(1.5rem,5vw,5rem);
-  }
-  .full-bleed-h {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2.25rem,5.5vw,4.75rem);
-    font-weight: 400;
-    line-height: 1.15;
-    color: #f5f3ef;
-    letter-spacing: -0.02em;
-    margin: 0;
-  }
-  .full-bleed-h em { font-style: italic; }
-
-  /* ── VMV hover-reveal image grid ─────────────────────────────────────── */
-  .vmv-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    margin: 0;
-  }
-  .vmv-tile {
-    position: relative;
-    overflow: hidden;
-    height: clamp(360px, 36vw, 520px);
-    cursor: default;
-    background: #0a0a09;
-  }
-  .vmv-tile img {
-    position: absolute;
-    inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    filter: grayscale(0.55) brightness(0.62);
-    transform: scale(1.06);
-    transition: transform 1s cubic-bezier(0.16,1,0.3,1), filter 0.6s ease;
-  }
-  .vmv-tile:hover img {
-    transform: scale(1.12);
-    filter: grayscale(0) brightness(0.4);
-  }
-  .vmv-tile-scrim {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(10,10,9,0.92) 0%, rgba(10,10,9,0.35) 55%, rgba(10,10,9,0.15) 100%);
-    transition: background 0.5s ease;
-  }
-  .vmv-tile-base {
-    position: absolute;
-    left: 0; right: 0; bottom: 0;
-    padding: 1.75rem 1.75rem;
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-    transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1);
-  }
-  .vmv-tile:hover .vmv-tile-base {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  .vmv-tile-n {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 13px;
-    color: rgba(245,243,239,0.5);
-  }
-  .vmv-tile-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(1.2rem,2.2vw,1.7rem);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #f5f3ef;
-  }
-  .vmv-tile-body-wrap {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 2rem 1.85rem;
-    opacity: 0;
-    transition: opacity 0.5s ease 0.05s;
-  }
-  .vmv-tile:hover .vmv-tile-body-wrap { opacity: 1; }
-  .vmv-tile-body-n {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: 13px;
-    color: rgba(255,150,90,0.85);
-    margin-bottom: 8px;
-    transform: translateY(14px);
-    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.08s;
-  }
-  .vmv-tile:hover .vmv-tile-body-n { transform: translateY(0); }
-  .vmv-tile-body-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: clamp(1.2rem,2.2vw,1.7rem);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #f5f3ef;
-    margin-bottom: 12px;
-    transform: translateY(18px);
-    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.12s;
-  }
-  .vmv-tile:hover .vmv-tile-body-label { transform: translateY(0); }
-  .vmv-tile-body-text {
-    font-size: 13.5px;
-    line-height: 1.8;
-    color: rgba(245,243,239,0.72);
-    max-width: 32ch;
-    transform: translateY(22px);
-    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1) 0.16s;
-  }
-  .vmv-tile:hover .vmv-tile-body-text { transform: translateY(0); }
-  .vmv-tile-rule {
-    width: 36px;
-    height: 1px;
-    background: rgba(255,150,90,0.7);
-    margin: 14px 0 0;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.6s cubic-bezier(0.16,1,0.3,1) 0.2s;
-  }
-  .vmv-tile:hover .vmv-tile-rule { transform: scaleX(1); }
-
   .dir-grid {
     display: grid;
     grid-template-columns: 260px 1fr;
@@ -998,8 +860,6 @@ const STYLES = `
     .studio-float-card { left: 1rem; right: 1rem; max-width: none; }
     .story-chapter-row { grid-template-columns: 56px 1fr; }
     .story-chapter-img-wrap { display: none; }
-    .vmv-grid { grid-template-columns: 1fr; }
-    .vmv-tile { height: 320px; }
     .dir-grid { grid-template-columns: 1fr; }
     .dir-sidebar { display: none; }
     .dir-panel { grid-template-columns: 1fr; }
@@ -1023,47 +883,6 @@ function useInView(threshold = 0.12): [React.RefObject<HTMLDivElement>, boolean]
     return () => obs.disconnect();
   }, [threshold]);
   return [ref, vis];
-}
-
-// ─── VMV — hover-reveal image grid ───────────────────────────────────────────
-// On rest, each tile shows only the number + label over the photo. On hover,
-// the full Vision/Mission/Values copy slides up and fades in over a darkened,
-// slightly zoomed version of that same image.
-function VmvImageGrid() {
-  const [ref, vis] = useInView(0.1);
-
-  return (
-    <div ref={ref} className="vmv-grid">
-      {VMV.map((item, i) => (
-        <div
-          key={item.label}
-          className="vmv-tile"
-          style={{
-            opacity: vis ? 1 : 0,
-            transform: vis ? "none" : "translateY(28px)",
-            transition: `opacity 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 0.12}s, transform 0.8s cubic-bezier(0.16,1,0.3,1) ${i * 0.12}s`,
-          }}
-        >
-          <img src={item.img} alt={item.label} loading="lazy" />
-          <div className="vmv-tile-scrim" />
-
-          {/* Resting state label */}
-          <div className="vmv-tile-base">
-            <span className="vmv-tile-n">{item.number}</span>
-            <span className="vmv-tile-label">{item.label}</span>
-          </div>
-
-          {/* Hover-revealed copy */}
-          <div className="vmv-tile-body-wrap">
-            <span className="vmv-tile-body-n">{item.number}</span>
-            <span className="vmv-tile-body-label">{item.label}</span>
-            <p className="vmv-tile-body-text">{item.body}</p>
-            <span className="vmv-tile-rule" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
 }
 
 // ─── Directive Cards ──────────────────────────────────────────────────────────
@@ -1235,16 +1054,12 @@ function StoryChapterRow({ ch, i }: { ch: typeof STORY_CHAPTERS[0]; i: number })
   const [ref, vis] = useInView(0.15);
   const [curtainOpen, setCurtainOpen] = useState(false);
 
-  useEffect(() => {
-    if (!vis) return;
-    const t = setTimeout(() => setCurtainOpen(true), 220 + i * 120);
-    return () => clearTimeout(t);
-  }, [vis, i]);
-
   return (
     <div
       ref={ref}
       className={`story-chapter-row${curtainOpen ? " curtain-open" : ""}`}
+      onMouseEnter={() => setCurtainOpen(true)}
+      onMouseLeave={() => setCurtainOpen(false)}
       style={{
         opacity: vis ? 1 : 0,
         transform: vis ? "none" : "translateY(20px)",
@@ -1287,10 +1102,7 @@ export const Route = createFileRoute("/about")({
 function AboutPage() {
   const [heroContentRef, heroVis] = useInView(0.05);
   const [manifestoRef, manifestoVis] = useInView(0.1);
-  const [studioRef, studioVis] = useInView(0.1);
-  const [fullBleedRef, fullBleedVis] = useInView(0.1);
   const [dirHeaderRef, dirHeaderVis] = useInView(0.1);
-  const [vmvHeaderRef, vmvHeaderVis] = useInView(0.1);
 
   const ruleRef = useRef<HTMLDivElement>(null);
   const [ruleVis, setRuleVis] = useState(false);
@@ -1398,119 +1210,8 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* ── STUDIO PROSE + IMAGE ─────────────────────────────────────────── */}
-      <section className="section" style={{ paddingTop: 0, borderTop: "none" }}>
-        <div className="wrap">
-          <div ref={studioRef as React.RefObject<HTMLDivElement>} className="studio-grid">
-            <div className="studio-img-wrap">
-              <span className="studio-vert-label">Considered, not rushed</span>
-              <div
-                className={`studio-img-frame${studioVis ? " in" : ""}`}
-                style={{
-                  opacity: studioVis ? 1 : 0,
-                  transition: "opacity 0.8s ease",
-                }}
-              >
-                <img src={IMAGES.studioB} alt="" />
-                <div className={`studio-float-card${studioVis ? " in" : ""}`}>
-                  <div className="studio-float-card-n">01</div>
-                  <div className="studio-float-card-label">
-                    Engagement at a time, given full attention
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div
-              style={{
-                opacity: studioVis ? 1 : 0,
-                transform: studioVis ? "none" : "translateY(32px)",
-                transition: "opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.18s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.18s",
-              }}
-            >
-              <h2 className="studio-h2">
-                We work slowly and carefully, on a limited number of engagements at a time.
-                <em> That focus is the point.</em>
-              </h2>
-              <p className="studio-p">
-                It is how the work stays considered, and how the relationship with each client stays
-                direct. Every architecture is a bridge to the future, designed to turn complex
-                bottlenecks into streamlined, automated pathways.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── STORY CHAPTERS (curtain-reveal images) ─────────────────────────── */}
       <StoryChapters />
-
-      {/* ── FULL-BLEED IMAGE BREAK ───────────────────────────────────────── */}
-      <div
-        ref={fullBleedRef as React.RefObject<HTMLDivElement>}
-        className="full-bleed"
-        style={{
-          opacity: fullBleedVis ? 1 : 0,
-          transition: "opacity 1.2s ease",
-        }}
-      >
-        <img src={IMAGES.fullBleed} alt="" loading="lazy" />
-        <div className="full-bleed-overlay" />
-        <div className="full-bleed-text">
-          <p className="eyebrow" style={{ color: "rgba(245,243,239,0.35)", justifyContent: "center" }}>
-            Built on Trust
-          </p>
-          <h2 className="full-bleed-h">
-            Precision over pace.<br />
-            <em>Excellence, always.</em>
-          </h2>
-        </div>
-      </div>
-
-      {/* ── VISION / MISSION / VALUES — hover-reveal image grid ────────────── */}
-      <section className="section">
-        <div className="wrap">
-          <div ref={vmvHeaderRef as React.RefObject<HTMLDivElement>}>
-            <p
-              className="eyebrow"
-              style={{ opacity: vmvHeaderVis ? 1 : 0, transition: "opacity 0.7s ease" }}
-            >
-              Foundation · Vision Mission Values
-            </p>
-            <h2
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "clamp(2.2rem,5vw,4.25rem)",
-                fontWeight: 400,
-                lineHeight: 1.05,
-                letterSpacing: "-0.02em",
-                color: "#f5f3ef",
-                margin: "0 0 1rem",
-                opacity: vmvHeaderVis ? 1 : 0,
-                transform: vmvHeaderVis ? "none" : "translateY(24px)",
-                transition: "opacity 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s, transform 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s",
-              }}
-            >
-              The bedrock<br />
-              <em style={{ fontStyle: "italic" }}>of every decision.</em>
-            </h2>
-            <p
-              style={{
-                fontSize: "13px",
-                letterSpacing: "0.04em",
-                color: "rgba(245,243,239,0.38)",
-                margin: "0 0 clamp(2.5rem,5vw,4rem)",
-                opacity: vmvHeaderVis ? 1 : 0,
-                transition: "opacity 0.9s ease 0.2s",
-              }}
-            >
-              Hover over each image to read it in full.
-            </p>
-          </div>
-
-          <VmvImageGrid />
-        </div>
-      </section>
 
       {/* ── PRIME DIRECTIVES ─────────────────────────────────────────────── */}
       <section className="section">

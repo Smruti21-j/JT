@@ -3,7 +3,7 @@ import { Nav } from "@/components/site/Nav";
 import { Hero } from "@/components/site/Hero";
 import { Industries } from "@/components/site/Industries";
 import { Testimonials } from "@/components/site/Testimonials";
-import { CTA, Footer } from "@/components/site/CTA";
+import { CTA, Footer, Accreditations } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
 import { useState, useEffect, useRef, useCallback } from "react";
 
@@ -739,6 +739,7 @@ function Index() {
       <InsightFlashcards />
       <Industries />
       <Testimonials />
+      <Accreditations />
       <CTA showBrands={true} />
       <Footer />
     </main>

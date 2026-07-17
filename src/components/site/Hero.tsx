@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { StatCounter } from "@/components/site/StatCounter";
 import { useEffect, useState } from "react";
 
-const ROTATING_WORDS = ["Autonomous", "Sovereign", "Architected", "Pioneering", "Cohesive", "Catalytic"];
+const ROTATING_WORDS = ["Digital","Autonomous", "Sovereign", "Architected", "Pioneering", "Cohesive", "Catalytic"];
 
 function RotatingWord() {
   const [index, setIndex] = useState(0);
