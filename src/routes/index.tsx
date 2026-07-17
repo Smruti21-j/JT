@@ -8,6 +8,7 @@ import { useReveal } from "@/hooks/use-reveal";
 import { useState, useEffect, useRef, useCallback } from "react";
 
 // ─── Local image imports ──────────────────────────────────────────────────────
+import pillarImg1 from "/index-image1.png";
 import pillarImg2 from "/index-image2.png";
 import pillarImg3 from "/index-image3.jpg";
 import pillarImg4 from "/index-image4.jpg";
@@ -27,7 +28,7 @@ const CX_PILLARS = [
     titleItalic: "that Acts",
     desc: "Transition from generative prompts to agentic workflows that resolve complex tasks with zero friction.",
     stat: { value: "", label: "" },
-    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&q=80",
+    image: pillarImg1,
   },
   {
     num: "02",
