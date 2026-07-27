@@ -1,8 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { StatCounter } from "@/components/site/StatCounter";
+import { Rocket, BarChart3, Globe2, Bot, Cloud, Layers, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
+import type { SiteTheme } from "@/hooks/use-theme-init";
+import heroIllustrationDark from "@/assets/darktheme.png";
+import heroIllustrationLight from "@/assets/lighttheme.png";
 
-const ROTATING_WORDS = ["Digital","Autonomous", "Sovereign", "Architected", "Pioneering", "Cohesive", "Catalytic"];
+const ROTATING_WORDS = ["Digital", "Autonomous", "Sovereign", "Architected", "Pioneering", "Cohesive", "Catalytic"];
 
 function RotatingWord() {
   const [index, setIndex] = useState(0);
@@ -21,7 +24,7 @@ function RotatingWord() {
 
   return (
     <span
-     className="inline-block transition-all duration-400 font-light text-primary"
+      className="inline-block text-primary italic"
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(-12px)",
@@ -33,105 +36,114 @@ function RotatingWord() {
   );
 }
 
-export function Hero() {
+const STATS = [
+  { icon: Rocket, value: "8.5", label: "Years of Impact" },
+  { icon: BarChart3, value: "150+", label: "Breakthroughs Delivered" },
+  { icon: Globe2, value: "25+", label: "Global Reach" },
+];
+
+const CALLOUTS = [
+  { icon: Bot, label: "AI Agents", position: { top: "6%", right: "-4%" } },
+  { icon: Cloud, label: "Cloud Native", position: { top: "38%", right: "-10%" } },
+  { icon: TrendingUp, label: "Data Intelligence", position: { bottom: "10%", right: "-6%" } },
+  { icon: Layers, label: "Scalable Solutions", position: { bottom: "2%", left: "-6%" } },
+];
+
+type HeroProps = {
+  theme: SiteTheme;
+};
+
+// theme now actively picks the correct pre-rendered illustration image below -
+// everything else in this component still works from CSS variables alone.
+export function Hero({ theme }: HeroProps) {
+  const heroIllustration = theme === "light" ? heroIllustrationLight : heroIllustrationDark;
+
   return (
-    <section className="relative min-h-screen pt-40 pb-24 overflow-hidden">
-
-      {/* VIDEO BACKGROUND */}
-      <div className="absolute inset-0 overflow-hidden">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover brightness-[0.45] contrast-125"
-        >
-          <source src="/hero-video10.mp4" type="video/mp4" />
-        </video>
-
-        {/* STRONG OVERLAY */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />
-      </div>
-
-      {/* GRID + GLOW */}
-      <div className="absolute inset-0 grid-bg opacity-10 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
-      <div className="absolute -top-40 right-0 h-[600px] w-[800px] rounded-full bg-primary/[0.06] blur-3xl animate-pulse-glow" />
-      <div className="pointer-events-none absolute left-8 top-1/3 hidden h-40 w-px overflow-hidden bg-white/10 md:block">
-        <div className="h-16 w-px bg-gradient-to-b from-transparent via-primary to-transparent animate-breakthrough-scan" />
-      </div>
-      <div className="pointer-events-none absolute right-10 top-1/4 hidden h-28 w-28 rounded-full border border-white/10 md:block animate-breakthrough-orbit">
-        <span className="absolute left-1/2 top-0 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_18px_oklch(0.72_0.16_45)]" />
-      </div>
+    <section className="relative min-h-screen pt-36 pb-20 overflow-hidden bg-background">
+      <div className="absolute -top-32 -left-20 h-[500px] w-[500px] rounded-full bg-primary/[0.08] blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 grid-bg opacity-[0.05] [mask-image:radial-gradient(ellipse_at_top_left,black,transparent_65%)] pointer-events-none" />
 
       <div className="relative mx-auto max-w-7xl px-6">
+        <div className="grid lg:grid-cols-2 gap-14 items-center">
 
-        {/* CORNERS */}
-        <div className="absolute top-10 left-6 h-6 w-6 border-l border-t border-white/20" />
-        <div className="absolute top-10 right-6 h-6 w-6 border-r border-t border-white/20" />
+          {/* LEFT — headline + copy + CTAs (unchanged) */}
+          <div>
+            <h1
+              className="font-bold text-foreground"
+              style={{ fontSize: "clamp(38px, 5.4vw, 66px)", lineHeight: 1.08, letterSpacing: "-0.01em" }}
+            >
+              Orchestrating
+              <br />
+              Your{" "}
+              <span className="font-display f-400 inline-block min-w-[220px]">
+                <RotatingWord />
+              </span>
+              <br />
+              Future
+            </h1>
 
-        {/* CONTENT */}
-        <div className="reveal text-center max-w-5xl mx-auto">
+            <div className="mt-4 h-1 w-16 bg-primary rounded-full" />
 
-          <p className="text-xs tracking-[0.3em] text-white/60 mb-12">
-            [YOU THINK · WE CREATE]
-          </p>
+            <p className="mt-6 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
+              Move decisively from experimentation to enterprise-scale impact. Build the
+              autonomous intelligence layer that powers your future, delivering the resilient,
+              sovereign, and mission-ready digital ecosystems essential for the AI-first economy.
+            </p>
 
-          <div className="inline-flex items-center justify-center mb-10">
-            <span className="text-primary text-2xl animate-pulse">✦</span>
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <Link
+                to="/contact"
+                className="group inline-flex items-center gap-3 bg-primary text-primary-foreground rounded-full px-7 py-3.5 text-xs tracking-[0.2em] uppercase font-medium hover:translate-y-[-2px] transition-all"
+              >
+                Let's Talk
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+              </Link>
+              <Link
+                to="/services"
+                className="inline-flex flex-col items-start gap-0.5 border border-border rounded-xl px-6 py-3 hover:border-foreground/30 transition-colors"
+              >
+                <span className="text-xs uppercase tracking-[0.15em] text-foreground font-medium">Our Services →</span>
+                <span className="text-[11px] text-muted-foreground">See how we build. Free consult.</span>
+              </Link>
+            </div>
           </div>
 
-     <h1 className="font-display text-5xl md:text-7xl lg:text-[5.5rem] leading-[1.05] tracking-tight text-white drop-shadow-[0_5px_30px_rgba(0,0,0,0.8)]">
-  Orchestrating
-  <br />
-  <span className="inline-flex items-center justify-center gap-[0.25em]">
-    <span>Your</span>
-   <span className="inline-block min-w-[500px] text-left">
-      <RotatingWord />
-    </span>
-  </span>
-  <br />
-  <span className="text-white">
-    Future
-  </span>
-</h1>
+          {/* RIGHT — stat row + isometric illustration with floating callouts */}
+          <div>
+            {/* Stat cards row */}
+            <div className="grid grid-cols-3 gap-4 mb-10">
+              {STATS.map(({ icon: Icon, value, label }) => (
+                <div key={label} className="rounded-2xl p-4 bg-card border border-border">
+                  <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-4">
+                    <Icon size={18} />
+                  </div>
+                  <p className="font-display text-2xl font-semibold text-foreground leading-none">{value}</p>
+                  <p className="font-mono text-[9px] tracking-[0.1em] uppercase text-muted-foreground mt-2 leading-tight">
+                    {label}
+                  </p>
+                </div>
+              ))}
+            </div>
 
-          {/* DESCRIPTION */}
-          <p className="mt-10 text-base md:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
-            Move decisively from experimentation to enterprise-scale impact. Build the autonomous intelligence layer that powers your future, delivering the resilient, sovereign, and mission-ready digital ecosystems essential for the AI-first economy.
-          </p>
+            {/* Illustration with floating labeled callouts */}
+            <div className="relative mx-auto max-w-md">
+              <img src={heroIllustration} alt="" className="w-full h-auto select-none pointer-events-none" />
 
-          {/* BUTTONS */}
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-4">
-
-            <Link
-              to="/contact"
-              className="motion-link group inline-flex items-center gap-3 bg-primary text-primary-foreground rounded-md px-7 py-3.5 text-xs tracking-[0.2em] uppercase font-medium hover:translate-y-[-2px] hover:shadow-[0_10px_40px_-10px_oklch(0.72_0.16_45_/_0.6)] transition-all"
-            >
-              Let's Talk
-              <span className="transition-transform group-hover:translate-x-1">→</span>
-            </Link>
-
-            <Link
-              to="/services"
-              className="motion-link inline-flex items-center gap-3 border border-white/20 rounded-md px-7 py-3.5 text-xs tracking-[0.2em] uppercase text-white/70 hover:text-white hover:border-white/60 transition-colors"
-            >
-              Our Services
-            </Link>
+              {CALLOUTS.map(({ icon: Icon, label, position }) => (
+                <div
+                  key={label}
+                  className="absolute flex items-center gap-2 rounded-full bg-card border border-border px-3 py-2 shadow-sm"
+                  style={position}
+                >
+                  <div className="h-7 w-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                    <Icon size={14} />
+                  </div>
+                  <span className="text-xs font-medium text-foreground whitespace-nowrap pr-1">{label}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-
-        {/* COUNTER */}
-        <div className="relative mt-24 reveal">
-          <div className="absolute inset-0 bg-primary/10 blur-3xl rounded-full" />
-
-          <div className="relative grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-            <StatCounter target={8.5} decimals={1} label="Era of Impact" />
-            <StatCounter target={150} label=" Breakthroughs" />
-            <StatCounter target={25} label="Global Reach" />
-            <StatCounter target={50} suffix="+" label="Vision Architects" />
-          </div>
-        </div>
-
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import logo from "@/assets/JT_white.png";
+import logo from "@/assets/JT logo-original.svg";
 import { useEffect, useRef } from "react";
 import { Linkedin, Instagram, Twitter, Youtube, Facebook, Mail, Phone, MapPin } from "lucide-react";
 
@@ -22,7 +22,6 @@ import guardbay from "@/assets/brands/image203.png";
 import sail from "@/assets/brands/image204.png";
 import roleplayLabs from "@/assets/brands/image24.png";
 import homeMark from "@/assets/brands/image97.png";
-import accreditations from "@/assets/acredtions.png";
 
 const BRANDS = [
   { name: "Esnaad",            logo: esnaad,         bg: "#f0f0f0" },
@@ -164,80 +163,6 @@ function BrandsCarousel() {
   );
 }
 
-/* ─── Accreditations ──────────────────────────────────────────────────────── */
-// Combined ISO 9001 / ISO 27001 badge image. The source PNG is white/mono
-// line-art, so it's placed inside a subtle card so it doesn't look like a
-// stray white rectangle sitting directly on the black background.
-export function Accreditations() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    el.style.opacity = "0";
-    el.style.transform = "translateY(24px)";
-    el.style.transition = "opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1)";
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.style.opacity = "1";
-          el.style.transform = "none";
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
-  return (
-    <section style={{ background: "#000", padding: "80px 0 100px" }}>
-      <div ref={sectionRef} style={{ textAlign: "center" }}>
-        <p
-          style={{
-            fontSize: "11px",
-            letterSpacing: "0.3em",
-            color: "rgba(255,255,255,0.4)",
-            textTransform: "uppercase",
-            marginBottom: "10px",
-          }}
-        >
-          [Accreditations]
-        </p>
-        <h2
-          style={{
-            fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)",
-            fontWeight: 700,
-            color: "#fff",
-            marginBottom: "40px",
-          }}
-        >
-          Certified <span style={{ color: "rgb(249,115,22)" }}>Standards</span>
-        </h2>
-
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            borderRadius: "16px",
-            padding: "28px 48px",
-          }}
-        >
-          <img
-            src={accreditations}
-            alt="ISO 9001 and ISO 27001 Certified"
-            style={{ height: "84px", width: "auto", maxWidth: "100%" }}
-          />
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ─── CTA ─────────────────────────────────────────────────────────────────── */
 type CTAProps = { showBrands?: boolean };
 export function CTA({ showBrands = false }: CTAProps = {}) {
@@ -282,47 +207,46 @@ const SOCIALS = [
 ];
 
 export function Footer() {
-  return (
-    <footer className="relative border-t border-white/10 bg-black text-white overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
-        <div className="absolute inset-0" style={{ opacity: 0.04, backgroundImage: "linear-gradient(to right,white 1px,transparent 1px),linear-gradient(to bottom,white 1px,transparent 1px)", backgroundSize: "40px 40px" }} />
-      </div>
+  return (<footer className="relative border-t border-border text-foreground overflow-hidden" style={{ background: "var(--footer-solid, var(--color-background))" }}>
+    
+      
       <div className="relative max-w-7xl mx-auto px-6 py-20" style={{ zIndex: 10 }}>
-        <div className="grid lg:grid-cols-12 gap-12 border-b border-white/10 pb-16">
+        <div className="grid lg:grid-cols-12 gap-12 border-b border-border pb-16">
           <div className="lg:col-span-5">
             <Link to="/"><img src={logo} alt="Jarvis Technolabs" className="h-20 w-auto object-contain mb-6" /></Link>
-            <p className="text-2xl md:text-3xl font-semibold leading-tight max-w-md mb-4">
-              Orchestrating Your <span className="text-orange-500">Autonomous</span> Future
+            <p className="text-2xl md:text-3xl font-semibold leading-tight max-w-md mb-4 text-foreground">
+              Orchestrating Your <span style={{ color: "var(--color-primary)" }}>Autonomous</span> Future
             </p>
-            <p className="text-sm leading-relaxed max-w-sm mb-8" style={{ color: "rgba(255,255,255,0.45)" }}>
+            <p className="text-sm leading-relaxed max-w-sm mb-8 text-muted-foreground">
               We are an AI-native digital engineering company helping enterprises and high-growth brands build intelligent products, automate operations, and deliver exceptional customer experiences.
             </p>
+            
             <div className="space-y-3">
-              <a href="mailto:info@jarvistechnolabs.com" className="flex items-center gap-3 text-sm group" style={{ color: "rgba(255,255,255,0.6)" }}>
-                <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg" style={{ background: "rgba(255,90,20,0.1)", border: "1px solid rgba(255,100,30,0.2)" }}><Mail size={14} style={{ color: "rgb(249,115,22)" }} /></span>
-                <span className="group-hover:text-orange-400 transition-colors">info@jarvistechnolabs.com</span>
-              </a>
-              <a href="tel:+917203030707" className="flex items-center gap-3 text-sm group" style={{ color: "rgba(255,255,255,0.6)" }}>
-                <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg" style={{ background: "rgba(255,90,20,0.1)", border: "1px solid rgba(255,100,30,0.2)" }}><Phone size={14} style={{ color: "rgb(249,115,22)" }} /></span>
-                <span className="group-hover:text-orange-400 transition-colors">+91 720 303 0707</span>
-              </a>
-              <div className="flex items-start gap-3 text-sm" style={{ color: "rgba(255,255,255,0.45)" }}>
-                <span className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-lg mt-0.5" style={{ background: "rgba(255,90,20,0.1)", border: "1px solid rgba(255,100,30,0.2)" }}><MapPin size={14} style={{ color: "rgb(249,115,22)" }} /></span>
-                <span>Ahmedabad, Gujarat, India</span>
-              </div>
-            </div>
+  <a href="mailto:info@jarvistechnolabs.com" className="flex items-center gap-3 text-sm group text-muted-foreground">
+    <Mail size={16} style={{ color: "var(--color-primary)" }} />
+    <span className="group-hover:text-foreground transition-colors">info@jarvistechnolabs.com</span>
+  </a>
+  <a href="tel:+917203030707" className="flex items-center gap-3 text-sm group text-muted-foreground">
+    <Phone size={16} style={{ color: "var(--color-primary)" }} />
+    <span className="group-hover:text-foreground transition-colors">+91 720 303 0707</span>
+  </a>
+  <div className="flex items-start gap-3 text-sm text-muted-foreground">
+    <MapPin size={16} style={{ color: "var(--color-primary)" }} className="mt-0.5" />
+    <span>Ahmedabad, Gujarat, India</span>
+  </div>
+</div>
           </div>
           <div className="lg:col-span-7 grid sm:grid-cols-3 gap-10">
             {FOOTER_COLS.map((col) => (
               <div key={col.title}>
-                <p className="text-xs tracking-widest text-orange-500 mb-5 uppercase">{col.title}</p>
+                <p className="text-xs tracking-widest mb-5 uppercase" style={{ color: "var(--color-primary)" }}>{col.title}</p>
                 <ul className="space-y-3">
                   {col.links.map((l) => (
                     <li key={l.label}>
                       {"params" in l ? (
-                        <Link to="/services/$slug" params={l.params} className="text-sm text-white/70 hover:text-white hover:translate-x-1 inline-block transition-all">{l.label}</Link>
+                        <Link to="/services/$slug" params={l.params} className="text-sm text-muted-foreground hover:text-foreground hover:translate-x-1 inline-block transition-all">{l.label}</Link>
                       ) : (
-                        <Link to={l.to} className="text-sm text-white/70 hover:text-white hover:translate-x-1 inline-block transition-all">{l.label}</Link>
+                        <Link to={l.to} className="text-sm text-muted-foreground hover:text-foreground hover:translate-x-1 inline-block transition-all">{l.label}</Link>
                       )}
                     </li>
                   ))}
@@ -331,10 +255,11 @@ export function Footer() {
             ))}
           </div>
         </div>
-        <div className="flex flex-wrap justify-between items-center pt-8 gap-6 text-xs text-white/50">
+        <div className="flex flex-wrap justify-between items-center pt-8 gap-6 text-xs text-muted-foreground">
           <div>© {new Date().getFullYear()} Jarvis Technolabs — Intelligent Systems Company</div>
           <div className="flex gap-5">
-            {SOCIALS.map((s, i) => { const Icon = s.icon; return <a key={i} href={s.href} target="_blank" rel="noreferrer" className="hover:text-orange-400 transition"><Icon size={16} /></a>; })}
+           {SOCIALS.map((s, i) => { const Icon = s.icon; return <a key={i} href={s.href} target="_blank" rel="noreferrer" className="hover:text-foreground transition"><Icon size={16} /></a>; })}
+          
           </div>
         </div>
       </div>

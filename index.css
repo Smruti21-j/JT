@@ -1,4 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+/* Fonts: Inter Tight (body), Fraunces (display/headings), JetBrains Mono
+   (labels). MUST be the very first line — @import rules are only valid
+   before any other CSS content, and Tailwind's own @import below expands
+   into real rules during the build, so this has to lead. */
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -30,9 +35,10 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-
   --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+
   --animate-float: float 8s ease-in-out infinite;
   --animate-float-slow: float 14s ease-in-out infinite;
   --animate-fade-up: fade-up 0.8s ease-out both;
@@ -262,73 +268,107 @@
   }
 }
 
-:root,
-[data-theme="light"] {
+/* ============================================================
+   THEME: dark is the default (matches this site's original,
+   single-theme design). Toggling adds/removes .light on <html>,
+   which this block overrides. Toggling .dark explicitly re-applies
+   the same values as :root, kept for clarity + the `dark:` variant.
+   ============================================================ */
+:root {
   --radius: 0.5rem;
-
-  --background: #fbfaf7;
-  --foreground: #121826;
-  --card: #ffffff;
-  --card-foreground: #121826;
-  --popover: #ffffff;
-  --popover-foreground: #121826;
-
-  --primary: #ED6323;
-  --primary-foreground: #ffffff;
-  --secondary: #f1eee8;
-  --secondary-foreground: #121826;
-  --muted: #eee9df;
-  --muted-foreground: rgba(18, 24, 38, 0.62);
-  --accent: #ED6323;
-  --accent-foreground: #ffffff;
-  --destructive: oklch(0.6 0.22 25);
-  --destructive-foreground: #ffffff;
-  --border: rgba(15, 23, 42, 0.1);
-  --input: rgba(15, 23, 42, 0.12);
-  --ring: #ED6323;
-
-  --nav-transparent: transparent;
-  --nav-solid: transparent;
-  --nav-link: #111827;
-  --nav-border: rgba(15, 23, 42, 0.12);
-  --nav-button: rgba(255, 255, 255, 0.76);
-  --nav-shadow: 0 18px 44px rgba(15, 23, 42, 0.08);
-  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Fraunces", ui-serif, Georgia, serif;
-  --font-serif: "Fraunces", Georgia, serif;
-  --font-mono: "JetBrains Mono", monospace;
-}
-
-[data-theme="dark"] {
-  --radius: 0.5rem;
-
   --background: oklch(0.16 0.02 180);
   --foreground: oklch(0.96 0.01 170);
   --card: oklch(0.19 0.02 180);
   --card-foreground: oklch(0.96 0.01 170);
   --popover: oklch(0.19 0.02 180);
   --popover-foreground: oklch(0.96 0.01 170);
-
   --primary: oklch(0.72 0.16 45);
   --primary-foreground: oklch(0.16 0.02 180);
   --secondary: oklch(0.24 0.02 180);
   --secondary-foreground: oklch(0.96 0.01 170);
   --muted: oklch(0.22 0.02 180);
-  --muted-foreground: #FFFFFF
+  --muted-foreground: oklch(0.68 0.02 170);
   --accent: oklch(0.72 0.16 45);
   --accent-foreground: oklch(0.16 0.02 180);
   --destructive: oklch(0.6 0.22 25);
-  --destructive-foreground: #ffffff;
+  --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.96 0.01 170 / 8%);
   --input: oklch(0.96 0.01 170 / 12%);
   --ring: oklch(0.72 0.16 45);
 
-  --nav-transparent: linear-gradient(to bottom, rgba(0, 0, 0, 0.56), transparent);
-  --nav-solid: rgba(10, 14, 13, 0.9);
-  --nav-link: rgba(255, 255, 255, 0.86);
-  --nav-border: rgba(255, 255, 255, 0.1);
-  --nav-button: rgba(255, 255, 255, 0.04);
-  --nav-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+  --gradient-radial: radial-gradient(ellipse at top, oklch(0.28 0.04 180 / 0.6), transparent 60%);
+  --gradient-text: linear-gradient(180deg, oklch(0.98 0.01 170) 0%, oklch(0.62 0.03 170) 100%);
+  --gradient-warm: linear-gradient(135deg, oklch(0.72 0.16 45) 0%, oklch(0.6 0.18 35) 100%);
+  --shadow-glow: 0 0 80px -10px oklch(0.72 0.16 45 / 0.25);
+  --shadow-card: 0 30px 80px -30px oklch(0 0 0 / 0.8), 0 0 0 1px oklch(0.96 0.01 170 / 0.06);
+
+  /* Nav.tsx tokens */
+  --nav-transparent: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, transparent 100%);
+  --nav-solid: rgba(10, 8, 6, 0.86);
+  --nav-border: rgba(255, 255, 255, 0.08);
+  --nav-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --nav-link: rgba(255, 255, 255, 0.82);
+  --nav-button: rgba(255, 255, 255, 0.06);
+}
+
+.dark {
+  --background: oklch(0.16 0.02 180);
+  --foreground: oklch(0.96 0.01 170);
+  --card: oklch(0.19 0.02 180);
+  --card-foreground: oklch(0.96 0.01 170);
+  --popover: oklch(0.19 0.02 180);
+  --popover-foreground: oklch(0.96 0.01 170);
+  --primary: oklch(0.72 0.16 45);
+  --primary-foreground: oklch(0.16 0.02 180);
+  --secondary: oklch(0.24 0.02 180);
+  --secondary-foreground: oklch(0.96 0.01 170);
+  --muted: oklch(0.22 0.02 180);
+  --muted-foreground: oklch(0.68 0.02 170);
+  --accent: oklch(0.72 0.16 45);
+  --accent-foreground: oklch(0.16 0.02 180);
+  --border: oklch(0.96 0.01 170 / 8%);
+  --input: oklch(0.96 0.01 170 / 12%);
+  --ring: oklch(0.72 0.16 45);
+  --nav-transparent: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, transparent 100%);
+  --nav-solid: rgba(10, 8, 6, 0.86);
+  --nav-border: rgba(255, 255, 255, 0.08);
+  --nav-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+  --nav-link: rgba(255, 255, 255, 0.82);
+  --nav-button: rgba(255, 255, 255, 0.06);
+}
+
+/* THE ACTUAL LIGHT THEME — this was completely missing before. */
+.light {
+  --background: oklch(0.985 0.006 90);
+  --foreground: oklch(0.2 0.02 180);
+  --card: oklch(0.995 0.004 90);
+  --card-foreground: oklch(0.2 0.02 180);
+  --popover: oklch(0.995 0.004 90);
+  --popover-foreground: oklch(0.2 0.02 180);
+  --primary: oklch(0.64 0.17 45);
+  --primary-foreground: oklch(0.99 0.005 90);
+  --secondary: oklch(0.94 0.012 90);
+  --secondary-foreground: oklch(0.2 0.02 180);
+  --muted: oklch(0.95 0.01 90);
+  --muted-foreground: oklch(0.42 0.02 180);
+  --accent: oklch(0.64 0.17 45);
+  --accent-foreground: oklch(0.99 0.005 90);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.2 0.02 180 / 10%);
+  --input: oklch(0.2 0.02 180 / 14%);
+  --ring: oklch(0.64 0.17 45);
+  --nav-transparent: linear-gradient(to bottom, rgba(255, 255, 255, 0.55) 0%, transparent 100%);
+  --nav-solid: rgba(255, 253, 250, 0.88);
+  --nav-border: rgba(0, 0, 0, 0.08);
+  --nav-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.15);
+  --nav-link: rgba(20, 20, 20, 0.78);
+  --nav-button: rgba(0, 0, 0, 0.04);
+
+  --gradient-radial: radial-gradient(ellipse at top, oklch(0.9 0.02 180 / 0.5), transparent 60%);
+  --gradient-text: linear-gradient(180deg, oklch(0.2 0.02 180) 0%, oklch(0.45 0.03 170) 100%);
+  --shadow-glow: 0 0 80px -10px oklch(0.64 0.17 45 / 0.18);
+  --shadow-card: 0 30px 80px -30px oklch(0.2 0.02 180 / 0.18), 0 0 0 1px oklch(0.2 0.02 180 / 0.06);
 }
 
 @layer base {
@@ -339,37 +379,41 @@
     scroll-behavior: smooth;
   }
   body {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
     background-image:
       radial-gradient(circle at 20% 0%, oklch(0.28 0.04 180 / 0.5), transparent 45%),
       radial-gradient(circle at 80% 30%, oklch(0.22 0.03 180 / 0.4), transparent 50%),
       radial-gradient(circle at 50% 100%, oklch(0.72 0.16 45 / 0.06), transparent 55%);
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
-  body :where(*):not(code, pre, kbd, samp, .font-mono, .font-mono *, .font-display, .font-display *) {
-    font-family: var(--font-sans) !important;
+  .light body {
+    background-image:
+      radial-gradient(circle at 20% 0%, oklch(0.92 0.015 90 / 0.6), transparent 45%),
+      radial-gradient(circle at 80% 30%, oklch(0.93 0.012 90 / 0.5), transparent 50%),
+      radial-gradient(circle at 50% 100%, oklch(0.64 0.17 45 / 0.05), transparent 55%);
   }
-  /* Tailwind's preflight resets h1/h2/h3 font-weight to `inherit`, which
-     strips Fraunces' bold display weight from every heading unless a
-     component sets it inline. Restoring 700 here as the shared default
-     fixes Hero/Industries/etc. site-wide; any accent word that needs the
-     lighter italic treatment (e.g. `<em style={{ fontWeight: 300 }}>`)
-     still overrides this locally since inline styles win. */
+  body :where(*) {
+    font-family: var(--font-sans);
+  }
+  /* Headings and anything marked .font-display always render in Fraunces;
+     mono labels always render in JetBrains Mono. !important here is
+     deliberate and safe — these are the only two font overrides in the
+     whole file, so there's nothing else for them to fight. */
   h1,
   h2,
   h3,
-  .font-display {
-    font-family: var(--font-display);
-    font-weight: 800;
+  .font-display,
+  .font-display * {
+    font-family: var(--font-display) !important;
     letter-spacing: 0;
   }
-}
-
-.f-400{
-  font-weight: 400;
+  .font-mono,
+  .font-mono * {
+    font-family: var(--font-mono) !important;
+  }
 }
 
 @layer utilities {
@@ -468,6 +512,9 @@
   .text-warm {
     color: oklch(0.78 0.14 45);
   }
+  .light .text-warm {
+    color: oklch(0.56 0.17 45);
+  }
   .text-shimmer {
     background: linear-gradient(
       90deg,
@@ -499,11 +546,20 @@
     backdrop-filter: blur(12px);
     border: 1px solid oklch(0.96 0.01 170 / 0.08);
   }
+  .light .glass {
+    background: oklch(0.2 0.02 180 / 0.035);
+    border: 1px solid oklch(0.2 0.02 180 / 0.09);
+  }
   .grid-bg {
     background-image:
       linear-gradient(oklch(0.96 0.01 170 / 0.04) 1px, transparent 1px),
       linear-gradient(90deg, oklch(0.96 0.01 170 / 0.04) 1px, transparent 1px);
     background-size: 56px 56px;
+  }
+  .light .grid-bg {
+    background-image:
+      linear-gradient(oklch(0.2 0.02 180 / 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(0.2 0.02 180 / 0.055) 1px, transparent 1px);
   }
   .frame-corners {
     background-image:
@@ -537,6 +593,10 @@
     transform: translateY(0) scale(1);
     filter: blur(0);
   }
+  .bracket-label {
+    font-family: var(--font-mono);
+    letter-spacing: 0.15em;
+  }
   .bracket-label::before {
     content: "[ ";
     opacity: 0.7;
@@ -545,6 +605,19 @@
     content: " ]";
     opacity: 0.7;
   }
+
+  /* ── Theme-aware overrides for the literal white/black opacity utilities
+     used across older components (border-white/5, bg-white/5, etc). These
+     only affect elements OUTSIDE always-dark sections (hero, footer),
+     since those two intentionally stay dark in both themes — see note in
+     Hero.tsx / CTA.tsx footer. ── */
+  .light .border-border {
+    border-color: oklch(0.2 0.02 180 / 10%);
+  }
+  .light .bg-border {
+    background-color: oklch(0.2 0.02 180 / 10%);
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -560,48 +633,33 @@
 /* TECH PIZZA ENHANCEMENTS   */
 /* ========================= */
 
-/* floating depth for whole system */
 .pizza-core {
   animation: pizza-float 6s ease-in-out infinite;
   filter: drop-shadow(0 0 40px oklch(0.72 0.16 45 / 0.25));
 }
-
-/* rotating overlay (extra layer) */
 .pizza-rotate {
   animation: pizza-spin 28s linear infinite;
 }
-
-/* orbit wrapper */
 .pizza-orbit {
   position: absolute;
   inset: 0;
   animation: pizza-orbit 18s linear infinite;
   pointer-events: none;
 }
-
-/* orbit items */
 .pizza-orbit span {
   position: absolute;
   left: 50%;
   top: 0;
   transform: translateX(-50%);
 }
-
-/* popping effect */
 .pizza-node {
   animation: pizza-pop 2.2s ease-in-out infinite;
   filter: drop-shadow(0 0 10px oklch(0.72 0.16 45));
 }
-
-/* active slice enhancement */
 .pizza-active {
   filter: drop-shadow(0 0 22px oklch(0.72 0.16 45));
   transform: scale(1.04);
 }
-
-/* ========================= */
-/* KEYFRAMES (NEW ONLY)      */
-/* ========================= */
 
 @keyframes pizza-spin {
   from {
@@ -611,7 +669,6 @@
     transform: rotate(360deg);
   }
 }
-
 @keyframes pizza-float {
   0%,
   100% {
@@ -621,7 +678,6 @@
     transform: translateY(-12px);
   }
 }
-
 @keyframes pizza-pop {
   0%,
   100% {
@@ -633,7 +689,6 @@
     opacity: 1;
   }
 }
-
 @keyframes pizza-orbit {
   from {
     transform: rotate(0deg);

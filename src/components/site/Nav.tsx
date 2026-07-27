@@ -1,6 +1,11 @@
 import { Link } from "@tanstack/react-router";
+import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import logo from "@/assets/JT_white.png";
+import logoFullDark from "@/assets/JT_ondark.png";
+import logoIconDark from "@/assets/JT logo-bk.svg";
+import logoFullLight from "@/assets/JT logo-original.svg";
+import logoIconLight from "@/assets/JT logo-original - icon.svg";
+import type { SiteTheme } from "@/hooks/use-theme-init";
 
 const LINKS = [
   { to: "/", label: "Home" },
@@ -12,8 +17,18 @@ const LINKS = [
   { to: "/contact", label: "Contact" },
 ] as const;
 
-export function Nav() {
+type NavProps = {
+  theme: SiteTheme;
+  onToggleTheme: () => void;
+};
+
+export function Nav({ theme, onToggleTheme }: NavProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const isLight = theme === "light";
+  const fullLogo = isLight ? logoFullLight : logoFullDark;
+  const iconLogo = isLight ? logoIconLight : logoIconDark;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -22,90 +37,179 @@ export function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
   return (
-    <header
-      className="fixed top-0 inset-x-0 z-50 nav-chrome"
+    <div
+      className="fixed inset-x-0 top-0 z-50 flex justify-center"
       style={{
-        borderBottom: scrolled
-          ? "1px solid rgba(255,255,255,0.08)"
-          : "1px solid transparent",
-        background: scrolled
-          ? "rgba(10,8,6,0.82)"
-          : "linear-gradient(to bottom, rgba(0,0,0,0.52) 0%, transparent 100%)",
-        backdropFilter: scrolled ? "blur(20px) saturate(160%)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(20px) saturate(160%)" : "none",
-        transition:
-          "background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease",
+        padding: scrolled ? "14px 16px 0" : "0",
+        transition: "padding 0.35s ease",
       }}
     >
-      <div className="mx-auto max-w-7xl px-8 py-6 flex items-center justify-between">
-
-        {/* LOGO */}
-        <Link
-          to="/"
-          className="flex items-center"
-          aria-label="Jarvis Technolabs home"
+      <header
+        className="w-full"
+        style={{
+          maxWidth: scrolled ? "1152px" : "100%",
+          borderRadius: scrolled ? "999px" : "0px",
+          background: scrolled ? "var(--nav-solid)" : "var(--nav-transparent)",
+          border: scrolled ? "1px solid var(--nav-border)" : "1px solid transparent",
+          boxShadow: scrolled ? "var(--nav-shadow)" : "none",
+          backdropFilter: "blur(18px) saturate(160%)",
+          WebkitBackdropFilter: "blur(18px) saturate(160%)",
+          transition: "max-width 0.35s ease, border-radius 0.35s ease, background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease",
+        }}
+      >
+        <div
+          className="mx-auto flex max-w-7xl items-center justify-between px-8"
+          style={{
+            paddingTop: scrolled ? "0.85rem" : "1.35rem",
+            paddingBottom: scrolled ? "0.85rem" : "1.35rem",
+            transition: "padding 0.3s ease",
+          }}
         >
-          <img
-            src={logo}
-            alt="Jarvis Technolabs"
-            className="h-16 w-auto object-contain"
-            width={420}
-            height={92}
-          />
-          <span className="sr-only">Jarvis Technolabs</span>
-        </Link>
-
-        {/* NAV LINKS */}
-        <nav className="hidden md:flex items-center gap-8 text-[12px] tracking-[0.2em] uppercase">
-          {LINKS.map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              activeOptions={{ exact: l.to === "/" }}
-              activeProps={{ className: "text-foreground" }}
-              inactiveProps={{
-                className: "text-muted-foreground hover:text-foreground",
-              }}
-              className="nav-link transition-colors"
+          <Link to="/" className="flex items-center" aria-label="Jarvis Technolabs home">
+            <div
+              className="relative"
               style={{
-                // on the transparent hero area make links slightly brighter
-                textShadow: scrolled ? "none" : "0 1px 6px rgba(0,0,0,0.6)",
+                height: scrolled ? "40px" : "48px",
+                transition: "height 0.3s ease",
               }}
             >
-              {l.label}
-            </Link>
-          ))}
-        </nav>
+              {/* Full logo (icon + wordmark) — visible unscrolled, fades out on scroll */}
+              <img
+                src={fullLogo}
+                alt="Jarvis Technolabs"
+                style={{
+                  display: scrolled ? "none" : "block",
+                  height: "100%",
+                  width: "auto",
+                  objectFit: "contain",
+                  opacity: scrolled ? 0 : 1,
+                  transition: "opacity 0.3s ease",
+                }}
+              />
+              {/* Icon-only mark — visible once scrolled */}
+              <img
+                src={iconLogo}
+                alt="Jarvis Technolabs"
+                style={{
+                  display: scrolled ? "block" : "none",
+                  height: "100%",
+                  width: "auto",
+                  objectFit: "contain",
+                  opacity: scrolled ? 1 : 0,
+                  filter: isLight ? "none" : "brightness(0) invert(1)",
+                  transition: "opacity 0.3s ease",
+                }}
+              />
+            </div>
+          </Link>
 
-        {/* CTA BUTTON — orange by default, brightens/fills on hover */}
-        <Link
-          to="/contact"
-          className="motion-link text-[12px] tracking-[0.2em] uppercase rounded-md px-6 py-3.5 transition-colors"
+          <nav
+            className="hidden items-center gap-8 text-[12px] uppercase tracking-[0.2em] md:flex"
+          >
+            {LINKS.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                activeOptions={{ exact: link.to === "/" }}
+                className="nav-link py-1 transition-colors"
+                style={{ color: "var(--nav-link)" }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={onToggleTheme}
+              aria-label={`Switch to ${isLight ? "dark" : "light"} theme`}
+              className="flex h-10 w-10 items-center justify-center rounded-full transition-colors"
+              style={{
+                border: "1px solid var(--nav-border)",
+                color: "var(--nav-link)",
+                background: "var(--nav-button)",
+              }}
+            >
+              {isLight ? <Moon size={17} /> : <Sun size={17} />}
+            </button>
+
+            <Link
+              to="/contact"
+              className="hidden rounded-md px-5 py-3 text-[12px] uppercase tracking-[0.2em] transition-all sm:inline-flex"
+              style={{
+                border: "1px solid var(--nav-border)",
+                color: "var(--nav-link)",
+                background: "var(--nav-button)",
+              }}
+            >
+              Let's talk
+            </Link>
+
+            <button
+              type="button"
+              className="flex h-10 w-10 flex-col items-center justify-center gap-[5px] md:hidden"
+              aria-label="Toggle menu"
+              aria-expanded={mobileOpen}
+              onClick={() => setMobileOpen((value) => !value)}
+            >
+              <span
+                className="block h-[1.5px] w-6 transition-transform duration-300"
+                style={{
+                  background: "var(--nav-link)",
+                  transform: mobileOpen ? "translateY(6.5px) rotate(45deg)" : "none",
+                }}
+              />
+              <span
+                className="block h-[1.5px] w-6 transition-opacity duration-200"
+                style={{
+                  background: "var(--nav-link)",
+                  opacity: mobileOpen ? 0 : 1,
+                }}
+              />
+              <span
+                className="block h-[1.5px] w-6 transition-transform duration-300"
+                style={{
+                  background: "var(--nav-link)",
+                  transform: mobileOpen ? "translateY(-6.5px) rotate(-45deg)" : "none",
+                }}
+              />
+            </button>
+          </div>
+        </div>
+
+        <div
+          className="overflow-hidden md:hidden"
           style={{
-            border: "1px solid rgba(255,130,50,0.6)",
-            color: "rgb(255,130,50)",
-            boxShadow: scrolled ? "none" : "0 1px 12px rgba(0,0,0,0.4)",
-            transition: "border-color 0.3s, color 0.3s, background-color 0.3s, box-shadow 0.3s",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.borderColor =
-              "rgb(255,150,70)";
-            (e.currentTarget as HTMLElement).style.color = "#0a0806";
-            (e.currentTarget as HTMLElement).style.backgroundColor =
-              "rgb(255,130,50)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.borderColor =
-              "rgba(255,130,50,0.6)";
-            (e.currentTarget as HTMLElement).style.color = "rgb(255,130,50)";
-            (e.currentTarget as HTMLElement).style.backgroundColor =
-              "transparent";
+            maxHeight: mobileOpen ? "520px" : "0px",
+            opacity: mobileOpen ? 1 : 0,
+            background: "var(--nav-solid)",
+            borderTop: mobileOpen ? "1px solid var(--nav-border)" : "1px solid transparent",
+            transition: "max-height 0.35s ease, opacity 0.25s ease",
           }}
         >
-          Let's talk
-        </Link>
-      </div>
-    </header>
+          <nav className="flex flex-col gap-5 px-8 py-6 text-[13px] uppercase tracking-[0.2em]">
+            {LINKS.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={() => setMobileOpen(false)}
+                style={{ color: "var(--nav-link)" }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      </header>
+    </div>
   );
 }

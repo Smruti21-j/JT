@@ -1,6 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { useReveal } from "@/hooks/use-reveal";
+import { useThemeInit } from "@/hooks/use-theme-init";
 import { useEffect, useRef, useState } from "react";
 import dataAiImg from "@/assets/service-data-ai.jpg";
 import digitalImg from "@/assets/service-digital.jpg";
@@ -11,16 +12,10 @@ import consultingImg from "@/assets/service-consulting.jpg";
 import growthImg from "@/assets/service-growth.jpg";
 import managedImg from "@/assets/service-managed.jpg";
 
-// ─── static assets ────────────────────────────────────────────────────────────
-const CAROUSEL_IMAGES = [
-  "/services-c1.png", "/services-c2.png", "/services-c3.png",
-  "/services-c4.png", "/services-c5.png",
-];
-
 const PANEL_ACCENT = [
-  "#FF8232", "#FF8232", "#FF8232",
-  "#FF8232", "#FF8232", "#FF8232",
-  "#FF8232", "#FF8232",
+  "var(--color-primary)", "var(--color-primary)", "var(--color-primary)",
+  "var(--color-primary)", "var(--color-primary)", "var(--color-primary)",
+  "var(--color-primary)", "var(--color-primary)",
 ];
 
 // ─── data (fully preserved — same categories and sub-categories, untouched) ──
@@ -197,167 +192,211 @@ function parseItem(raw: string) {
 }
 
 // ─── STYLES ───────────────────────────────────────────────────────────────────
+// Theme-aware (aliased to index.css design tokens). VideoHero's styles have
+// been removed along with the component; the old stacked pinned-intro /
+// product-row layout has been replaced with a numbered 01–08 hover list +
+// detail panel, matching the indianic.com/what-we-do reference.
 const STYLES = `
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-:root{
-  --bg:      #08090c;
-  --surface: #10131a;
-  --surface-strong: #141821;
-  --card:    #131722;
-  --ink:     #f7f7f8;
-  --ink-dim: rgba(247,247,248,.68);
-  --ink-faint: rgba(247,247,248,.45);
-  --line:    rgba(255,130,50,.14);
-  --acc:     #ff7a20;
+.svc-page{
+  --bg:      var(--color-background);
+  --surface: var(--color-card);
+  --surface-strong: var(--color-muted);
+  --card:    var(--color-card);
+  --ink:     var(--color-foreground);
+  --ink-dim: var(--color-muted-foreground);
+  --ink-faint: color-mix(in oklch, var(--color-muted-foreground) 75%, transparent);
+  --line:    var(--color-border);
+  --acc:     var(--color-primary);
+  --acc-fg:  var(--color-primary-foreground);
 }
 
-/* ══ HERO — dark cinematic feel ══ */
-@keyframes heroIn    {from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
-@keyframes lineExp   {from{transform:scaleX(0);transform-origin:left}to{transform:scaleX(1)}}
-@keyframes kenBurns  {0%{transform:scale(1) translate(0,0)}50%{transform:scale(1.06) translate(-1%,-0.8%)}100%{transform:scale(1) translate(0,0)}}
-@keyframes pipFill   {from{width:0%}to{width:100%}}
-@keyframes scanLine  {0%{top:-2px;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+/* ══ SIMPLE TEXT HERO (replaces the removed video/image carousel) ══ */
+@keyframes svhIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 
-.hs-slide{position:absolute;inset:0;opacity:0;transition:opacity 1.8s cubic-bezier(.4,0,.2,1)}
-.hs-slide.active{opacity:1}
-.hs-slide .kb{position:absolute;inset:-4%;background-size:cover;background-position:center;filter:saturate(0.5) brightness(0.44);animation:kenBurns 24s ease-in-out infinite}
-.hs-pip{height:3px;border-radius:2px;border:none;cursor:pointer;padding:0;flex-shrink:0;overflow:hidden;position:relative;transition:width .4s cubic-bezier(.16,1,.3,1)}
-.hs-pip-fill{position:absolute;top:0;left:0;height:100%;border-radius:2px;background:var(--acc);animation:pipFill 4s linear forwards}
-
-/* ══ SERVICES — dark structured sections ══ */
-.svc-section{ background:radial-gradient(circle at top, rgba(255,122,32,.08) 0%, transparent 28%), linear-gradient(180deg,#0b0d12 0%,#090a0f 32%,#0d0f14 100%); padding:clamp(84px,10vh,128px) 0 clamp(48px,7vh,84px); position:relative; z-index:1; isolation:isolate; }
-
-.svc-group{
-  display:grid;
-  grid-template-columns:minmax(250px,320px) 1fr;
-  gap:clamp(32px,3.5vw,56px);
-  align-items:start;
-  padding:clamp(34px,5vh,64px) clamp(24px,4vw,64px);
-  border:1px solid rgba(255,255,255,.05);
-  border-radius:28px;
-  background:rgba(12,14,19,.92);
-  box-shadow:0 24px 120px rgba(0,0,0,.25);
+.svh-hero{
+  padding:clamp(140px,18vh,190px) 0 clamp(64px,8vh,96px);
+  background:
+    radial-gradient(circle at 15% 0%, color-mix(in oklch, var(--acc) 10%, transparent) 0%, transparent 45%),
+    var(--bg);
+  font-family:var(--font-sans);
 }
-.svc-group + .svc-group{ margin-top:28px; }
-
-/* ── left pinned intro ── */
-.svc-intro-col{ position:sticky; top:clamp(88px,10vh,120px); }
-.svc-intro-icon{ display:flex; gap:4px; margin-bottom:18px; }
-.svc-intro-icon span{ width:6px;height:18px;border-radius:999px; background:var(--acc); }
-.svc-intro-eyebrow{
+.svh-inner{ max-width:1180px; margin:0 auto; padding:0 clamp(20px,4vw,48px); }
+.svh-eyebrow{
   font-size:10px;letter-spacing:.32em;text-transform:uppercase;font-weight:700;
-  color:var(--acc); display:flex; align-items:center; gap:8px; margin-bottom:18px;
+  color:var(--ink-faint); margin-bottom:20px;
+  animation:svhIn .6s cubic-bezier(.16,1,.3,1) both;
 }
-.svc-intro-title{
-  font-family:'Inter',sans-serif; font-weight:900; text-transform:uppercase;
-  font-size:clamp(1.9rem,3.2vw,2.8rem); line-height:1.02; letter-spacing:-.02em;
-  color:var(--ink); margin-bottom:18px;
+.svh-title{
+  font-family:var(--font-display); font-weight:700; letter-spacing:-.01em;
+  font-size:clamp(2.3rem,5.4vw,4rem); line-height:1.08; color:var(--ink);
+  max-width:900px; margin-bottom:24px;
+  animation:svhIn .7s .08s cubic-bezier(.16,1,.3,1) both;
 }
-.svc-intro-sub{
-  font-size:.97rem; color:var(--ink-dim); line-height:1.8; max-width:360px; margin-bottom:24px;
+.svh-title em{ font-style:italic; font-weight:300; color:var(--acc); }
+.svh-sub{
+  font-size:clamp(.95rem,1.3vw,1.08rem); color:var(--ink-dim); line-height:1.75;
+  max-width:640px; margin-bottom:36px;
+  animation:svhIn .7s .16s cubic-bezier(.16,1,.3,1) both;
 }
-.svc-intro-count{
+.svh-ctas{
+  display:flex; flex-wrap:wrap; gap:14px; margin-bottom:48px;
+  animation:svhIn .7s .22s cubic-bezier(.16,1,.3,1) both;
+}
+.svh-cta-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--acc); color:var(--acc-fg);
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  padding:14px 26px;border-radius:999px;
+  transition:transform .25s ease, box-shadow .25s ease;
+  box-shadow:0 18px 40px color-mix(in oklch, var(--acc) 25%, transparent);
+}
+.svh-cta-primary:hover{ transform:translateY(-2px); }
+.svh-cta-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--line); color:var(--ink);
+  font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  padding:14px 26px;border-radius:999px;
+  background:transparent; cursor:pointer;
+  transition:border-color .25s ease, color .25s ease;
+}
+.svh-cta-secondary:hover{ border-color:var(--acc); color:var(--acc); }
+.svh-stats{
+  display:flex; flex-wrap:wrap; gap:clamp(28px,4vw,56px);
+  padding-top:32px; border-top:1px solid var(--line);
+  animation:svhIn .7s .3s cubic-bezier(.16,1,.3,1) both;
+}
+.svh-stat-val{
+  font-family:var(--font-display); font-weight:700; font-size:clamp(1.4rem,2.4vw,1.9rem);
+  color:var(--ink); line-height:1;
+}
+.svh-stat-lbl{
+  font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-faint);
+  margin-top:8px;
+}
+
+/* ══ SERVICES — numbered 01–08 hover list + detail panel ══ */
+.svl-section{
+  background:var(--bg);
+  padding:clamp(60px,7vh,96px) 0 clamp(84px,10vh,128px);
+  font-family:var(--font-sans);
+}
+.svl-inner{ max-width:1180px; margin:0 auto; padding:0 clamp(20px,4vw,48px); }
+.svl-header{ margin-bottom:clamp(36px,5vh,56px); max-width:720px; }
+.svl-header-eyebrow{
+  font-size:10px;letter-spacing:.32em;text-transform:uppercase;font-weight:700;
+  color:var(--acc); margin-bottom:16px;
+}
+.svl-header-title{
+  font-family:var(--font-display); font-weight:700; letter-spacing:-.01em;
+  font-size:clamp(1.9rem,3.6vw,2.9rem); line-height:1.1; color:var(--ink); margin-bottom:14px;
+}
+.svl-header-title em{ font-style:italic; font-weight:300; color:var(--acc); }
+.svl-header-sub{ font-size:.97rem; color:var(--ink-dim); line-height:1.75; }
+
+.svl-grid{
+  display:grid; grid-template-columns:minmax(260px,360px) 1fr;
+  gap:clamp(24px,3vw,48px);
+  border:1px solid var(--line); border-radius:24px; overflow:hidden;
+  background:var(--surface);
+}
+
+.svl-list{ display:flex; flex-direction:column; }
+.svl-item{
+  display:flex; align-items:center; gap:16px;
+  width:100%; text-align:left; background:transparent; border:none; cursor:pointer;
+  padding:18px clamp(18px,2.4vw,28px);
+  border-bottom:1px solid var(--line);
+  color:var(--ink-dim);
+  transition:background .25s ease, color .25s ease;
+  font-family:var(--font-sans);
+}
+.svl-item:last-child{ border-bottom:none; }
+.svl-item:hover{ background:color-mix(in oklch, var(--acc) 6%, transparent); color:var(--ink); }
+.svl-item.active{
+  background:color-mix(in oklch, var(--acc) 10%, transparent);
+  color:var(--ink);
+}
+.svl-num{
+  font-family:var(--font-display); font-weight:700; font-size:.85rem;
+  color:var(--ink-faint); flex-shrink:0; width:26px;
+}
+.svl-item.active .svl-num{ color:var(--acc); }
+.svl-item-title{ font-size:.98rem; font-weight:600; flex:1; letter-spacing:-.005em; }
+.svl-arrow{
+  font-size:.9rem; color:var(--acc); opacity:0; transform:translateX(-4px);
+  transition:opacity .25s ease, transform .25s ease; flex-shrink:0;
+}
+.svl-item.active .svl-arrow, .svl-item:hover .svl-arrow{ opacity:1; transform:translateX(0); }
+
+@keyframes svlPanelIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.svl-panel{
+  padding:clamp(28px,3.4vw,44px) clamp(24px,3vw,40px);
+  animation:svlPanelIn .4s cubic-bezier(.16,1,.3,1) both;
+}
+.svl-panel-eyebrow{
+  font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:700;
+  color:var(--acc); margin-bottom:14px;
+}
+.svl-panel-title{
+  font-family:var(--font-display); font-weight:700; letter-spacing:-.01em;
+  font-size:clamp(1.5rem,2.6vw,2.1rem); color:var(--ink); line-height:1.15; margin-bottom:14px;
+}
+.svl-panel-tagline{
+  font-size:.95rem; color:var(--ink-dim); line-height:1.75; max-width:560px; margin-bottom:24px;
+}
+.svl-panel-stat{
   display:inline-flex; align-items:baseline; gap:10px;
-  padding-top:16px; border-top:1px solid rgba(255,255,255,.08);
+  padding:14px 0 24px; border-bottom:1px solid var(--line); margin-bottom:24px; width:100%;
 }
-.svc-intro-count-num{ font-family:'Inter',sans-serif; font-weight:900; font-size:2rem; color:var(--acc); line-height:1; }
-.svc-intro-count-lbl{ font-size:9px; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-faint); }
+.svl-panel-stat-val{ font-family:var(--font-display); font-weight:700; font-size:1.7rem; color:var(--acc); line-height:1; }
+.svl-panel-stat-lbl{ font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-faint); }
 
-/* ── right: stacked product-style cards ── */
-.svc-list{ display:flex; flex-direction:column; gap:clamp(20px,2.2vw,28px); }
+.svl-offerings-label, .svl-caps-label{
+  font-size:9.5px; letter-spacing:.24em; text-transform:uppercase; font-weight:700;
+  color:var(--ink-faint); margin-bottom:14px;
+}
+.svl-offerings{ list-style:none; margin-bottom:28px; display:grid; gap:10px; }
+.svl-offerings li{ font-size:.9rem; color:var(--ink-dim); line-height:1.6; padding-left:18px; position:relative; }
+.svl-offerings li::before{
+  content:""; position:absolute; left:0; top:.55em; width:6px; height:6px; border-radius:50%;
+  background:var(--acc);
+}
+.svl-offerings li strong{ color:var(--ink); font-weight:600; }
 
-.pr-row{
-  display:grid;
-  grid-template-columns:minmax(240px,34%) 1fr;
-  background:rgba(14,16,22,.96);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:22px;
-  overflow:hidden;
-  box-shadow:0 24px 40px rgba(0,0,0,.22);
-  opacity:0;
-  transform:translateY(36px);
-  transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1),
-             box-shadow .3s ease, transform .3s ease;
+.svl-caps-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:12px; }
+.svl-cap-thumb{
+  position:relative; aspect-ratio:1/1; border-radius:12px; overflow:hidden;
+  border:1px solid var(--line); background:var(--card); cursor:pointer; padding:0;
 }
-.pr-row.visible{opacity:1;transform:none}
-.pr-row:hover{ box-shadow:0 32px 80px rgba(0,0,0,.28); }
-
-.pr-img{
-  position:relative;
-  min-height:clamp(220px,24vw,310px);
-  overflow:hidden;
-}
-.pr-img img{
-  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  filter:saturate(1.05) brightness(0.9);
-  transform:scale(1.04);
-  transition:transform .8s cubic-bezier(.4,0,.2,1);
-}
-.pr-row:hover .pr-img img{ transform:scale(1.09); }
-.pr-img-scrim{
-  position:absolute; left:0; right:0; bottom:0; height:56%;
-  background:linear-gradient(180deg, transparent 0%, rgba(255,122,32,.94) 92%);
-  opacity:.78;
-  pointer-events:none;
-}
-.pr-num{
-  position:absolute;left:20px;bottom:18px;z-index:2;
-  font-family:'Inter',sans-serif;font-weight:900;
-  font-size:clamp(2.2rem,3.4vw,3.2rem);line-height:1;
-  color:#fff;letter-spacing:-.04em;
+.svl-cap-thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
+.svl-cap-thumb:hover img{ transform:scale(1.08); }
+.svl-cap-thumb span{
+  position:absolute; left:0; right:0; bottom:0; padding:8px 10px;
+  font-size:9.5px; letter-spacing:.08em; text-transform:uppercase; font-weight:600; color:#fff;
+  background:linear-gradient(to top, rgba(0,0,0,.72), transparent);
 }
 
-.pr-content{
-  padding:clamp(24px,3vw,34px) clamp(24px,3.2vw,36px);
-  display:flex;flex-direction:column;justify-content:center;gap:14px;
-  min-width:0;
-}
-.pr-label{
-  font-size:9px;letter-spacing:.28em;text-transform:uppercase;font-weight:700;
-  color:var(--acc);
-}
-.pr-title{
-  font-family:'Inter',sans-serif;font-weight:800;text-transform:uppercase;
-  font-size:clamp(1.1rem,1.8vw,1.45rem);color:var(--ink);line-height:1.18;letter-spacing:-.01em;
-}
-.pr-detail{
-  font-size:.92rem;color:var(--ink-dim);line-height:1.75;max-width:520px;
-}
-.pr-btn{
-  margin-top:6px;
-  display:inline-flex;align-items:center;gap:10px;width:fit-content;
-  font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
-  color:#10131a;background:linear-gradient(135deg,rgba(255,122,32,1),rgba(255,160,70,.95));
-  padding:12px 24px;border-radius:999px;
-  box-shadow:0 18px 40px rgba(255,122,32,.16);
-  transition:filter .25s ease,transform .25s ease,box-shadow .25s ease;
-}
-.pr-row:hover .pr-btn{filter:brightness(1.05);transform:translateX(2px);box-shadow:0 20px 38px rgba(255,122,32,.22)}
-.pr-btn-dot{width:4px;height:4px;border-radius:50%;background:#fff;opacity:.95}
-
-/* ── Lightbox — preserved ── */
+/* ── Lightbox — overlay intentionally stays dark-tinted in both themes
+   (standard modal-scrim pattern), card content follows theme tokens ── */
 @keyframes overlayIn{from{opacity:0}to{opacity:1}}
 @keyframes zoomIn{from{opacity:0;transform:scale(0.88)}to{opacity:1;transform:scale(1)}}
 .lb-overlay{position:fixed;inset:0;z-index:9999;background:rgba(10,10,10,.82);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;animation:overlayIn .22s ease both;cursor:zoom-out}
-.lb-box{position:relative;width:min(820px,92vw);border-radius:20px;overflow:hidden;border:1px solid rgba(255,122,32,.16);box-shadow:0 40px 140px rgba(0,0,0,.35);animation:zoomIn .3s cubic-bezier(.16,1,.3,1) both;cursor:default;background:#0f1220}
+.lb-box{position:relative;width:min(820px,92vw);border-radius:20px;overflow:hidden;border:1px solid color-mix(in oklch, var(--acc) 16%, transparent);box-shadow:0 40px 140px rgba(0,0,0,.35);animation:zoomIn .3s cubic-bezier(.16,1,.3,1) both;cursor:default;background:var(--card)}
 .lb-img{width:100%;height:320px;object-fit:cover;display:block}
-.lb-body{padding:28px 36px 34px;display:flex;flex-direction:column;gap:12px}
+.lb-body{padding:28px 36px 34px;display:flex;flex-direction:column;gap:12px;font-family:var(--font-sans)}
 .lb-eyebrow{font-size:9px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:9px;color:var(--acc)}
-.lb-title{font-family:'Inter',sans-serif;font-size:clamp(1.3rem,2.4vw,1.7rem);font-weight:900;color:var(--ink);line-height:1.1;text-transform:uppercase}
-.lb-rule{height:1px;opacity:.18;border:none;background:linear-gradient(to right,transparent,rgba(255,255,255,.22),transparent)}
+.lb-title{font-family:var(--font-sans);font-size:clamp(1.3rem,2.4vw,1.7rem);font-weight:900;color:var(--ink);line-height:1.1;text-transform:uppercase}
+.lb-rule{height:1px;opacity:.18;border:none;background:linear-gradient(to right,transparent,var(--ink),transparent)}
 .lb-desc{font-size:.95rem;color:var(--ink-dim);line-height:1.8}
 .lb-close{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s ease,color .2s ease;z-index:10}
 .lb-close:hover{background:rgba(255,255,255,.14);color:#fff}
 
 /* ── Responsive ── */
 @media(max-width:880px){
-  .svc-group{grid-template-columns:1fr}
-  .svc-intro-col{position:relative;top:0;margin-bottom:16px}
-  .pr-row{grid-template-columns:1fr}
-  .pr-img{min-height:220px}
+  .svl-grid{ grid-template-columns:1fr; }
+  .svl-item{ padding:16px 18px; }
 }
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
@@ -394,180 +433,155 @@ function Lightbox({ item, onClose }: { item: LBItem | null; onClose: () => void 
   );
 }
 
-// ─── VideoHero — preserved ────────────────────────────────────────────────────
-function VideoHero() {
-  const [current, setCurrent] = useState(0);
-  const [pipKey, setPipKey] = useState(0);
-  useEffect(() => {
-    const id = setInterval(() => {
-      setCurrent(c => (c + 1) % CAROUSEL_IMAGES.length);
-      setPipKey(k => k + 1);
-    }, 4000);
-    return () => clearInterval(id);
-  }, []);
+// ─── Simple text hero (replaces the removed VideoHero carousel) ─────────────
+// Stat figures reused from Hero.tsx / StatCounter for consistency with the
+// rest of the site, rather than inventing new numbers.
+function ServicesHero() {
+  const scrollToList = () => {
+    document.getElementById("services-list")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
-    <section style={{ position: "relative", width: "100%", height: "100vh", overflow: "hidden", background: "#2c2c2f" }}>
-      {CAROUSEL_IMAGES.map((src, i) => (
-        <div key={src} className={`hs-slide${i === current ? " active" : ""}`}>
-          <div className="kb" style={{ backgroundImage: `url(${src})` }} />
-        </div>
-      ))}
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,rgba(40,40,44,.42) 0%,rgba(40,40,44,.08) 25%,rgba(60,60,64,.55) 68%,#e9ebef 100%)" }} />
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,rgba(40,40,44,.6) 0%,transparent 60%)" }} />
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", overflow: "hidden" }}>
-        <div style={{ position: "absolute", left: 0, right: 0, height: "1px", background: "linear-gradient(90deg,transparent,rgba(255,110,30,.4),transparent)", animation: "scanLine 9s ease-in-out infinite" }} />
-      </div>
-      <div style={{ position: "absolute", top: "14%", bottom: "14%", left: 0, width: "2px", background: "linear-gradient(180deg,transparent,rgb(255,110,30) 30%,rgb(255,110,30) 70%,transparent)" }} />
-      <div style={{ position: "absolute", top: 28, right: "clamp(24px,5vw,80px)", display: "flex", gap: 6, alignItems: "center", zIndex: 20 }}>
-        {CAROUSEL_IMAGES.map((_, i) => (
-          <button key={i} className="hs-pip"
-            onClick={() => { setCurrent(i); setPipKey(k => k + 1); }}
-            style={{ width: i === current ? 28 : 5, background: i === current ? "rgba(255,130,50,.2)" : "rgba(255,255,255,.18)" }}>
-            {i === current && <span key={pipKey} className="hs-pip-fill" />}
-          </button>
-        ))}
-      </div>
-      <div style={{ position: "absolute", bottom: 78, right: "clamp(24px,5vw,80px)", display: "flex", alignItems: "baseline", gap: 4, zIndex: 10 }}>
-        <span style={{ fontSize: 20, fontWeight: 800, color: "rgb(255,130,50)", lineHeight: 1 }}>{String(current + 1).padStart(2, "0")}</span>
-        <span style={{ fontSize: 10, color: "rgba(255,255,255,.18)", letterSpacing: ".1em" }}>/ {String(CAROUSEL_IMAGES.length).padStart(2, "0")}</span>
-      </div>
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 clamp(24px,5vw,80px) 64px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 22, animation: "heroIn .6s .3s both", opacity: 0 }}>
-          <div style={{ width: 26, height: 1, background: "rgb(255,130,50)" }} />
-          <span style={{ fontSize: 9, letterSpacing: ".42em", textTransform: "uppercase", color: "rgb(255,130,50)" }}>What We Do</span>
-        </div>
-        <h1 style={{ fontSize: "clamp(2.8rem,6.5vw,5.8rem)", fontWeight: 900, lineHeight: 1.0, letterSpacing: "-.032em", color: "#f0e8df", marginBottom: 20, animation: "heroIn .7s .42s cubic-bezier(.4,0,.2,1) both", opacity: 0 }}>
-          IMPACT <em style={{ fontStyle: "italic", fontWeight: 300, color: "rgb(255,130,50)" }}>WITNESSED</em>
+    <section className="svh-hero">
+      <div className="svh-inner">
+        <p className="svh-eyebrow">[Full-Stack, AI-Native Delivery]</p>
+        <h1 className="svh-title">
+          We ship software that thinks,
+          <br />
+          <em>ships, and scales.</em>
         </h1>
-        <div style={{ position: "relative", height: 1, background: "rgba(255,255,255,.06)", marginBottom: 20, maxWidth: 450, overflow: "hidden" }}>
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right,rgb(255,130,50),rgba(255,180,80,.22))", animation: "lineExp 1s .9s cubic-bezier(.4,0,.2,1) both", transformOrigin: "left" }} />
-        </div>
-        <p style={{ fontSize: "clamp(.88rem,1.25vw,1rem)", color: "rgba(240,232,220,.48)", lineHeight: 1.75, maxWidth: 510, animation: "heroIn .6s .58s cubic-bezier(.4,0,.2,1) both", opacity: 0 }}>
-          See your future in action. Explore the missions where we turned bold ambition into scalable reality.
+        <p className="svh-sub">
+          Web, mobile, AI, design and infrastructure — engineered under one AI-native roof,
+          with a senior human owning every decision that matters.
         </p>
+        <div className="svh-ctas">
+          <Link to="/contact" className="svh-cta-primary">
+            Let's Talk <span>→</span>
+          </Link>
+          <button type="button" onClick={scrollToList} className="svh-cta-secondary">
+            See our services
+          </button>
+        </div>
+        <div className="svh-stats">
+          <div>
+            <div className="svh-stat-val">8.5</div>
+            <div className="svh-stat-lbl">Era of Impact</div>
+          </div>
+          <div>
+            <div className="svh-stat-val">150+</div>
+            <div className="svh-stat-lbl">Breakthroughs</div>
+          </div>
+          <div>
+            <div className="svh-stat-val">25+</div>
+            <div className="svh-stat-lbl">Global Reach</div>
+          </div>
+          <div>
+            <div className="svh-stat-val">50+</div>
+            <div className="svh-stat-lbl">Vision Architects</div>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
-// ─── one product-style row within a category ─────────────────────────────────
-function ProductRow({
-  img,
-  title,
-  detail,
-  index,
-  acc,
-  svcTitle,
-  svcImage,
-  onClick,
-}: {
-  img: { src: string; label: string };
-  title: string;
-  detail: string;
-  index: number;
-  acc: string;
-  svcTitle: string;
-  svcImage: string;
-  onClick: () => void;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) { setVisible(true); io.disconnect(); }
-    }, { threshold: 0.2, rootMargin: "0px 0px -8% 0px" });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+// ─── Numbered 01–08 hover list + detail panel ────────────────────────────────
+function ServicesInteractive({ onCardClick }: { onCardClick: (item: LBItem) => void }) {
+  const [active, setActive] = useState(0);
+  const svc = SERVICE_GROUPS[active];
+  const acc = PANEL_ACCENT[active];
 
   return (
-    <div
-      ref={ref}
-      className={`pr-row${visible ? " visible" : ""}`}
-      style={{ ["--acc" as string]: acc, transitionDelay: visible ? `${Math.min(index, 3) * 0.09}s` : "0s" }}
-      onClick={onClick}
-    >
-      <div className="pr-img">
-        <img
-          src={img.src}
-          alt={img.label}
-          loading="lazy"
-          onError={(e) => { (e.target as HTMLImageElement).src = svcImage; }}
-        />
-        <div className="pr-img-scrim" />
-        <div className="pr-num">{String(index + 1).padStart(2, "0")}</div>
-      </div>
-      <div className="pr-content">
-        <div className="pr-label">{svcTitle} · {img.label}</div>
-        <div className="pr-title">{title}</div>
-        {detail && <p className="pr-detail">{detail}</p>}
-        <div className="pr-btn">
-          View Capability <span className="pr-btn-dot" />
+    <section id="services-list" className="svl-section">
+      <div className="svl-inner">
+        <div className="svl-header">
+          <p className="svl-header-eyebrow">[Services]</p>
+          <h2 className="svl-header-title">
+            Every discipline,
+            <br />
+            <em>AI-accelerated.</em>
+          </h2>
+          <p className="svl-header-sub">
+            Hover or tap any discipline to see what's inside — offerings, capabilities and the
+            outcome we hold ourselves to.
+          </p>
+        </div>
+
+        <div className="svl-grid" style={{ ["--acc" as string]: acc }}>
+          <div className="svl-list">
+            {SERVICE_GROUPS.map((s, i) => (
+              <button
+                key={s.title}
+                type="button"
+                className={`svl-item${i === active ? " active" : ""}`}
+                onMouseEnter={() => setActive(i)}
+                onClick={() => setActive(i)}
+              >
+                <span className="svl-num">{String(i + 1).padStart(2, "0")}</span>
+                <span className="svl-item-title">{s.title}</span>
+                <span className="svl-arrow">→</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="svl-panel" key={svc.title}>
+            <p className="svl-panel-eyebrow">{svc.eyebrow}</p>
+            <h3 className="svl-panel-title">{svc.title}</h3>
+            <p className="svl-panel-tagline">{svc.tagline}</p>
+
+            <div className="svl-panel-stat">
+              <span className="svl-panel-stat-val">{svc.stat.value}</span>
+              <span className="svl-panel-stat-lbl">{svc.stat.label}</span>
+            </div>
+
+            <p className="svl-offerings-label">Offerings</p>
+            <ul className="svl-offerings">
+              {svc.items.map((raw) => {
+                const { title, detail } = parseItem(raw);
+                return (
+                  <li key={title}>
+                    <strong>{title}</strong>
+                    {detail ? `: ${detail}` : ""}
+                  </li>
+                );
+              })}
+            </ul>
+
+            <p className="svl-caps-label">Capabilities</p>
+            <div className="svl-caps-grid">
+              {svc.subImages.map((img) => (
+                <button
+                  key={img.label}
+                  type="button"
+                  className="svl-cap-thumb"
+                  onClick={() => {
+                    const { title, detail } = parseItem(
+                      svc.items[svc.subImages.indexOf(img)] ?? ""
+                    );
+                    onCardClick({
+                      src: img.src,
+                      label: img.label,
+                      title,
+                      detail,
+                      acc,
+                      svcTitle: svc.title,
+                    });
+                  }}
+                >
+                  <img
+                    src={img.src}
+                    alt={img.label}
+                    loading="lazy"
+                    onError={(e) => { (e.target as HTMLImageElement).src = svc.image as unknown as string; }}
+                  />
+                  <span>{img.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-// ─── one category block: pinned intro + its own product-style row stack ─────
-function ServiceGroup({
-  svc,
-  svcIdx,
-  acc,
-  onCardClick,
-}: {
-  svc: typeof SERVICE_GROUPS[0];
-  svcIdx: number;
-  acc: string;
-  onCardClick: (item: LBItem) => void;
-}) {
-  const cards = svc.subImages.map((img, ci) => {
-    const { title, detail } = parseItem(svc.items[ci] ?? "");
-    return { img, title, detail, ci };
-  });
-
-  return (
-    <div className="svc-group" style={{ ["--acc" as string]: acc }}>
-      <div className="svc-intro-col">
-        <div className="svc-intro-icon">
-          <span style={{ background: acc }} />
-          <span style={{ background: acc, opacity: .4 }} />
-        </div>
-        <div className="svc-intro-eyebrow">{svc.eyebrow}</div>
-        <h2 className="svc-intro-title">{svc.title}</h2>
-        <p className="svc-intro-sub">{svc.tagline}</p>
-        <div className="svc-intro-count">
-          <span className="svc-intro-count-num">{svc.stat.value}</span>
-          <span className="svc-intro-count-lbl">{svc.stat.label}</span>
-        </div>
-      </div>
-
-      <div className="svc-list">
-        {cards.map(({ img, title, detail, ci }) => (
-          <ProductRow
-            key={img.label}
-            img={img}
-            title={title}
-            detail={detail}
-            index={ci}
-            acc={acc}
-            svcTitle={svc.title}
-            svcImage={svc.image as unknown as string}
-            onClick={() => onCardClick({
-              src: img.src,
-              label: img.label,
-              title,
-              detail,
-              acc,
-              svcTitle: svc.title,
-            })}
-          />
-        ))}
-      </div>
-    </div>
+    </section>
   );
 }
 
@@ -577,18 +591,7 @@ function ServicesSection() {
 
   return (
     <>
-      <section className="svc-section">
-        {SERVICE_GROUPS.map((svc, si) => (
-          <ServiceGroup
-            key={svc.title}
-            svc={svc}
-            svcIdx={si}
-            acc={PANEL_ACCENT[si]}
-            onCardClick={setLightboxItem}
-          />
-        ))}
-      </section>
-
+      <ServicesInteractive onCardClick={setLightboxItem} />
       <Lightbox item={lightboxItem} onClose={() => setLightboxItem(null)} />
     </>
   );
@@ -609,11 +612,13 @@ export const Route = createFileRoute("/services")({
 
 function ServicesPage() {
   useReveal();
+  const { theme, toggleTheme } = useThemeInit();
+
   return (
-    <main className="bg-background text-foreground min-h-screen">
+    <main className="svc-page bg-background text-foreground min-h-screen">
       <style>{STYLES}</style>
-      <Nav />
-      <VideoHero />
+      <Nav theme={theme} onToggleTheme={toggleTheme} />
+      <ServicesHero />
       <ServicesSection />
     </main>
   );

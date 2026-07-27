@@ -28,8 +28,15 @@ export function Industries() {
             <p className="text-xs tracking-[0.3em] text-muted-foreground bracket-label mb-6">
               Global Footprint
             </p>
-            <h2 className="font-display text-3xl md:text-5xl tracking-tight max-w-2xl">
-              The Engine for Your <em className="text-warm not-italic font-light">Next Breakthrough.</em>
+            <h2
+              className=" font-bold tracking-tight max-w-2xl text-foreground"
+              style={{ fontSize: "clamp(34px, 4.6vw, 58px)", lineHeight: 1.08, letterSpacing: "-0.01em" }}
+            >
+              The Engine for Your Next
+              <br />
+              <em className="text-primary font-display" style={{ fontStyle: "italic", fontWeight: 300 }}>
+                Breakthrough.
+              </em>
             </h2>
           </div>
           <p className="text-muted-foreground max-w-md text-sm leading-relaxed">
