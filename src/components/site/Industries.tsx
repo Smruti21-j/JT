@@ -34,7 +34,7 @@ export function Industries() {
             >
               The Engine for Your Next
               <br />
-              <em className="text-primary font-display" style={{ fontStyle: "italic", fontWeight: 300 }}>
+              <em className="text-primary font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
                 Breakthrough.
               </em>
             </h2>
