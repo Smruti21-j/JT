@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { Hero } from "@/components/site/Hero";
-import { Industries } from "@/components/site/Industries";
+
 import { Brands } from "@/components/site/Brands";
 import { CTA, Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
@@ -100,39 +100,39 @@ function hoverTint(theme: "light" | "dark", index: number) {
 
 const ENGAGEMENT_TILES = [
   {
-    badge: "Most start here",
-    title: "Extend Your Team",
-    desc: "Drop our engineers into your team to fill the gap you can't hire for fast enough.",
+    badge: null,
+    title: "Intelligence that Acts",
+    desc: "Transition from generative prompts to agentic workflows that resolve complex tasks with zero friction.",
     image: pillarImg1,
   },
   {
     badge: null,
-    title: "Build A New Team",
-    desc: "A full AI-native squad stood up around your project — design, build, QA, and delivery, all in one team.",
+    title: "The AI-First Core",
+    desc: "mbed intelligence into the substrate of your business to create a self-evolving, future-proof operating model.",
     image: pillarImg2,
   },
   {
     badge: null,
-    title: "Add-Ons To What You've Got",
-    desc: "A focused unit that ships the new module, AI layer, or integration onto your live product without touching what works.",
+    title: "Digital Engineering at Scale",
+    desc: "Accelerate your time-to-impact with battle-tested engineering playbooks and frontier technology stacks.",
     image: pillarImg3,
   },
   {
     badge: null,
-    title: "Rapid POC Sprint",
-    desc: "From napkin sketch to working code in days — real database, real auth, real APIs, no throwaway mockups.",
+    title: "Next-Gen Ecosystems",
+    desc: "Build the connected, cloud-native infrastructure required for a resilient and sovereign digital future.",
     image: pillarImg4,
   },
   {
     badge: null,
-    title: "Full Product Ownership",
-    desc: "Hand us the roadmap and we carry it — architecture, engineering, QA, and delivery under one accountable team.",
+    title: "Design with Purpose",
+    desc: "Amplify human potential through sensory UX that balances high-tech precision with human-centric empathy.",
     image: pillarImg5,
   },
   {
     badge: null,
-    title: "Ongoing Support & Scale",
-    desc: "Once it's live, we keep it fast, secure, and growing — monitoring, iteration, and capacity as you need it.",
+    title: "Accelerated Value Chains",
+    desc: "Unlock pervasive efficiencies across your entire enterprise with data-driven insights that act as your growth catalyst.",
     image: pillarImg6,
   },
 ];
@@ -259,14 +259,14 @@ function HowYouPlugUsIn({ theme }: { theme: "light" | "dark" }) {
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-          [HOW YOU PLUG US IN]
+          [Pillars]
         </p>
 
         <h2  style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "16px" }}>
-          The future isn't found,
+          The Architect of 
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>
-            It's engineered.
+            Autonomy.
           </em>
         </h2>
 
@@ -388,20 +388,19 @@ function BlueprintProductionSlider({ theme }: { theme: "light" | "dark" }) {
         updateFromClientX(e.touches[0].clientX);
       }}
     >
-      <div className="absolute inset-0" style={{ background: aux.cardBg, padding: "20px" }}>
+      <div className="absolute inset-0" style={{ background: "#ffffff", padding: "20px" }}>
         <span
-          className="font-mono absolute top-4 right-4"
-          style={{ fontSize: "9px", letterSpacing: "0.15em", textTransform: "uppercase", color: aux.desc, background: theme === "light" ? "#F1EEE8" : "rgba(255,255,255,0.06)", borderRadius: "999px", padding: "4px 10px" }}
-        >
-          Production
-        </span>
-
-        <p className="font-display" style={{ fontSize: "15px", fontWeight: 700, color: aux.title, margin: 0 }}>
-          Live Chat Analytics
-        </p>
-        <p className="font-mono" style={{ fontSize: "10px", color: aux.desc, marginTop: "2px", marginBottom: "16px" }}>
-          Real-time · last 24h
-        </p>
+  className="font-mono absolute top-4 right-4"
+  style={{ fontSize: "9px", letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(25,25,25,0.55)", background: "#F1EEE8", borderRadius: "999px", padding: "4px 10px" }}
+>
+  Production
+</span>
+<p className="font-display" style={{ fontSize: "15px", fontWeight: 700, color: "#181818", margin: 0 }}>
+  Live Chat Analytics
+</p>
+<p className="font-mono" style={{ fontSize: "10px", color: "rgba(25,25,25,0.55)", marginTop: "2px", marginBottom: "16px" }}>
+  Real-time · last 24h
+</p>
 
         <div className="grid grid-cols-4 gap-2" style={{ marginBottom: "16px" }}>
           {[
@@ -625,13 +624,65 @@ const RECEIPT_STATS = [
   { value: "24/7", label: "Delivery & support coverage" },
 ];
 
+function CountUp({ value, color, duration = 1500 }: { value: string; color: string; duration?: number }) {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const [display, setDisplay] = useState("0");
+  const startedRef = useRef(false);
+
+  useEffect(() => {
+    const match = value.match(/^([\d.]+)(.*)$/);
+    const numStr = match ? match[1] : "0";
+    const suffix = match ? match[2] : "";
+    const decimals = numStr.includes(".") ? numStr.split(".")[1].length : 0;
+    const target = parseFloat(numStr);
+
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !startedRef.current) {
+          startedRef.current = true;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = target * eased;
+            setDisplay(current.toFixed(decimals) + suffix);
+            if (progress < 1) {
+              requestAnimationFrame(tick);
+            } else {
+              setDisplay(numStr + suffix);
+            }
+          };
+          requestAnimationFrame(tick);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [value, duration]);
+
+  return (
+    <p ref={ref} style={{ fontSize: "clamp(28px, 3.4vw, 42px)", fontWeight: 800, color, margin: 0, lineHeight: 1 }}>
+      {display}
+    </p>
+  );
+}
+
 function ReceiptCard({ stat, theme }: { stat: (typeof RECEIPT_STATS)[0]; theme: "light" | "dark" }) {
   const aux = auxPalette(theme);
   return (
-    <div style={{ padding: "24px 20px 22px" }}>
-      <p  style={{ fontSize: "clamp(28px, 3.4vw, 42px)", fontWeight: 800, color: aux.title, margin: 0, lineHeight: 1 }}>
-        {stat.value}
-      </p>
+    <div
+      style={{
+        background: aux.cardBg,
+        border: `1px solid ${aux.cardBorder}`,
+        borderRadius: "16px",
+        padding: "24px 20px 22px",
+      }}
+    >
+      <CountUp value={stat.value} color={aux.title} />
       <p style={{ fontSize: "12.5px", color: aux.desc, marginTop: "8px" }}>{stat.label}</p>
     </div>
   );
@@ -662,10 +713,6 @@ function TheReceipts({ theme }: { theme: "light" | "dark" }) {
     <section className={`relative border-t ${pal.sectionBorder}`} style={{ paddingTop: "6rem", paddingBottom: "7rem" }}>
       <style>{`
         ${PK_KEYFRAMES}
-        .receipts-grid > div { border-top: 1px solid ${aux.cardBorder}; }
-        @media (min-width: 768px) {
-          .receipts-grid > div:not(:nth-child(4n+1)) { border-left: 1px solid ${aux.cardBorder}; }
-        }
       `}</style>
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
@@ -681,7 +728,7 @@ function TheReceipts({ theme }: { theme: "light" | "dark" }) {
       </div>
 
       <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
-        <div className="receipts-grid grid grid-cols-2 md:grid-cols-4 gap-0">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {RECEIPT_STATS.map((stat) => (
             <ReceiptCard key={stat.label} stat={stat} theme={theme} />
           ))}
@@ -972,7 +1019,7 @@ function TechToolsSection({ theme }: { theme: "light" | "dark" }) {
 
 // ─── Icon set ────────────────────────────────────────────────────────────────
 
-function IconBot({ size = 20 }: { size?: number }) {
+function IconBot({ size = 48  }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <rect x="4.5" y="9.5" width="15" height="10" rx="2.5" />
@@ -983,7 +1030,7 @@ function IconBot({ size = 20 }: { size?: number }) {
     </svg>
   );
 }
-function IconLink({ size = 20 }: { size?: number }) {
+function IconLink({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <rect x="3.5" y="4" width="7" height="7" rx="1.6" />
@@ -992,7 +1039,7 @@ function IconLink({ size = 20 }: { size?: number }) {
     </svg>
   );
 }
-function IconChart({ size = 20 }: { size?: number }) {
+function IconChart({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <path d="M4 19h16" />
@@ -1001,7 +1048,7 @@ function IconChart({ size = 20 }: { size?: number }) {
     </svg>
   );
 }
-function IconEye({ size = 20 }: { size?: number }) {
+function IconEye({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" />
@@ -1009,7 +1056,7 @@ function IconEye({ size = 20 }: { size?: number }) {
     </svg>
   );
 }
-function IconCpu({ size = 20 }: { size?: number }) {
+function IconCpu({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <rect x="7" y="7" width="10" height="10" rx="1.6" />
@@ -1018,7 +1065,7 @@ function IconCpu({ size = 20 }: { size?: number }) {
     </svg>
   );
 }
-function IconMessage({ size = 20 }: { size?: number }) {
+function IconMessage({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <path d="M4 5.5h16v10.5H9.5L5.5 19v-3H4z" />
@@ -1026,7 +1073,7 @@ function IconMessage({ size = 20 }: { size?: number }) {
     </svg>
   );
 }
-function IconSparkles({ size = 20 }: { size?: number }) {
+function IconSparkles({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 3.5c.5 2.7 1.3 3.5 4 4-2.7.5-3.5 1.3-4 4-.5-2.7-1.3-3.5-4-4 2.7-.5 3.5-1.3 4-4Z" />
@@ -1034,21 +1081,21 @@ function IconSparkles({ size = 20 }: { size?: number }) {
     </svg>
   );
 }
-function IconActivity({ size = 20 }: { size?: number }) {
+function IconActivity({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <path d="M3 12h4l2.2-7 4 14 2.2-7H21" />
     </svg>
   );
 }
-function IconSpark({ size = 13 }: { size?: number }) {
+function IconSpark({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6" />
     </svg>
   );
 }
-function IconUser({ size = 13 }: { size?: number }) {
+function IconUser({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="8" r="3.4" />
@@ -1056,7 +1103,7 @@ function IconUser({ size = 13 }: { size?: number }) {
     </svg>
   );
 }
-function IconStethoscope({ size = 26 }: { size?: number }) {
+function IconStethoscope({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <path d="M6 3v6a4 4 0 0 0 8 0V3" />
@@ -1066,7 +1113,7 @@ function IconStethoscope({ size = 26 }: { size?: number }) {
     </svg>
   );
 }
-function IconDollar({ size = 26 }: { size?: number }) {
+function IconDollar({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 2.5v19" />
@@ -1074,7 +1121,7 @@ function IconDollar({ size = 26 }: { size?: number }) {
     </svg>
   );
 }
-function IconTv({ size = 26 }: { size?: number }) {
+function IconTv({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <rect x="3" y="6" width="18" height="12" rx="1.6" />
@@ -1082,7 +1129,7 @@ function IconTv({ size = 26 }: { size?: number }) {
     </svg>
   );
 }
-function IconTruck({ size = 26 }: { size?: number }) {
+function IconTruck({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <rect x="2" y="7" width="12" height="9" rx="1" />
@@ -1092,7 +1139,7 @@ function IconTruck({ size = 26 }: { size?: number }) {
     </svg>
   );
 }
-function IconShoppingBag({ size = 26 }: { size?: number }) {
+function IconShoppingBag({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <path d="M6 8h12l-1 12.5a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 7 20.5Z" />
@@ -1100,7 +1147,7 @@ function IconShoppingBag({ size = 26 }: { size?: number }) {
     </svg>
   );
 }
-function IconGraduationCap({ size = 26 }: { size?: number }) {
+function IconGraduationCap({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <path d="M2 9.5 12 5l10 4.5-10 4.5-10-4.5Z" />
@@ -1109,7 +1156,7 @@ function IconGraduationCap({ size = 26 }: { size?: number }) {
     </svg>
   );
 }
-function IconHome({ size = 26 }: { size?: number }) {
+function IconHome({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <path d="M4 11 12 4l8 7" />
@@ -1118,7 +1165,7 @@ function IconHome({ size = 26 }: { size?: number }) {
     </svg>
   );
 }
-function IconScale({ size = 26 }: { size?: number }) {
+function IconScale({ size = 48 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 3v18M8 21h8" />
@@ -1344,31 +1391,33 @@ function StageCard({
   }, []);
 
   return (
-    <div
-      ref={ref}
-      className="dp-card"
-      style={{
-        background: aux.cardBg,
-        border: `1px solid ${aux.cardBorder}`,
-        borderRadius: "16px",
-        padding: "22px 20px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "14px",
-        transitionDelay: `${(index % 6) * 0.06}s`,
-      }}
-    >
-      <div>
-        <span
-          className="font-mono"
-          style={{ fontSize: "9px", letterSpacing: "0.25em", textTransform: "uppercase", color: aux.accent, fontWeight: 600 }}
-        >
-          Stage {stage.num}
-        </span>
-        <h4 style={{ margin: "6px 0 0", fontSize: "17px", fontWeight: 700, color: aux.title, lineHeight: 1.25 }}>
-          {stage.title}
-        </h4>
-      </div>
+   <div
+  ref={ref}
+  className="dp-card"
+  style={{
+    background: aux.cardBg,
+    border: `1px solid ${aux.cardBorder}`,
+    borderRadius: "16px",
+    padding: "22px 20px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "14px",
+    height: "100%",
+    boxSizing: "border-box",
+    transitionDelay: `${(index % 6) * 0.06}s`,
+  }}
+>
+   <div style={{ minHeight: "70px" }}>
+  <span
+    className="font-mono"
+    style={{ fontSize: "9px", letterSpacing: "0.25em", textTransform: "uppercase", color: aux.accent, fontWeight: 600 }}
+  >
+    Stage {stage.num}
+  </span>
+  <h4 style={{ margin: "6px 0 0", fontSize: "17px", fontWeight: 700, color: aux.title, lineHeight: 1.25 }}>
+    {stage.title}
+  </h4>
+</div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {/* AI row */}
@@ -1380,6 +1429,7 @@ function StageCard({
             background: aux.aiRowBg,
             borderRadius: "10px",
             padding: "10px 12px",
+            minHeight: "76px",
           }}
         >
           <span
@@ -1412,6 +1462,7 @@ function StageCard({
             background: aux.humanRowBg,
             borderRadius: "10px",
             padding: "10px 12px",
+            minHeight: "76px",
           }}
         >
           <span
@@ -1532,7 +1583,7 @@ function AIDeliveryProcess({ theme }: { theme: "light" | "dark" }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 items-stretch">
           {DELIVERY_STAGES.map((stage, i) => (
             <StageCard key={stage.num} stage={stage} index={i} theme={theme} />
           ))}
@@ -1800,7 +1851,6 @@ function IndustryCard({
   const ref = useRef<HTMLDivElement>(null);
   const aux = auxPalette(theme);
   const Icon = item.icon;
-  const tint = hoverTint(theme, index);
 
   useEffect(() => {
     const el = ref.current;
@@ -1829,12 +1879,11 @@ function IndustryCard({
         border: `1px solid ${aux.cardBorder}`,
         borderRadius: "18px",
         padding: "28px 24px",
-        transitionDelay: `${(index % 5) * 0.06}s`,
-        ["--ind-hover-glow" as any]: tint,
+        transitionDelay: `${(index % 8) * 0.05}s`,
       }}
     >
-      <div className="ind-glow" aria-hidden="true" />
-      <div style={{ position: "relative", color: aux.accent, marginBottom: "18px" }}>
+      <span className="ind-underline" style={{ background: aux.accent }} aria-hidden="true" />
+      <div className="ind-icon" style={{ position: "relative", color: aux.accent, marginBottom: "18px" }}>
         <Icon />
       </div>
       <h3 className="font-display" style={{ position: "relative", fontSize: "18px", fontWeight: 600, color: aux.title, marginBottom: "8px" }}>
@@ -1873,22 +1922,28 @@ function ShippedIndustries({ theme }: { theme: "light" | "dark" }) {
         ${PK_KEYFRAMES}
         .ind-card {
           opacity: 0;
-          transform: translateY(26px);
-          transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1), border-color 0.3s ease;
+          transform: scale(0.82) rotate(-2deg);
+          transition: opacity 0.6s cubic-bezier(0.34,1.56,0.64,1), transform 0.6s cubic-bezier(0.34,1.56,0.64,1),
+            box-shadow 0.35s ease, border-color 0.35s ease;
         }
-        .ind-card.ind-vis { opacity: 1; transform: translateY(0); }
-        .ind-glow {
+        .ind-card.ind-vis { opacity: 1; transform: scale(1) rotate(0deg); }
+        .ind-card:hover {
+          box-shadow: ${theme === "light" ? "0 20px 40px -20px rgba(199,90,26,0.25)" : "0 20px 40px -20px rgba(0,0,0,0.5)"};
+          border-color: ${theme === "light" ? "rgba(199,90,26,0.4)" : "rgba(255,130,50,0.35)"};
+        }
+        .ind-underline {
           position: absolute;
-          top: -50%;
-          right: -40%;
-          width: 90%;
-          height: 90%;
-          background: radial-gradient(circle, var(--ind-hover-glow) 0%, transparent 75%);
-          opacity: 0;
-          transition: opacity 0.4s ease;
-          pointer-events: none;
+          bottom: 0;
+          left: 0;
+          height: 3px;
+          width: 100%;
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
         }
-        .ind-card:hover .ind-glow { opacity: 1; }
+        .ind-card:hover .ind-underline { transform: scaleX(1); }
+        .ind-icon { transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+        .ind-card:hover .ind-icon { transform: rotate(-8deg) scale(1.15); }
       `}</style>
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
@@ -1947,7 +2002,6 @@ function Index() {
       <AIDeliveryProcess theme={theme} />
       <EngineeringNotes theme={theme} />
       <ShippedIndustries theme={theme} />
-      <Industries />
       <Brands />
       <CTA />
       <Footer />

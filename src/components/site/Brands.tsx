@@ -307,8 +307,8 @@ export function Brands() {
           <div>
             <p className="brands-eyebrow">Success Stories</p>
             <h2 className="brands-title">
-              The names you know
-              <em className="font-display">already made this call.</em>
+              The Ecosystem
+              <em className="font-display">You Trust</em>
             </h2>
           </div>
 
