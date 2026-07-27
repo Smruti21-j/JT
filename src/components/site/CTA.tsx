@@ -207,20 +207,35 @@ const SOCIALS = [
 ];
 
 export function Footer() {
-  return (<footer className="relative border-t border-border text-foreground overflow-hidden" style={{ background: "var(--footer-solid, var(--color-background))" }}>
+  return (<footer className="relative border-t border-border text-foreground overflow-hidden" style={{ background: "var(--footer-solid, var(--color-secondary))" }}>
     
       
-      <div className="relative max-w-7xl mx-auto px-6 py-20" style={{ zIndex: 10 }}>
+      <div className="relative max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-12 xl:px-16 py-20" style={{ zIndex: 10 }}>
         <div className="grid lg:grid-cols-12 gap-12 border-b border-border pb-16">
           <div className="lg:col-span-5">
             <Link to="/"><img src={logo} alt="Jarvis Technolabs" className="h-20 w-auto object-contain mb-6" /></Link>
-            <p className="text-2xl md:text-3xl font-semibold leading-tight max-w-md mb-4 text-foreground">
-              Orchestrating Your <span style={{ color: "var(--color-primary)" }}>Autonomous</span> Future
-            </p>
-            <p className="text-sm leading-relaxed max-w-sm mb-8 text-muted-foreground">
+            <p className="text-sm leading-relaxed max-w-sm mb-6 text-muted-foreground">
               We are an AI-native digital engineering company helping enterprises and high-growth brands build intelligent products, automate operations, and deliver exceptional customer experiences.
             </p>
-            
+
+            <div className="flex gap-3 mb-8">
+              {SOCIALS.map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <a
+                    key={i}
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center justify-center rounded-full border border-border transition hover:text-foreground"
+                    style={{ width: "36px", height: "36px" }}
+                  >
+                    <Icon size={16} />
+                  </a>
+                );
+              })}
+            </div>
+
             <div className="space-y-3">
   <a href="mailto:info@jarvistechnolabs.com" className="flex items-center gap-3 text-sm group text-muted-foreground">
     <Mail size={16} style={{ color: "var(--color-primary)" }} />
@@ -257,10 +272,6 @@ export function Footer() {
         </div>
         <div className="flex flex-wrap justify-between items-center pt-8 gap-6 text-xs text-muted-foreground">
           <div>© {new Date().getFullYear()} Jarvis Technolabs — Intelligent Systems Company</div>
-          <div className="flex gap-5">
-           {SOCIALS.map((s, i) => { const Icon = s.icon; return <a key={i} href={s.href} target="_blank" rel="noreferrer" className="hover:text-foreground transition"><Icon size={16} /></a>; })}
-          
-          </div>
         </div>
       </div>
     </footer>

@@ -95,11 +95,34 @@ export function Brands() {
         }
 
         .brands-wrap {
-          position: relative;
-          z-index: 1;
-          width: min(100% - 40px, 1440px);
-          margin: 0 auto;
-        }
+  position: relative;
+  z-index: 1;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+@media (min-width: 640px) {
+  .brands-wrap {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .brands-wrap {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .brands-wrap {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+}
 
         .brands-copy {
           display: grid;
@@ -122,7 +145,7 @@ export function Brands() {
           margin: 0;
           max-width: 660px;
           font-family: "Fraunces", ui-serif, Georgia, serif;
-          font-size: clamp(38px, 5.4vw, 66px);
+          font-size: clamp(41.6px, 70.656px, 75.2px);
           font-weight: 800;
           line-height: 1.1;
           letter-spacing: -0.04em;

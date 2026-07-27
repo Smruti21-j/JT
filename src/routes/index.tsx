@@ -257,12 +257,12 @@ function HowYouPlugUsIn({ theme }: { theme: "light" | "dark" }) {
         .eng-tile:hover .eng-img { transform: scale(1.06); }
       `}</style>
 
-      <div ref={headerRef} className="mx-auto max-w-[1600px] px-6 mb-14" style={{ opacity: 0 }}>
+      <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
           [HOW YOU PLUG US IN]
         </p>
 
-        <h2  style={{ fontSize: "clamp(36px, 5.4vw, 66px)", fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "16px" }}>
+        <h2  style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "16px" }}>
           The future isn't found,
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>
@@ -278,7 +278,7 @@ function HowYouPlugUsIn({ theme }: { theme: "light" | "dark" }) {
         </p>
       </div>
 
-      <div className="mx-auto max-w-[1600px] px-6">
+      <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {ENGAGEMENT_TILES.map((tile, i) => (
             <EngagementTile key={tile.title} tile={tile} index={i} theme={theme} />
@@ -574,13 +574,13 @@ function PrototypeBlueprint({ theme }: { theme: "light" | "dark" }) {
   return (
     <section className={`relative border-t ${pal.sectionBorder}`} style={{ paddingTop: "7rem", paddingBottom: "7rem" }}>
       <style>{PK_KEYFRAMES}</style>
-      <div className="mx-auto max-w-[1600px] px-6">
+      <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div ref={headerRef} style={{ opacity: 0 }}>
             <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
               [THE PART NOBODY TELLS YOU]
             </p>
-            <h2  style={{ fontSize: "clamp(32px, 4.4vw, 52px)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "16px" }}>
+            <h2  style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "16px" }}>
               Concepts spark change.
               <br />
               <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
@@ -667,11 +667,11 @@ function TheReceipts({ theme }: { theme: "light" | "dark" }) {
           .receipts-grid > div:not(:nth-child(4n+1)) { border-left: 1px solid ${aux.cardBorder}; }
         }
       `}</style>
-      <div ref={headerRef} className="mx-auto max-w-[1600px] px-6 mb-14" style={{ opacity: 0 }}>
+      <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
           [THE RECEIPTS]
         </p>
-        <h2  style={{ fontSize: "clamp(34px, 5vw, 60px)", fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0 }}>
+        <h2  style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0 }}>
           Results that speak for themselves
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
@@ -680,7 +680,7 @@ function TheReceipts({ theme }: { theme: "light" | "dark" }) {
         </h2>
       </div>
 
-      <div className="mx-auto max-w-[1600px] px-6">
+      <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
         <div className="receipts-grid grid grid-cols-2 md:grid-cols-4 gap-0">
           {RECEIPT_STATS.map((stat) => (
             <ReceiptCard key={stat.label} stat={stat} theme={theme} />
@@ -946,11 +946,11 @@ function TechToolsSection({ theme }: { theme: "light" | "dark" }) {
         .tt-card:hover .tt-icon { transform: scale(1.1); }
       `}</style>
 
-      <div ref={headerRef} className="mx-auto max-w-[1600px] px-6 mb-14" style={{ opacity: 0 }}>
+      <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
           [NOT JUST HANDS FOR HIRE]
         </p>
-        <h2 style={{ fontSize: "clamp(32px, 4.6vw, 52px)", fontWeight: 800, lineHeight: 1.1, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0 }}>
+        <h2 style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 800, lineHeight: 1.1, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0 }}>
           More than development.
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
@@ -959,7 +959,7 @@ function TechToolsSection({ theme }: { theme: "light" | "dark" }) {
         </h2>
       </div>
 
-      <div className="mx-auto max-w-[1600px] px-6">
+      <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {TECH_TOOL_ITEMS.map((item, i) => (
             <TechToolCard key={item.title} item={item} index={i} theme={theme} />
@@ -1236,11 +1236,11 @@ function AICapabilities({ theme }: { theme: "light" | "dark" }) {
         .ac-card:hover { background: var(--ac-hover-bg); }
       `}</style>
 
-      <div ref={headerRef} className="mx-auto max-w-[1600px] px-6 mb-14" style={{ opacity: 0 }}>
+      <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
           [AI CAPABILITIES]
         </p>
-        <h2  style={{ fontSize: "clamp(32px, 4.6vw, 52px)", fontWeight: 800, lineHeight: 0.95, textTransform: "uppercase", letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "18px" }}>
+        <h2  style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 800, lineHeight: 0.95, textTransform: "uppercase", letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "18px" }}>
           AI, BUILT FOR
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323", textTransform: "none", fontSize: "0.85em", letterSpacing: "0em" }}>
@@ -1252,7 +1252,7 @@ function AICapabilities({ theme }: { theme: "light" | "dark" }) {
         </p>
       </div>
 
-      <div className="mx-auto max-w-[1600px] px-6">
+      <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
         <div
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px rounded-xl overflow-hidden border"
           style={{ borderColor: aux.gridLineColor, background: aux.gridLineColor }}
@@ -1493,11 +1493,11 @@ function AIDeliveryProcess({ theme }: { theme: "light" | "dark" }) {
         .dp-line-vis .dp-dot { opacity: 1; transform: scale(1); }
       `}</style>
 
-      <div ref={headerRef} className="mx-auto max-w-[1600px] px-6 mb-14" style={{ opacity: 0 }}>
+      <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
           [END-TO-END AI-POWERED DELIVERY]
         </p>
-        <h2 style={{ fontSize: "clamp(34px, 4.6vw, 58px)", fontWeight: 700, lineHeight: 1.15, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "22px" }}>
+        <h2 style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 700, lineHeight: 1.15, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "22px" }}>
           AI powers every step.
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
@@ -1509,7 +1509,7 @@ function AIDeliveryProcess({ theme }: { theme: "light" | "dark" }) {
         </p>
       </div>
 
-      <div className="mx-auto max-w-[1600px] px-6">
+      <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
         <div ref={lineRef} className="relative hidden lg:block" style={{ marginBottom: "40px", padding: "0 4%" }}>
           <div style={{ position: "relative", height: "2px", background: aux.lineColor, borderRadius: "2px", overflow: "hidden" }}>
             <div className="dp-fill" style={{ position: "absolute", top: 0, left: 0, height: "100%", background: aux.accent }} />
@@ -1732,13 +1732,13 @@ function EngineeringNotes({ theme }: { theme: "light" | "dark" }) {
         .sg-card:hover .sg-glow { opacity: 1; }
       `}</style>
 
-      <div ref={headerRef} className="mx-auto max-w-[1600px] px-6 mb-14" style={{ opacity: 0 }}>
+      <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
               [FROM THE ENGINEERING DESK]
             </p>
-            <h2  style={{ fontSize: "clamp(34px, 4.6vw, 58px)", fontWeight: 800, lineHeight: 0.95, textTransform: "uppercase", letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0 }}>
+            <h2  style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 800, lineHeight: 0.95, textTransform: "uppercase", letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0 }}>
               INSIGHTS FROM
               <br />
               <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323", textTransform: "none", fontSize: "0.85em", letterSpacing: "0em" }}>
@@ -1756,7 +1756,7 @@ function EngineeringNotes({ theme }: { theme: "light" | "dark" }) {
         </div>
       </div>
 
-      <div className="mx-auto max-w-[1600px] px-6">
+      <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {INSIGHT_CARDS.slice(0, 3).map((item, i) => (
             <SignalCard key={item.title} item={item} index={i} theme={theme} />
@@ -1891,11 +1891,11 @@ function ShippedIndustries({ theme }: { theme: "light" | "dark" }) {
         .ind-card:hover .ind-glow { opacity: 1; }
       `}</style>
 
-      <div ref={headerRef} className="mx-auto max-w-[1600px] px-6 mb-14" style={{ opacity: 0 }}>
+      <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
           [EXPERTISE]
         </p>
-        <h2 style={{ fontSize: "clamp(34px, 4.6vw, 58px)", fontWeight: 700, lineHeight: 0.95, textTransform: "uppercase", letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "18px" }}>
+        <h2 style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 700, lineHeight: 0.95, textTransform: "uppercase", letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "18px" }}>
           EXPERIENCE THAT SPANS
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323", textTransform: "none", fontSize: "0.85em", letterSpacing: "0em" }}>
@@ -1907,7 +1907,7 @@ function ShippedIndustries({ theme }: { theme: "light" | "dark" }) {
         </p>
       </div>
 
-      <div className="mx-auto max-w-[1600px] px-6">
+      <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {SHIPPED_INDUSTRIES.map((item, i) => (
             <IndustryCard key={item.title} item={item} index={i} theme={theme} />

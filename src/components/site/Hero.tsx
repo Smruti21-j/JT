@@ -70,7 +70,7 @@ export function Hero({ theme }: HeroProps) {
           <div>
             <h1
               className="font-bold text-foreground"
-              style={{ fontSize: "clamp(38px, 5.4vw, 66px)", lineHeight: 1.08, letterSpacing: "-0.01em" }}
+              style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", lineHeight: 1.08, letterSpacing: "-0.01em" }}
             >
               Orchestrating
               <br />

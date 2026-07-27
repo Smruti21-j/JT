@@ -22,7 +22,7 @@ export function Industries() {
   const row = [...INDUSTRIES, ...INDUSTRIES];
   return (
     <section className="relative py-24 border-t border-white/5 overflow-hidden">
-      <div className="mx-auto max-w-7xl px-6 mb-12">
+      <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-12">
         <div className="reveal flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="text-xs tracking-[0.3em] text-muted-foreground bracket-label mb-6">
@@ -30,7 +30,7 @@ export function Industries() {
             </p>
             <h2
               className=" font-bold tracking-tight max-w-2xl text-foreground"
-              style={{ fontSize: "clamp(34px, 4.6vw, 58px)", lineHeight: 1.08, letterSpacing: "-0.01em" }}
+              style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", lineHeight: 1.08, letterSpacing: "-0.01em" }}
             >
               The Engine for Your Next
               <br />
