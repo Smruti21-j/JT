@@ -571,7 +571,7 @@ function PrototypeBlueprint({ theme }: { theme: "light" | "dark" }) {
   }, []);
 
   return (
-    <section className={`relative border-t ${pal.sectionBorder}`} style={{ paddingTop: "7rem", paddingBottom: "7rem" }}>
+    <section className={`relative bg1 border-t ${pal.sectionBorder}`} style={{ paddingTop: "7rem", paddingBottom: "7rem" }}>
       <style>{PK_KEYFRAMES}</style>
       <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -973,7 +973,7 @@ function TechToolsSection({ theme }: { theme: "light" | "dark" }) {
   }, []);
 
   return (
-    <section className={`relative border-t ${pal.sectionBorder}`} style={{ paddingTop: "6rem", paddingBottom: "7rem" }}>
+    <section className={`relative bg1 border-t ${pal.sectionBorder}`} style={{ paddingTop: "6rem", paddingBottom: "7rem" }}>
       <style>{`
         ${PK_KEYFRAMES}
         .tt-card {
@@ -1529,7 +1529,7 @@ function AIDeliveryProcess({ theme }: { theme: "light" | "dark" }) {
   }, []);
 
   return (
-    <section className={`relative border-t ${pal.sectionBorder}`} style={{ paddingTop: "6rem", paddingBottom: "8rem" }}>
+    <section className={`relative bg1 border-t ${pal.sectionBorder}`} style={{ paddingTop: "6rem", paddingBottom: "8rem" }}>
       <style>{`
         ${PK_KEYFRAMES}
         .dp-card {
@@ -1789,7 +1789,7 @@ function EngineeringNotes({ theme }: { theme: "light" | "dark" }) {
             <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
              
             </p>
-            <h2 className= "section-title" style={{ fontWeight: 800, lineHeight: 0.95, textTransform: "uppercase", letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0 }}>
+            <h2 className= "section-title" style={{  color: pal.headerHeadingColor, margin: 0 }}>
               INSIGHTS FROM
               <br />
               <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323", textTransform: "none", fontSize: "0.85em", letterSpacing: "0em" }}>
@@ -1917,7 +1917,7 @@ function ShippedIndustries({ theme }: { theme: "light" | "dark" }) {
   }, []);
 
   return (
-    <section className={`relative border-t ${pal.sectionBorder}`} style={{ paddingTop: "6rem", paddingBottom: "7rem" }}>
+    <section className={`relative bg1 border-t ${pal.sectionBorder}`} style={{ paddingTop: "6rem", paddingBottom: "7rem" }}>
       <style>{`
         ${PK_KEYFRAMES}
         .ind-card {
@@ -1949,7 +1949,7 @@ function ShippedIndustries({ theme }: { theme: "light" | "dark" }) {
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
           
-        </p>
+        </p>  
         <h2 className= "section-title" style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "18px" }}>
           Experience that spans
           <br />

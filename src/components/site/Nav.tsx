@@ -112,7 +112,7 @@ export function Nav({ theme, onToggleTheme }: NavProps) {
           </Link>
 
           <nav
-            className="hidden items-center  tracking-[0.2em] md:flex"
+            className="hidden items-center gap-8 text-[12px] uppercase tracking-[0.2em] md:flex"
           >
             {LINKS.map((link) => (
               <Link

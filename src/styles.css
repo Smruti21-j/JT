@@ -372,6 +372,18 @@
   font-weight: 400;
 }
 
+.bg1{
+  background: radial-gradient(120% 60% at 50% -10%,#ff6b1a0f,#0000 55%),linear-gradient(#f3efe7 0%,#faf7f2 100%);
+}
+
+[data-theme="dark"]{
+.bg1{
+  background: radial-gradient(120% 60% at 50% -10%,#ff6b1a0d,#0000 55%),linear-gradient(#0d0d0e 0%,#0a0a0a 100%);
+}
+}
+
+
+
 
   .section-title {
    font-size: clamp(2.5rem,6.2vw,6.6rem);
