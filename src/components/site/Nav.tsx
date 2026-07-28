@@ -14,7 +14,7 @@ const LINKS = [
   { to: "/hire", label: "Hire" },
   { to: "/careers", label: "Careers" },
   { to: "/about", label: "About" },
-  { to: "/contact", label: "Contact" },
+  
 ] as const;
 
 type NavProps = {
@@ -143,16 +143,16 @@ export function Nav({ theme, onToggleTheme }: NavProps) {
             </button>
 
             <Link
-              to="/contact"
-              className="hidden rounded-md px-5 py-3 text-[12px] uppercase tracking-[0.2em] transition-all sm:inline-flex"
-              style={{
-                border: "1px solid var(--nav-border)",
-                color: "var(--nav-link)",
-                background: "var(--nav-button)",
-              }}
-            >
-              Let's talk
-            </Link>
+  to="/contact"
+  className="hidden items-center gap-2 rounded-full px-5 py-3 text-[12px] uppercase tracking-[0.2em] font-semibold transition-all sm:inline-flex"
+  style={{
+    border: "none",
+    color: "var(--color-primary-foreground)",
+    background: "var(--color-primary)",
+  }}
+>
+  Contact <span>↗</span>
+</Link>
 
             <button
               type="button"

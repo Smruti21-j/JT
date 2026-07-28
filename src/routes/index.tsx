@@ -15,6 +15,8 @@ import pillarImg3 from "/index-image3.jpg";
 import pillarImg4 from "/index-image4.jpg";
 import pillarImg5 from "/index-image5.jpg";
 import pillarImg6 from "/index-image6.jpg";
+import pillarImg7 from "/index-image7.png";
+import pillarImg8 from "/index-image8.png";
 
 const PK_KEYFRAMES = `
   @keyframes pkHeaderIn {
@@ -100,7 +102,7 @@ function hoverTint(theme: "light" | "dark", index: number) {
 
 const ENGAGEMENT_TILES = [
   {
-    badge: null,
+    badge: "new",
     title: "Intelligence that Acts",
     desc: "Transition from generative prompts to agentic workflows that resolve complex tasks with zero friction.",
     image: pillarImg1,
@@ -134,6 +136,18 @@ const ENGAGEMENT_TILES = [
     title: "Accelerated Value Chains",
     desc: "Unlock pervasive efficiencies across your entire enterprise with data-driven insights that act as your growth catalyst.",
     image: pillarImg6,
+  },
+  {
+    badge: null,
+    title: "The Architects of Intent",
+    desc: "Before you build autonomy, you must engineer the intent. We map your industry’s future friction points to design custom governance and cognitive blueprints, ensuring your proprietary intelligence remains entirely your own.",
+    image: pillarImg7,
+  },
+  {
+    badge: null,
+    title: "The Engine of Perpetual Motion",
+    desc: "Autonomy isn't set and forget - it is a living ecosystem. Our engineering squads continuously tune, optimize, & defend your agentic workflows and self-healing infrastructure in real time.",
+    image: pillarImg8,
   },
 ];
 
@@ -279,7 +293,7 @@ function HowYouPlugUsIn({ theme }: { theme: "light" | "dark" }) {
       </div>
 
       <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {ENGAGEMENT_TILES.map((tile, i) => (
             <EngagementTile key={tile.title} tile={tile} index={i} theme={theme} />
           ))}
@@ -859,164 +873,161 @@ const TECH_TOOL_ITEMS = [
   },
 ];
 
-function TechToolCard({
+// ─── Generative wireframe art (replaces the icon on each card) ──────────────
+function WireframeArt({ index }: { index: number }) {
+  const variant = index % 3;
+  const N = variant === 2 ? 56 : 32 + (index % 2) * 6;
+  const cx = 100, cy = 100, r = 76;
+  const pts = Array.from({ length: N }, (_, i) => {
+    const a = (i / N) * Math.PI * 2;
+    return [cx + r * Math.cos(a), cy + r * Math.sin(a)] as const;
+  });
+
+  let d = "";
+  if (variant === 2) {
+    d = pts.map(([x, y]) => `M${cx},${cy} L${x},${y}`).join(" ");
+  } else {
+    const offset = variant === 0 ? 5 + index : 9 + index;
+    d = pts
+      .map(([x, y], i) => {
+        const [x2, y2] = pts[(i + offset) % N];
+        return `M${x},${y} L${x2},${y2}`;
+      })
+      .join(" ");
+  }
+
+ return (
+    <svg viewBox="0 0 200 200" className="animate-spin-slow" style={{ width: "100%", height: "100%" }}>
+      <path d={d} fill="none" stroke="rgba(237,99,35,0.55)" strokeWidth="0.6" />
+      {variant === 2 && <circle cx={cx} cy={cy} r="2.4" fill="rgb(237,99,35)" />}
+      <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(237,99,35,0.35)" strokeWidth="0.8" />
+    </svg>
+  );
+}
+
+// ─── Architecture-component card ─────────────────────────────────────────────
+function ArchCard({
   item,
   index,
-  theme,
+  active,
 }: {
   item: (typeof TECH_TOOL_ITEMS)[0];
   index: number;
-  theme: "light" | "dark";
+  active: boolean;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const aux = auxPalette(theme);
-  const Icon = item.icon;
-
-  // Fixed dark-navy banner (brand accent block), consistent across both themes,
-  // matching the reference design's icon header treatment.
-  const bannerBg = theme === "light" ? "#11173a" : "#080d22";
-  const bannerBorder = theme === "light" ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.06)";
-  const badgeBg = theme === "light" ? "#F1EEE8" : "rgba(255,255,255,0.06)";
-  const badgeBorder = theme === "light" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.08)";
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add("tt-vis");
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
   return (
-    <div
-      ref={ref}
-      className="tt-card"
-      style={{
-        background: aux.cardBg,
-        border: `1.5px solid ${aux.cardBorder}`,
-        borderRadius: "18px",
-        overflow: "hidden",
-        transitionDelay: `${(index % 4) * 0.06}s`,
-      }}
-    >
-      <div
-        style={{
-          background: bannerBg,
-          borderBottom: `1px solid ${bannerBorder}`,
-          padding: "26px 0",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <span className="tt-icon" style={{ color: "rgb(255,130,50)", display: "flex" }}>
-          <Icon size={48} />
-        </span>
+    <div className={`arc-card${active ? " arc-active" : ""}`}>
+      <div className="arc-card-top">
+        <span className="arc-card-tag font-mono">{item.tag}</span>
+        <h3 className="font-display arc-card-title">{item.title}</h3>
+        <p className="arc-card-desc">{item.desc}</p>
       </div>
-
-      <div style={{ padding: "18px 20px 22px" }}>
-        <span
-          className="font-mono"
-          style={{
-            display: "inline-block",
-            fontSize: "9.5px",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: aux.desc,
-            background: badgeBg,
-            border: `1px solid ${badgeBorder}`,
-            borderRadius: "999px",
-            padding: "5px 11px",
-            marginBottom: "12px",
-          }}
-        >
-          {item.tag}
-        </span>
-
-        <h3  style={{ fontSize: "18px", fontWeight: 700, color: aux.title, margin: 0, marginBottom: "8px" }}>
-          {item.title}
-        </h3>
-        <p style={{ fontSize: "13px", lineHeight: 1.6, color: aux.desc, margin: 0 }}>
-          {item.desc}
-        </p>
+      <div className="arc-card-art">
+        <WireframeArt index={index} />
       </div>
     </div>
   );
 }
 
+// ─── Architecture Components — pinned section, horizontal reveal on scroll ──
 function TechToolsSection({ theme }: { theme: "light" | "dark" }) {
-  const headerRef = useRef<HTMLDivElement>(null);
   const pal = pillarPalette(theme);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
-    const el = headerRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting) {
-          el.style.animation = "pkHeaderIn 0.9s cubic-bezier(0.22,1,0.36,1) both";
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
+    function onScroll() {
+      const section = sectionRef.current;
+      const track = trackRef.current;
+      if (!section || !track) return;
+
+      const rect = section.getBoundingClientRect();
+      const winH = window.innerHeight;
+      const total = rect.height - winH;
+      const scrolled = -rect.top;
+      const progress = total > 0 ? Math.min(1, Math.max(0, scrolled / total)) : 0;
+
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      track.scrollLeft = progress * maxScroll;
+
+      const idx = Math.round(progress * (TECH_TOOL_ITEMS.length - 1));
+      setActive(idx);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <section className={`relative bg1 border-t ${pal.sectionBorder}`} style={{ paddingTop: "6rem", paddingBottom: "7rem" }}>
+    <section
+      ref={sectionRef}
+      className="relative bg1"
+      style={{ height: `${100 + TECH_TOOL_ITEMS.length * 32}vh` }}
+    >
       <style>{`
-        ${PK_KEYFRAMES}
-        .tt-card {
-          opacity: 0;
-          transform: translateY(28px);
-          transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1),
-            border-color 0.3s ease, box-shadow 0.3s ease;
+        .arc-track{ display:flex; gap:20px; overflow:hidden; }
+        .arc-card{
+          flex:0 0 clamp(260px,26vw,340px);
+          height:clamp(360px,46vw,440px);
+          background:#111113;
+          border:1px solid rgba(255,255,255,0.08);
+          border-radius:16px;
+          display:flex; flex-direction:column;
+          overflow:hidden;
+          transition: opacity .4s ease;
+          opacity:.5;
         }
-        .tt-card.tt-vis { opacity: 1; transform: translateY(0); }
-        .tt-card:hover {
-          border-color: ${theme === "light" ? "rgba(199,90,26,0.5)" : "rgba(255,130,50,0.4)"};
-          box-shadow: ${theme === "light" ? "0 14px 30px rgba(199,90,26,0.12)" : "0 14px 30px rgba(0,0,0,0.35)"};
-          transform: translateY(-4px);
-        }
-        .tt-card.tt-vis:hover { transform: translateY(-4px); }
-        .tt-icon { transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); }
-        .tt-card:hover .tt-icon { transform: scale(1.1); }
+        .arc-card.arc-active{ opacity:1; }
+        .arc-card-top{ padding:26px 24px 0; }
+        .arc-card-tag{ font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,0.4); }
+        .arc-card-title{ font-size:1.15rem; font-weight:600; color:#f5f2ec; margin:10px 0 8px; line-height:1.25; }
+        .arc-card-desc{ font-size:.82rem; line-height:1.55; color:rgba(255,255,255,0.5); }
+        .arc-card-art{ flex:1; padding:12px 28px 28px; }
       `}</style>
 
-      <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
-        <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-          
-        </p>
-        <h2 className= "section-title" style={{  color: pal.headerHeadingColor, margin: 0 }}>
-          More than development.
-          <br />
-          <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
-            End-to-end ownership.
-          </em>
-        </h2>
-      </div>
+      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+        <div className="mx-auto max-w-[1600px] w-full px-5 sm:px-8 lg:px-12 xl:px-16 mb-10 flex items-end justify-between">
+          <div>
+            <p
+              className="font-mono"
+              style={{
+                fontSize: "10px",
+                letterSpacing: "0.3em",
+                textTransform: "uppercase",
+                color: pal.headerLabelColor,
+                marginBottom: "18px",
+              }}
+            >
+              [Architecture Components]
+            </p>
+            <h2 className="section-title" style={{ color: pal.headerHeadingColor, margin: 0 }}>
+              More than development.
+              <br />
+              <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
+                End-to-end ownership.
+              </em>
+            </h2>
+          </div>
+          <span
+            className="font-mono"
+            style={{ fontSize: "11px", letterSpacing: "0.1em", color: pal.headerLabelColor, whiteSpace: "nowrap" }}
+          >
+            {String(active + 1).padStart(2, "0")} / {String(TECH_TOOL_ITEMS.length).padStart(2, "0")}
+          </span>
+        </div>
 
-      <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {TECH_TOOL_ITEMS.map((item, i) => (
-            <TechToolCard key={item.title} item={item} index={i} theme={theme} />
-          ))}
+        <div className="mx-auto max-w-[1600px] w-full px-5 sm:px-8 lg:px-12 xl:px-16">
+          <div ref={trackRef} className="arc-track">
+            {TECH_TOOL_ITEMS.map((item, i) => (
+              <ArchCard key={item.title} item={item} index={i} active={i === active} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
 // ─── Icon set ────────────────────────────────────────────────────────────────
 
 function IconBot({ size = 48  }: { size?: number }) {

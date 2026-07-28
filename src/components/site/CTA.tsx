@@ -267,9 +267,9 @@ export function Footer() {
             ))}
           </div>
         </div>
-        <div className="flex flex-wrap justify-between items-center pt-8 gap-6 text-xs text-muted-foreground">
-          <div>© {new Date().getFullYear()} Jarvis Technolabs — Intelligent Systems Company</div>
-        </div>
+        <div className="flex flex-wrap justify-center items-center pt-8 gap-6 text-xs text-muted-foreground">
+  <div>© {new Date().getFullYear()} Jarvis Technolabs — Intelligent Systems Company</div>
+</div>
       </div>
     </footer>
   );
