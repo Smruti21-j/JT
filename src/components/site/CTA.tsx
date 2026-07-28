@@ -236,7 +236,7 @@ export function Footer() {
               })}
             </div>
 
-            <div className="space-y-3">
+ <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
   <a href="mailto:info@jarvistechnolabs.com" className="flex items-center gap-3 text-sm group text-muted-foreground">
     <Mail size={16} style={{ color: "var(--color-primary)" }} />
     <span className="group-hover:text-foreground transition-colors">info@jarvistechnolabs.com</span>
@@ -245,10 +245,7 @@ export function Footer() {
     <Phone size={16} style={{ color: "var(--color-primary)" }} />
     <span className="group-hover:text-foreground transition-colors">+91 720 303 0707</span>
   </a>
-  <div className="flex items-start gap-3 text-sm text-muted-foreground">
-    <MapPin size={16} style={{ color: "var(--color-primary)" }} className="mt-0.5" />
-    <span>Ahmedabad, Gujarat, India</span>
-  </div>
+
 </div>
           </div>
           <div className="lg:col-span-7 grid sm:grid-cols-3 gap-10">

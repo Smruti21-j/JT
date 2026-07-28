@@ -259,10 +259,10 @@ function HowYouPlugUsIn({ theme }: { theme: "light" | "dark" }) {
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-          [Pillars]
+          
         </p>
 
-        <h2  style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 700, lineHeight: 1.08, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "16px" }}>
+        <h2 className= "section-title"  style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "16px" }}>
           The Architect of 
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>
@@ -271,10 +271,10 @@ function HowYouPlugUsIn({ theme }: { theme: "light" | "dark" }) {
         </h2>
 
         <p className="font-mono" style={{ fontSize: "11px", letterSpacing: "0.25em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "10px" }}>
-          — Six ways to work with us
+       
         </p>
         <p style={{ maxWidth: "540px", fontSize: "15px", lineHeight: 1.75, color: pal.headerParaColor }}>
-          Engineered to fit your business, not force you to change.
+         
         </p>
       </div>
 
@@ -577,9 +577,9 @@ function PrototypeBlueprint({ theme }: { theme: "light" | "dark" }) {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div ref={headerRef} style={{ opacity: 0 }}>
             <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-              [THE PART NOBODY TELLS YOU]
+            
             </p>
-            <h2  style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "16px" }}>
+            <h2 className= "section-title"  style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "16px" }}>
               Concepts spark change.
               <br />
               <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
@@ -614,10 +614,10 @@ function PrototypeBlueprint({ theme }: { theme: "light" | "dark" }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const RECEIPT_STATS = [
-  { value: "8.5", label: "Years shipping software" },
-  { value: "150+", label: "Projects delivered" },
-  { value: "25+", label: "Clients across markets" },
-  { value: "50+", label: "AI-empowered engineers" },
+  { value: "8.5", label: "Era of Impact" },
+  { value: "150+", label: "Breakthroughs" },
+  { value: "25+", label: "Global Reach" },
+  { value: "50+", label: "Vision Architects" },
   { value: "3×", label: "Faster with AI in the loop" },
   { value: "99.4%", label: "Merged clean, first pass" },
   { value: "8", label: "Industries with deep playbooks" },
@@ -665,7 +665,7 @@ function CountUp({ value, color, duration = 1500 }: { value: string; color: stri
   }, [value, duration]);
 
   return (
-    <p ref={ref} style={{ fontSize: "clamp(28px, 3.4vw, 42px)", fontWeight: 800, color, margin: 0, lineHeight: 1 }}>
+    <p ref={ref} style={{ fontSize: "clamp(2.4rem,4.5vw,3.6rem)", fontWeight: 800, color, margin: 0, lineHeight: .9 , letterSpacing: "-.03em"}}>
       {display}
     </p>
   );
@@ -716,10 +716,10 @@ function TheReceipts({ theme }: { theme: "light" | "dark" }) {
       `}</style>
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-          [THE RECEIPTS]
+          
         </p>
-        <h2  style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 700, lineHeight: 1.05, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0 }}>
-          Results that speak for themselves
+        <h2 className= "section-title"  style={{ color: pal.headerHeadingColor, margin: 0 }}>
+          Impact Delivered
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
             Measured by outcomes.
@@ -918,7 +918,7 @@ function TechToolCard({
         }}
       >
         <span className="tt-icon" style={{ color: "rgb(255,130,50)", display: "flex" }}>
-          <Icon size={28} />
+          <Icon size={48} />
         </span>
       </div>
 
@@ -941,7 +941,7 @@ function TechToolCard({
           {item.tag}
         </span>
 
-        <h3 className="font-display" style={{ fontSize: "18px", fontWeight: 700, color: aux.title, margin: 0, marginBottom: "8px" }}>
+        <h3  style={{ fontSize: "18px", fontWeight: 700, color: aux.title, margin: 0, marginBottom: "8px" }}>
           {item.title}
         </h3>
         <p style={{ fontSize: "13px", lineHeight: 1.6, color: aux.desc, margin: 0 }}>
@@ -995,9 +995,9 @@ function TechToolsSection({ theme }: { theme: "light" | "dark" }) {
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-          [NOT JUST HANDS FOR HIRE]
+          
         </p>
-        <h2 style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 800, lineHeight: 1.1, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0 }}>
+        <h2 className= "section-title" style={{  color: pal.headerHeadingColor, margin: 0 }}>
           More than development.
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
@@ -1238,7 +1238,7 @@ function AICapabilityCard({
       <div style={{ color: aux.accent }}>
         <Icon />
       </div>
-      <h3 className="font-display" style={{ margin: 0, fontSize: "16px", fontWeight: 600, color: aux.title }}>
+      <h3  style={{ margin: 0, fontSize: "18px", fontWeight: 800, color: aux.title }}>
         {cap.title}
       </h3>
       <p style={{ margin: 0, fontSize: "13px", lineHeight: 1.65, color: aux.desc }}>
@@ -1285,10 +1285,10 @@ function AICapabilities({ theme }: { theme: "light" | "dark" }) {
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-          [AI CAPABILITIES]
+         
         </p>
-        <h2  style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 800, lineHeight: 0.95, textTransform: "uppercase", letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "18px" }}>
-          AI, BUILT FOR
+        <h2 className= "section-title" style={{  color: pal.headerHeadingColor, margin: 0, marginBottom: "18px" }}>
+          AI, Built for
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323", textTransform: "none", fontSize: "0.85em", letterSpacing: "0em" }}>
             Actually Scales.
@@ -1390,7 +1390,7 @@ function StageCard({
     return () => obs.disconnect();
   }, []);
 
-  return (
+ return (
    <div
   ref={ref}
   className="dp-card"
@@ -1404,7 +1404,7 @@ function StageCard({
     gap: "14px",
     height: "100%",
     boxSizing: "border-box",
-    transitionDelay: `${(index % 6) * 0.06}s`,
+    transitionDelay: `${index * 0.15}s`,
   }}
 >
    <div style={{ minHeight: "70px" }}>
@@ -1546,9 +1546,9 @@ function AIDeliveryProcess({ theme }: { theme: "light" | "dark" }) {
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-          [END-TO-END AI-POWERED DELIVERY]
+        
         </p>
-        <h2 style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 700, lineHeight: 1.15, letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "22px" }}>
+        <h2  className= "section-title" style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "22px" }}>
           AI powers every step.
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
@@ -1787,9 +1787,9 @@ function EngineeringNotes({ theme }: { theme: "light" | "dark" }) {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-              [FROM THE ENGINEERING DESK]
+             
             </p>
-            <h2  style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 800, lineHeight: 0.95, textTransform: "uppercase", letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0 }}>
+            <h2 className= "section-title" style={{ fontWeight: 800, lineHeight: 0.95, textTransform: "uppercase", letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0 }}>
               INSIGHTS FROM
               <br />
               <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323", textTransform: "none", fontSize: "0.85em", letterSpacing: "0em" }}>
@@ -1886,7 +1886,7 @@ function IndustryCard({
       <div className="ind-icon" style={{ position: "relative", color: aux.accent, marginBottom: "18px" }}>
         <Icon />
       </div>
-      <h3 className="font-display" style={{ position: "relative", fontSize: "18px", fontWeight: 600, color: aux.title, marginBottom: "8px" }}>
+      <h3  style={{ position: "relative", fontSize: "18px", fontWeight: 600, color: aux.title, marginBottom: "8px" }}>
         {item.title}
       </h3>
       <p style={{ position: "relative", fontSize: "12.5px", lineHeight: 1.6, color: aux.desc, margin: 0 }}>
@@ -1948,10 +1948,10 @@ function ShippedIndustries({ theme }: { theme: "light" | "dark" }) {
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-          [EXPERTISE]
+          
         </p>
-        <h2 style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", fontWeight: 700, lineHeight: 0.95, textTransform: "uppercase", letterSpacing: "-0.01em", color: pal.headerHeadingColor, margin: 0, marginBottom: "18px" }}>
-          EXPERIENCE THAT SPANS
+        <h2 className= "section-title" style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "18px" }}>
+          Experience that spans
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323", textTransform: "none", fontSize: "0.85em", letterSpacing: "0em" }}>
             Multiple Industries.

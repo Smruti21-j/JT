@@ -69,8 +69,8 @@ export function Hero({ theme }: HeroProps) {
           {/* LEFT — headline + copy + CTAs (unchanged) */}
           <div>
             <h1
-              className="font-bold text-foreground"
-              style={{ fontSize: "clamp(41.6px, 70.656px, 75.2px)", lineHeight: 1.08, letterSpacing: "-0.01em" }}
+              className="font-bold text-foreground section-title"
+               
             >
               Orchestrating
               <br />
@@ -126,7 +126,7 @@ export function Hero({ theme }: HeroProps) {
             </div>
 
             {/* Illustration with floating labeled callouts */}
-            <div className="relative mx-auto max-w-md">
+            <div className="relative mx-auto max-w-lg">
               <img src={heroIllustration} alt="" className="w-full h-auto select-none pointer-events-none" />
 
               {CALLOUTS.map(({ icon: Icon, label, position }) => (
