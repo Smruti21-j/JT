@@ -63,7 +63,7 @@ export function Hero({ theme }: HeroProps) {
       <div className="absolute -top-32 -left-20 h-[500px] w-[500px] rounded-full bg-primary/[0.08] blur-3xl pointer-events-none" />
       <div className="absolute inset-0 grid-bg opacity-[0.05] [mask-image:radial-gradient(ellipse_at_top_left,black,transparent_65%)] pointer-events-none" />
 
-      <div className="relative mx-auto max-w-7xl px-6">
+      <div className="relative mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
         <div className="grid lg:grid-cols-2 gap-14 items-center">
 
           {/* LEFT — headline + copy + CTAs (unchanged) */}
