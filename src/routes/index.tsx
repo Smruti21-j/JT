@@ -898,7 +898,7 @@ function WireframeArt({ index }: { index: number }) {
 
  return (
     <svg viewBox="0 0 200 200" className="animate-spin-slow" style={{ width: "100%", height: "100%" }}>
-      <path d={d} fill="none" stroke="rgba(237,99,35,0.55)" strokeWidth="0.6" />
+      <path d={d} fill="none" stroke="rgba(255,107,26,1)" strokeWidth="0.6" />
       {variant === 2 && <circle cx={cx} cy={cy} r="2.4" fill="rgb(237,99,35)" />}
       <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(237,99,35,0.35)" strokeWidth="0.8" />
     </svg>
@@ -910,16 +910,18 @@ function ArchCard({
   item,
   index,
   active,
+  theme,
 }: {
   item: (typeof TECH_TOOL_ITEMS)[0];
   index: number;
   active: boolean;
+  theme: "light" | "dark";
 }) {
   return (
-    <div className={`arc-card${active ? " arc-active" : ""}`}>
+    <div className={`arc-card${active ? " arc-active" : ""}${theme === "light" ? " arc-light" : ""}`}>
       <div className="arc-card-top">
         <span className="arc-card-tag font-mono">{item.tag}</span>
-        <h3 className="font-display arc-card-title">{item.title}</h3>
+        <h3 className=" arc-card-title">{item.title}</h3>
         <p className="arc-card-desc">{item.desc}</p>
       </div>
       <div className="arc-card-art">
@@ -984,6 +986,13 @@ function TechToolsSection({ theme }: { theme: "light" | "dark" }) {
         .arc-card-title{ font-size:1.15rem; font-weight:600; color:#f5f2ec; margin:10px 0 8px; line-height:1.25; }
         .arc-card-desc{ font-size:.82rem; line-height:1.55; color:rgba(255,255,255,0.5); }
         .arc-card-art{ flex:1; padding:12px 28px 28px; }
+        .arc-card.arc-light{
+  background: transparent;
+  border-color: rgba(0,0,0,0.1);
+}
+.arc-light .arc-card-tag{ color: rgba(0,0,0,0.4); }
+.arc-light .arc-card-title{ color: #181818; }
+.arc-light .arc-card-desc{ color: rgba(0,0,0,0.55); }
       `}</style>
 
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
@@ -1019,9 +1028,9 @@ function TechToolsSection({ theme }: { theme: "light" | "dark" }) {
 
         <div className="mx-auto max-w-[1600px] w-full px-5 sm:px-8 lg:px-12 xl:px-16">
           <div ref={trackRef} className="arc-track">
-            {TECH_TOOL_ITEMS.map((item, i) => (
-              <ArchCard key={item.title} item={item} index={i} active={i === active} />
-            ))}
+           {TECH_TOOL_ITEMS.map((item, i) => (
+  <ArchCard key={item.title} item={item} index={i} active={i === active} theme={theme} />
+))}
           </div>
         </div>
       </div>

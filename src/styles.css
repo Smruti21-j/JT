@@ -56,6 +56,8 @@
   --animate-brand-marquee: brand-marquee 42s linear infinite;
   --animate-brand-marquee-reverse: brand-marquee-reverse 46s linear infinite;
 
+  --container-7xl: 91rem !important;
+
   @keyframes sun-rise {
     0% {
       transform: translate(-50%, 80px) scale(0.85);

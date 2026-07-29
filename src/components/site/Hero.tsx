@@ -111,36 +111,13 @@ export function Hero({ theme }: HeroProps) {
           {/* RIGHT — stat row + isometric illustration with floating callouts */}
           <div>
             {/* Stat cards row */}
-            <div className="grid grid-cols-3 gap-4 mb-10">
-              {STATS.map(({ icon: Icon, value, label }) => (
-                <div key={label} className="rounded-2xl p-4 bg-card border border-border">
-                  <div className="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-4">
-                    <Icon size={18} />
-                  </div>
-                  <p className="font-display text-2xl font-semibold text-foreground leading-none">{value}</p>
-                  <p className="font-mono text-[9px] tracking-[0.1em] uppercase text-muted-foreground mt-2 leading-tight">
-                    {label}
-                  </p>
-                </div>
-              ))}
-            </div>
+            
 
             {/* Illustration with floating labeled callouts */}
-            <div className="relative mx-auto max-w-lg">
+            <div className="relative mx-auto max-w-xxl">
               <img src={heroIllustration} alt="" className="w-full h-auto select-none pointer-events-none" />
 
-              {CALLOUTS.map(({ icon: Icon, label, position }) => (
-                <div
-                  key={label}
-                  className="absolute flex items-center gap-2 rounded-full bg-card border border-border px-3 py-2 shadow-sm"
-                  style={position}
-                >
-                  <div className="h-7 w-7 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                    <Icon size={14} />
-                  </div>
-                  <span className="text-xs font-medium text-foreground whitespace-nowrap pr-1">{label}</span>
-                </div>
-              ))}
+              
             </div>
           </div>
         </div>
