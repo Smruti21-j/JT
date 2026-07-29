@@ -18,6 +18,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
+import { Route as CaseStudiesPryvaseeAiRouteImport } from './routes/case-studies/pryvasee-ai'
 
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
@@ -64,6 +65,11 @@ const InsightsSlugRoute = InsightsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => InsightsRoute,
 } as any)
+const CaseStudiesPryvaseeAiRoute = CaseStudiesPryvaseeAiRouteImport.update({
+  id: '/case-studies/pryvasee-ai',
+  path: '/case-studies/pryvasee-ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -73,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/hire': typeof HireRoute
   '/insights': typeof InsightsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
+  '/case-studies/pryvasee-ai': typeof CaseStudiesPryvaseeAiRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
 }
@@ -84,6 +91,7 @@ export interface FileRoutesByTo {
   '/hire': typeof HireRoute
   '/insights': typeof InsightsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
+  '/case-studies/pryvasee-ai': typeof CaseStudiesPryvaseeAiRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
 }
@@ -96,6 +104,7 @@ export interface FileRoutesById {
   '/hire': typeof HireRoute
   '/insights': typeof InsightsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
+  '/case-studies/pryvasee-ai': typeof CaseStudiesPryvaseeAiRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
 }
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/hire'
     | '/insights'
     | '/services'
+    | '/case-studies/pryvasee-ai'
     | '/insights/$slug'
     | '/services/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/hire'
     | '/insights'
     | '/services'
+    | '/case-studies/pryvasee-ai'
     | '/insights/$slug'
     | '/services/$slug'
   id:
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/hire'
     | '/insights'
     | '/services'
+    | '/case-studies/pryvasee-ai'
     | '/insights/$slug'
     | '/services/$slug'
   fileRoutesById: FileRoutesById
@@ -143,6 +155,7 @@ export interface RootRouteChildren {
   HireRoute: typeof HireRoute
   InsightsRoute: typeof InsightsRouteWithChildren
   ServicesRoute: typeof ServicesRouteWithChildren
+  CaseStudiesPryvaseeAiRoute: typeof CaseStudiesPryvaseeAiRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -210,6 +223,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InsightsSlugRouteImport
       parentRoute: typeof InsightsRoute
     }
+    '/case-studies/pryvasee-ai': {
+      id: '/case-studies/pryvasee-ai'
+      path: '/case-studies/pryvasee-ai'
+      fullPath: '/case-studies/pryvasee-ai'
+      preLoaderRoute: typeof CaseStudiesPryvaseeAiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -245,6 +265,7 @@ const rootRouteChildren: RootRouteChildren = {
   HireRoute: HireRoute,
   InsightsRoute: InsightsRouteWithChildren,
   ServicesRoute: ServicesRouteWithChildren,
+  CaseStudiesPryvaseeAiRoute: CaseStudiesPryvaseeAiRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

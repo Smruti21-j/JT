@@ -232,8 +232,20 @@ function EngagementTile({
           </span>
         )}
       </div>
-      <div style={{ padding: "22px 22px 26px" }}>
-  <span className="arc-card-tag font-mono">{tile.tag}</span>
+   <div style={{ padding: "22px 22px 26px" }}>
+  <span
+    className="font-mono"
+    style={{
+      display: "inline-block",
+      fontSize: "9.5px",
+      letterSpacing: "0.14em",
+      textTransform: "uppercase",
+      color: aux.accent,
+      marginBottom: "8px",
+    }}
+  >
+    {tile.tag}
+  </span>
   <h3 style={{ fontSize: "19px", fontWeight: 800, color: aux.title, marginBottom: "8px" }}>
     {tile.title}
   </h3>
@@ -839,10 +851,11 @@ function IconDocument({ size = 22 }: { size?: number }) {
 
 const TECH_TOOL_ITEMS = [
   {
-    tag: "MCP · Dev Tooling",
-    title: "MCPHub",
-    desc: "One prompt to a wired-up project — MCP integrations, unified.",
+    tag: "Case Study · AI Privacy",
+    title: "Privacy-First AI Platform",
+    desc: "A secure, multi-model AI workspace that protects sensitive data in real time.",
     icon: IconPlug,
+    slug: "pryvasee-ai",
   },
   {
     tag: "AgencyOps · Dev Hub",
@@ -926,8 +939,8 @@ function ArchCard({
   active: boolean;
   theme: "light" | "dark";
 }) {
-  return (
-    <div className={`arc-card${active ? " arc-active" : ""}${theme === "light" ? " arc-light" : ""}`}>
+  const content = (
+    <>
       <div className="arc-card-top">
         <span className="arc-card-tag font-mono">{item.tag}</span>
         <h3 className=" arc-card-title">{item.title}</h3>
@@ -936,8 +949,20 @@ function ArchCard({
       <div className="arc-card-art">
         <WireframeArt index={index} />
       </div>
-    </div>
+    </>
   );
+
+  const className = `arc-card${active ? " arc-active" : ""}${theme === "light" ? " arc-light" : ""}`;
+
+  if ("slug" in item && item.slug) {
+    return (
+      <Link to="/case-studies/$slug" params={{ slug: item.slug }} className={className}>
+        {content}
+      </Link>
+    );
+  }
+
+  return <div className={className}>{content}</div>;
 }
 
 // ─── Architecture Components — pinned section, horizontal reveal on scroll ──
@@ -1578,10 +1603,10 @@ function AIDeliveryProcess({ theme }: { theme: "light" | "dark" }) {
         [END TO END DELIVERY]
         </p>
         <h2  className= "section-title" style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "22px" }}>
-          AI powers every step.
+          AI at every step
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
-            AI powers every step.
+            Every move, enhanced by AI.
           </em>
         </h2>
         <p style={{ maxWidth: "620px", fontSize: "15px", lineHeight: 1.75, color: pal.headerParaColor }}>

@@ -102,8 +102,8 @@ export function Hero({ theme }: HeroProps) {
                 to="/services"
                 className="inline-flex flex-col items-start gap-0.5 border border-border rounded-xl px-6 py-3 hover:border-foreground/30 transition-colors"
               >
-                <span className="text-xs uppercase tracking-[0.15em] text-foreground font-medium">Our Services →</span>
-                <span className="text-[11px] text-muted-foreground">See how we build. Free consult.</span>
+                <span className="text-xs uppercase tracking-[0.15em] text-foreground font-medium">Innovation in Action →</span>
+                
               </Link>
             </div>
           </div>
