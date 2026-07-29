@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { Hero } from "@/components/site/Hero";
-
+import { ScrollToTop } from "@/components/site/ScrollToTop";
 import { Brands } from "@/components/site/Brands";
 import { CTA, Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
@@ -102,49 +102,57 @@ function hoverTint(theme: "light" | "dark", index: number) {
 
 const ENGAGEMENT_TILES = [
   {
-    badge: "new",
+    badge: null,
+    tag: "Agentic AI · Core",
     title: "Intelligence that Acts",
     desc: "Transition from generative prompts to agentic workflows that resolve complex tasks with zero friction.",
     image: pillarImg1,
   },
   {
     badge: null,
+    tag: "Platform · Foundation",
     title: "The AI-First Core",
     desc: "mbed intelligence into the substrate of your business to create a self-evolving, future-proof operating model.",
     image: pillarImg2,
   },
   {
     badge: null,
+    tag: "Engineering · Scale",
     title: "Digital Engineering at Scale",
     desc: "Accelerate your time-to-impact with battle-tested engineering playbooks and frontier technology stacks.",
     image: pillarImg3,
   },
   {
     badge: null,
+    tag: "Infrastructure · Cloud",
     title: "Next-Gen Ecosystems",
     desc: "Build the connected, cloud-native infrastructure required for a resilient and sovereign digital future.",
     image: pillarImg4,
   },
   {
     badge: null,
+    tag: "Design · Experience",
     title: "Design with Purpose",
     desc: "Amplify human potential through sensory UX that balances high-tech precision with human-centric empathy.",
     image: pillarImg5,
   },
   {
     badge: null,
+    tag: "Data · Growth",
     title: "Accelerated Value Chains",
     desc: "Unlock pervasive efficiencies across your entire enterprise with data-driven insights that act as your growth catalyst.",
     image: pillarImg6,
   },
   {
     badge: null,
+    tag: "Strategy · Governance",
     title: "The Architects of Intent",
     desc: "Before you build autonomy, you must engineer the intent. We map your industry’s future friction points to design custom governance and cognitive blueprints, ensuring your proprietary intelligence remains entirely your own.",
     image: pillarImg7,
   },
   {
     badge: null,
+    tag: "AgencyOps · Dev Hub",
     title: "The Engine of Perpetual Motion",
     desc: "Autonomy isn't set and forget - it is a living ecosystem. Our engineering squads continuously tune, optimize, & defend your agentic workflows and self-healing infrastructure in real time.",
     image: pillarImg8,
@@ -225,9 +233,10 @@ function EngagementTile({
         )}
       </div>
       <div style={{ padding: "22px 22px 26px" }}>
-        <h3 style={{ fontSize: "19px", fontWeight: 800, color: aux.title, marginBottom: "8px" }}>
-          {tile.title}
-        </h3>
+  <span className="arc-card-tag font-mono">{tile.tag}</span>
+  <h3 style={{ fontSize: "19px", fontWeight: 800, color: aux.title, marginBottom: "8px" }}>
+    {tile.title}
+  </h3>
         <p style={{ fontSize: "13px", lineHeight: 1.65, color: aux.desc, margin: 0 }}>
           {tile.desc}
         </p>
@@ -273,7 +282,7 @@ function HowYouPlugUsIn({ theme }: { theme: "light" | "dark" }) {
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-          
+          [SERVICES]
         </p>
 
         <h2 className= "section-title"  style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "16px" }}>
@@ -591,7 +600,7 @@ function PrototypeBlueprint({ theme }: { theme: "light" | "dark" }) {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div ref={headerRef} style={{ opacity: 0 }}>
             <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-            
+            [AUTONOMOUS BLUEPRINT]
             </p>
             <h2 className= "section-title"  style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "16px" }}>
               Concepts spark change.
@@ -730,7 +739,7 @@ function TheReceipts({ theme }: { theme: "light" | "dark" }) {
       `}</style>
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-          
+          [EXPERIENCE]
         </p>
         <h2 className= "section-title"  style={{ color: pal.headerHeadingColor, margin: 0 }}>
           Impact Delivered
@@ -982,12 +991,12 @@ function TechToolsSection({ theme }: { theme: "light" | "dark" }) {
         }
         .arc-card.arc-active{ opacity:1; }
         .arc-card-top{ padding:26px 24px 0; }
-        .arc-card-tag{ font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,0.4); }
+        .arc-card-tag{ font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; color:rgba(0,0,0,0.4); }
         .arc-card-title{ font-size:1.15rem; font-weight:600; color:#f5f2ec; margin:10px 0 8px; line-height:1.25; }
         .arc-card-desc{ font-size:.82rem; line-height:1.55; color:rgba(255,255,255,0.5); }
         .arc-card-art{ flex:1; padding:12px 28px 28px; }
         .arc-card.arc-light{
-  background: transparent;
+  background: #ffffff;
   border-color: rgba(0,0,0,0.1);
 }
 .arc-light .arc-card-tag{ color: rgba(0,0,0,0.4); }
@@ -1305,7 +1314,7 @@ function AICapabilities({ theme }: { theme: "light" | "dark" }) {
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-         
+         [ARCHITECTURE COMPONENTS]
         </p>
         <h2 className= "section-title" style={{  color: pal.headerHeadingColor, margin: 0, marginBottom: "18px" }}>
           AI, Built for
@@ -1566,7 +1575,7 @@ function AIDeliveryProcess({ theme }: { theme: "light" | "dark" }) {
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-        
+        [END TO END DELIVERY]
         </p>
         <h2  className= "section-title" style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "22px" }}>
           AI powers every step.
@@ -1807,7 +1816,7 @@ function EngineeringNotes({ theme }: { theme: "light" | "dark" }) {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-             
+             [BLOCKCHAIN & AI INSIGHTS]
             </p>
             <h2 className= "section-title" style={{  color: pal.headerHeadingColor, margin: 0 }}>
               INSIGHTS FROM
@@ -1968,7 +1977,7 @@ function ShippedIndustries({ theme }: { theme: "light" | "dark" }) {
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-          
+          [INDUSTRY EXPERIENCE]
         </p>  
         <h2 className= "section-title" style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "18px" }}>
           Experience that spans
@@ -2024,7 +2033,8 @@ function Index() {
       <ShippedIndustries theme={theme} />
       <Brands />
       <CTA />
-      <Footer />
+      <Footer theme={theme} />
+      <ScrollToTop />
     </main>
   );
 }

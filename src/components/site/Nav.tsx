@@ -1,10 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import logoFullDark from "@/assets/JT_ondark.png";
+import logoFullDark from "@/assets/JT logo-bk - icon.svg";
 import logoIconDark from "@/assets/JT logo-bk.svg";
-import logoFullLight from "@/assets/JT logo-original.svg";
-import logoIconLight from "@/assets/JT logo-original - icon.svg";
+import logoFullLight from "@/assets/JT-logo-original.png";
+import logoIconLight from "@/assets/JT-logo-original-icon.png";
 import type { SiteTheme } from "@/hooks/use-theme-init";
 
 const LINKS = [
@@ -112,7 +112,7 @@ export function Nav({ theme, onToggleTheme }: NavProps) {
           </Link>
 
           <nav
-            className="hidden items-center gap-8 text-[12px] uppercase tracking-[0.2em] md:flex"
+            className="hidden items-center gap-5 text-[12px] uppercase tracking-[0.2em] md:flex"
           >
             {LINKS.map((link) => (
               <Link
