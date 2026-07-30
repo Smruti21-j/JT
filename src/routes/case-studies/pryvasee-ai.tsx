@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
 import { useThemeInit } from "@/hooks/use-theme-init";
+import { Menu, Sparkles, ThumbsUp, ThumbsDown, Copy, Download, Info, X, AlertTriangle, ChevronDown, Image as ImageIcon } from "lucide-react";
 
 function pillarPalette(theme: "light" | "dark") {
   if (theme === "light") {
@@ -131,6 +132,200 @@ function SectionLabel({ children, color }: { children: React.ReactNode; color: s
   );
 }
 
+function PhoneFrame({
+  aux,
+  style,
+  children,
+}: {
+  aux: ReturnType<typeof auxPalette>;
+  style?: React.CSSProperties;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      style={{
+        position: "relative",
+        width: "220px",
+        borderRadius: "34px",
+        border: `7px solid ${aux.cardBorder}`,
+        background: aux.cardBg,
+        overflow: "hidden",
+        boxShadow: "0 30px 60px -30px rgba(0,0,0,0.4)",
+        ...style,
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "90px",
+          height: "20px",
+          background: aux.cardBorder,
+          borderRadius: "0 0 12px 12px",
+          zIndex: 2,
+        }}
+      />
+      <div style={{ paddingTop: "26px" }}>{children}</div>
+    </div>
+  );
+}
+
+function ChatPhoneMockup({ aux }: { aux: ReturnType<typeof auxPalette> }) {
+  return (
+    <PhoneFrame aux={aux}>
+      <div style={{ padding: "10px 14px 16px" }}>
+        <div className="flex items-center justify-between" style={{ marginBottom: "14px" }}>
+          <Menu size={15} color={aux.desc} />
+          <span style={{ fontSize: "11.5px", fontWeight: 700, color: aux.title }}>PryvaseeAI</span>
+          <Sparkles size={15} color={aux.accent} />
+        </div>
+
+        <div
+          className="font-mono"
+          style={{
+            marginLeft: "auto",
+            width: "fit-content",
+            maxWidth: "85%",
+            fontSize: "10px",
+            color: "#fff",
+            background: aux.accent,
+            borderRadius: "12px 12px 2px 12px",
+            padding: "8px 11px",
+            marginBottom: "12px",
+          }}
+        >
+          generate an image of a natural scene
+        </div>
+
+        <div
+          style={{
+            aspectRatio: "1 / 1",
+            borderRadius: "10px",
+            background: `linear-gradient(135deg, ${aux.accent}22, ${aux.cardBorder})`,
+            border: `1px solid ${aux.cardBorder}`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginBottom: "10px",
+          }}
+        >
+          <ImageIcon size={26} color={aux.desc} />
+        </div>
+
+        <div className="flex items-center gap-3" style={{ opacity: 0.6 }}>
+          <ThumbsUp size={12} color={aux.desc} />
+          <ThumbsDown size={12} color={aux.desc} />
+          <Copy size={12} color={aux.desc} />
+          <Download size={12} color={aux.desc} />
+          <Info size={12} color={aux.desc} />
+        </div>
+      </div>
+    </PhoneFrame>
+  );
+}
+
+const PRIVACY_ROWS = [
+  { label: "Email", value: "test@gmail.com" },
+  { label: "Phone", value: "+91 1234 5678 90" },
+  { label: "Address", value: "456 Willow Creek Drive" },
+  { label: "Credit Card", value: "1234 5678 9012" },
+  { label: "Passport", value: "123456789" },
+];
+
+function PrivacyModalMockup({ aux }: { aux: ReturnType<typeof auxPalette> }) {
+  return (
+    <PhoneFrame aux={aux} style={{ marginTop: "44px", marginLeft: "-28px" }}>
+      <div style={{ padding: "10px 14px 16px" }}>
+        <div className="flex items-center justify-between" style={{ marginBottom: "8px" }}>
+          <X size={13} color={aux.desc} />
+          <span style={{ fontSize: "10.5px", fontWeight: 700, color: aux.title, textAlign: "center", flex: 1 }}>
+            Sensitive Information Detected
+          </span>
+          <Info size={13} color={aux.desc} />
+        </div>
+
+        <p style={{ fontSize: "8.5px", lineHeight: 1.5, color: aux.desc, marginBottom: "10px" }}>
+          Sharing personal information with AI models may pose privacy risks.
+        </p>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            gap: "6px",
+            background: `${aux.accent}14`,
+            border: `1px solid ${aux.accent}33`,
+            borderRadius: "8px",
+            padding: "8px 9px",
+            marginBottom: "10px",
+          }}
+        >
+          <AlertTriangle size={12} color={aux.accent} style={{ flexShrink: 0, marginTop: "1px" }} />
+          <span className="font-mono" style={{ fontSize: "7.5px", lineHeight: 1.5, color: aux.title }}>
+            We detected {PRIVACY_ROWS.length} instances of potentially sensitive information.
+          </span>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "6px", marginBottom: "12px" }}>
+          {PRIVACY_ROWS.map((row) => (
+            <div
+              key={row.label}
+              className="flex items-center justify-between"
+              style={{
+                background: aux.cardBg,
+                border: `1px solid ${aux.cardBorder}`,
+                borderRadius: "8px",
+                padding: "6px 9px",
+              }}
+            >
+              <div>
+                <p className="font-mono" style={{ fontSize: "7px", color: aux.accent, margin: 0, letterSpacing: "0.05em" }}>
+                  {row.label.toUpperCase()}
+                </p>
+                <p style={{ fontSize: "8px", color: aux.title, margin: 0 }}>{row.value}</p>
+              </div>
+              <ChevronDown size={11} color={aux.desc} />
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <span
+            className="font-mono"
+            style={{
+              flex: 1,
+              textAlign: "center",
+              fontSize: "8px",
+              color: aux.title,
+              border: `1px solid ${aux.cardBorder}`,
+              borderRadius: "999px",
+              padding: "7px 0",
+            }}
+          >
+            Edit Query
+          </span>
+          <span
+            className="font-mono"
+            style={{
+              flex: 1,
+              textAlign: "center",
+              fontSize: "8px",
+              color: "#fff",
+              background: aux.accent,
+              borderRadius: "999px",
+              padding: "7px 0",
+            }}
+          >
+            Processed
+          </span>
+        </div>
+      </div>
+    </PhoneFrame>
+  );
+}
+
 function PrivacyAICaseStudy() {
   const { theme, toggleTheme } = useThemeInit();
   const pal = pillarPalette(theme);
@@ -157,32 +352,44 @@ function PrivacyAICaseStudy() {
             ← Back to Services
           </Link>
 
-          <SectionLabel color={aux.accent}>[Case Study]</SectionLabel>
+          <div className="grid lg:grid-cols-2 gap-14 items-center">
+            <div>
+              <SectionLabel color={aux.accent}>[Case Study]</SectionLabel>
 
-          <h1
-            className="font-display"
-            style={{
-              fontSize: "clamp(41.6px, 70.656px, 75.2px)",
-              fontWeight: 700,
-              lineHeight: 1.05,
-              letterSpacing: "-0.01em",
-              color: pal.headerHeadingColor,
-              margin: 0,
-              marginBottom: "16px",
-              maxWidth: "900px",
-            }}
-          >
-            Privacy, built
-            <br />
-            <em style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>
-              into every interaction.
-            </em>
-          </h1>
+              <h1
+                className="font-display"
+                style={{
+                  fontSize: "clamp(41.6px, 70.656px, 75.2px)",
+                  fontWeight: 700,
+                  lineHeight: 1.05,
+                  letterSpacing: "-0.01em",
+                  color: pal.headerHeadingColor,
+                  margin: 0,
+                  marginBottom: "16px",
+                  maxWidth: "900px",
+                }}
+              >
+                Privacy, built
+                <br />
+                <em style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>
+                  into every interaction.
+                </em>
+              </h1>
 
-          <p style={{ maxWidth: "720px", fontSize: "16px", lineHeight: 1.8, color: pal.headerParaColor, marginTop: "24px" }}>
-            A secure, multi-model AI interaction platform that lets people use AI without giving up
-            control of their data — built from the ground up around real-time privacy protection.
-          </p>
+              <p style={{ maxWidth: "720px", fontSize: "16px", lineHeight: 1.8, color: pal.headerParaColor, marginTop: "24px" }}>
+                A secure, multi-model AI interaction platform that lets people use AI without giving up
+                control of their data — built from the ground up around real-time privacy protection.
+              </p>
+            </div>
+
+            {/* Coded phone mockups (not an image) - chat + privacy detection flow */}
+            <div className="flex justify-center lg:justify-end">
+              <div className="flex items-start" style={{ padding: "20px 0" }}>
+                <ChatPhoneMockup aux={aux} />
+                <PrivacyModalMockup aux={aux} />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

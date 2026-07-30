@@ -7,7 +7,7 @@ import { CTA, Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
 import { useEffect, useRef, useState } from "react";
 import { useThemeInit } from "@/hooks/use-theme-init";
-
+import iconAiAgents from "../assets/icon-ai-agents.png";  
 // ─── Local image imports ──────────────────────────────────────────────────────
 import pillarImg1 from "/index-image1.png";
 import pillarImg2 from "/index-image2.png";
@@ -17,6 +17,12 @@ import pillarImg5 from "/index-image5.jpg";
 import pillarImg6 from "/index-image6.jpg";
 import pillarImg7 from "/index-image7.png";
 import pillarImg8 from "/index-image8.png";
+
+import archPattern1 from "../assets/1.svg";
+import archPattern2 from "../assets/2.svg";
+import archPattern3 from "../assets/3.svg";
+import archPattern4 from "../assets/4.svg";
+import archPattern5 from "../assets/5.svg";
 
 const PK_KEYFRAMES = `
   @keyframes pkHeaderIn {
@@ -351,18 +357,46 @@ function IconDragHandle({ size = 16 }: { size?: number }) {
   );
 }
 
-const CHANNEL_ROWS = [
-  { name: "Web Widget", meta: "412 active · 24s median", status: "Live", time: "24s" },
-  { name: "WhatsApp", meta: "288 active · 31s median", status: "Live", time: "31s" },
-  { name: "Email", meta: "76 open · 4m median", status: "Busy", time: "4m" },
-  { name: "Slack Connect", meta: "53 active · 18s median", status: "Live", time: "18s" },
-  { name: "Instagram DM", meta: "121 active · 96s median", status: "Delayed", time: "96s" },
+const STAT_CARDS = [
+  { label: "Total Users", value: "625", delta: "▲ 8%", up: true, bars: [3,4,3,5,4,6,5,7,6,8] },
+  { label: "Applications", value: "702", delta: "▲ 14%", up: true, bars: [4,5,4,6,5,7,6,8,7,9] },
+  { label: "Reports Gen.", value: "1,890", delta: "▲ 5%", up: true, bars: [5,5,6,5,7,6,7,8,7,8] },
+  { label: "Subscriptions", value: "64", delta: "▼ 2", up: false, bars: [7,6,7,5,6,5,4,5,4,3] },
 ];
 
-function statusColor(status: string, theme: "light" | "dark") {
-  if (status === "Live") return theme === "light" ? "#1F9D55" : "#4ADE80";
-  if (status === "Busy") return theme === "light" ? "#B45309" : "#FBBF24";
-  return theme === "light" ? "#ed6323" : "#F87171";
+const RECORD_ROWS = [
+  { id: "APP-2604", label: "Home Loan", meta: "Ahmedabad · ₹10.00 Cr+", icon: "home", status: "Disbursed", bars: [3,5,4,7,6,8] },
+  { id: "APP-2603", label: "CC/OD · MSME", meta: "Surat · ₹1.00 Cr+", icon: "dollar", status: "Sanctioned", bars: [4,4,5,4,6,5] },
+  { id: "APP-2602", label: "Home Loan", meta: "Rajkot · ₹10.00 Cr+", icon: "home", status: "Pending", bars: [2,3,2,4,3,3] },
+  { id: "APP-2601", label: "Home Loan", meta: "Vadodara · ₹10.00 Cr+", icon: "home", status: "Disbursed", bars: [5,6,5,7,8,8] },
+  { id: "APP-2600", label: "CC/OD · MSME", meta: "Kolkata · ₹1.00 Cr+", icon: "dollar", status: "Rejected", bars: [1,2,1,2,1,1] },
+];
+
+function recordStatusColor(status: string, theme: "light" | "dark") {
+  if (status === "Disbursed") return theme === "light" ? "#1F9D55" : "#4ADE80";
+  if (status === "Sanctioned") return theme === "light" ? "#2563EB" : "#60A5FA";
+  if (status === "Pending") return theme === "light" ? "#B45309" : "#FBBF24";
+  return theme === "light" ? "#DC2626" : "#F87171";
+}
+
+function MiniBars({ values, color }: { values: number[]; color: string }) {
+  const max = Math.max(...values);
+  return (
+    <div style={{ display: "flex", alignItems: "flex-end", gap: "2.5px", height: "18px" }}>
+      {values.map((v, i) => (
+        <span
+          key={i}
+          style={{
+            width: "3px",
+            height: `${Math.max(15, (v / max) * 100)}%`,
+            background: color,
+            borderRadius: "2px",
+            opacity: 0.35 + (v / max) * 0.65,
+          }}
+        />
+      ))}
+    </div>
+  );
 }
 
 function BlueprintProductionSlider({ theme }: { theme: "light" | "dark" }) {
@@ -385,9 +419,7 @@ function BlueprintProductionSlider({ theme }: { theme: "light" | "dark" }) {
       const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
       updateFromClientX(clientX);
     };
-    const onUp = () => {
-      draggingRef.current = false;
-    };
+    const onUp = () => { draggingRef.current = false; };
     window.addEventListener("mousemove", onMove);
     window.addEventListener("touchmove", onMove);
     window.addEventListener("mouseup", onUp);
@@ -400,133 +432,229 @@ function BlueprintProductionSlider({ theme }: { theme: "light" | "dark" }) {
     };
   }, []);
 
-  const darkPanelBg = "#0a1c18";
-  const darkPanelBorder = "rgba(255,255,255,0.1)";
-  const darkMuted = "rgba(240,232,223,0.5)";
+  const rowIcon = (key: string) => (key === "home" ? IconHome : IconDollar);
+
+  const bpBg = "#0c1f4d";
+  const bpGridMinor = "rgba(255,255,255,0.07)";
+  const bpGridMajor = "rgba(255,255,255,0.14)";
+  const bpLine = "rgba(255,255,255,0.85)";
+  const bpMuted = "rgba(255,255,255,0.6)";
+  const bpBright = "#ffffff";
 
   return (
     <div
       ref={containerRef}
       className="relative select-none overflow-hidden rounded-2xl"
       style={{
-        aspectRatio: "16 / 11",
+        aspectRatio: "16 / 12",
         border: `1px solid ${aux.cardBorder}`,
         cursor: "ew-resize",
         touchAction: "none",
+        boxShadow: theme === "light" ? "0 30px 60px -30px rgba(0,0,0,0.25)" : "0 30px 60px -30px rgba(0,0,0,0.6)",
       }}
-      onMouseDown={(e) => {
-        draggingRef.current = true;
-        updateFromClientX(e.clientX);
-      }}
-      onTouchStart={(e) => {
-        draggingRef.current = true;
-        updateFromClientX(e.touches[0].clientX);
-      }}
+      onMouseDown={(e) => { draggingRef.current = true; updateFromClientX(e.clientX); }}
+      onTouchStart={(e) => { draggingRef.current = true; updateFromClientX(e.touches[0].clientX); }}
     >
-      <div className="absolute inset-0" style={{ background: "#ffffff", padding: "20px" }}>
-        <span
-  className="font-mono absolute top-4 right-4"
-  style={{ fontSize: "9px", letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(25,25,25,0.55)", background: "#F1EEE8", borderRadius: "999px", padding: "4px 10px" }}
->
-  Production
-</span>
-<p className="font-display" style={{ fontSize: "15px", fontWeight: 700, color: "#181818", margin: 0 }}>
-  Live Chat Analytics
-</p>
-<p className="font-mono" style={{ fontSize: "10px", color: "rgba(25,25,25,0.55)", marginTop: "2px", marginBottom: "16px" }}>
-  Real-time · last 24h
-</p>
+      <div className="absolute inset-0" style={{ background: "#ffffff", padding: "22px", overflow: "hidden" }}>
+        <div className="flex items-center justify-between" style={{ marginBottom: "16px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "#1F9D55", boxShadow: "0 0 0 3px rgba(31,157,85,0.18)" }} />
+            <div>
+              <p className="font-display" style={{ fontSize: "16px", fontWeight: 800, color: "#181818", margin: 0 }}>
+                Admin Dashboard
+              </p>
+              <p className="font-mono" style={{ fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(25,25,25,0.42)", marginTop: "2px" }}>
+                Real-time · Last 30d
+              </p>
+            </div>
+          </div>
+          <span
+            className="font-mono"
+            style={{ fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(25,25,25,0.55)", background: "#F1EEE8", borderRadius: "999px", padding: "5px 12px" }}
+          >
+            Last 30D ▾
+          </span>
+        </div>
 
-        <div className="grid grid-cols-4 gap-2" style={{ marginBottom: "16px" }}>
-          {[
-            { label: "Active chats", value: "1,284", delta: "▲ 12%" },
-            { label: "First response", value: "38s", delta: "▼ 6s" },
-            { label: "CSAT score", value: "94.2%", delta: "▲ 1.4" },
-            { label: "Missed rate", value: "0.8%", delta: "▼ 0.3" },
-          ].map((s) => (
-            <div key={s.label} style={{ background: theme === "light" ? "#F8F6F1" : "rgba(255,255,255,0.04)", borderRadius: "10px", padding: "8px 10px" }}>
-              <p className="font-mono" style={{ fontSize: "8px", letterSpacing: "0.05em", textTransform: "uppercase", color: aux.desc, margin: 0 }}>{s.label}</p>
-              <p className="font-display" style={{ fontSize: "15px", fontWeight: 700, color: aux.title, margin: "2px 0 0" }}>{s.value}</p>
-              <p className="font-mono" style={{ fontSize: "8px", color: aux.accent, margin: 0 }}>{s.delta}</p>
+        <div className="grid grid-cols-4 gap-2.5" style={{ marginBottom: "16px" }}>
+          {STAT_CARDS.map((s) => (
+            <div key={s.label} style={{ background: "#F8F6F1", borderRadius: "12px", padding: "10px 12px", border: "1px solid rgba(0,0,0,0.04)" }}>
+              <p className="font-mono" style={{ fontSize: "7.5px", letterSpacing: "0.06em", textTransform: "uppercase", color: "rgba(25,25,25,0.42)", margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                {s.label}
+              </p>
+              <p className="font-display" style={{ fontSize: "17px", fontWeight: 800, color: "#181818", margin: "3px 0 2px", lineHeight: 1 }}>
+                {s.value}
+              </p>
+              <p className="font-mono" style={{ fontSize: "8px", color: s.up ? "#1F9D55" : "#DC2626", margin: "0 0 6px", fontWeight: 700 }}>
+                {s.delta}
+              </p>
+              <MiniBars values={s.bars} color="#ed6323" />
             </div>
           ))}
         </div>
 
-        <svg viewBox="0 0 300 50" style={{ width: "100%", height: "40px", marginBottom: "12px" }}>
-          <polyline
-            points="0,40 30,32 60,36 90,20 120,28 150,15 180,24 210,18 240,26 270,14 300,20"
-            fill="none"
-            stroke={aux.accent}
-            strokeWidth="2"
-          />
-        </svg>
-
-        <div className="flex flex-col gap-1.5">
-          {CHANNEL_ROWS.map((row) => (
-            <div key={row.name} className="flex items-center justify-between" style={{ fontSize: "10px" }}>
-              <div>
-                <span style={{ color: aux.title, fontWeight: 600 }}>{row.name}</span>
-                <span style={{ color: aux.desc, marginLeft: "6px" }} className="font-mono">{row.meta}</span>
-              </div>
-              <span
-                className="font-mono"
-                style={{ color: statusColor(row.status, theme), fontWeight: 600, display: "flex", alignItems: "center", gap: "4px" }}
-              >
-                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: statusColor(row.status, theme), display: "inline-block" }} />
-                {row.status} {row.time}
+        <div style={{ background: "#F8F6F1", borderRadius: "12px", padding: "14px 14px 8px", marginBottom: "14px", position: "relative" }}>
+          <div className="flex items-center justify-between" style={{ marginBottom: "6px" }}>
+            <p className="font-display" style={{ fontSize: "12.5px", fontWeight: 700, color: "#181818", margin: 0 }}>
+              Applications · 30d
+            </p>
+            <div className="flex items-center gap-3">
+              <span className="font-mono" style={{ fontSize: "8px", display: "flex", alignItems: "center", gap: "4px", color: "rgba(25,25,25,0.5)" }}>
+                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#ed6323" }} /> New
               </span>
+              <span className="font-mono" style={{ fontSize: "8px", display: "flex", alignItems: "center", gap: "4px", color: "rgba(25,25,25,0.5)" }}>
+                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#1F9D55" }} /> Disbursed
+              </span>
+              <span className="font-mono" style={{ fontSize: "8px", color: "#1F9D55", background: "rgba(31,157,85,0.12)", borderRadius: "999px", padding: "2px 7px", fontWeight: 700 }}>▲ 8.2%</span>
             </div>
-          ))}
+          </div>
+          <div style={{ position: "relative" }}>
+            <svg viewBox="0 0 300 52" style={{ width: "100%", height: "44px" }}>
+              <polyline points="0,44 30,36 60,40 90,24 120,32 150,17 180,28 210,20 240,30 270,15 300,22" fill="none" stroke="#ed6323" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+              <polyline points="0,48 30,44 60,46 90,38 120,42 150,32 180,40 210,34 240,42 270,28 300,36" fill="none" stroke="#1F9D55" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <div
+              className="font-mono"
+              style={{
+                position: "absolute", top: "-6px", left: "58%", transform: "translateX(-50%)",
+                background: "#181818", color: "#fff", borderRadius: "8px", padding: "5px 9px",
+                fontSize: "9px", whiteSpace: "nowrap", boxShadow: "0 8px 16px rgba(0,0,0,0.2)",
+              }}
+            >
+              <strong style={{ fontSize: "10px" }}>178</strong> sanctioned today
+            </div>
+          </div>
+        </div>
+
+        <p className="font-mono" style={{ fontSize: "8.5px", letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(25,25,25,0.4)", marginBottom: "8px" }}>
+          Recent Applications
+        </p>
+        <div className="flex flex-col gap-1.5">
+          {RECORD_ROWS.map((row) => {
+            const RowIcon = rowIcon(row.icon);
+            return (
+              <div key={row.id} className="flex items-center justify-between" style={{ padding: "5px 0" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "9px", minWidth: 0 }}>
+                  <span style={{ width: "26px", height: "26px", borderRadius: "8px", background: "#F1EEE8", display: "flex", alignItems: "center", justifyContent: "center", color: "#181818", flexShrink: 0 }}>
+                    <RowIcon size={13} />
+                  </span>
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{ fontSize: "11px", fontWeight: 700, color: "#181818", margin: 0, whiteSpace: "nowrap" }}>{row.label}</p>
+                    <p className="font-mono" style={{ fontSize: "8.5px", color: "rgba(25,25,25,0.45)", margin: 0, whiteSpace: "nowrap" }}>{row.meta}</p>
+                  </div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
+                  <MiniBars values={row.bars} color={recordStatusColor(row.status, theme)} />
+                  <span
+                    className="font-mono"
+                    style={{ fontSize: "8.5px", fontWeight: 700, color: recordStatusColor(row.status, theme), background: `${recordStatusColor(row.status, theme)}18`, borderRadius: "999px", padding: "3px 8px", whiteSpace: "nowrap" }}
+                  >
+                    {row.status}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
       <div
         className="absolute inset-0"
         style={{
-          background: darkPanelBg,
-          padding: "20px",
+          background: bpBg,
+          backgroundImage: `
+            linear-gradient(${bpGridMajor} 1px, transparent 1px),
+            linear-gradient(90deg, ${bpGridMajor} 1px, transparent 1px),
+            linear-gradient(${bpGridMinor} 1px, transparent 1px),
+            linear-gradient(90deg, ${bpGridMinor} 1px, transparent 1px)
+          `,
+          backgroundSize: "88px 88px, 88px 88px, 22px 22px, 22px 22px",
+          padding: "22px",
+          overflow: "hidden",
           clipPath: `inset(0 ${100 - pos}% 0 0)`,
         }}
       >
-        <span
-          className="font-mono absolute top-4 left-4"
-          style={{ fontSize: "9px", letterSpacing: "0.15em", textTransform: "uppercase", color: darkMuted, background: "rgba(255,255,255,0.08)", borderRadius: "999px", padding: "4px 10px" }}
-        >
-          Blueprint
-        </span>
+        {[
+          { top: 10, left: 10, bt: true, bl: true },
+          { top: 10, right: 10, bt: true, br: true },
+          { bottom: 10, left: 10, bb: true, bl: true },
+          { bottom: 10, right: 10, bb: true, br: true },
+        ].map((c, i) => (
+          <div
+            key={i}
+            style={{
+              position: "absolute", width: "14px", height: "14px",
+              top: c.top, bottom: (c as any).bottom, left: c.left, right: (c as any).right,
+              borderTop: c.bt ? `1.5px solid ${bpMuted}` : undefined,
+              borderBottom: c.bb ? `1.5px solid ${bpMuted}` : undefined,
+              borderLeft: c.bl ? `1.5px solid ${bpMuted}` : undefined,
+              borderRight: c.br ? `1.5px solid ${bpMuted}` : undefined,
+            }}
+          />
+        ))}
 
-        <p className="font-mono" style={{ fontSize: "10px", color: darkMuted, marginTop: "36px", marginBottom: "10px" }}>
-          page title
-        </p>
+        <div className="flex items-center justify-between" style={{ marginBottom: "16px" }}>
+          <div>
+            <p className="font-mono" style={{ fontSize: "13px", fontWeight: 700, color: bpBright, margin: 0 }}>admin_dashboard.spec</p>
+            <p className="font-mono" style={{ fontSize: "9px", color: bpMuted, marginTop: "2px" }}>rev. 004 · draft</p>
+          </div>
+          <span className="font-mono" style={{ fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase", color: bpBright, border: `1px solid ${bpLine}`, borderRadius: "999px", padding: "5px 12px" }}>
+            Concept
+          </span>
+        </div>
 
-        <div className="grid grid-cols-2 gap-2" style={{ marginBottom: "16px" }}>
-          {["active", "response"].map((label) => (
-            <div key={label} style={{ border: `1px dashed ${darkPanelBorder}`, borderRadius: "8px", padding: "10px" }}>
-              <p className="font-mono" style={{ fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase", color: darkMuted, margin: 0 }}>{label}</p>
-              <div style={{ height: "6px", width: "60%", background: "rgba(255,255,255,0.12)", borderRadius: "3px", marginTop: "8px" }} />
-              <p className="font-mono" style={{ fontSize: "8px", color: darkMuted, marginTop: "6px" }}>kpi</p>
+       <div className="grid grid-cols-4 gap-2.5" style={{ marginBottom: "16px" }}>
+          {STAT_CARDS.map((s, i) => (
+            <div key={s.label} style={{ border: `1.5px dashed ${bpLine}`, borderRadius: "10px", padding: "10px", position: "relative" }}>
+              <span className="font-mono" style={{ position: "absolute", top: "6px", right: "8px", fontSize: "8px", color: bpMuted }}>
+                #{String(i + 1).padStart(2, "0")}
+              </span>
+              <p className="font-mono" style={{ fontSize: "7.5px", letterSpacing: "0.06em", textTransform: "uppercase", color: bpMuted, margin: "0 0 6px" }}>
+                {s.label}
+              </p>
+              <p className="font-mono" style={{ fontSize: "15px", fontWeight: 700, color: bpBright, margin: "0 0 8px" }}>
+                {s.value}
+              </p>
+              <div style={{ display: "flex", gap: "2px", alignItems: "flex-end", height: "16px" }}>
+                {s.bars.map((v, bi) => (
+                  <span key={bi} style={{ width: "3px", height: `${(v / Math.max(...s.bars)) * 100}%`, background: "rgba(255,255,255,0.4)", borderRadius: "1px" }} />
+                ))}
+              </div>
             </div>
           ))}
         </div>
 
-        <p className="font-mono" style={{ fontSize: "9px", color: darkMuted, marginBottom: "6px" }}>conversations · 24h</p>
-        <svg viewBox="0 0 300 50" style={{ width: "100%", height: "40px", marginBottom: "16px" }}>
-          <polyline
-            points="0,30 40,22 80,34 120,18 160,28 200,15 240,26 280,20 300,25"
-            fill="none"
-            stroke="rgba(255,255,255,0.35)"
-            strokeWidth="2"
-            strokeDasharray="4 3"
-          />
-        </svg>
+       <div style={{ border: `1.5px dashed ${bpLine}`, borderRadius: "12px", padding: "14px", marginBottom: "14px" }}>
+          <div className="flex items-center justify-between" style={{ marginBottom: "10px" }}>
+            <p className="font-mono" style={{ fontSize: "9px", letterSpacing: "0.06em", textTransform: "uppercase", color: bpMuted, margin: 0 }}>
+              Applications · 30d trend
+            </p>
+            <p className="font-mono" style={{ fontSize: "9px", color: bpBright, margin: 0 }}>
+              ▲ 8.2%
+            </p>
+          </div>
+          <svg viewBox="0 0 300 46" style={{ width: "100%", height: "38px" }}>
+            <polyline points="0,28 40,20 80,32 120,16 160,26 200,13 240,24 280,18 300,23" fill="none" stroke={bpLine} strokeWidth="1.6" strokeDasharray="5 4" opacity="0.85" />
+          </svg>
+        </div>
 
-        <div className="flex flex-col gap-2">
-          {CHANNEL_ROWS.map((row) => (
-            <div key={row.name} className="flex items-center justify-between" style={{ fontSize: "10px" }}>
-              <span className="font-mono" style={{ color: darkMuted }}>channel</span>
-              <span className="font-mono" style={{ color: darkMuted, display: "flex", alignItems: "center", gap: "4px" }}>
-                <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: "rgba(255,255,255,0.3)", display: "inline-block" }} />
-                status · wait
+        <p className="font-mono" style={{ fontSize: "9px", letterSpacing: "0.08em", textTransform: "uppercase", color: bpMuted, marginBottom: "10px" }}>
+          Recent Applications · list × {RECORD_ROWS.length}
+        </p>
+        <div className="flex flex-col gap-2.5">
+          {RECORD_ROWS.map((row, i) => (
+            <div key={i} className="flex items-center justify-between">
+              <div style={{ display: "flex", alignItems: "center", gap: "9px" }}>
+                <span style={{ width: "26px", height: "26px", borderRadius: "8px", border: `1.5px dashed ${bpLine}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <span className="font-mono" style={{ fontSize: "8px", color: bpMuted }}>{i + 1}</span>
+                </span>
+                <div>
+                  <p className="font-mono" style={{ fontSize: "10.5px", color: bpBright, margin: 0 }}>{row.label}</p>
+                  <p className="font-mono" style={{ fontSize: "8.5px", color: bpMuted, margin: 0 }}>{row.id}</p>
+                </div>
+              </div>
+              <span className="font-mono" style={{ fontSize: "9px", color: bpBright, border: `1px solid ${bpLine}`, borderRadius: "999px", padding: "3px 8px" }}>
+                {row.status}
               </span>
             </div>
           ))}
@@ -535,55 +663,29 @@ function BlueprintProductionSlider({ theme }: { theme: "light" | "dark" }) {
 
       <div
         className="absolute top-0 bottom-0"
-        style={{
-          left: `${pos}%`,
-          width: "2px",
-          background: aux.accent,
-          transform: "translateX(-1px)",
-          pointerEvents: "none",
-        }}
+        style={{ left: `${pos}%`, width: "3px", background: aux.accent, transform: "translateX(-1.5px)", pointerEvents: "none", boxShadow: `0 0 24px 2px ${aux.accent}` }}
       >
         <div
           className="absolute top-1/2"
           style={{
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: "34px",
-            height: "34px",
-            borderRadius: "50%",
-            background: aux.accent,
-            color: "#fff",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            boxShadow: "0 6px 18px rgba(0,0,0,0.25)",
+            left: "50%", transform: "translate(-50%, -50%)", width: "38px", height: "38px", borderRadius: "50%",
+            background: aux.accent, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.35), 0 0 0 5px rgba(255,255,255,0.15)",
           }}
         >
-          <IconDragHandle />
+          <IconDragHandle size={18} />
         </div>
       </div>
 
       <span
-        className="font-mono absolute bottom-3"
-        style={{
-          left: `${pos}%`,
-          transform: "translateX(-50%)",
-          fontSize: "8px",
-          letterSpacing: "0.15em",
-          textTransform: "uppercase",
-          color: "#fff",
-          background: "rgba(0,0,0,0.5)",
-          borderRadius: "999px",
-          padding: "3px 8px",
-          pointerEvents: "none",
-        }}
+        className="font-mono absolute bottom-4"
+        style={{ left: `${pos}%`, transform: "translateX(-50%)", fontSize: "9px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#fff", background: "rgba(0,0,0,0.55)", borderRadius: "999px", padding: "4px 10px", pointerEvents: "none", whiteSpace: "nowrap" }}
       >
         Drag to compare
       </span>
     </div>
   );
 }
-
 function PrototypeBlueprint({ theme }: { theme: "light" | "dark" }) {
   const headerRef = useRef<HTMLDivElement>(null);
   const pal = pillarPalette(theme);
@@ -926,7 +1028,7 @@ function WireframeArt({ index }: { index: number }) {
     </svg>
   );
 }
-
+const ARCH_PATTERNS = [archPattern1, archPattern2, archPattern3, archPattern4, archPattern5];
 // ─── Architecture-component card ─────────────────────────────────────────────
 function ArchCard({
   item,
@@ -947,7 +1049,12 @@ function ArchCard({
         <p className="arc-card-desc">{item.desc}</p>
       </div>
       <div className="arc-card-art">
-        <WireframeArt index={index} />
+        <img
+          src={ARCH_PATTERNS[index % ARCH_PATTERNS.length]}
+          alt="" 
+          className="animate-spin-slow"
+          style={{ width: "86%", height: "86%", margin: "0 auto" }}
+        />
       </div>
     </>
   );
@@ -1234,7 +1341,7 @@ function IconScale({ size = 48 }: { size?: number }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const AI_CAPABILITIES = [
-  { icon: IconBot, title: "AI Agents", desc: "Autonomous, AI-native agents that do the work, not just answer questions." },
+  { image: iconAiAgents, title: "AI Agents", desc: "Autonomous, AI-native agents that do the work, not just answer questions." },
   { icon: IconLink, title: "Workflow & Business Automation", desc: "Wire AI into the operations that drain your team's hours." },
   { icon: IconChart, title: "Data Science & Analytics", desc: "Turn the data you're sitting on into decisions you can act on." },
   { icon: IconEye, title: "Computer Vision", desc: "Systems that see — inspection, recognition, real-world visual intelligence." },
@@ -1249,7 +1356,7 @@ function AICapabilityCard({
   index,
   theme,
 }: {
-  cap: (typeof AI_CAPABILITIES)[0];
+  cap: (typeof AI_CAPABILITIES)[0] & { image?: string };
   index: number;
   theme: "light" | "dark";
 }) {
@@ -1290,7 +1397,11 @@ function AICapabilityCard({
       }}
     >
       <div style={{ color: aux.accent }}>
-        <Icon />
+        {cap.image ? (
+          <img src={cap.image} alt={cap.title} style={{ width: "72px", height: "72px", objectFit: "contain" }} />
+        ) : (
+          Icon && <Icon />
+        )}
       </div>
       <h3  style={{ margin: 0, fontSize: "18px", fontWeight: 800, color: aux.title }}>
         {cap.title}
