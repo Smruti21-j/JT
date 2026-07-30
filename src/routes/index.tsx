@@ -1396,9 +1396,28 @@ function AICapabilityCard({
         ["--ac-hover-bg" as any]: tint,
       }}
     >
-      <div style={{ color: aux.accent }}>
+      <div
+        style={{
+          color: aux.accent,
+          width: "48px",
+          height: "48px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+        }}
+      >
         {cap.image ? (
-          <img src={cap.image} alt={cap.title} style={{ width: "72px", height: "72px", objectFit: "contain" }} />
+          <img
+            src={cap.image}
+            alt={cap.title}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "contain",
+              transform: "scale(1.6)", // compensates for empty padding baked into the PNG
+            }}
+          />
         ) : (
           Icon && <Icon />
         )}
