@@ -372,7 +372,6 @@ function HeroTitle() {
             opacity: 0,
             transform: "translateY(60px) rotateX(30deg)",
             animation: `ct-wordIn 0.7s cubic-bezier(0.22,1,0.36,1) ${0.1 + i * 0.12}s forwards`,
-            display: "inline-block",
           }}
         >
           {i === 3 ? (

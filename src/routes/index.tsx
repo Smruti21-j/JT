@@ -10,7 +10,7 @@ import { useThemeInit } from "@/hooks/use-theme-init";
 //-----icons used -----
 import iconAiAgents from "../assets/icon-ai-agents.png";  
 import iconOverflow from "../assets/icon-overflow.png";
-import iconCI from "../assets/icon-CI.png";
+import iconci from "../assets/iconci.png";
 import iconML from "../assets/icon-ML.png";
 import icondata from "../assets/icon-data.png";
 import iconnlp from "../assets/iconnlp.png";
@@ -1352,7 +1352,7 @@ const AI_CAPABILITIES = [
   { image: iconAiAgents, title: "AI Agents", desc: "Autonomous, AI-native agents that do the work, not just answer questions." },
   { image: iconOverflow, title: "Workflow & Business Automation", desc: "Wire AI into the operations that drain your team's hours." },
   { image: icondata, title: "Data Science & Analytics", desc: "Turn the data you're sitting on into decisions you can act on." },
-  { image: iconCI, title: "Computer Vision", desc: "Systems that see — inspection, recognition, real-world visual intelligence." },
+  { image: iconci, title: "Computer Vision", desc: "Systems that see — inspection, recognition, real-world visual intelligence." },
   { image: iconML, title: "Custom Models & ML", desc: "Models trained on your domain, your data, your edge cases." },
   { image: iconnlp, title: "NLP Solutions", desc: "Language understanding tuned to your industry's actual vocabulary." },
   { image: iconai, title: "Generative AI", desc: "Production-grade GenAI features, not weekend-demo gimmicks." },
