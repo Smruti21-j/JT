@@ -11,7 +11,7 @@ import { useThemeInit } from "@/hooks/use-theme-init";
 import iconAiAgents from "../assets/icon-ai-agents.png";  
 import iconOverflow from "../assets/icon-overflow.png";
 import iconCI from "../assets/icon-ci.png";
-import iconML from "../assets/icon-ml.png";
+import iconML from "../assets/icon-ML.png";
 import icondata from "../assets/icon-data.png";
 import iconnlp from "../assets/iconnlp.png";
 import iconai from "../assets/iconai.png";
