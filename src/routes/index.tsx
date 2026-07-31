@@ -343,10 +343,10 @@ function HowYouPlugUsIn({ theme }: { theme: "light" | "dark" }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const BLUEPRINT_CHECKS = [
-  "Holds 10,000 concurrent users",
-  "Passes a real security audit",
-  "Plugs into your existing, messy stack",
-  "Holds up at 2 a.m. when something breaks",
+  "Processes thousands of live data transactions every second",
+  "Connects seamlessly to your current tools via instant API pipelines",
+  "Self-monitoring alerts that fix system bugs before outages happen",
+  "Turns complex background data into clear, simple visual dashboards",
 ];
 
 function IconCheck({ size = 16 }: { size?: number }) {
@@ -722,18 +722,17 @@ function PrototypeBlueprint({ theme }: { theme: "light" | "dark" }) {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div ref={headerRef} style={{ opacity: 0 }}>
             <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-            [AUTONOMOUS BLUEPRINT]
+            [AUTONOMOUS ARCHITECTURE]
             </p>
             <h2 className= "section-title"  style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "16px" }}>
-              Concepts spark change.
+              Stop building prototypes.
               <br />
               <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
-                Solutions create it.
+                Start running engines.
               </em>
             </h2>
             <p style={{ fontSize: "15px", lineHeight: 1.8, color: pal.headerParaColor, marginBottom: "22px" }}>
-              A demo wins meetings. A product survives reality.
-              We bridge the gap between impressive and production-ready.
+              Move past endless development loops. Delivering complete software solutions that connect your entire business stack & run your daily operations on autopilot.
             </p>
             <div className="flex flex-col gap-3">
               {BLUEPRINT_CHECKS.map((check) => (
