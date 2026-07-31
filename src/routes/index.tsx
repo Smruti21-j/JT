@@ -7,7 +7,15 @@ import { CTA, Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
 import { useEffect, useRef, useState } from "react";
 import { useThemeInit } from "@/hooks/use-theme-init";
+//-----icons used -----
 import iconAiAgents from "../assets/icon-ai-agents.png";  
+import iconOverflow from "../assets/icon-overflow.png";
+import iconCI from "../assets/icon-ci.png";
+import iconML from "../assets/icon-ml.png";
+import icondata from "../assets/icon-data.png";
+import iconnlp from "../assets/iconnlp.png";
+import iconai from "../assets/iconai.png";
+import iconops from "../assets/iconops.png";
 // ─── Local image imports ──────────────────────────────────────────────────────
 import pillarImg1 from "/index-image1.png";
 import pillarImg2 from "/index-image2.png";
@@ -1342,13 +1350,13 @@ function IconScale({ size = 48 }: { size?: number }) {
 
 const AI_CAPABILITIES = [
   { image: iconAiAgents, title: "AI Agents", desc: "Autonomous, AI-native agents that do the work, not just answer questions." },
-  { icon: IconLink, title: "Workflow & Business Automation", desc: "Wire AI into the operations that drain your team's hours." },
-  { icon: IconChart, title: "Data Science & Analytics", desc: "Turn the data you're sitting on into decisions you can act on." },
-  { icon: IconEye, title: "Computer Vision", desc: "Systems that see — inspection, recognition, real-world visual intelligence." },
-  { icon: IconCpu, title: "Custom Models & ML", desc: "Models trained on your domain, your data, your edge cases." },
-  { icon: IconMessage, title: "NLP Solutions", desc: "Language understanding tuned to your industry's actual vocabulary." },
-  { icon: IconSparkles, title: "Generative AI", desc: "Production-grade GenAI features, not weekend-demo gimmicks." },
-  { icon: IconActivity, title: "AI Operations (MLOps)", desc: "Keeping models reliable, monitored, and honest in production." },
+  { image: iconOverflow, title: "Workflow & Business Automation", desc: "Wire AI into the operations that drain your team's hours." },
+  { image: icondata, title: "Data Science & Analytics", desc: "Turn the data you're sitting on into decisions you can act on." },
+  { image: iconCI, title: "Computer Vision", desc: "Systems that see — inspection, recognition, real-world visual intelligence." },
+  { image: iconML, title: "Custom Models & ML", desc: "Models trained on your domain, your data, your edge cases." },
+  { image: iconnlp, title: "NLP Solutions", desc: "Language understanding tuned to your industry's actual vocabulary." },
+  { image: iconai, title: "Generative AI", desc: "Production-grade GenAI features, not weekend-demo gimmicks." },
+  { image: iconops, title: "AI Operations (MLOps)", desc: "Keeping models reliable, monitored, and honest in production." },
 ];
 
 function AICapabilityCard({
@@ -1404,7 +1412,7 @@ function AICapabilityCard({
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          overflow: "hidden",
+          marginBottom: "15px",
         }}
       >
         {cap.image ? (
@@ -1415,7 +1423,8 @@ function AICapabilityCard({
               width: "100%",
               height: "100%",
               objectFit: "contain",
-              transform: "scale(1.6)", // compensates for empty padding baked into the PNG
+              transform: "scale(1.6)",
+              opacity:"0.8" // compensates for empty padding baked into the PNG
             }}
           />
         ) : (
@@ -1510,39 +1519,39 @@ function AICapabilities({ theme }: { theme: "light" | "dark" }) {
 const DELIVERY_STAGES = [
   {
     num: "01",
-    title: "Discovery & Strategy",
-    ai: "AI analyzes business goals, requirements, scope, and timelines.",
-    human: "Experts define the strategy, priorities, and execution plan."
+    title: "Discovery",
+    ai: "Neural Discovery (Instant execution roadmaps).",
+    human: "Strategic Direction (Risk elimination)."
   },
   {
     num: "02",
-    title: "Architecture & Planning",
-    ai: "AI evaluates technologies, workflows, and implementation paths.",
-    human: "Engineers design scalable, secure, future-ready architecture."
+    title: "Architecture",
+    ai: "Predictive Modelling (Simulates stacks).",
+    human: "System Architecture (Zero-trust design)."
   },
   {
     num: "03",
-    title: "Design & Experience",
-    ai: "AI generates concepts, design variations, and usability insights.",
-    human: "Designers craft intuitive experiences users genuinely enjoy."
+    title: "Experience",
+    ai: "Generative UI/UX (Predictive heatmaps).",
+    human: "Human Ergonomics (Emotional connection)."
   },
   {
     num: "04",
     title: "Development",
-    ai: "AI accelerates coding, testing, documentation, and integrations.",
-    human: "Developers build reliable, production-ready software at scale."
+    ai: "Accelerated Code Synthesis (LLMs).",
+    human: "Enterprise Craft (Human-in-the-loop audit)."
   },
   {
     num: "05",
-    title: "Quality & Security",
-    ai: "AI detects issues, automates testing, and validates performance.",
-    human: "Experts ensure security, stability, and release readiness."
+    title: "Security",
+    ai: "Continuous Threat Auditing (24/7 agents).",
+    human: "Security Governance (Compliance sign-off)."
   },
   {
     num: "06",
-    title: "Launch & Growth",
-    ai: "AI monitors performance, usage patterns, and optimization opportunities.",
-    human: "Our team continuously improves, scales, and supports your product."
+    title: "Growth",
+    ai: "Real-Time Telemetry (Predictive scaling).",
+    human: "Continuous Evolution (Engineering squads)."
   }
 ];
 
@@ -1733,14 +1742,14 @@ function AIDeliveryProcess({ theme }: { theme: "light" | "dark" }) {
         [END TO END DELIVERY]
         </p>
         <h2  className= "section-title" style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "22px" }}>
-          AI at every step
+         AI-Powered Engineering.
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
-            Every move, enhanced by AI.
+            Perfected by Humans.
           </em>
         </h2>
         <p style={{ maxWidth: "620px", fontSize: "15px", lineHeight: 1.75, color: pal.headerParaColor }}>
-          AI streamlines the workflow from first conversation to final launch. Experienced engineers guide every critical decision along the way.
+          Combining autonomous AI execution with elite human engineering to architect, build, & scale custom enterprise software in record time.
         </p>
       </div>
 
