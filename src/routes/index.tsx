@@ -10,7 +10,7 @@ import { useThemeInit } from "@/hooks/use-theme-init";
 //-----icons used -----
 import iconAiAgents from "../assets/icon-ai-agents.png";  
 import iconOverflow from "../assets/icon-overflow.png";
-import iconCI from "../assets/icon-ci.png";
+import iconCI from "../assets/icon-CI.png";
 import iconML from "../assets/icon-ML.png";
 import icondata from "../assets/icon-data.png";
 import iconnlp from "../assets/iconnlp.png";
