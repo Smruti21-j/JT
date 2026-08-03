@@ -623,7 +623,7 @@ function InsightsPage() {
             the right edge, reads correctly in both light and dark since it's
             a single neutral tone rather than theme-specific art. */}
         <OrganicBranchPattern 
-  color={theme === "light" ? "rgba(24,24,24,0.14)" : "rgba(240,232,223,0.60)"} 
+  color={theme === "light" ? "rgba(237,99,35,0.18)" : "rgba(240,232,223,0.60)"} 
 />
 
         <div
