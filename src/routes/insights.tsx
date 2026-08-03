@@ -20,15 +20,6 @@ export const Route = createFileRoute("/insights")({
 
 // ─────────────────────────────────────────────────────────────────────────────
 // THEME TOKENS
-//
-// Previously every color on this page was a hardcoded hex value assuming a
-// permanently dark background (#0a0a0a everywhere), so there was no light
-// theme at all — Nav/Footer were also called with no theme props, meaning
-// they'd render in whatever their own defaults are, disconnected from the
-// rest of the page. This palette function mirrors the pattern already used
-// in services.tsx / index.tsx (pillarPalette / auxPalette), and Nav/Footer
-// are now wired the same way: <Nav theme={theme} onToggleTheme={toggleTheme} />
-// and <Footer theme={theme} />.
 // ─────────────────────────────────────────────────────────────────────────────
 
 function insightsPalette(theme: "light" | "dark") {
@@ -66,6 +57,119 @@ function insightsPalette(theme: "light" | "dark") {
     tagBorder: "rgba(255,130,50,0.2)",
     videoOpacity: 0.4,
   };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// NETWORK BACKDROP — an animated "ideas connecting" illustration for the hero.
+// Nodes drift very slightly, connecting lines sit static and faint, and a
+// handful of small pulses travel along a few paths using native SVG
+// <animateMotion> (no extra libs, no extra JS timers). Fully themed via
+// `lineColor`/`accent` props so it reads correctly in both light and dark.
+// ─────────────────────────────────────────────────────────────────────────────
+
+ // ─────────────────────────────────────────────────────────────────────────────
+// FLOATING 3D SHAPES — soft gradient spheres and rounded cubes drifting
+// slowly with subtle rotation and parallax-style depth (shadow + blur),
+// replacing the node-network illustration. Themed via accent/lineColor so
+// it reads correctly in both light and dark.
+// ─────────────────────────────────────────────────────────────────────────────
+ // ─────────────────────────────────────────────────────────────────────────────
+// ORGANIC BRANCH PATTERN — a procedurally generated tree/branch silhouette
+// with leaf clusters, deterministic via a seeded PRNG (same value every
+// render — no hydration mismatch). Single neutral tone via `color`, so it
+// reads correctly in both light and dark without needing per-theme art.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function seededRandom(seed: number) {
+  return function () {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+type BranchLine = { x1: number; y1: number; x2: number; y2: number; w: number };
+type Leaf = { x: number; y: number; angle: number; scale: number };
+
+function generateTree(seed: number) {
+  const rand = seededRandom(seed);
+  const lines: BranchLine[] = [];
+  const leaves: Leaf[] = [];
+
+  function grow(x: number, y: number, angle: number, length: number, depth: number) {
+    const x2 = x + Math.cos(angle) * length;
+    const y2 = y + Math.sin(angle) * length;
+    lines.push({ x1: x, y1: y, x2, y2, w: Math.max(0.6, depth * 0.55) });
+
+    if (depth <= 2) {
+      leaves.push({ x: x2, y: y2, angle: (angle * 180) / Math.PI, scale: 0.55 + rand() * 0.55 });
+      if (depth <= 1) return;
+    }
+
+    const branches = depth > 4 ? 2 : rand() < 0.6 ? 2 : 1;
+    for (let i = 0; i < branches; i++) {
+      const spread = 0.35 + rand() * 0.35;
+      const da = branches === 2 ? (i === 0 ? -spread : spread) : (rand() - 0.5) * spread;
+      grow(x2, y2, angle + da, length * (0.72 + rand() * 0.08), depth - 1);
+    }
+  }
+
+  grow(240, 640, -Math.PI / 2 + 0.15, 92, 8);
+  return { lines, leaves };
+}
+
+function OrganicBranchPattern({ color }: { color: string }) {
+  const { lines, leaves } = generateTree(7);
+
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        top: 0,
+        right: 0,
+        width: "min(46vw, 480px)",
+        height: "100%",
+        zIndex: 0,
+        pointerEvents: "none",
+        overflow: "hidden",
+      }}
+    >
+      <svg
+        viewBox="0 0 460 700"
+        preserveAspectRatio="xMaxYMin slice"
+        style={{ position: "absolute", top: "-6%", right: "-4%", width: "112%", height: "112%" }}
+      >
+        {lines.map((l, i) => (
+          <line
+            key={`b-${i}`}
+            x1={l.x1}
+            y1={l.y1}
+            x2={l.x2}
+            y2={l.y2}
+            stroke={color}
+            strokeWidth={l.w}
+            strokeLinecap="round"
+          />
+        ))}
+        {leaves.map((lf, i) => (
+          <g
+            key={`l-${i}`}
+            transform={`translate(${lf.x} ${lf.y}) rotate(${lf.angle + 90}) scale(${lf.scale})`}
+          >
+            <path
+              d="M0,0 C-8,-10 -9,-25 0,-34 C9,-25 8,-10 0,0 Z"
+              fill={color}
+              opacity="0.9"
+            />
+            <line x1="0" y1="-3" x2="0" y2="-30" stroke={color} strokeWidth="0.6" opacity="0.5" />
+          </g>
+        ))}
+      </svg>
+    </div>
+  );
 }
 
 interface PostSection {
@@ -238,7 +342,7 @@ function PostDetail({
               <span key={tag} className="font-mono" style={{ fontSize: "0.58rem", letterSpacing: "0.2em", fontWeight: 600, color: p.accent, background: p.tagBg, padding: "0.3rem 0.7rem", borderRadius: "4px", border: `1px solid ${p.tagBorder}`, textTransform: "uppercase" }}>{tag}</span>
             ))}
           </div>
-          <h1 className="font-display" style={{ fontSize: "clamp(2rem, 5vw, 3.2rem)", fontWeight: 800, lineHeight: 1.12, letterSpacing: "-0.03em", color: p.ink, marginBottom: "1rem" }}>{content.title}</h1>
+          <h1 className="font-mono" style={{ fontSize: "clamp(2.4rem,4.5vw,3.6rem)", fontWeight: 800, lineHeight: 1.12, letterSpacing: "-0.03em", color: p.ink, marginBottom: "1rem" }}>{content.title}</h1>
           <p style={{ fontSize: "15px", color: p.inkDim, lineHeight: 1.75, marginBottom: "2rem" }}>{content.subtitle}</p>
           <div style={{ display: "flex", alignItems: "center", gap: "1rem", paddingBottom: "2rem", marginBottom: "2.5rem", borderBottom: `1px solid ${p.line}` }}>
             <span className="font-mono" style={{ fontSize: "0.68rem", letterSpacing: "0.2em", textTransform: "uppercase", color: p.accent, fontWeight: 600 }}>{post.tag}</span>
@@ -409,7 +513,7 @@ function InsightsPage() {
     <main style={{ background: p.bg, color: p.ink, minHeight: "100vh" }}>
       <Nav theme={theme} onToggleTheme={toggleTheme} />
 
-      {/* VIDEO / CROSSHAIR HERO */}
+       {/* VIDEO / CROSSHAIR HERO */}
       <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: p.bg }}>
         {theme === "dark" && (
           <video
@@ -421,13 +525,83 @@ function InsightsPage() {
           </video>
         )}
 
+        {/* Animated background — subtle grid + drifting accent blobs, themed via
+            p.accent so it reads correctly in both light and dark. */}
+        <div className="absolute inset-0 grid-bg" style={{ opacity: theme === "light" ? 0.5 : 0.35, zIndex: 0 }} />
+
+  {/* Organic branch/leaf silhouette — pale, monochrome, bleeding off
+            the right edge, reads correctly in both light and dark since it's
+            a single neutral tone rather than theme-specific art. */}
+        <OrganicBranchPattern color={theme === "light" ? "rgba(24,24,24,0.06)" : "rgba(240,232,223,0.08)"} />
+
+        <div
+          className="animate-blob"
+          style={{
+            position: "absolute",
+            top: "8%",
+            left: "6%",
+            width: "clamp(260px, 32vw, 480px)",
+            height: "clamp(260px, 32vw, 480px)",
+            borderRadius: "42% 58% 70% 30% / 45% 30% 70% 55%",
+            background: p.accent,
+            opacity: theme === "light" ? 0.1 : 0.14,
+            filter: "blur(60px)",
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          className="animate-blob"
+          style={{
+            position: "absolute",
+            bottom: "6%",
+            right: "8%",
+            width: "clamp(220px, 26vw, 400px)",
+            height: "clamp(220px, 26vw, 400px)",
+            borderRadius: "42% 58% 70% 30% / 45% 30% 70% 55%",
+            background: p.accent,
+            opacity: theme === "light" ? 0.08 : 0.12,
+            filter: "blur(70px)",
+            animationDelay: "-6s",
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          className="animate-float-slow"
+          style={{
+            position: "absolute",
+            top: "45%",
+            right: "18%",
+            width: "5px",
+            height: "5px",
+            borderRadius: "50%",
+            background: p.accent,
+            opacity: theme === "light" ? 0.4 : 0.5,
+            zIndex: 0,
+          }}
+        />
+        <div
+          className="animate-float"
+          style={{
+            position: "absolute",
+            top: "30%",
+            left: "22%",
+            width: "4px",
+            height: "4px",
+            borderRadius: "50%",
+            background: p.accent,
+            opacity: theme === "light" ? 0.35 : 0.45,
+            zIndex: 0,
+          }}
+        />
+
+        <CrosshairFrame color={p.line} />
+
         {/* Overlays */}
         <div style={{ position: "absolute", inset: 0, background: theme === "light"
           ? "linear-gradient(180deg,rgba(250,249,246,0.1) 0%,rgba(250,249,246,0) 35%,rgba(250,249,246,0.5) 80%,var(--faf9f6,#faf9f6) 100%)"
           : "linear-gradient(180deg,rgba(10,10,10,0.25) 0%,rgba(10,10,10,0.05) 35%,rgba(10,10,10,0.8) 80%,#0a0a0a 100%)", zIndex: 1 }} />
-        
-
- 
 
         {/* Hero text — centered */}
         <div style={{ position: "relative", zIndex: 3, textAlign: "center", padding: "0 clamp(24px, 6vw, 80px)", width: "100%" }}>
@@ -443,12 +617,10 @@ function InsightsPage() {
             [ Insights · Field Notes ]
           </p>
 
-          <h1 className="font-display" style={{
-            margin: 0,
-            fontSize: "clamp(2.8rem, 7vw, 6.5rem)",
-            lineHeight: 1.08,
-            letterSpacing: "-0.025em",
-          }}>
+          <h1 className="font-display section-title" style={{
+  margin: 0,
+  lineHeight: 1.08,
+}}>
             <span style={{ fontWeight: 700, color: p.ink }}>
               Ideas worth{" "}
             </span>
@@ -496,7 +668,7 @@ function InsightsPage() {
           Curated by Jarvis Technolabs
         </span>
         <span className="font-mono" style={{ position: "absolute", right: "clamp(20px,4vw,48px)", bottom: "28px", zIndex: 3, fontSize: "0.58rem", letterSpacing: "0.2em", textTransform: "uppercase", color: p.inkFainter, display: "flex", alignItems: "center", gap: "6px" }}>
-       
+
         </span>
       </section>
 
@@ -507,7 +679,7 @@ function InsightsPage() {
           <div className="reveal" style={{ marginBottom: "3.5rem", display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: "1.5rem" }}>
             <div>
               <p className="font-mono" style={{ fontSize: "0.62rem", letterSpacing: "0.32em", textTransform: "uppercase", marginBottom: "0.9rem", color: p.inkFainter }}>LATEST</p>
-              <h2 className="font-display" style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, letterSpacing: "-0.035em", color: p.ink, lineHeight: 1.08 }}>From the studio.</h2>
+              <h2 className="font-display section-title" style={{ color: p.ink, margin: 0 }}>From the studio.</h2>
             </div>
             <Link
               to="/contact"
@@ -556,13 +728,7 @@ function InsightsPage() {
         </div>
       </section>
 
-      <CTA
-        eyebrow="STAY IN THE LOOP"
-        title={<>Field notes, <em style={{ color: p.accent, fontStyle: "normal", fontWeight: 300 }}>straight to your inbox.</em></>}
-        description="One thoughtful note a month on AI, modernisation and shipping. No fluff, no spam."
-        primaryLabel="Subscribe →"
-        secondaryLabel="Browse services"
-      />
+      <CTA />
       <Footer theme={theme} />
     </main>
   );

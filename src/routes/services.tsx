@@ -206,7 +206,7 @@ function parseItem(raw: string) {
 //   always track whatever the home page's headings look like. Only
 //   layout-specific rules (margin, animation) stay in this local class.
 // - Italic accent lines (the second line of every big heading) now match the
-//   home page's convention exactly: className="font-display", italic,
+//   home page's convention exactly: className="font-mono", italic,
 //   font-weight 400, color var(--acc) — replacing the old Georgia-serif
 //   fallback that didn't match the home page's display font at all.
 // - Intro/body paragraphs (.svh-sub, .svr-intro-tagline, .svl-left-desc,
