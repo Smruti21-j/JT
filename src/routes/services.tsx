@@ -286,142 +286,107 @@ const STYLES = `
 .svh-ticker-item strong{ color:var(--ink); font-weight:800; }
 .svh-ticker-item .dot{ color:var(--acc); }
 
-/* ══ FEATURED (cover-story) SERVICE PANEL ══ */
+/* ══ SERVICES: left category nav + right stacked numbered cards ══ */
 .svl-section{
   background:var(--bg);
   padding:clamp(64px,8vh,100px) 0 clamp(90px,10vh,130px);
   font-family:var(--font-sans);
 }
 .svl-inner{ max-width:1180px; margin:0 auto; padding:0 clamp(20px,4vw,48px); }
-.svl-header{ margin-bottom:clamp(36px,5vh,52px); display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; }
-.svl-header-eyebrow{
-  font-size:10px;letter-spacing:.32em;text-transform:uppercase;font-weight:700;
-  color:var(--acc); margin-bottom:14px;
-}
-.svl-header-title{
-  font-family:var(--font-display); font-weight:800; letter-spacing:-.015em;
-  font-size:clamp(1.8rem,3.4vw,2.7rem); line-height:1.08; color:var(--ink);
-  text-transform:uppercase;
-}
-.svl-header-title em{ font-style:italic; font-weight:300; color:var(--acc); text-transform:none; font-family:Georgia,serif; }
-.svl-header-count{
-  font-family:var(--font-display); font-size:13px; letter-spacing:.1em; color:var(--ink-faint);
-  white-space:nowrap; padding-bottom:6px;
+
+.svl-layout{
+  display:grid;
+  grid-template-columns:300px 1fr;
+  gap:56px;
+  align-items:start;
 }
 
-@keyframes svlFeatIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-.svl-featured{
-  display:grid; grid-template-columns:1.1fr 1fr; gap:0;
-  border:1px solid var(--line); border-radius:24px; overflow:hidden;
-  background:var(--surface); margin-bottom:56px;
-  animation:svlFeatIn .5s cubic-bezier(.16,1,.3,1) both;
+/* ── Left: sticky intro + category nav ── */
+.svl-left{
+  position:sticky;
+  top:110px;
 }
-.svl-feat-media{ position:relative; min-height:360px; overflow:hidden; }
-.svl-feat-media img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-.svl-feat-media::after{
-  content:""; position:absolute; inset:0;
-  background:linear-gradient(to top, color-mix(in oklch, var(--ink) 55%, transparent) 0%, transparent 55%);
+.svl-left-eyebrow{
+  font-size:9px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;
+  color:var(--ink-faint); margin-bottom:20px;
 }
-.svl-feat-tag{
-  position:absolute; top:20px; left:20px;
-  font-size:9px; letter-spacing:.25em; text-transform:uppercase; font-weight:700;
-  color:#fff; background:color-mix(in oklch, var(--acc) 85%, black 10%);
-  padding:7px 14px; border-radius:999px; z-index:1;
+@keyframes svlActiveIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.svl-active{ animation:svlActiveIn .4s cubic-bezier(.16,1,.3,1) both; }
+.svl-active-num{
+  display:block; font-family:var(--font-display); font-weight:800; font-size:2.4rem;
+  color:var(--acc); line-height:1; margin-bottom:12px;
 }
-.svl-feat-num{
-  position:absolute; bottom:20px; left:20px; z-index:1;
-  font-family:var(--font-display); font-size:13px; font-weight:700; color:#fff;
-  letter-spacing:.15em;
+.svl-left-title{
+  font-family:var(--font-display); font-weight:800; letter-spacing:-.015em;
+  font-size:clamp(1.7rem,2.6vw,2.3rem); line-height:1.08; color:var(--ink);
+  text-transform:uppercase; margin-bottom:16px;
 }
-.svl-feat-body{ padding:clamp(32px,3.6vw,48px); display:flex; flex-direction:column; }
-.svl-feat-eyebrow{
+.svl-left-desc{
+  font-size:.88rem; color:var(--ink-dim); line-height:1.7; margin-bottom:20px;
+}
+ 
+}
+.svl-progress-dot.active{ background:var(--acc); }
+.svr-group{ margin-bottom:56px; }
+.svr-group:last-child{ margin-bottom:0; }
+
+/* ── Right: category intro strip + stacked numbered cards ── */
+@keyframes svrIntroIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.svr-intro{
+  padding-bottom:28px; margin-bottom:28px; border-bottom:1px solid var(--line);
+  animation:svrIntroIn .4s cubic-bezier(.16,1,.3,1) both;
+}
+.svr-intro-eyebrow{
   font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:700;
-  color:var(--acc); margin-bottom:14px;
+  color:var(--acc); margin-bottom:10px;
 }
-.svl-feat-title{
-  font-family:var(--font-display); font-weight:800; letter-spacing:-.015em;
-  font-size:clamp(1.6rem,2.8vw,2.3rem); color:var(--ink); line-height:1.12; margin-bottom:16px;
+.svr-intro-title{
+  font-family:var(--font-display); font-weight:800; letter-spacing:-.01em;
+  font-size:clamp(1.4rem,2.2vw,1.9rem); color:var(--ink); line-height:1.15; margin-bottom:10px;
   text-transform:uppercase;
 }
-.svl-feat-tagline{ font-size:.96rem; color:var(--ink-dim); line-height:1.8; margin-bottom:26px; }
-.svl-feat-stat{
-  display:inline-flex; align-items:baseline; gap:10px;
-  padding:16px 0 26px; border-bottom:1px solid var(--line); margin-bottom:26px;
-}
-.svl-feat-stat-val{ font-family:var(--font-display); font-weight:800; font-size:1.9rem; color:var(--acc); line-height:1; }
-.svl-feat-stat-lbl{ font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-faint); }
+.svr-intro-tagline{ font-size:.92rem; color:var(--ink-dim); line-height:1.75; max-width:640px; margin-bottom:16px; }
+.svr-intro-stat{ display:inline-flex; align-items:baseline; gap:9px; }
+.svr-intro-stat-val{ font-family:var(--font-display); font-weight:800; font-size:1.4rem; color:var(--acc); line-height:1; }
+.svr-intro-stat-lbl{ font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-faint); }
 
-.svl-offerings-label, .svl-caps-label{
-  font-size:9.5px; letter-spacing:.24em; text-transform:uppercase; font-weight:700;
-  color:var(--ink-faint); margin-bottom:14px;
-}
-.svl-offerings{ list-style:none; margin-bottom:28px; display:grid; gap:10px; }
-.svl-offerings li{ font-size:.9rem; color:var(--ink-dim); line-height:1.6; padding-left:18px; position:relative; }
-.svl-offerings li::before{
-  content:""; position:absolute; left:0; top:.55em; width:6px; height:6px; border-radius:50%;
-  background:var(--acc);
-}
-.svl-offerings li strong{ color:var(--ink); font-weight:600; }
-
-.svl-caps-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(88px,1fr)); gap:10px; margin-top:auto; }
-.svl-cap-thumb{
-  position:relative; aspect-ratio:1/1; border-radius:10px; overflow:hidden;
-  border:1px solid var(--line); background:var(--card); cursor:pointer; padding:0;
-}
-.svl-cap-thumb img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .5s ease; }
-.svl-cap-thumb:hover img{ transform:scale(1.08); }
-.svl-cap-thumb span{
-  position:absolute; left:0; right:0; bottom:0; padding:7px 9px;
-  font-size:9px; letter-spacing:.06em; text-transform:uppercase; font-weight:600; color:#fff;
-  background:linear-gradient(to top, rgba(0,0,0,.72), transparent);
-}
-
-/* ══ SERVICE GRID (blog-card style — image, tag, title, arrow) ══ */
-.svl-grid-label{
-  font-size:9.5px; letter-spacing:.24em; text-transform:uppercase; font-weight:700;
-  color:var(--ink-faint); margin-bottom:22px;
-}
-.svl-card-grid{
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:24px;
-}
-@keyframes svlCardIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-.svl-card{
-  display:flex; flex-direction:column; text-align:left;
-  background:var(--surface); border:1px solid var(--line); border-radius:18px;
-  overflow:hidden; cursor:pointer; padding:0;
+@keyframes svrCardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.svr-list{ display:flex; flex-direction:column; gap:18px; }
+.svr-card{
+  display:flex; align-items:stretch; gap:20px;
+  background:var(--surface); border:1px solid var(--line); border-radius:16px;
+  overflow:hidden; padding:0; cursor:pointer; text-align:left;
   transition:border-color .3s ease, transform .3s ease, box-shadow .3s ease;
-  opacity:0; transform:translateY(20px);
-  animation:svlCardIn .6s cubic-bezier(.16,1,.3,1) both;
+  opacity:0; transform:translateY(18px);
+  animation:svrCardIn .55s cubic-bezier(.16,1,.3,1) both;
 }
-.svl-card:hover{
+.svr-card:hover{
   border-color:color-mix(in oklch, var(--acc) 45%, var(--line));
-  transform:translateY(-4px);
-  box-shadow:0 24px 48px -24px color-mix(in oklch, var(--acc) 25%, transparent);
+  transform:translateY(-3px);
+  box-shadow:0 22px 44px -26px color-mix(in oklch, var(--acc) 25%, transparent);
 }
-.svl-card.active{ border-color:var(--acc); }
-.svl-card-media{ position:relative; aspect-ratio:16/10; overflow:hidden; }
-.svl-card-media img{ width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.22,1,.36,1); }
-.svl-card:hover .svl-card-media img{ transform:scale(1.06); }
-.svl-card-num{
-  position:absolute; top:12px; left:12px;
-  font-family:var(--font-display); font-size:11px; font-weight:700; color:#fff;
-  background:rgba(0,0,0,.45); backdrop-filter:blur(6px);
-  border-radius:999px; padding:4px 10px; letter-spacing:.1em;
+.svr-card-media{ position:relative; flex-shrink:0; width:200px; overflow:hidden; }
+.svr-card-media img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.22,1,.36,1); }
+.svr-card:hover .svr-card-media img{ transform:scale(1.07); }
+.svr-card-num{
+  position:absolute; left:12px; bottom:12px;
+  font-family:var(--font-display); font-weight:800; font-size:1.6rem; color:#fff;
+  line-height:1; text-shadow:0 2px 10px rgba(0,0,0,.35);
 }
-.svl-card-body{ padding:20px 20px 22px; display:flex; flex-direction:column; gap:8px; flex:1; }
-.svl-card-tag{
-  font-size:9px; letter-spacing:.18em; text-transform:uppercase; font-weight:700;
-  color:var(--acc);
-}
-.svl-card-title{
-  font-family:var(--font-display); font-weight:700; font-size:1.02rem; color:var(--ink);
+.svr-card-body{ flex:1; padding:20px 22px 20px 0; display:flex; flex-direction:column; justify-content:center; gap:8px; min-width:0; }
+.svr-card-title{
+  font-family:var(--font-display); font-weight:700; font-size:1.05rem; color:var(--ink);
   line-height:1.25; letter-spacing:-.005em;
 }
-.svl-card-tagline{ font-size:.82rem; color:var(--ink-dim); line-height:1.55; flex:1; }
-.svl-card-arrow{
-  display:inline-flex; align-items:center; gap:6px; margin-top:6px;
-  font-size:10px; letter-spacing:.15em; text-transform:uppercase; font-weight:600; color:var(--acc);
+.svr-card-desc{ font-size:.85rem; color:var(--ink-dim); line-height:1.6; }
+.svr-card-btn{
+  display:inline-flex; align-items:center; gap:7px; margin-top:4px; width:fit-content;
+  font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:700;
+  color:var(--acc); border:1px solid color-mix(in oklch, var(--acc) 40%, var(--line));
+  border-radius:999px; padding:8px 16px;
+  transition:background .25s ease, color .25s ease;
 }
+.svr-card:hover .svr-card-btn{ background:var(--acc); color:var(--acc-fg); border-color:var(--acc); }
 
 /* ── Lightbox ── */
 @keyframes overlayIn{from{opacity:0}to{opacity:1}}
@@ -438,8 +403,11 @@ const STYLES = `
 .lb-close:hover{background:rgba(255,255,255,.14);color:#fff}
 
 @media(max-width:900px){
-  .svl-featured{ grid-template-columns:1fr; }
-  .svl-feat-media{ min-height:240px; }
+  .svl-layout{ grid-template-columns:1fr; }
+  .svl-left{ position:static; }
+  .svr-card{ flex-direction:column; }
+  .svr-card-media{ width:100%; aspect-ratio:16/10; }
+  .svr-card-body{ padding:16px 18px 20px; }
 }
 @media(max-width:640px){
   .svh-ticker-item{ padding:14px 22px; font-size:9.5px; }
@@ -483,13 +451,6 @@ function ServicesHero() {
     document.getElementById("services-list")?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const tickerItems = [
-    <>8 <strong>Disciplines</strong></>,
-    <>30+ <strong>Sub-Capabilities</strong></>,
-    <>AI-Accelerated <strong>Delivery</strong></>,
-    <>Est. <strong>2018</strong></>,
-  ];
-
   return (
     <section className="svh-hero">
       <div className="svh-inner">
@@ -512,131 +473,114 @@ function ServicesHero() {
           </button>
         </div>
       </div>
-
-      <div className="svh-ticker">
-        <div className="svh-ticker-track">
-          {[...tickerItems, ...tickerItems, ...tickerItems].map((it, i) => (
-            <span key={i} className="svh-ticker-item">
-              {it} <span className="dot">·</span>
-            </span>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }
 
+// ─── Left category nav + right stacked numbered cards ───────────────────────
+// ─── Sticky single-category indicator (left) + continuous scroll of every
+// category's cards (right). Left auto-advances via IntersectionObserver as
+// each category's block scrolls into view — no click-to-switch list anymore.
 function ServicesEditorial({ onCardClick }: { onCardClick: (item: LBItem) => void }) {
   const [active, setActive] = useState(0);
+  const groupRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+    groupRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActive(i);
+        },
+        { rootMargin: "-40% 0px -40% 0px", threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
   const svc = SERVICE_GROUPS[active];
   const acc = PANEL_ACCENT[active];
 
   return (
     <section id="services-list" className="svl-section">
       <div className="svl-inner">
-        <div className="svl-header">
-          <div>
-            <p className="svl-header-eyebrow">Featured</p>
-            <h2 className="svl-header-title">
-              Every discipline,
-              <br />
-              <em>AI-accelerated.</em>
-            </h2>
-          </div>
-          <span className="svl-header-count">
-            {String(active + 1).padStart(2, "0")} / {String(SERVICE_GROUPS.length).padStart(2, "0")}
-          </span>
-        </div>
-
-        <div className="svl-featured" style={{ ["--acc" as string]: acc }} key={svc.title}>
-          <div className="svl-feat-media">
-            <img src={svc.image} alt={svc.title} />
-            <span className="svl-feat-tag">{svc.eyebrow}</span>
-            <span className="svl-feat-num">{String(active + 1).padStart(2, "0")} / {String(SERVICE_GROUPS.length).padStart(2, "0")}</span>
-          </div>
-
-          <div className="svl-feat-body">
-            <p className="svl-feat-eyebrow">{svc.eyebrow}</p>
-            <h3 className="svl-feat-title">{svc.title}</h3>
-            <p className="svl-feat-tagline">{svc.tagline}</p>
-
-            <div className="svl-feat-stat">
-              <span className="svl-feat-stat-val">{svc.stat.value}</span>
-              <span className="svl-feat-stat-lbl">{svc.stat.label}</span>
+        <div className="svl-layout">
+          {/* ── LEFT: sticky, shows ONLY the currently active category ── */}
+          <div className="svl-left" style={{ ["--acc" as string]: acc }}>
+            <p className="svl-left-eyebrow">Our Services</p>
+            <div key={svc.title} className="svl-active">
+              <span className="svl-active-num">{String(active + 1).padStart(2, "0")}</span>
+              <h2 className="svl-left-title">{svc.title}</h2>
+              <p className="svl-left-desc">{svc.tagline}</p>
+              <div className="svr-intro-stat">
+                <span className="svr-intro-stat-val">{svc.stat.value}</span>
+                <span className="svr-intro-stat-lbl">{svc.stat.label}</span>
+              </div>
             </div>
-
-            <p className="svl-offerings-label">Offerings</p>
-            <ul className="svl-offerings">
-              {svc.items.map((raw) => {
-                const { title, detail } = parseItem(raw);
-                return (
-                  <li key={title}>
-                    <strong>{title}</strong>
-                    {detail ? `: ${detail}` : ""}
-                  </li>
-                );
-              })}
-            </ul>
-
-            <p className="svl-caps-label">Capabilities</p>
-            <div className="svl-caps-grid">
-              {svc.subImages.map((img) => (
-                <button
-                  key={img.label}
-                  type="button"
-                  className="svl-cap-thumb"
-                  onClick={() => {
-                    const { title, detail } = parseItem(
-                      svc.items[svc.subImages.indexOf(img)] ?? ""
-                    );
-                    onCardClick({
-                      src: img.src,
-                      label: img.label,
-                      title,
-                      detail,
-                      acc,
-                      svcTitle: svc.title,
-                    });
-                  }}
-                >
-                  <img
-                    src={img.src}
-                    alt={img.label}
-                    loading="lazy"
-                    onError={(e) => { (e.target as HTMLImageElement).src = svc.image as unknown as string; }}
-                  />
-                  <span>{img.label}</span>
-                </button>
+            <div className="svl-progress">
+              {SERVICE_GROUPS.map((_, i) => (
+                <span key={i} className={`svl-progress-dot${i === active ? " active" : ""}`} />
               ))}
             </div>
           </div>
-        </div>
 
-        <p className="svl-grid-label">All Services</p>
-        <div className="svl-card-grid">
-          {SERVICE_GROUPS.map((s, i) => (
-            <button
-              key={s.title}
-              type="button"
-              className={`svl-card${i === active ? " active" : ""}`}
-              style={{ animationDelay: `${(i % 8) * 0.06}s` }}
-              onClick={() => {
-                setActive(i);
-                document.getElementById("services-list")?.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
-            >
-              <div className="svl-card-media">
-                <img src={s.image} alt={s.title} loading="lazy" />
-                <span className="svl-card-num">{String(i + 1).padStart(2, "0")}</span>
+          {/* ── RIGHT: every category's cards, stacked one after another ── */}
+          <div className="svl-right">
+            {SERVICE_GROUPS.map((group, gi) => (
+              <div
+                key={group.title}
+                ref={(el) => { groupRefs.current[gi] = el; }}
+                className="svr-group"
+                style={{ ["--acc" as string]: PANEL_ACCENT[gi] }}
+              >
+                <div className="svr-intro">
+                  <p className="svr-intro-eyebrow">{group.eyebrow}</p>
+                  <h3 className="svr-intro-title">{group.title}</h3>
+                </div>
+
+                <div className="svr-list">
+                  {group.subImages.map((img, i) => {
+                    const { title, detail } = parseItem(group.items[i] ?? "");
+                    return (
+                      <button
+                        key={img.label}
+                        type="button"
+                        className="svr-card"
+                        onClick={() =>
+                          onCardClick({
+                            src: img.src,
+                            label: img.label,
+                            title,
+                            detail,
+                            acc: PANEL_ACCENT[gi],
+                            svcTitle: group.title,
+                          })
+                        }
+                      >
+                        <div className="svr-card-media">
+                          <img
+                            src={img.src}
+                            alt={img.label}
+                            loading="lazy"
+                            onError={(e) => { (e.target as HTMLImageElement).src = group.image as unknown as string; }}
+                          />
+                          <span className="svr-card-num">{String(i + 1).padStart(2, "0")}</span>
+                        </div>
+                        <div className="svr-card-body">
+                          <h4 className="svr-card-title">{title || img.label}</h4>
+                          {detail && <p className="svr-card-desc">{detail}</p>}
+                          <span className="svr-card-btn">See Details →</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-              <div className="svl-card-body">
-                <span className="svl-card-tag">{s.eyebrow}</span>
-                <h4 className="svl-card-title">{s.title}</h4>
-                <p className="svl-card-tagline">{s.tagline}</p>
-                <span className="svl-card-arrow">Explore →</span>
-              </div>
-            </button>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
