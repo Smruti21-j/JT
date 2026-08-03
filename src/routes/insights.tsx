@@ -34,28 +34,28 @@ export const Route = createFileRoute("/insights")({
 function insightsPalette(theme: "light" | "dark") {
   if (theme === "light") {
     return {
-      bg: "#faf9f6",
+      bg: "#fbfaf7",
       cardBg: "#ffffff",
       cardBorder: "rgba(0,0,0,0.08)",
       ink: "#181818",
       inkDim: "rgba(25,25,25,0.55)",
       inkFaint: "rgba(25,25,25,0.35)",
       inkFainter: "rgba(25,25,25,0.22)",
-      accent: "rgb(199,90,26)",
+      accent: "#ed6323",
       line: "rgba(0,0,0,0.10)",
       lineSoft: "rgba(0,0,0,0.06)",
-      quoteBg: "rgba(199,90,26,0.06)",
-      tagBg: "rgba(199,90,26,0.08)",
-      tagBorder: "rgba(199,90,26,0.22)",
+      quoteBg: "rgba(237,99,35,0.06)",
+      tagBg: "rgba(237,99,35,0.08)",
+      tagBorder: "rgba(237,99,35,0.22)",
       videoOpacity: 0,
     };
   }
   return {
-    bg: "#0a0a0a",
-    cardBg: "#111214",
+    bg: "#061512",
+    cardBg: "#0a1c18",
     cardBorder: "rgba(255,255,255,0.08)",
     ink: "#f0e8df",
-    inkDim: "rgba(240,232,220,0.5)",
+    inkDim: "rgba(240,232,223,0.45)",
     inkFaint: "rgba(255,255,255,0.35)",
     inkFainter: "rgba(255,255,255,0.22)",
     accent: "rgb(255,130,50)",
@@ -496,7 +496,7 @@ function InsightsPage() {
           Curated by Jarvis Technolabs
         </span>
         <span className="font-mono" style={{ position: "absolute", right: "clamp(20px,4vw,48px)", bottom: "28px", zIndex: 3, fontSize: "0.58rem", letterSpacing: "0.2em", textTransform: "uppercase", color: p.inkFainter, display: "flex", alignItems: "center", gap: "6px" }}>
-          ↓ Scroll
+       
         </span>
       </section>
 
