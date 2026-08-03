@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { CTA, Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
+import { useThemeInit } from "@/hooks/use-theme-init";
 import { POSTS } from "@/data/insights";
 
 export const Route = createFileRoute("/insights")({
@@ -16,6 +17,56 @@ export const Route = createFileRoute("/insights")({
     ],
   }),
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// THEME TOKENS
+//
+// Previously every color on this page was a hardcoded hex value assuming a
+// permanently dark background (#0a0a0a everywhere), so there was no light
+// theme at all — Nav/Footer were also called with no theme props, meaning
+// they'd render in whatever their own defaults are, disconnected from the
+// rest of the page. This palette function mirrors the pattern already used
+// in services.tsx / index.tsx (pillarPalette / auxPalette), and Nav/Footer
+// are now wired the same way: <Nav theme={theme} onToggleTheme={toggleTheme} />
+// and <Footer theme={theme} />.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function insightsPalette(theme: "light" | "dark") {
+  if (theme === "light") {
+    return {
+      bg: "#faf9f6",
+      cardBg: "#ffffff",
+      cardBorder: "rgba(0,0,0,0.08)",
+      ink: "#181818",
+      inkDim: "rgba(25,25,25,0.55)",
+      inkFaint: "rgba(25,25,25,0.35)",
+      inkFainter: "rgba(25,25,25,0.22)",
+      accent: "rgb(199,90,26)",
+      line: "rgba(0,0,0,0.10)",
+      lineSoft: "rgba(0,0,0,0.06)",
+      quoteBg: "rgba(199,90,26,0.06)",
+      tagBg: "rgba(199,90,26,0.08)",
+      tagBorder: "rgba(199,90,26,0.22)",
+      videoOpacity: 0,
+    };
+  }
+  return {
+    bg: "#0a0a0a",
+    cardBg: "#111214",
+    cardBorder: "rgba(255,255,255,0.08)",
+    ink: "#f0e8df",
+    inkDim: "rgba(240,232,220,0.5)",
+    inkFaint: "rgba(255,255,255,0.35)",
+    inkFainter: "rgba(255,255,255,0.22)",
+    accent: "rgb(255,130,50)",
+    line: "rgba(255,255,255,0.08)",
+    lineSoft: "rgba(255,255,255,0.06)",
+    quoteBg: "rgba(255,130,50,0.05)",
+    tagBg: "rgba(255,130,50,0.1)",
+    tagBorder: "rgba(255,130,50,0.2)",
+    videoOpacity: 0.4,
+  };
+}
 
 interface PostSection {
   type: "heading" | "subheading" | "paragraph" | "quote" | "list" | "divider";
@@ -144,11 +195,15 @@ function PostDetail({
   post,
   content,
   onBack,
+  theme,
 }: {
   post: { title: string; img: string; tag: string; date: string };
   content: PostContent;
   onBack: () => void;
+  theme: "light" | "dark";
 }) {
+  const p = insightsPalette(theme);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
   }, []);
@@ -161,18 +216,18 @@ function PostDetail({
     }));
 
   return (
-    <div style={{ background: "#0a0a0a", minHeight: "100vh" }}>
-      <div style={{ background: "#0d0d0d", borderBottom: "1px solid rgba(255,255,255,0.08)", padding: "0.8rem 1.5rem", position: "sticky", top: 0, zIndex: 40 }}>
-        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.72rem", color: "rgba(255,255,255,0.3)" }}>
-          <button onClick={onBack} style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.4)", fontSize: "0.72rem", padding: 0, transition: "color 0.15s" }}
-            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "rgb(255,130,50)")}
-            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.4)")}>
+    <div style={{ background: p.bg, minHeight: "100vh" }}>
+      <div style={{ background: p.cardBg, borderBottom: `1px solid ${p.line}`, padding: "0.8rem 1.5rem", position: "sticky", top: 0, zIndex: 40 }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.72rem", fontFamily: "var(--font-mono, ui-monospace, monospace)", color: p.inkFainter }}>
+          <button onClick={onBack} style={{ background: "none", border: "none", cursor: "pointer", color: p.inkFaint, fontSize: "0.72rem", fontFamily: "inherit", padding: 0, transition: "color 0.15s" }}
+            onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = p.accent)}
+            onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = p.inkFaint)}>
             Insights
           </button>
-          <span style={{ color: "rgba(255,255,255,0.15)" }}>/</span>
-          <span style={{ color: "rgba(255,255,255,0.3)" }}>{post.tag}</span>
-          <span style={{ color: "rgba(255,255,255,0.15)" }}>/</span>
-          <span style={{ color: "rgba(255,255,255,0.55)", fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "400px" }}>{content.title}</span>
+          <span style={{ color: p.inkFainter }}>/</span>
+          <span style={{ color: p.inkFaint }}>{post.tag}</span>
+          <span style={{ color: p.inkFainter }}>/</span>
+          <span style={{ color: p.inkDim, fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "400px" }}>{content.title}</span>
         </div>
       </div>
 
@@ -180,36 +235,36 @@ function PostDetail({
         <article style={{ minWidth: 0 }}>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", marginBottom: "1.5rem" }}>
             {content.tags.map((tag) => (
-              <span key={tag} style={{ fontSize: "0.58rem", letterSpacing: "0.2em", fontWeight: 600, color: "rgb(255,130,50)", background: "rgba(255,130,50,0.1)", padding: "0.3rem 0.7rem", borderRadius: "4px", border: "1px solid rgba(255,130,50,0.2)", textTransform: "uppercase" }}>{tag}</span>
+              <span key={tag} className="font-mono" style={{ fontSize: "0.58rem", letterSpacing: "0.2em", fontWeight: 600, color: p.accent, background: p.tagBg, padding: "0.3rem 0.7rem", borderRadius: "4px", border: `1px solid ${p.tagBorder}`, textTransform: "uppercase" }}>{tag}</span>
             ))}
           </div>
-          <h1 style={{ fontSize: "clamp(2rem, 5vw, 3.2rem)", fontWeight: 800, lineHeight: 1.12, letterSpacing: "-0.03em", color: "#f0e8df", marginBottom: "1rem" }}>{content.title}</h1>
-          <p style={{ fontSize: "1.05rem", color: "rgba(240,232,220,0.5)", lineHeight: 1.7, marginBottom: "2rem" }}>{content.subtitle}</p>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem", paddingBottom: "2rem", marginBottom: "2.5rem", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-            <span style={{ fontSize: "0.68rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgb(255,130,50)", fontWeight: 600 }}>{post.tag}</span>
-            <span style={{ color: "rgba(255,255,255,0.15)", fontSize: "0.7rem" }}>·</span>
-            <span style={{ fontSize: "0.68rem", color: "rgba(255,255,255,0.35)", letterSpacing: "0.1em" }}>{post.date}</span>
+          <h1 className="font-display" style={{ fontSize: "clamp(2rem, 5vw, 3.2rem)", fontWeight: 800, lineHeight: 1.12, letterSpacing: "-0.03em", color: p.ink, marginBottom: "1rem" }}>{content.title}</h1>
+          <p style={{ fontSize: "15px", color: p.inkDim, lineHeight: 1.75, marginBottom: "2rem" }}>{content.subtitle}</p>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem", paddingBottom: "2rem", marginBottom: "2.5rem", borderBottom: `1px solid ${p.line}` }}>
+            <span className="font-mono" style={{ fontSize: "0.68rem", letterSpacing: "0.2em", textTransform: "uppercase", color: p.accent, fontWeight: 600 }}>{post.tag}</span>
+            <span style={{ color: p.inkFainter, fontSize: "0.7rem" }}>·</span>
+            <span className="font-mono" style={{ fontSize: "0.68rem", color: p.inkFaint, letterSpacing: "0.1em" }}>{post.date}</span>
           </div>
-          <div style={{ width: "100%", aspectRatio: "16/9", borderRadius: "10px", overflow: "hidden", marginBottom: "3rem", border: "1px solid rgba(255,255,255,0.08)" }}>
-            <img src={post.img} alt={content.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: "saturate(0.85) brightness(0.9)" }} />
+          <div style={{ width: "100%", aspectRatio: "16/9", borderRadius: "10px", overflow: "hidden", marginBottom: "3rem", border: `1px solid ${p.line}` }}>
+            <img src={post.img} alt={content.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: theme === "light" ? "none" : "saturate(0.85) brightness(0.9)" }} />
           </div>
           {content.sections.map((section, i) => {
-            if (section.type === "divider") return <hr key={i} style={{ border: "none", borderTop: "1px solid rgba(255,255,255,0.08)", margin: "2.5rem 0" }} />;
+            if (section.type === "divider") return <hr key={i} style={{ border: "none", borderTop: `1px solid ${p.line}`, margin: "2.5rem 0" }} />;
             if (section.type === "heading") {
               const id = section.text!.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-              return <h2 key={i} id={id} style={{ fontSize: "1.4rem", fontWeight: 700, color: "#f0e8df", marginTop: "2.75rem", marginBottom: "0.9rem", letterSpacing: "-0.02em", scrollMarginTop: "5rem" }}>{section.text}</h2>;
+              return <h2 key={i} id={id} className="font-display" style={{ fontSize: "1.4rem", fontWeight: 700, color: p.ink, marginTop: "2.75rem", marginBottom: "0.9rem", letterSpacing: "-0.02em", scrollMarginTop: "5rem" }}>{section.text}</h2>;
             }
-            if (section.type === "paragraph") return <p key={i} style={{ fontSize: "1rem", lineHeight: 1.88, color: "rgba(240,232,220,0.62)", marginBottom: "1.35rem" }}>{section.text}</p>;
+            if (section.type === "paragraph") return <p key={i} style={{ fontSize: "1rem", lineHeight: 1.88, color: p.inkDim, marginBottom: "1.35rem" }}>{section.text}</p>;
             if (section.type === "quote") return (
-              <blockquote key={i} style={{ margin: "2.25rem 0", padding: "1.25rem 1.75rem", borderLeft: "3px solid rgb(255,130,50)", background: "rgba(255,130,50,0.05)", borderRadius: "0 8px 8px 0" }}>
-                <p style={{ fontSize: "1.08rem", lineHeight: 1.75, color: "rgba(240,232,220,0.75)", fontStyle: "italic", margin: 0 }}>"{section.text}"</p>
+              <blockquote key={i} style={{ margin: "2.25rem 0", padding: "1.25rem 1.75rem", borderLeft: `3px solid ${p.accent}`, background: p.quoteBg, borderRadius: "0 8px 8px 0" }}>
+                <p className="font-display" style={{ fontSize: "1.08rem", lineHeight: 1.75, color: p.ink, opacity: 0.85, fontStyle: "italic", margin: 0 }}>"{section.text}"</p>
               </blockquote>
             );
             if (section.type === "list" && section.items) return (
               <ul key={i} style={{ listStyle: "none", padding: 0, margin: "1.25rem 0 1.75rem", display: "flex", flexDirection: "column", gap: "0.9rem" }}>
                 {section.items.map((item, j) => (
-                  <li key={j} style={{ display: "flex", gap: "0.85rem", fontSize: "0.975rem", lineHeight: 1.78, color: "rgba(240,232,220,0.6)" }}>
-                    <span style={{ flexShrink: 0, marginTop: "0.68rem", width: "5px", height: "5px", borderRadius: "50%", background: "rgb(255,130,50)" }} />
+                  <li key={j} style={{ display: "flex", gap: "0.85rem", fontSize: "0.975rem", lineHeight: 1.78, color: p.inkDim }}>
+                    <span style={{ flexShrink: 0, marginTop: "0.68rem", width: "5px", height: "5px", borderRadius: "50%", background: p.accent }} />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -217,22 +272,22 @@ function PostDetail({
             );
             return null;
           })}
-          <div style={{ marginTop: "4rem", paddingTop: "2rem", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-            <button onClick={onBack} style={{ background: "none", border: "none", cursor: "pointer", fontSize: "0.68rem", letterSpacing: "0.22em", textTransform: "uppercase", color: "rgb(255,130,50)", fontWeight: 700, padding: 0 }}>← All articles</button>
+          <div style={{ marginTop: "4rem", paddingTop: "2rem", borderTop: `1px solid ${p.line}` }}>
+            <button onClick={onBack} className="font-mono" style={{ background: "none", border: "none", cursor: "pointer", fontSize: "0.68rem", letterSpacing: "0.22em", textTransform: "uppercase", color: p.accent, fontWeight: 700, padding: 0 }}>← All articles</button>
           </div>
         </article>
 
         <aside className="post-sidebar" style={{ position: "sticky", top: "4.5rem" }}>
           {headings.length > 0 && (
-            <div style={{ padding: "1.4rem", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "10px", background: "#111214" }}>
-              <p style={{ fontSize: "0.58rem", letterSpacing: "0.22em", textTransform: "uppercase", fontWeight: 700, color: "rgba(255,255,255,0.25)", margin: "0 0 1rem 0" }}>On this page</p>
+            <div style={{ padding: "1.4rem", border: `1px solid ${p.line}`, borderRadius: "10px", background: p.cardBg }}>
+              <p className="font-mono" style={{ fontSize: "0.58rem", letterSpacing: "0.22em", textTransform: "uppercase", fontWeight: 700, color: p.inkFainter, margin: "0 0 1rem 0" }}>On this page</p>
               <ol style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "0.55rem" }}>
                 {headings.map((h, i) => (
                   <li key={i}>
                     <button onClick={() => document.getElementById(h.id)?.scrollIntoView({ behavior: "smooth", block: "start" })}
-                      style={{ fontSize: "0.78rem", lineHeight: 1.5, color: "rgba(255,255,255,0.4)", textDecoration: "none", display: "block", transition: "color 0.15s", background: "none", border: "none", cursor: "pointer", padding: 0, textAlign: "left", width: "100%" }}
-                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = "rgb(255,130,50)")}
-                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.4)")}>
+                      style={{ fontSize: "0.78rem", lineHeight: 1.5, color: p.inkFaint, textDecoration: "none", display: "block", transition: "color 0.15s", background: "none", border: "none", cursor: "pointer", padding: 0, textAlign: "left", width: "100%" }}
+                      onMouseEnter={(e) => ((e.currentTarget as HTMLElement).style.color = p.accent)}
+                      onMouseLeave={(e) => ((e.currentTarget as HTMLElement).style.color = p.inkFaint)}>
                       {i + 1}. {h.text}
                     </button>
                   </li>
@@ -253,10 +308,55 @@ function PostDetail({
   );
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Corner-crosshair frame — the decorative element from the reference (image 2):
+// a rectangle traced by two vertical + two horizontal lines, with a small "+"
+// glyph at each of the four intersections. Purely decorative, themed via
+// currentColor so it reads correctly on both light and dark.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function CrosshairFrame({ color }: { color: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        inset: "clamp(90px, 12vh, 140px) clamp(6%, 12vw, 220px)",
+        pointerEvents: "none",
+        zIndex: 1,
+      }}
+    >
+      <div style={{ position: "absolute", inset: 0, border: `1px solid ${color}` }} />
+      {[
+        { top: 0, left: 0 },
+        { top: 0, right: 0 },
+        { bottom: 0, left: 0 },
+        { bottom: 0, right: 0 },
+      ].map((pos, i) => (
+        <span
+          key={i}
+          style={{
+            position: "absolute",
+            width: "13px",
+            height: "13px",
+            transform: "translate(-50%, -50%)",
+            ...pos,
+          }}
+        >
+          <span style={{ position: "absolute", top: "50%", left: 0, right: 0, height: "1px", background: color, transform: "translateY(-50%)" }} />
+          <span style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: "1px", background: color, transform: "translateX(-50%)" }} />
+        </span>
+      ))}
+    </div>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 function InsightsPage() {
   useReveal();
+  const { theme, toggleTheme } = useThemeInit();
+  const p = insightsPalette(theme);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -293,86 +393,80 @@ function InsightsPage() {
     }
   }, [activeIndex]);
 
+  const nowLabel = new Date().toLocaleDateString("en-US", { month: "long", year: "numeric" });
+
   if (activeIndex !== null && POST_CONTENT[activeIndex]) {
     return (
-      <main style={{ background: "#0a0a0a" }}>
-        <Nav />
-        <PostDetail post={POSTS[activeIndex]} content={POST_CONTENT[activeIndex]} onBack={handleBack} />
-        <Footer />
+      <main style={{ background: p.bg }}>
+        <Nav theme={theme} onToggleTheme={toggleTheme} />
+        <PostDetail post={POSTS[activeIndex]} content={POST_CONTENT[activeIndex]} onBack={handleBack} theme={theme} />
+        <Footer theme={theme} />
       </main>
     );
   }
 
   return (
-    <main style={{ background: "#0a0a0a", color: "#f0e8df", minHeight: "100vh" }}>
-      <Nav />
+    <main style={{ background: p.bg, color: p.ink, minHeight: "100vh" }}>
+      <Nav theme={theme} onToggleTheme={toggleTheme} />
 
-      {/* VIDEO HERO */}
-      <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: "#0a0a0a" }}>
-        <video
-          ref={videoRef}
-          autoPlay loop muted playsInline
-          style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0, opacity: 0.4, filter: "saturate(0.35) brightness(0.45)" }}
-        >
-          <source src="/Insights-3.mp4" type="video/mp4" />
-        </video>
+      {/* VIDEO / CROSSHAIR HERO */}
+      <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: p.bg }}>
+        {theme === "dark" && (
+          <video
+            ref={videoRef}
+            autoPlay loop muted playsInline
+            style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", zIndex: 0, opacity: p.videoOpacity, filter: "saturate(0.35) brightness(0.45)" }}
+          >
+             
+          </video>
+        )}
 
         {/* Overlays */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,rgba(10,10,10,0.25) 0%,rgba(10,10,10,0.05) 35%,rgba(10,10,10,0.8) 80%,#0a0a0a 100%)", zIndex: 1 }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg,rgba(10,10,10,0.4) 0%,transparent 60%)", zIndex: 1 }} />
-        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px)", backgroundSize: "80px 80px" }} />
+        <div style={{ position: "absolute", inset: 0, background: theme === "light"
+          ? "linear-gradient(180deg,rgba(250,249,246,0.1) 0%,rgba(250,249,246,0) 35%,rgba(250,249,246,0.5) 80%,var(--faf9f6,#faf9f6) 100%)"
+          : "linear-gradient(180deg,rgba(10,10,10,0.25) 0%,rgba(10,10,10,0.05) 35%,rgba(10,10,10,0.8) 80%,#0a0a0a 100%)", zIndex: 1 }} />
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", backgroundImage: `linear-gradient(${p.lineSoft} 1px,transparent 1px),linear-gradient(90deg,${p.lineSoft} 1px,transparent 1px)`, backgroundSize: "80px 80px" }} />
 
-        {/* Hero text — centered, exactly matching reference */}
+ 
+
+        {/* Hero text — centered */}
         <div style={{ position: "relative", zIndex: 3, textAlign: "center", padding: "0 clamp(24px, 6vw, 80px)", width: "100%" }}>
 
-          {/* Bracketed eyebrow */}
-          <p style={{
+          <p className="font-mono" style={{
             fontSize: "0.65rem",
             letterSpacing: "0.28em",
             textTransform: "uppercase",
-            color: "rgba(255,180,120,0.6)",
+            color: p.inkFaint,
             marginBottom: "2rem",
             fontWeight: 400,
           }}>
             [ Insights · Field Notes ]
           </p>
 
-          {/* Main headline — single line, mixed weight */}
-          <h1 style={{
+          <h1 className="font-display" style={{
             margin: 0,
             fontSize: "clamp(2.8rem, 7vw, 6.5rem)",
             lineHeight: 1.08,
             letterSpacing: "-0.025em",
           }}>
-            <span style={{
-              fontWeight: 300,
-              color: "#f0e8df",
-              fontFamily: "'Georgia', serif",
-            }}>
+            <span style={{ fontWeight: 700, color: p.ink }}>
               Ideas worth{" "}
             </span>
-            <span style={{
-              fontWeight: 300,
-              color: "rgb(255,130,50)",
-              fontFamily: "'Georgia', serif",
-              fontStyle: "italic",
-            }}>
+            <span style={{ fontWeight: 400, color: p.accent, fontStyle: "italic" }}>
               building on.
             </span>
           </h1>
 
-          {/* Divider */}
           <div style={{
             height: "1px",
-            background: "linear-gradient(to right, transparent, rgba(255,130,50,0.4), transparent)",
+            background: `linear-gradient(to right, transparent, ${p.accent}66, transparent)`,
             maxWidth: "420px",
             margin: "2.5rem auto",
           }} />
 
-          {/* Subtitle */}
           <p style={{
-            fontSize: "clamp(0.85rem, 1.2vw, 1rem)",
-            color: "rgba(240,232,220,0.45)",
+            fontSize: "15px",
+            color: p.inkDim,
             lineHeight: 1.85,
             maxWidth: "520px",
             margin: "0 auto",
@@ -380,55 +474,79 @@ function InsightsPage() {
           }}>
             Perspectives on AI, transformation, and the craft of shipping software — written by the team behind 150+ projects.
           </p>
+
+          {/* Stat row, like the reference screenshot */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1.4rem", marginTop: "2.75rem" }}>
+            <span className="font-mono" style={{ fontSize: "0.72rem", letterSpacing: "0.05em", color: p.inkDim }}>
+              <strong style={{ color: p.ink, fontWeight: 700 }}>{POST_CONTENT.length}</strong> Articles
+            </span>
+            <span style={{ width: "1px", height: "12px", background: p.line }} />
+            <span className="font-mono" style={{ fontSize: "0.72rem", letterSpacing: "0.05em", color: p.inkDim }}>
+              <strong style={{ color: p.ink, fontWeight: 700 }}>12</strong> Contributors
+            </span>
+            <span style={{ width: "1px", height: "12px", background: p.line }} />
+            <span className="font-mono" style={{ fontSize: "0.72rem", letterSpacing: "0.05em", color: p.inkDim }}>
+              {nowLabel}
+            </span>
+          </div>
         </div>
+
+        {/* Curated-by / scroll indicators, like the reference screenshot */}
+        <span className="font-mono" style={{ position: "absolute", left: "clamp(20px,4vw,48px)", bottom: "28px", zIndex: 3, fontSize: "0.58rem", letterSpacing: "0.2em", textTransform: "uppercase", color: p.inkFainter }}>
+          Curated by Jarvis Technolabs
+        </span>
+        <span className="font-mono" style={{ position: "absolute", right: "clamp(20px,4vw,48px)", bottom: "28px", zIndex: 3, fontSize: "0.58rem", letterSpacing: "0.2em", textTransform: "uppercase", color: p.inkFainter, display: "flex", alignItems: "center", gap: "6px" }}>
+          ↓ Scroll
+        </span>
       </section>
 
       {/* POSTS GRID */}
-      <section style={{ background: "#0a0a0a", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+      <section style={{ background: p.bg, borderTop: `1px solid ${p.lineSoft}` }}>
         <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "6rem 1.5rem 8rem" }}>
 
           <div className="reveal" style={{ marginBottom: "3.5rem", display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: "1.5rem" }}>
             <div>
-              <p style={{ fontSize: "0.62rem", letterSpacing: "0.32em", textTransform: "uppercase", marginBottom: "0.9rem", color: "rgba(255,255,255,0.28)" }}>LATEST</p>
-              <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, letterSpacing: "-0.035em", color: "#f0e8df", lineHeight: 1.08 }}>From the studio.</h2>
+              <p className="font-mono" style={{ fontSize: "0.62rem", letterSpacing: "0.32em", textTransform: "uppercase", marginBottom: "0.9rem", color: p.inkFainter }}>LATEST</p>
+              <h2 className="font-display" style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, letterSpacing: "-0.035em", color: p.ink, lineHeight: 1.08 }}>From the studio.</h2>
             </div>
             <Link
               to="/contact"
-              style={{ fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", border: "1px solid rgba(255,255,255,0.14)", borderRadius: "6px", padding: "0.72rem 1.2rem", color: "rgba(255,255,255,0.5)", textDecoration: "none", transition: "color 0.2s, border-color 0.2s" }}
-              onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.color = "rgb(255,130,50)"; el.style.borderColor = "rgb(255,130,50)"; }}
-              onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.color = "rgba(255,255,255,0.5)"; el.style.borderColor = "rgba(255,255,255,0.14)"; }}
+              className="font-mono"
+              style={{ fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", border: `1px solid ${p.line}`, borderRadius: "6px", padding: "0.72rem 1.2rem", color: p.inkDim, textDecoration: "none", transition: "color 0.2s, border-color 0.2s" }}
+              onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.color = p.accent; el.style.borderColor = p.accent; }}
+              onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.color = p.inkDim; el.style.borderColor = p.line; }}
             >
               Subscribe →
             </Link>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: "1.5rem" }}>
-            {POSTS.map((p, index) => (
+            {POSTS.map((post, index) => (
               <div
-                key={p.title}
+                key={post.title}
                 className="reveal"
                 onClick={() => handleOpen(index)}
-                style={{ borderRadius: "12px", overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", background: "#111214", cursor: "pointer", transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.25s ease, box-shadow 0.3s ease", animationDelay: `${index * 90}ms` }}
-                onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.transform = "translateY(-4px)"; el.style.borderColor = "rgba(255,130,50,0.35)"; el.style.boxShadow = "0 16px 48px rgba(0,0,0,0.5)"; }}
-                onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.transform = "translateY(0)"; el.style.borderColor = "rgba(255,255,255,0.07)"; el.style.boxShadow = "none"; }}
+                style={{ borderRadius: "12px", overflow: "hidden", border: `1px solid ${p.line}`, background: p.cardBg, cursor: "pointer", transition: "transform 0.4s cubic-bezier(0.16,1,0.3,1), border-color 0.25s ease, box-shadow 0.3s ease", animationDelay: `${index * 90}ms` }}
+                onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.transform = "translateY(-4px)"; el.style.borderColor = `${p.accent}59`; el.style.boxShadow = theme === "light" ? "0 16px 40px rgba(0,0,0,0.1)" : "0 16px 48px rgba(0,0,0,0.5)"; }}
+                onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.transform = "translateY(0)"; el.style.borderColor = p.line; el.style.boxShadow = "none"; }}
               >
                 <div style={{ position: "relative", aspectRatio: "4/3", overflow: "hidden" }}>
-                  <img src={p.img} alt={p.title} loading="lazy"
-                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: "saturate(0.8) brightness(0.8)", transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease" }}
-                    onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.transform = "scale(1.06)"; el.style.filter = "saturate(1) brightness(0.9)"; }}
-                    onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.transform = "scale(1)"; el.style.filter = "saturate(0.8) brightness(0.8)"; }}
+                  <img src={post.img} alt={post.title} loading="lazy"
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: theme === "light" ? "none" : "saturate(0.8) brightness(0.8)", transition: "transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.4s ease" }}
+                    onMouseEnter={(e) => { const el = e.currentTarget as HTMLElement; el.style.transform = "scale(1.06)"; if (theme === "dark") el.style.filter = "saturate(1) brightness(0.9)"; }}
+                    onMouseLeave={(e) => { const el = e.currentTarget as HTMLElement; el.style.transform = "scale(1)"; if (theme === "dark") el.style.filter = "saturate(0.8) brightness(0.8)"; }}
                   />
-                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(10,10,10,0.7) 0%, transparent 55%)" }} />
+                  <div style={{ position: "absolute", inset: 0, background: theme === "light" ? "linear-gradient(to top, rgba(0,0,0,0.15) 0%, transparent 55%)" : "linear-gradient(to top, rgba(10,10,10,0.7) 0%, transparent 55%)" }} />
                 </div>
                 <div style={{ padding: "1.5rem 1.75rem 1.75rem" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.85rem", fontSize: "0.58rem", letterSpacing: "0.25em", textTransform: "uppercase" }}>
-                    <span style={{ color: "rgb(255,130,50)" }}>{p.tag}</span>
-                    <span style={{ color: "rgba(255,255,255,0.18)" }}>·</span>
-                    <span style={{ color: "rgba(255,255,255,0.28)" }}>{p.date}</span>
+                  <div className="font-mono" style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.85rem", fontSize: "0.58rem", letterSpacing: "0.25em", textTransform: "uppercase" }}>
+                    <span style={{ color: p.accent }}>{post.tag}</span>
+                    <span style={{ color: p.inkFainter }}>·</span>
+                    <span style={{ color: p.inkFaint }}>{post.date}</span>
                   </div>
-                  <h3 style={{ fontSize: "clamp(1rem, 1.5vw, 1.2rem)", fontWeight: 700, lineHeight: 1.28, color: "#f0e8df", marginBottom: "0.6rem", letterSpacing: "-0.015em" }}>{p.title}</h3>
-                  <p style={{ fontSize: "0.82rem", lineHeight: 1.68, color: "rgba(240,232,220,0.38)", marginBottom: "1.1rem" }}>{p.excerpt}</p>
-                  <div style={{ fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgb(255,130,50)", display: "flex", alignItems: "center", gap: "6px" }}>
+                  <h3 className="font-display" style={{ fontSize: "clamp(1rem, 1.5vw, 1.2rem)", fontWeight: 700, lineHeight: 1.28, color: p.ink, marginBottom: "0.6rem", letterSpacing: "-0.015em" }}>{post.title}</h3>
+                  <p style={{ fontSize: "0.82rem", lineHeight: 1.68, color: p.inkFaint, marginBottom: "1.1rem" }}>{post.excerpt}</p>
+                  <div className="font-mono" style={{ fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: p.accent, display: "flex", alignItems: "center", gap: "6px" }}>
                     Read note <span style={{ fontSize: "13px" }}>→</span>
                   </div>
                 </div>
@@ -440,12 +558,12 @@ function InsightsPage() {
 
       <CTA
         eyebrow="STAY IN THE LOOP"
-        title={<>Field notes, <em style={{ color: "rgb(255,130,50)", fontStyle: "normal", fontWeight: 300 }}>straight to your inbox.</em></>}
+        title={<>Field notes, <em style={{ color: p.accent, fontStyle: "normal", fontWeight: 300 }}>straight to your inbox.</em></>}
         description="One thoughtful note a month on AI, modernisation and shipping. No fluff, no spam."
         primaryLabel="Subscribe →"
         secondaryLabel="Browse services"
       />
-      <Footer />
+      <Footer theme={theme} />
     </main>
   );
 }

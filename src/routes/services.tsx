@@ -212,6 +212,12 @@ function parseItem(raw: string) {
 //   .lb-desc) are now all a flat 15px / line-height 1.75, matching the
 //   fixed 15px paragraphs used under every heading on the home page (they
 //   were previously a clamp()'d, slightly larger, non-matching scale).
+// - Sub-category cards (.svr-card) are now VERTICAL boxes — image full-width
+//   on top, text below in a fixed-width column — the same shape as the
+//   "How you plug us in" tiles (.eng-tile) on the home page, laid out in a
+//   responsive grid (.svr-list) instead of a single-column vertical stack.
+//   Title/description font sizes now match those tiles exactly (19px/800
+//   title, 13px/1.65 description) instead of the old font-display serif.
 // ─────────────────────────────────────────────────────────────────────────
 const STYLES = `
 
@@ -240,7 +246,7 @@ const STYLES = `
   font-family:var(--font-sans);
   border-bottom:1px solid var(--line);
 }
-.svh-inner{ max-width:1180px; margin:0 auto; padding:0 clamp(20px,4vw,48px); }
+.svh-inner{ max-width:1600px; margin:0 auto; padding:0 clamp(20px,4vw,48px); }
 .svh-eyebrow{
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size:10px;letter-spacing:.3em;text-transform:uppercase;font-weight:400;
@@ -309,7 +315,7 @@ const STYLES = `
   padding:clamp(64px,8vh,100px) 0 clamp(90px,10vh,130px);
   font-family:var(--font-sans);
 }
-.svl-inner{ max-width:1180px; margin:0 auto; padding:0 clamp(20px,4vw,48px); }
+.svl-inner{ max-width:1600px; margin:0 auto; padding:0 clamp(20px,4vw,48px); }
 
 .svl-layout{
   display:grid;
@@ -366,10 +372,20 @@ const STYLES = `
 .svr-intro-stat-lbl{ font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-faint); }
 
 @keyframes svrCardIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
-.svr-list{ display:flex; flex-direction:column; gap:18px; }
+
+/* Grid of vertical boxes — image full-width on top, text below in a fixed
+   column width, matching the home page's .eng-tile "How you plug us in"
+   cards. This is what makes the description wrap onto multiple lines
+   instead of stretching out as one long line: the text now lives in a
+   constrained column instead of an unbounded flex-row remainder. */
+.svr-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));
+  gap:20px;
+}
 .svr-card{
-  display:flex; align-items:stretch; gap:20px;
-  background:var(--surface); border:1px solid var(--line); border-radius:16px;
+  display:flex; flex-direction:column; align-items:stretch;
+  background:var(--surface); border:1.5px solid color-mix(in oklch, var(--acc) 28%, var(--line)); border-radius:20px;
   overflow:hidden; padding:0; cursor:pointer; text-align:left;
   transition:border-color .3s ease, transform .3s ease, box-shadow .3s ease;
   opacity:0; transform:translateY(18px);
@@ -377,25 +393,25 @@ const STYLES = `
 }
 .svr-card:hover{
   border-color:color-mix(in oklch, var(--acc) 45%, var(--line));
-  transform:translateY(-3px);
+  transform:translateY(-4px);
   box-shadow:0 22px 44px -26px color-mix(in oklch, var(--acc) 25%, transparent);
 }
-.svr-card-media{ position:relative; flex-shrink:0; width:200px; overflow:hidden; }
+.svr-card-media{ position:relative; width:100%; aspect-ratio:16/10; overflow:hidden; }
 .svr-card-media img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .6s cubic-bezier(.22,1,.36,1); }
 .svr-card:hover .svr-card-media img{ transform:scale(1.07); }
 .svr-card-num{
-  position:absolute; left:12px; bottom:12px;
+  position:absolute; left:14px; bottom:14px;
   font-family:var(--font-display); font-weight:800; font-size:1.6rem; color:#fff;
   line-height:1; text-shadow:0 2px 10px rgba(0,0,0,.35);
 }
-.svr-card-body{ flex:1; padding:20px 22px 20px 0; display:flex; flex-direction:column; justify-content:center; gap:8px; min-width:0; }
+.svr-card-body{ flex:1; padding:22px 22px 26px; display:flex; flex-direction:column; justify-content:flex-start; gap:8px; min-width:0; }
 .svr-card-title{
-  font-family:var(--font-display); font-weight:700; font-size:1.05rem; color:var(--ink);
-  line-height:1.25; letter-spacing:-.005em;
+  font-weight:800; font-size:19px; color:var(--ink);
+  line-height:1.25; letter-spacing:-.005em; margin:0;
 }
-.svr-card-desc{ font-size:.85rem; color:var(--ink-dim); line-height:1.6; }
+.svr-card-desc{ font-size:13px; color:var(--ink-dim); line-height:1.65; margin:0; }
 .svr-card-btn{
-  display:inline-flex; align-items:center; gap:7px; margin-top:4px; width:fit-content;
+  display:inline-flex; align-items:center; gap:7px; margin-top:8px; width:fit-content;
   font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; font-weight:700;
   color:var(--acc); border:1px solid color-mix(in oklch, var(--acc) 40%, var(--line));
   border-radius:999px; padding:8px 16px;
@@ -424,9 +440,9 @@ const STYLES = `
 @media(max-width:900px){
   .svl-layout{ grid-template-columns:1fr; }
   .svl-left{ position:static; }
-  .svr-card{ flex-direction:column; }
-  .svr-card-media{ width:100%; aspect-ratio:16/10; }
-  .svr-card-body{ padding:16px 18px 20px; }
+}
+@media(max-width:560px){
+  .svr-card-body{ padding:18px 18px 22px; }
 }
 @media(max-width:640px){
   .svh-ticker-item{ padding:14px 22px; font-size:9.5px; }
@@ -589,7 +605,13 @@ function ServicesEditorial({ onCardClick }: { onCardClick: (item: LBItem) => voi
                         </div>
                         <div className="svr-card-body">
                           <h4 className="svr-card-title">{title || img.label}</h4>
-                          {detail && <p className="svr-card-desc">{detail}</p>}
+                          {detail && (
+  <div className="svr-card-desc">
+    {detail.split(",").map((item, index) => (
+      <div key={index}>{item.trim()}</div>
+    ))}
+  </div>
+)}
                           <span className="svr-card-btn">See Details →</span>
                         </div>
                       </button>
