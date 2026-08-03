@@ -5,6 +5,8 @@ import { CTA, Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
 import { useThemeInit } from "@/hooks/use-theme-init";
 import { POSTS } from "@/data/insights";
+import insightsBg from "@/assets/insightspage.png";
+
 
 export const Route = createFileRoute("/insights")({
   component: InsightsPage,
@@ -160,10 +162,10 @@ function OrganicBranchPattern({ color }: { color: string }) {
             transform={`translate(${lf.x} ${lf.y}) rotate(${lf.angle + 90}) scale(${lf.scale})`}
           >
             <path
-              d="M0,0 C-8,-10 -9,-25 0,-34 C9,-25 8,-10 0,0 Z"
-              fill={color}
-              opacity="0.9"
-            />
+  d="M0,0 C-8,-10 -9,-25 0,-34 C9,-25 8,-10 0,0 Z"
+  fill={color}
+  opacity="1"
+/>
             <line x1="0" y1="-3" x2="0" y2="-30" stroke={color} strokeWidth="0.6" opacity="0.5" />
           </g>
         ))}
@@ -515,6 +517,94 @@ function InsightsPage() {
 
        {/* VIDEO / CROSSHAIR HERO */}
       <section style={{ position: "relative", minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: p.bg }}>
+        {/* Background Illustration */}
+<img
+  src={insightsBg}
+  alt=""
+  aria-hidden
+  style={{
+    position: "absolute",
+    inset: 0,
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    objectPosition: "center",
+    pointerEvents: "none",
+    zIndex: 0,
+    opacity: theme === "light" ? 0.35 : 0.22,
+    mixBlendMode: theme === "light" ? "multiply" : "screen",
+  }}
+/>
+{/* Left Hexagon Structure */}
+<div
+  style={{
+    position: "absolute",
+    left: "-60px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    width: "420px",
+    height: "600px",
+    opacity: theme === "dark" ? 0.60 : 0.50,
+    zIndex: 1,
+    pointerEvents: "none",
+  }}
+>
+  <svg
+    width="100%"
+    height="100%"
+    viewBox="0 0 420 600"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <defs>
+      <linearGradient id="hexStroke" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#F97316" />
+        <stop offset="100%" stopColor="#FFD7B5" />
+      </linearGradient>
+    </defs>
+
+    {/* Hexagon 1 */}
+    <polygon
+      points="120,50 160,72 160,118 120,140 80,118 80,72"
+      stroke="url(#hexStroke)"
+      strokeWidth="1.4"
+    />
+
+    {/* Hexagon 2 */}
+    <polygon
+      points="180,85 220,107 220,153 180,175 140,153 140,107"
+      stroke="url(#hexStroke)"
+      strokeWidth="1.4"
+    />
+
+    {/* Hexagon 3 */}
+    <polygon
+      points="120,155 160,177 160,223 120,245 80,223 80,177"
+      stroke="url(#hexStroke)"
+      strokeWidth="1.4"
+    />
+
+    {/* Hexagon 4 */}
+    <polygon
+      points="180,225 220,247 220,293 180,315 140,293 140,247"
+      stroke="url(#hexStroke)"
+      strokeWidth="1.4"
+    />
+
+    {/* Hexagon 5 */}
+    <polygon
+      points="120,295 160,317 160,363 120,385 80,363 80,317"
+      stroke="url(#hexStroke)"
+      strokeWidth="1.4"
+    />
+
+    {/* Connecting Lines */}
+    <line x1="160" y1="95" x2="180" y2="107" stroke="#F97316" strokeOpacity="0.5" />
+    <line x1="160" y1="200" x2="180" y2="247" stroke="#F97316" strokeOpacity="0.5" />
+    <line x1="120" y1="140" x2="120" y2="155" stroke="#F97316" strokeOpacity="0.5" />
+    <line x1="120" y1="245" x2="120" y2="295" stroke="#F97316" strokeOpacity="0.5" />
+  </svg>
+</div>
         {theme === "dark" && (
           <video
             ref={videoRef}
@@ -532,7 +622,9 @@ function InsightsPage() {
   {/* Organic branch/leaf silhouette — pale, monochrome, bleeding off
             the right edge, reads correctly in both light and dark since it's
             a single neutral tone rather than theme-specific art. */}
-        <OrganicBranchPattern color={theme === "light" ? "rgba(24,24,24,0.06)" : "rgba(240,232,223,0.08)"} />
+        <OrganicBranchPattern 
+  color={theme === "light" ? "rgba(24,24,24,0.14)" : "rgba(240,232,223,0.60)"} 
+/>
 
         <div
           className="animate-blob"
@@ -602,6 +694,8 @@ function InsightsPage() {
         <div style={{ position: "absolute", inset: 0, background: theme === "light"
           ? "linear-gradient(180deg,rgba(250,249,246,0.1) 0%,rgba(250,249,246,0) 35%,rgba(250,249,246,0.5) 80%,var(--faf9f6,#faf9f6) 100%)"
           : "linear-gradient(180deg,rgba(10,10,10,0.25) 0%,rgba(10,10,10,0.05) 35%,rgba(10,10,10,0.8) 80%,#0a0a0a 100%)", zIndex: 1 }} />
+
+
 
         {/* Hero text — centered */}
         <div style={{ position: "relative", zIndex: 3, textAlign: "center", padding: "0 clamp(24px, 6vw, 80px)", width: "100%" }}>
