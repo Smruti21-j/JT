@@ -425,7 +425,7 @@ function InsightsPage() {
         <div style={{ position: "absolute", inset: 0, background: theme === "light"
           ? "linear-gradient(180deg,rgba(250,249,246,0.1) 0%,rgba(250,249,246,0) 35%,rgba(250,249,246,0.5) 80%,var(--faf9f6,#faf9f6) 100%)"
           : "linear-gradient(180deg,rgba(10,10,10,0.25) 0%,rgba(10,10,10,0.05) 35%,rgba(10,10,10,0.8) 80%,#0a0a0a 100%)", zIndex: 1 }} />
-        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", backgroundImage: `linear-gradient(${p.lineSoft} 1px,transparent 1px),linear-gradient(90deg,${p.lineSoft} 1px,transparent 1px)`, backgroundSize: "80px 80px" }} />
+        
 
  
 
