@@ -29,7 +29,7 @@ const SERVICE_GROUPS = [
     image: dataAiImg,
     eyebrow: "Neural Command Layer",
     tagline: "Move from AI that talks to AI that acts. A focused set of systems for building, deploying and operating production-grade intelligence.",
-    stat: { value: "10×", label: "Decision velocity" },
+    stat: { value: null, label: null },
     items: [
       "Core Systems: Generative AI, LLM Substrates, Deep Learning",
       "Action Agents: Smart AI Assistants, Autonomous Chatbots",
@@ -50,7 +50,7 @@ const SERVICE_GROUPS = [
     image: digitalImg,
     eyebrow: "Enterprise Singularity",
     tagline: "Reclaim your digital destiny. Transform legacy chaos into a self-evolving operating model.",
-    stat: { value: "3×", label: "Time-to-market compression" },
+    stat: { value:  null, label:  null },
     items: [
       "Core Logic: Enterprise Architecture, Business Intelligence",
       "Modernization: Architecture Resurgence (App Modernization)",
@@ -71,7 +71,7 @@ const SERVICE_GROUPS = [
     image: productImg,
     eyebrow: "Precision Build Matrix",
     tagline: "Forge the impossible with future-fit engineering built for infinite scale.",
-    stat: { value: "98%", label: "On-time delivery rate" },
+    stat: { value: null, label: null },
     items: [
       "Design Forge: Product Assessment & Design, Application Re-Engineering",
       "Scale Logic: Platform Engineering, Custom High-Stakes Development",
@@ -92,7 +92,7 @@ const SERVICE_GROUPS = [
     image: appImg,
     eyebrow: "Omniscreen Deployment",
     tagline: "High-velocity platforms engineered for a real-time, always-connected world.",
-    stat: { value: "4.9★", label: "Avg. app store rating" },
+    stat: { value: null, label: null },
     items: [
       "Web Logic: Responsive Web Ecosystems, Progressive Web Apps (PWA)",
       "Mobile Core: Mobile App Development, Cross-Platform Architectures",
@@ -112,7 +112,7 @@ const SERVICE_GROUPS = [
     image: uiuxImg,
     eyebrow: "Neuro-Experience Design",
     tagline: "Interfaces that sense human intent and feel inevitable, from first click to last.",
-    stat: { value: "62%", label: "Avg. engagement uplift" },
+    stat: { value: null, label: null },
     items: [
       "Research: Cognitive UX Research, Usability Consulting",
       "Craft: Precision UX Design, Intuitive UI Craftsmanship",
@@ -131,7 +131,7 @@ const SERVICE_GROUPS = [
     image: consultingImg,
     eyebrow: "Strategic Foresight Engine",
     tagline: "Turn technical complexity into unvarnished business clarity, before you build.",
-    stat: { value: "85%", label: "Clients advance to build" },
+    stat: { value:  null, label:  null },
     items: [
       "Strategic Core: Business & Stakeholder Value, Technology Strategy",
       "Plan Forge: Product Strategy, Sovereign Data Strategy",
@@ -150,7 +150,7 @@ const SERVICE_GROUPS = [
     image: growthImg,
     eyebrow: "Perpetual Optimisation Loop",
     tagline: "Stop chasing vanity metrics; start commanding results that compound.",
-    stat: { value: "2.4×", label: "Avg. revenue multiplier" },
+    stat: { value: null, label: null },
     items: [
       "Engines: Experience & Conversion Optimization, 1:1 Personalization",
       "Intelligence: Real-Time Tracking & Analytics, SEO (GEO & AIO)",
@@ -169,7 +169,7 @@ const SERVICE_GROUPS = [
     image: managedImg,
     eyebrow: "Autonomous Operations Grid",
     tagline: "The self-healing backbone for your digital core, watched around the clock.",
-    stat: { value: "99.9%", label: "Guaranteed uptime SLA" },
+    stat: { value: null, label: null },
     items: [
       "Reliability: Intelligent IT Ops & Support, 24/7 Application Support",
       "Security: Preemptive Cybersecurity, Compliance & Risk Governance",
