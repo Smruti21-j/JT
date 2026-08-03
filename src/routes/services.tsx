@@ -192,9 +192,28 @@ function parseItem(raw: string) {
   };
 }
 
-// ─── STYLES — devx labs "blogs" editorial direction ──────────────────────────
+// ─── STYLES ───────────────────────────────────────────────────────────────
+//
+// TYPOGRAPHY ALIGNED TO index.tsx:
+// - All eyebrow/label text (.svh-eyebrow, .svl-left-eyebrow, .svr-intro-eyebrow,
+//   .lb-eyebrow) now matches the home page's font-mono eyebrows exactly:
+//   font-family var(--font-mono), 10px, letter-spacing .3em, uppercase,
+//   font-weight 400 (was a mix of 700-weight sans and inconsistent sizing).
+// - The hero H1 (.svh-title) no longer hardcodes its own font-family/size/
+//   weight/uppercase here — it now also carries the shared "section-title"
+//   class in JSX (same class every H2 on the home page uses), so it will
+//   always track whatever the home page's headings look like. Only
+//   layout-specific rules (margin, animation) stay in this local class.
+// - Italic accent lines (the second line of every big heading) now match the
+//   home page's convention exactly: className="font-display", italic,
+//   font-weight 400, color var(--acc) — replacing the old Georgia-serif
+//   fallback that didn't match the home page's display font at all.
+// - Intro/body paragraphs (.svh-sub, .svr-intro-tagline, .svl-left-desc,
+//   .lb-desc) are now all a flat 15px / line-height 1.75, matching the
+//   fixed 15px paragraphs used under every heading on the home page (they
+//   were previously a clamp()'d, slightly larger, non-matching scale).
+// ─────────────────────────────────────────────────────────────────────────
 const STYLES = `
- 
 
 .svc-page{
   --bg:      var(--color-background);
@@ -223,8 +242,9 @@ const STYLES = `
 }
 .svh-inner{ max-width:1180px; margin:0 auto; padding:0 clamp(20px,4vw,48px); }
 .svh-eyebrow{
-  font-size:10px;letter-spacing:.32em;text-transform:uppercase;font-weight:700;
-  color:var(--acc); margin-bottom:22px;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;font-weight:400;
+  color:var(--ink-faint); margin-bottom:22px;
   animation:svhIn .6s cubic-bezier(.16,1,.3,1) both;
   display:flex; align-items:center; gap:10px;
 }
@@ -232,14 +252,11 @@ const STYLES = `
   content:""; width:7px; height:7px; border-radius:50%; background:var(--acc); flex-shrink:0;
 }
 .svh-title{
-  font-family:var(--font-display); font-weight:800; letter-spacing:-.02em;
-  font-size:clamp(3rem,9vw,7rem); line-height:.92; color:var(--ink);
-  margin-bottom:28px; text-transform:uppercase;
+  margin-bottom:28px;
   animation:svhIn .7s .08s cubic-bezier(.16,1,.3,1) both;
 }
-.svh-title em{ font-style:italic; font-weight:300; color:var(--acc); text-transform:none; font-family:Georgia,serif; }
 .svh-sub{
-  font-size:clamp(1rem,1.4vw,1.15rem); color:var(--ink-dim); line-height:1.75;
+  font-size:15px; color:var(--ink-dim); line-height:1.75;
   max-width:600px; margin-bottom:44px;
   animation:svhIn .7s .16s cubic-bezier(.16,1,.3,1) both;
 }
@@ -307,7 +324,8 @@ const STYLES = `
   top:110px;
 }
 .svl-left-eyebrow{
-  font-size:9px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;font-weight:400;
   color:var(--ink-faint); margin-bottom:20px;
 }
 @keyframes svlActiveIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
@@ -317,16 +335,13 @@ const STYLES = `
   color:var(--acc); line-height:1; margin-bottom:12px;
 }
 .svl-left-title{
-  font-family:var(--font-display); font-weight:800; letter-spacing:-.015em;
+  font-family:var(--font-display); font-weight:700; letter-spacing:-.01em;
   font-size:clamp(1.7rem,2.6vw,2.3rem); line-height:1.08; color:var(--ink);
-  text-transform:uppercase; margin-bottom:16px;
+  margin-bottom:16px;
 }
 .svl-left-desc{
-  font-size:.88rem; color:var(--ink-dim); line-height:1.7; margin-bottom:20px;
+  font-size:15px; color:var(--ink-dim); line-height:1.75; margin-bottom:20px;
 }
- 
-}
-.svl-progress-dot.active{ background:var(--acc); }
 .svr-group{ margin-bottom:56px; }
 .svr-group:last-child{ margin-bottom:0; }
 
@@ -337,15 +352,15 @@ const STYLES = `
   animation:svrIntroIn .4s cubic-bezier(.16,1,.3,1) both;
 }
 .svr-intro-eyebrow{
-  font-size:10px;letter-spacing:.28em;text-transform:uppercase;font-weight:700;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;font-weight:400;
   color:var(--acc); margin-bottom:10px;
 }
 .svr-intro-title{
-  font-family:var(--font-display); font-weight:800; letter-spacing:-.01em;
+  font-family:var(--font-display); font-weight:700; letter-spacing:-.01em;
   font-size:clamp(1.4rem,2.2vw,1.9rem); color:var(--ink); line-height:1.15; margin-bottom:10px;
-  text-transform:uppercase;
 }
-.svr-intro-tagline{ font-size:.92rem; color:var(--ink-dim); line-height:1.75; max-width:640px; margin-bottom:16px; }
+.svr-intro-tagline{ font-size:15px; color:var(--ink-dim); line-height:1.75; max-width:640px; margin-bottom:16px; }
 .svr-intro-stat{ display:inline-flex; align-items:baseline; gap:9px; }
 .svr-intro-stat-val{ font-family:var(--font-display); font-weight:800; font-size:1.4rem; color:var(--acc); line-height:1; }
 .svr-intro-stat-lbl{ font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-faint); }
@@ -395,10 +410,14 @@ const STYLES = `
 .lb-box{position:relative;width:min(820px,92vw);border-radius:20px;overflow:hidden;border:1px solid color-mix(in oklch, var(--acc) 16%, transparent);box-shadow:0 40px 140px rgba(0,0,0,.35);animation:zoomIn .3s cubic-bezier(.16,1,.3,1) both;cursor:default;background:var(--card)}
 .lb-img{width:100%;height:320px;object-fit:cover;display:block}
 .lb-body{padding:28px 36px 34px;display:flex;flex-direction:column;gap:12px;font-family:var(--font-sans)}
-.lb-eyebrow{font-size:9px;letter-spacing:.3em;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:9px;color:var(--acc)}
-.lb-title{font-family:var(--font-sans);font-size:clamp(1.3rem,2.4vw,1.7rem);font-weight:900;color:var(--ink);line-height:1.1;text-transform:uppercase}
+.lb-eyebrow{
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;font-weight:400;
+  display:flex;align-items:center;gap:9px;color:var(--acc)
+}
+.lb-title{font-family:var(--font-display);font-size:clamp(1.3rem,2.4vw,1.7rem);font-weight:800;color:var(--ink);line-height:1.1}
 .lb-rule{height:1px;opacity:.18;border:none;background:linear-gradient(to right,transparent,var(--ink),transparent)}
-.lb-desc{font-size:.95rem;color:var(--ink-dim);line-height:1.8}
+.lb-desc{font-size:15px;color:var(--ink-dim);line-height:1.75}
 .lb-close{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.08);color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s ease,color .2s ease;z-index:10}
 .lb-close:hover{background:rgba(255,255,255,.14);color:#fff}
 
@@ -455,10 +474,12 @@ function ServicesHero() {
     <section className="svh-hero">
       <div className="svh-inner">
         <p className="svh-eyebrow">Full-Stack, AI-Native Delivery</p>
-        <h1 className="svh-title">
+        <h1 className="svh-title section-title">
           The Full Stack.
           <br />
-          <em>Built to last.</em>
+          <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "var(--acc)" }}>
+            Built to last.
+          </em>
         </h1>
         <p className="svh-sub">
           Web, mobile, AI, design and infrastructure — engineered under one AI-native roof,
@@ -478,9 +499,6 @@ function ServicesHero() {
 }
 
 // ─── Left category nav + right stacked numbered cards ───────────────────────
-// ─── Sticky single-category indicator (left) + continuous scroll of every
-// category's cards (right). Left auto-advances via IntersectionObserver as
-// each category's block scrolls into view — no click-to-switch list anymore.
 function ServicesEditorial({ onCardClick }: { onCardClick: (item: LBItem) => void }) {
   const [active, setActive] = useState(0);
   const groupRefs = useRef<(HTMLDivElement | null)[]>([]);
