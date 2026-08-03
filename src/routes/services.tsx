@@ -12,6 +12,7 @@ import uiuxImg from "@/assets/service-uiux.jpg";
 import consultingImg from "@/assets/service-consulting.jpg";
 import growthImg from "@/assets/service-growth.jpg";
 import managedImg from "@/assets/service-managed.jpg";
+import servicesImage from "@/assets/servicesimage.png";
 
 const PANEL_ACCENT = [
   "var(--color-primary)", "var(--color-primary)", "var(--color-primary)",
@@ -236,6 +237,52 @@ const STYLES = `
 
 @keyframes svhIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
 @keyframes tickerScroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.svh-hero{
+    position: relative;
+    overflow: hidden;
+}
+
+.svh-inner{
+    position: relative;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 clamp(20px,4vw,48px);
+}
+
+.svh-hero-image{
+    position:absolute;
+    right:0;
+    top:50%;
+    transform:translateY(-50%);
+    width:min(42vw,700px);
+    pointer-events:none;
+    z-index:1;
+}
+
+.svh-hero-image img{
+    width:100%;
+    height:auto;
+    display:block;
+}
+
+.svh-inner > *:not(.svh-hero-image){
+    position:relative;
+    z-index:2;
+}
+
+@media (max-width: 992px){
+
+    .svh-hero-image{
+        position:relative;
+        width:100%;
+        max-width:500px;
+        margin:40px auto 0;
+        top:auto;
+        right:auto;
+        transform:none;
+    }
+
+}
 
 /* ══ EDITORIAL HERO ══ */
 .svh-hero{
@@ -487,19 +534,24 @@ function ServicesHero() {
   };
 
   return (
-    <section className="svh-hero">
-      <div className="svh-inner">
+   <section className="svh-hero">
+  <div className="svh-inner">
+
+    <div className="svh-hero-image">
+      <img src={servicesImage} alt="Services Illustration" />
+    </div>
         <p className="svh-eyebrow">Full-Stack, AI-Native Delivery</p>
         <h1 className="svh-title section-title">
-          The Full Stack.
+          Impact
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "var(--acc)" }}>
-            Built to last.
+          Witnessed
           </em>
         </h1>
         <p className="svh-sub">
-          Web, mobile, AI, design and infrastructure — engineered under one AI-native roof,
-          with a senior human owning every decision that matters.
+          See your future in action. Explore the missions where we turned bold ambition into a scalable reality. 
+          These global leaders didn't just build software - they used our intelligence layer to gain decision authority 
+          and command their markets.
         </p>
         <div className="svh-ctas">
           <Link to="/contact" className="svh-cta-primary">
