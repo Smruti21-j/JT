@@ -711,14 +711,14 @@ function InsightsPage() {
             [ Insights · Field Notes ]
           </p>
 
-          <h1 className="font-display section-title" style={{
+          <h1 className="section-title" style={{
   margin: 0,
   lineHeight: 1.08,
 }}>
             <span style={{ fontWeight: 700, color: p.ink }}>
               Ideas worth{" "}
             </span>
-            <span style={{ fontWeight: 400, color: p.accent, fontStyle: "italic" }}>
+            <span className="font-display" style={{ fontWeight: 400, color: p.accent, fontStyle: "italic" }}>
               building on.
             </span>
           </h1>

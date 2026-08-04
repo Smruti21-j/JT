@@ -12,6 +12,8 @@ import {
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
+import { useThemeInit } from "@/hooks/use-theme-init";
+
 import { useRef, useState, useEffect, useCallback } from "react";
 import hireCover1 from "@/assets/hire-cover1.jpg";
 import hireCover2 from "@/assets/hire-cover2.jpg";
@@ -22,6 +24,7 @@ import hireBox3 from "@/assets/hire-box3.jpg";
 import hireBox4 from "@/assets/hire-box4.png";
 import hireBox5 from "@/assets/hire-box5.png";
 import hireBox6 from "@/assets/hire-box6.png";
+import heroBg from "@/assets/hirecover.webp";
 
 const REASONS = [
   {
@@ -119,16 +122,14 @@ const DNA_GROUPS = [
 ];
 
 const HIRE_STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap');
+ 
 
-  .hire-root {
-    --cream: #F7F5F1;
-    --ink: #0C0C0B;
+.hire-root {
     --orange: #E85D26;
-    --muted: #8A8680;
-    --rule: rgba(12,12,11,0.12);
-    font-family: 'Inter', sans-serif;
-  }
+    --dark-bg: #0C0C0B;
+    --dark-ink: #F7F5F1;
+    font-family: var(--font-sans);
+}
 
   /* ── MARQUEE ── */
   @keyframes hireMarquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
@@ -161,7 +162,7 @@ const HIRE_STYLES = `
 
   /* ── SYNC metric ── */
   .hire-sync-metric {
-    font-family: 'EB Garamond', serif;
+    font-family: var(--font-sans);
     font-style: italic;
   }
 
@@ -241,7 +242,12 @@ const HIRE_STYLES = `
   .sync-icon-anim.is-visible {
     animation: syncIconPulse 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
   }
-
+function hirePalette(theme: "light" | "dark") {
+  if (theme === "light") {
+    return { cream: "#F7F5F1", ink: "#0C0C0B", muted: "#8A8680", rule: "rgba(12,12,11,0.12)" };
+  }
+  return { cream: "#14120F", ink: "#F5F2ED", muted: "rgba(245,242,237,0.5)", rule: "rgba(245,242,237,0.14)" };
+}
   .sync-card:hover .sync-accent-line {
     transform: scaleX(1) !important;
   }
@@ -263,7 +269,12 @@ const HIRE_STYLES = `
     .hire-dna-cols { flex-direction: column !important; }
   }
 `;
-
+function hirePalette(theme: "light" | "dark") {
+  if (theme === "light") {
+    return { cream: "#F7F5F1", ink: "#0C0C0B", muted: "#8A8680", rule: "rgba(12,12,11,0.12)" };
+  }
+  return { cream: "#14120F", ink: "#F5F2ED", muted: "rgba(245,242,237,0.5)", rule: "rgba(245,242,237,0.14)" };
+}
 /* ── Animated sync card ── */
 function SyncCard({
   pt,
@@ -364,8 +375,9 @@ function SyncCard({
         style={{
           fontFamily: "'EB Garamond', serif",
           fontStyle: "italic",
-          fontSize: "clamp(3.5rem, 6vw, 6rem)",
-          color: "var(--cream)",
+          fontSize: "1.35rem",
+          fontWeight: 400,
+          color: "var(--dark-ink)",
           lineHeight: 1,
           marginBottom: "0.3rem",
           animationDelay: `${delay + 80}ms`,
@@ -397,7 +409,7 @@ function SyncCard({
           fontFamily: "'EB Garamond', serif",
           fontSize: "1.35rem",
           fontWeight: 400,
-          color: "var(--cream)",
+          color: "var(--dark-ink)",
           marginBottom: "0.75rem",
           animationDelay: `${delay + 260}ms`,
         }}
@@ -535,12 +547,24 @@ export const Route = createFileRoute("/hire")({
 
 function HirePage() {
   useReveal();
+  const { theme, toggleTheme } = useThemeInit();
+  const pal = hirePalette(theme);
 
   return (
-    <main className="hire-root" style={{ background: "var(--cream)", color: "var(--ink)", minHeight: "100vh" }}>
+    <main
+      className="hire-root"
+      style={{
+        background: "var(--cream)",
+        color: "var(--ink)",
+        minHeight: "100vh",
+        ["--cream" as any]: pal.cream,
+        ["--ink" as any]: pal.ink,
+        ["--muted" as any]: pal.muted,
+        ["--rule" as any]: pal.rule,
+      }}
+    >
       <style>{HIRE_STYLES}</style>
-      <Nav />
-
+      <Nav theme={theme} onToggleTheme={toggleTheme} />
       {/* ════════════════════════════════════════
           HERO
       ════════════════════════════════════════ */}
@@ -553,12 +577,12 @@ function HirePage() {
           padding: "0",
           position: "relative",
           overflow: "hidden",
-          background: "var(--ink)",
+          background: "var(--dark-bg)",
         }}
       >
-        {/* large background image */}
+       {/* large background image */}
         <img
-          src={hireCover1}
+          src={heroBg}
           alt=""
           aria-hidden="true"
           style={{
@@ -569,7 +593,7 @@ function HirePage() {
           }}
         />
         {/* vertical label — left edge */}
-        <div
+       <div
           style={{
             position: "absolute",
             left: "2rem",
@@ -578,11 +602,13 @@ function HirePage() {
             transformOrigin: "center center",
             fontSize: "0.65rem",
             letterSpacing: "0.38em",
-            color: "rgba(247,245,241,0.35)",
+            color: "rgba(247,245,241,0.4)",
             textTransform: "uppercase",
+            fontFamily: "var(--font-sans)",
+            whiteSpace: "nowrap",
           }}
         >
-           
+          [ Hire Jarvis ]
         </div>
 
         {/* hero body */}
@@ -609,22 +635,50 @@ function HirePage() {
             H I R E &nbsp; J A R V I S
           </p>
 
-          {/* massive title */}
-          <h1
+          {/* title — split across a horizontal rule, devx-style */}
+          <div
             style={{
-              fontFamily: "'EB Garamond', serif",
-              fontSize: "clamp(3.6rem, 9vw, 9rem)",
-              fontWeight: 400,
-              lineHeight: 0.92,
-              color: "var(--cream)",
-              maxWidth: "900px",
-              margin: 0,
+              display: "flex",
+              alignItems: "center",
+              gap: "clamp(1.5rem, 4vw, 3.5rem)",
+              flexWrap: "wrap",
+              marginBottom: "1.5rem",
             }}
           >
-            Initialize
-            <br />
-            <em style={{ fontStyle: "italic", color: "var(--orange)" }}>global growth.</em>
-          </h1>
+            <h1
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(2.6rem, 6vw, 5.5rem)",
+                fontWeight: 700,
+                lineHeight: 0.95,
+                color: "var(--dark-ink)",
+                margin: 0,
+              }}
+            >
+              Initialize
+            </h1>
+            <div
+              style={{
+                flex: "1 1 80px",
+                minWidth: "60px",
+                height: "1px",
+                background: "rgba(247,245,241,0.35)",
+              }}
+            />
+            <h1
+              className="font-display"
+              style={{
+                fontStyle: "italic",
+                fontWeight: 400,
+                fontSize: "clamp(2.6rem, 6vw, 5.5rem)",
+                lineHeight: 0.95,
+                color: "var(--orange)",
+                margin: 0,
+              }}
+            >
+              global growth.
+            </h1>
+          </div>
 
           {/* bottom row */}
           <div
@@ -640,13 +694,14 @@ function HirePage() {
               flexWrap: "wrap",
             }}
           >
-            <p
+           <p
               style={{
                 maxWidth: "460px",
                 fontSize: "1rem",
                 lineHeight: 1.75,
                 color: "rgba(247,245,241,0.52)",
                 margin: 0,
+                fontFamily: "var(--font-sans)",
               }}
             >
               Deploy a team that thinks like a partner and acts like an agent — turning your boldest
@@ -810,7 +865,7 @@ function HirePage() {
       {/* ════════════════════════════════════════
           GLOBAL SYNCHRONICITY
       ════════════════════════════════════════ */}
-      <section style={{ background: "var(--ink)", padding: "7rem 0", overflow: "hidden" }}>
+      <section style={{ background: "var(--dark-bg)", padding: "7rem 0", overflow: "hidden" }}>
         <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 3rem" }}>
 
           {/* label */}
@@ -844,7 +899,7 @@ function HirePage() {
                 fontSize: "clamp(2.6rem, 5vw, 5rem)",
                 fontWeight: 400,
                 lineHeight: 1.0,
-                color: "var(--cream)",
+                color: "var(--dark-ink)",
                 margin: 0,
               }}
             >
@@ -1056,7 +1111,7 @@ function HirePage() {
             alignItems: "center",
             gap: "0.75rem",
             background: "var(--ink)",
-            color: "var(--cream)",
+            color: "var(--dark-ink)",
             padding: "1rem 2.2rem",
             fontSize: "0.72rem",
             letterSpacing: "0.22em",
@@ -1070,7 +1125,7 @@ function HirePage() {
         </Link>
       </section>
 
-      <Footer />
+      <Footer theme={theme} />
     </main>
   );
 }
