@@ -707,7 +707,7 @@ function InsightsPage() {
             color: p.inkFaint,
             marginBottom: "2rem",
             fontWeight: 400,
-          }}>
+          }}> 
             [ Insights · Field Notes ]
           </p>
 
@@ -773,7 +773,7 @@ function InsightsPage() {
           <div className="reveal" style={{ marginBottom: "3.5rem", display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: "1.5rem" }}>
             <div>
               <p className="font-mono" style={{ fontSize: "0.62rem", letterSpacing: "0.32em", textTransform: "uppercase", marginBottom: "0.9rem", color: p.inkFainter }}>LATEST</p>
-              <h2 className="font-display section-title" style={{ color: p.ink, margin: 0 }}>From the studio.</h2>
+              <h2 className=" section-title" style={{ color: p.ink, margin: 0 }}>From the studio.</h2>
             </div>
             <Link
               to="/contact"
@@ -810,7 +810,7 @@ function InsightsPage() {
                     <span style={{ color: p.inkFainter }}>·</span>
                     <span style={{ color: p.inkFaint }}>{post.date}</span>
                   </div>
-                  <h3 className="font-display" style={{ fontSize: "clamp(1rem, 1.5vw, 1.2rem)", fontWeight: 700, lineHeight: 1.28, color: p.ink, marginBottom: "0.6rem", letterSpacing: "-0.015em" }}>{post.title}</h3>
+                  <h3  style={{ fontSize: "clamp(1rem, 1.5vw, 1.2rem)", fontWeight: 700, lineHeight: 1.28, color: p.ink, marginBottom: "0.6rem", letterSpacing: "-0.015em" }}>{post.title}</h3>
                   <p style={{ fontSize: "0.82rem", lineHeight: 1.68, color: p.inkFaint, marginBottom: "1.1rem" }}>{post.excerpt}</p>
                   <div className="font-mono" style={{ fontSize: "0.6rem", letterSpacing: "0.25em", textTransform: "uppercase", color: p.accent, display: "flex", alignItems: "center", gap: "6px" }}>
                     Read note <span style={{ fontSize: "13px" }}>→</span>
