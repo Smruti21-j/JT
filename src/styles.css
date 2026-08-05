@@ -365,10 +365,10 @@
   h3,
   .font-display {
     font-family: var(--font-display);
-    font-weight: 800;
+    font-weight: 800; 
     letter-spacing: 0;
   }
-}
+} 
 
 .f-400{
   font-weight: 400;

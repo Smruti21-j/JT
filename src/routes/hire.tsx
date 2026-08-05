@@ -14,17 +14,9 @@ import { Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
 import { useThemeInit } from "@/hooks/use-theme-init";
 
-import { useRef, useState, useEffect, useCallback } from "react";
-import hireCover1 from "@/assets/hire-cover1.jpg";
-import hireCover2 from "@/assets/hire-cover2.jpg";
-import hireCover3 from "@/assets/hire-cover3.jpg";
-import hireBox1 from "@/assets/hire-box1.png";
-import hireBox2 from "@/assets/hire-box2.png";
-import hireBox3 from "@/assets/hire-box3.jpg";
-import hireBox4 from "@/assets/hire-box4.png";
-import hireBox5 from "@/assets/hire-box5.png";
-import hireBox6 from "@/assets/hire-box6.png";
-import heroBg from "@/assets/hirecover.webp";
+import { useRef, useState, useEffect } from "react";
+ 
+import heroCover from "@/assets/hirecover.png";
 
 const REASONS = [
   {
@@ -32,42 +24,42 @@ const REASONS = [
     title: "Agentic Workforce",
     kicker: "We don't just use AI tools; we build and deploy autonomous agents.",
     body: "Our specialists ensure your systems move beyond simple chat prompts to action logic - AI that reasons, plans, and executes missions independently while your team focuses on strategy.",
-    image: hireBox1,
+     
   },
   {
     n: "02",
     title: "Digital Sovereignty by Design",
     kicker: "Reclaim your digital destiny.",
     body: "Unlike agencies that lock you into black box platforms, our team forges the sovereign backbone you need. We build systems you own, manage, and evolve, ensuring your data remains your most private and powerful asset.",
-    image: hireBox2,
+   
   },
   {
     n: "03",
     title: "High-Velocity Substrate",
     kicker: "Nearly a decade of high-stakes engineering.",
     body: "With almost a decade of shipping into regulated and high-velocity markets, our playbook is already battle-tested. We skip the experimentation phase and move you directly to scaled impact.",
-    image: hireBox3,
+    
   },
   {
     n: "04",
     title: "Human-AI Symbiosis",
     kicker: "The Collective Mind approach.",
     body: "We don't replace humans; we amplify them. Our mission-ready squads are built on Human-AI Symbiosis: a seamless blend of intuition and precision that accelerates your time-to-market by 40%.",
-    image: hireBox4,
+    
   },
   {
     n: "05",
     title: "Architectural Resilience",
     kicker: "Engineered for infinite scale.",
     body: "We build on a composable, modular architecture. Whether you are disrupting a local market or entering a global frontier, our digital core is designed to adapt to 6G, edge computing, and whatever comes next.",
-    image: hireBox5,
+   
   },
   {
     n: "06",
     title: "Deciphered Outcomes",
     kicker: "Unvarnished business clarity.",
     body: "We cut through the AI hype to deliver measurable ROI. Every specialist we provide is trained to link technical performance to commercial return, giving you the receipts of impact you need to lead your industry.",
-    image: hireBox6,
+ 
   },
 ];
 
@@ -121,40 +113,208 @@ const DNA_GROUPS = [
   },
 ];
 
-const HIRE_STYLES = `
- 
+function hirePalette(_theme: "light" | "dark") {
+  return {
+    cream: "var(--color-background)",
+    ink: "var(--color-foreground)",
+    muted: "var(--color-muted-foreground)",
+    rule: "var(--color-border)",
+  };
+}
 
+const HIRE_STYLES = `
 .hire-root {
     --orange: #E85D26;
     --dark-bg: #0C0C0B;
     --dark-ink: #F7F5F1;
     font-family: var(--font-sans);
 }
+.hire-eyebrow{
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size:10px;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  font-weight:400;
+  color: var(--muted);
+}
+   
+ 
+ /* ===========================
+   IndiaNIC Style Cards
+=========================== */
 
-  /* ── MARQUEE ── */
-  @keyframes hireMarquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
-  .hire-marquee-track { animation: hireMarquee 22s linear infinite; white-space: nowrap; }
+.reason-grid-modern{
 
-  /* ── REASON ROW hover image reveal ── */
-  .hire-reason-row { position: relative; }
-  .hire-reason-img {
-    position: absolute;
-    right: 0; top: 50%;
-    transform: translateY(-50%) scale(0.96);
-    width: 340px; height: 220px;
-    object-fit: cover;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.38s ease, transform 0.38s ease;
-    z-index: 10;
-  }
-  .hire-reason-row:hover .hire-reason-img {
-    opacity: 1;
-    transform: translateY(-50%) scale(1);
-  }
-  .hire-reason-row:hover .hire-reason-num {
-    color: var(--orange);
-  }
+display:grid;
+
+grid-template-columns: repeat(3,minmax(320px,1fr));
+
+border-top:1px solid var(--rule);
+
+border-left:1px solid var(--rule);
+
+}
+
+.reason-modern-card{
+
+position:relative;
+
+padding:36px;
+min-height:250px;
+display:flex;
+flex-direction:column;
+justify-content:flex-start;
+
+border-right:1px solid var(--rule);
+
+border-bottom:1px solid var(--rule);
+
+overflow:hidden;
+
+transition:
+background .35s,
+transform .35s;
+
+}
+
+.reason-modern-card::before{
+
+content:"";
+
+position:absolute;
+
+left:0;
+
+top:0;
+width:3px;
+transition:height .45s ease;
+
+height:0;
+
+background:#E85D26;
+
+transition:height .35s;
+
+}
+
+.reason-modern-card::after{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:
+radial-gradient(circle at top left,
+rgba(232,93,38,.16),
+transparent 65%);
+
+opacity:0;
+
+transition:.35s;
+
+pointer-events:none;
+
+}
+
+.reason-modern-card:hover{
+
+background:rgba(232,93,38,.03);
+
+transform:translateY(-2px);
+
+}
+
+.reason-modern-card:hover::before{
+
+height:100%;
+
+}
+
+.reason-modern-card:hover::after{
+
+opacity:1;
+
+}
+
+.reason-number{
+
+display:block;
+
+font-size:12px;
+
+letter-spacing:.2em;
+
+font-weight:700;
+
+font-size:11px;
+letter-spacing:.22em;
+margin-bottom:30px;
+
+color:var(--orange);
+
+}
+
+.reason-modern-title{
+
+font-size:26px;
+line-height:1.2;
+font-weight:700;
+margin-bottom:14px;
+
+font-weight:700;
+
+line-height:1.15;
+
+margin-bottom:20px;
+
+color:var(--ink);
+
+transition:.3s;
+
+}
+
+.reason-modern-card:hover .reason-modern-title{
+
+color:#E85D26;
+
+}
+
+.reason-modern-desc{
+
+font-size:15px;
+line-height:1.7;
+max-width:95%;
+color:var(--muted);
+
+}
+
+@media(max-width:900px){
+
+.reason-grid-modern{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:640px){
+
+.reason-grid-modern{
+
+grid-template-columns:1fr;
+
+}
+
+.reason-modern-card{
+
+padding:36px;
+
+}
+
+}
 
   /* ── DNA tag hover ── */
   .hire-dna-tag { transition: background 0.18s, color 0.18s; }
@@ -242,48 +402,56 @@ const HIRE_STYLES = `
   .sync-icon-anim.is-visible {
     animation: syncIconPulse 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
   }
-function hirePalette(theme: "light" | "dark") {
-  if (theme === "light") {
-    return { cream: "#F7F5F1", ink: "#0C0C0B", muted: "#8A8680", rule: "rgba(12,12,11,0.12)" };
-  }
-  return { cream: "#14120F", ink: "#F5F2ED", muted: "rgba(245,242,237,0.5)", rule: "rgba(245,242,237,0.14)" };
-}
-  .sync-card:hover .sync-accent-line {
-    transform: scaleX(1) !important;
-  }
+
+  .sync-card {
     transition: background 0.25s ease;
     cursor: default;
   }
-  .sync-card:hover {
-    background: rgba(247,245,241,0.04);
-  }
+  .sync-card{
+
+transition:
+transform .35s,
+background .35s,
+box-shadow .35s;
+
+}
+
+.sync-card:hover{
+
+transform:translateY(-8px);
+
+background:rgba(232,93,38,.04);
+
+box-shadow:0 24px 60px rgba(0,0,0,.08);
+
+}
   .sync-card:hover .sync-num-val {
     color: var(--orange) !important;
     transition: color 0.3s ease;
   }
+  .sync-card:hover .sync-accent-line {
+    transform: scaleX(1) !important;
+  }
 
-  @media (max-width: 768px) {
-    .hire-hero-cols { flex-direction: column !important; }
-    .hire-reason-img { display: none; }
+ @media (max-width: 768px) {
+    .hire-hero-cols { grid-template-columns: 1fr !important; text-align: center; }
+    .hire-hero-cols > div:last-child { order: -1; margin-bottom: 2rem; }
     .hire-sync-cols { flex-direction: column !important; }
     .hire-dna-cols { flex-direction: column !important; }
   }
 `;
-function hirePalette(theme: "light" | "dark") {
-  if (theme === "light") {
-    return { cream: "#F7F5F1", ink: "#0C0C0B", muted: "#8A8680", rule: "rgba(12,12,11,0.12)" };
-  }
-  return { cream: "#14120F", ink: "#F5F2ED", muted: "rgba(245,242,237,0.5)", rule: "rgba(245,242,237,0.14)" };
-}
+
 /* ── Animated sync card ── */
 function SyncCard({
   pt,
   index,
   Icon,
+  theme
 }: {
   pt: (typeof SYNC_POINTS)[0];
   index: number;
   Icon: React.ElementType;
+  theme: "light" | "dark";
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -339,14 +507,23 @@ function SyncCard({
 
   return (
     <div
-      ref={ref}
-      className={`sync-card sync-col-border${visible ? " is-visible" : ""}`}
-      style={{
-        flex: 1,
-        padding: "2rem 2.5rem",
-        borderRight: "1px solid rgba(247,245,241,0.1)",
-      }}
-    >
+  ref={ref}
+  className={`sync-card sync-col-border${visible ? " is-visible" : ""}`}
+  style={{
+    flex: 1,
+    padding: "2rem 2.5rem",
+
+   background:
+  theme === "dark"
+    ? "#121212"
+    : "#FFFFFF",
+
+    borderRight:
+      theme === "dark"
+        ? "1px solid rgba(255,255,255,.10)"
+        : "1px solid rgba(0,0,0,.10)",
+  }}
+>
       {/* top row: index + icon */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "2.5rem" }}>
         <span
@@ -354,7 +531,10 @@ function SyncCard({
           style={{
             fontSize: "0.65rem",
             letterSpacing: "0.3em",
-            color: "rgba(247,245,241,0.25)",
+            color:
+  theme === "dark"
+    ? "rgba(247,245,241,.25)"
+    : "rgba(23,22,20,.20)",
             transitionDelay: `${delay}ms`,
             animationDelay: `${delay}ms`,
           }}
@@ -371,68 +551,78 @@ function SyncCard({
 
       {/* big metric */}
       <div
-        className={`sync-num-anim sync-num-val${visible ? " is-visible" : ""}`}
+        className={`sync-num-anim sync-num-val font-display${visible ? " is-visible" : ""}`}
         style={{
-          fontFamily: "'EB Garamond', serif",
-          fontStyle: "italic",
-          fontSize: "1.35rem",
-          fontWeight: 400,
-          color: "var(--dark-ink)",
-          lineHeight: 1,
-          marginBottom: "0.3rem",
-          animationDelay: `${delay + 80}ms`,
-          transition: "color 0.3s ease",
-        }}
+  fontStyle: "italic",
+  fontSize: "3rem",
+  fontWeight: 300,
+  color:
+  theme === "dark"
+    ? "rgba(255,255,255,.12)"
+    : "rgba(0,0,0,.12)",
+  lineHeight: 1,
+  marginBottom: "0.3rem",
+  animationDelay: `${delay + 80}ms`,
+  transition: "color .3s ease",
+}}
       >
         {displayNum}
       </div>
 
       {/* metric label — letter-spacing animates in */}
-      <div
-        className={`sync-label-anim${visible ? " is-visible" : ""}`}
-        style={{
-          fontSize: "0.62rem",
-          letterSpacing: "0.3em",
-          textTransform: "uppercase",
-          color: "var(--orange)",
-          marginBottom: "1.5rem",
-          animationDelay: `${delay + 200}ms`,
-        }}
-      >
+    <div
+  className={`sync-label-anim${visible ? " is-visible" : ""}`}
+  style={{
+    fontSize: "11px",
+    letterSpacing: ".28em",
+    textTransform: "uppercase",
+    color: "#E85D26",
+    marginBottom: "24px",
+    animationDelay: `${delay + 200}ms`,
+  }}
+>
         {pt.metricLabel}
       </div>
 
       {/* title */}
       <h3
-        className={`sync-body-anim${visible ? " is-visible" : ""}`}
+        className={`sync-body-anim ${visible ? " is-visible" : ""}`}
         style={{
-          fontFamily: "'EB Garamond', serif",
-          fontSize: "1.35rem",
-          fontWeight: 400,
-          color: "var(--dark-ink)",
-          marginBottom: "0.75rem",
-          animationDelay: `${delay + 260}ms`,
-        }}
+  fontSize: "34px",
+  fontWeight: 300,
+  color:
+  theme === "dark"
+    ? "#F7F5F1"
+    : "#171614",
+  marginBottom: "16px",
+  animationDelay: `${delay + 260}ms`,
+}}
       >
         {pt.label}
       </h3>
 
       {/* body */}
-      <p
-        className={`sync-body-anim${visible ? " is-visible" : ""}`}
-        style={{
-          fontSize: "0.85rem",
-          lineHeight: 1.75,
-          color: "rgba(247,245,241,0.4)",
-          minHeight: "7rem",
-          animationDelay: `${delay + 320}ms`,
-        }}
-      >
+     <p
+  className={`sync-body-anim${visible ? " is-visible" : ""}`}
+  style={{
+    fontSize: "15px",
+    lineHeight: 1.8,
+    color:
+  theme === "dark"
+    ? "rgba(247,245,241,.65)"
+    : "rgba(0,0,0,.55)",
+    minHeight: "120px",
+    animationDelay: `${delay + 320}ms`,
+  }}
+>
         {pt.d}
       </p>
 
       {/* bottom accent line — draws right on hover via CSS */}
-      <div style={{ marginTop: "1.5rem", height: "1px", background: "rgba(247,245,241,0.06)", position: "relative", overflow: "hidden" }}>
+      <div style={{ marginTop: "1.5rem", height: "1px", background:
+  theme === "dark"
+    ? "rgba(255,255,255,.08)"
+    : "rgba(0,0,0,.06)", position: "relative", overflow: "hidden" }}>
         <div
           style={{
             position: "absolute",
@@ -450,87 +640,26 @@ function SyncCard({
 }
 
 /* ── Reason rows (irinamoi work-list style) ── */
+/* ── Capability grid (IndiaNIC-style bordered panel) ── */
 function ReasonList() {
   return (
-    <div>
-      {REASONS.map((r, i) => (
-        <div
-          key={r.n}
-          className="hire-reason-row group"
-          style={{
-            borderTop: i === 0 ? "1px solid var(--rule)" : undefined,
-            borderBottom: "1px solid var(--rule)",
-            position: "relative",
-            padding: "2rem 0",
-            cursor: "default",
-          }}
-        >
-          {/* hover image */}
-          <img src={r.image} alt="" className="hire-reason-img" aria-hidden="true" />
+    <div className="reason-grid-modern">
+      {REASONS.map((r) => (
+        <div className="reason-modern-card" key={r.n}>
+          <div className="reason-number">{r.n}</div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "4rem 1fr auto", gap: "1.5rem", alignItems: "start", paddingRight: "360px" }}>
-            {/* number */}
-            <span
-              className="hire-reason-num"
-              style={{
-                fontFamily: "'EB Garamond', serif",
-                fontSize: "1rem",
-                color: "var(--muted)",
-                paddingTop: "0.15rem",
-                transition: "color 0.2s",
-                letterSpacing: "0.06em",
-              }}
-            >
-              {r.n}
-            </span>
+          <h3 className="reason-modern-title">
+            {r.title}
+          </h3>
 
-            {/* content */}
-            <div>
-              <h3
-                style={{
-                  fontFamily: "'EB Garamond', serif",
-                  fontSize: "clamp(1.6rem, 2.8vw, 2.4rem)",
-                  fontWeight: 400,
-                  lineHeight: 1.05,
-                  color: "var(--ink)",
-                  margin: 0,
-                }}
-              >
-                {r.title}
-              </h3>
-              <p
-                style={{
-                  marginTop: "0.6rem",
-                  fontSize: "0.82rem",
-                  color: "var(--muted)",
-                  letterSpacing: "0.03em",
-                  maxWidth: "480px",
-                  lineHeight: 1.7,
-                }}
-              >
-                {r.kicker} — {r.body}
-              </p>
-            </div>
-
-            {/* arrow on hover */}
-            <span
-              style={{
-                opacity: 0,
-                transition: "opacity 0.2s",
-                color: "var(--orange)",
-                paddingTop: "0.3rem",
-              }}
-              className="group-hover:opacity-100"
-            >
-              <ArrowRight size={18} />
-            </span>
-          </div>
+          <p className="reason-modern-desc">
+            {r.kicker} {r.body}
+          </p>
         </div>
       ))}
     </div>
   );
 }
-
 export const Route = createFileRoute("/hire")({
   component: HirePage,
   head: () => ({
@@ -565,6 +694,7 @@ function HirePage() {
     >
       <style>{HIRE_STYLES}</style>
       <Nav theme={theme} onToggleTheme={toggleTheme} />
+
       {/* ════════════════════════════════════════
           HERO
       ════════════════════════════════════════ */}
@@ -573,234 +703,154 @@ function HirePage() {
           minHeight: "100svh",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "flex-end",
-          padding: "0",
+          justifyContent: "center",
           position: "relative",
           overflow: "hidden",
-          background: "var(--dark-bg)",
+          background: "var(--cream)",
+          borderBottom: "1px solid var(--rule)",
         }}
       >
-       {/* large background image */}
-        <img
-          src={heroBg}
-          alt=""
-          aria-hidden="true"
-          style={{
-            position: "absolute", inset: 0,
-            width: "100%", height: "100%",
-            objectFit: "cover",
-            opacity: 0.28,
-          }}
-        />
-        {/* vertical label — left edge */}
-       <div
-          style={{
-            position: "absolute",
-            left: "2rem",
-            top: "50%",
-            transform: "translateY(-50%) rotate(-90deg)",
-            transformOrigin: "center center",
-            fontSize: "0.65rem",
-            letterSpacing: "0.38em",
-            color: "rgba(247,245,241,0.4)",
-            textTransform: "uppercase",
-            fontFamily: "var(--font-sans)",
-            whiteSpace: "nowrap",
-          }}
-        >
-          [ Hire Jarvis ]
-        </div>
-
-        {/* hero body */}
         <div
           style={{
             position: "relative",
             zIndex: 2,
-            maxWidth: "1280px",
+            maxWidth: "1600px",
             margin: "0 auto",
             width: "100%",
-            padding: "10rem 3rem 4rem",
+            padding: "8rem 3rem 4rem",
+            display: "grid",
+            gridTemplateColumns: "1.1fr 1fr",
+            gap: "3rem",
+            alignItems: "center",
           }}
+          className="hire-hero-cols"
         >
-          {/* spaced label */}
-          <p
-            style={{
-              fontSize: "0.68rem",
-              letterSpacing: "0.36em",
-              textTransform: "uppercase",
-              color: "var(--orange)",
-              marginBottom: "2rem",
-            }}
-          >
-            H I R E &nbsp; J A R V I S
-          </p>
-
-          {/* title — split across a horizontal rule, devx-style */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "clamp(1.5rem, 4vw, 3.5rem)",
-              flexWrap: "wrap",
-              marginBottom: "1.5rem",
-            }}
-          >
-            <h1
+          {/* left: copy */}
+          <div>
+           <h1
+              
               style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "clamp(2.6rem, 6vw, 5.5rem)",
-                fontWeight: 700,
-                lineHeight: 0.95,
-                color: "var(--dark-ink)",
+                fontSize: "clamp(2.6rem, 5.5vw, 4.6rem)",
+                fontWeight: 800,
+                lineHeight: 1.02,
+                color: "var(--ink)",
                 margin: 0,
               }}
             >
               Initialize
+              <br />
+               
+              <em
+  className="font-display"
+  style={{
+    fontStyle: "italic",
+    fontWeight: 400,
+    color: "var(--orange)",
+  }}
+>
+               global growth.
+              </em>
+              <br />
+               
             </h1>
+
             <div
               style={{
-                flex: "1 1 80px",
-                minWidth: "60px",
-                height: "1px",
-                background: "rgba(247,245,241,0.35)",
+                width: "56px",
+                height: "2px",
+                background: "var(--orange)",
+                margin: "1.75rem 0",
+                
+                
               }}
             />
-            <h1
-              className="font-display"
-              style={{
-                fontStyle: "italic",
-                fontWeight: 400,
-                fontSize: "clamp(2.6rem, 6vw, 5.5rem)",
-                lineHeight: 0.95,
-                color: "var(--orange)",
-                margin: 0,
-              }}
-            >
-              global growth.
-            </h1>
-          </div>
 
-          {/* bottom row */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-              marginTop: "6rem",
-              paddingBottom: "2rem",
-              borderTop: "1px solid rgba(247,245,241,0.12)",
-              paddingTop: "1.5rem",
-              gap: "2rem",
-              flexWrap: "wrap",
-            }}
-          >
-           <p
+            <p
               style={{
-                maxWidth: "460px",
                 fontSize: "1rem",
                 lineHeight: 1.75,
-                color: "rgba(247,245,241,0.52)",
-                margin: 0,
-                fontFamily: "var(--font-sans)",
+                color: "var(--muted)",
+                maxWidth: "460px",
+                marginBottom: "2.5rem",
               }}
             >
-              Deploy a team that thinks like a partner and acts like an agent — turning your boldest
-              ideas into autonomous reality. Enter the Impact Hub.
+              Deploy a team that thinks like a partner and acts like an agent —
+              turning your boldest ideas into autonomous reality. Enter the
+              Impact Hub.
             </p>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "2rem" }}>
-              <span
-                style={{
-                  fontSize: "0.68rem",
-                  letterSpacing: "0.26em",
-                  textTransform: "uppercase",
-                  color: "rgba(247,245,241,0.28)",
-                }}
-              >
-                
-              </span>
+            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
               <Link
                 to="/contact"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
-                  gap: "0.75rem",
+                  gap: "0.6rem",
                   background: "var(--orange)",
                   color: "#fff",
-                  padding: "0.9rem 1.8rem",
+                  padding: "0.9rem 1.6rem",
                   fontSize: "0.72rem",
-                  letterSpacing: "0.22em",
+                  letterSpacing: "0.18em",
                   textTransform: "uppercase",
                   textDecoration: "none",
-                  fontWeight: 500,
+                  fontWeight: 600,
                 }}
               >
-                Deploy your team <ArrowRight size={14} />
+                Let's Talk <ArrowRight size={14} />
               </Link>
+              <a
+                href="#why-hire"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.6rem",
+                  background: "transparent",
+                  border: "1px solid var(--rule)",
+                  color: "var(--ink)",
+                  padding: "0.9rem 1.6rem",
+                  fontSize: "0.72rem",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  textDecoration: "none",
+                  fontWeight: 600,
+                }}
+              >
+                Innovation in Action <ArrowRight size={14} />
+              </a>
             </div>
           </div>
-        </div>
 
-        {/* floating image composite — top right */}
-        <div
-          style={{
-            position: "absolute",
-            right: "4rem",
-            top: "12%",
-            zIndex: 1,
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-          }}
-          className="hire-img-float"
-        >
-          <img
-            src={hireCover2}
-            alt=""
-            style={{ width: 240, height: 160, objectFit: "cover", opacity: 0.6 }}
-          />
-          <img
-            src={hireCover3}
-            alt=""
-            style={{ width: 180, height: 120, objectFit: "cover", opacity: 0.45, alignSelf: "flex-end" }}
-            className="hire-img-float2"
-          />
+          {/* right: isometric graphic */}
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <img  
+              src={heroCover}
+              alt="Jarvis Technolabs digital ecosystem illustration"
+              className="hire-img-float"
+              style={{
+                width: "100%",
+                maxWidth: "560px",
+                height: "auto",
+                objectFit: "contain",
+              }}
+            />
+          </div>
         </div>
       </section>
 
-      {/* ════════════════════════════════════════
-          MARQUEE DIVIDER
-      ════════════════════════════════════════ */}
-      <div
-        style={{
-          background: "var(--orange)",
-          overflow: "hidden",
-          padding: "0.75rem 0",
-        }}
-      >
-        <div className="hire-marquee-track" style={{ display: "inline-flex", gap: "3rem" }}>
-          {Array(12).fill("AGENTIC  ·  SOVEREIGN  ·  BATTLE-TESTED  ·  HUMAN-AI  ·  RESILIENT  ·  ROI-DRIVEN  ·").map((t, i) => (
-            <span
-              key={i}
-              style={{
-                fontSize: "0.65rem",
-                letterSpacing: "0.28em",
-                textTransform: "uppercase",
-                color: "#fff",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {t}
-            </span>
-          ))}
-        </div>
-      </div>
+      
 
       {/* ════════════════════════════════════════
           WHY HIRE — editorial list
       ════════════════════════════════════════ */}
-      <section style={{ background: "var(--cream)", padding: "6rem 0" }}>
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 3rem" }}>
+      <section style={{ background: "var(--cream)", padding: "5rem 0" }}>
+        <div style={{ maxWidth: "1600px", margin: "0 auto", padding: "0 3rem" }}>
 
           {/* section header */}
           <div
@@ -809,39 +859,47 @@ function HirePage() {
               gridTemplateColumns: "1fr 1fr",
               gap: "3rem",
               alignItems: "end",
-              marginBottom: "4rem",
+              marginBottom: "3rem",
               paddingBottom: "2.5rem",
               borderBottom: "1px solid var(--rule)",
             }}
           >
             <div>
-              <p
+             <p className="hire-eyebrow" style={{ marginBottom: "1.2rem" }}>Why Hire Jarvis</p>
+             <h2
+                
                 style={{
-                  fontSize: "0.65rem",
-                  letterSpacing: "0.34em",
-                  textTransform: "uppercase",
-                  color: "var(--muted)",
-                  marginBottom: "1.2rem",
-                }}
-              >
-                W H Y &nbsp; H I R E &nbsp; J A R V I S
-              </p>
-              <h2
-                style={{
-                  fontFamily: "'EB Garamond', serif",
-                  fontSize: "clamp(2.4rem, 4.5vw, 4.5rem)",
-                  fontWeight: 400,
-                  lineHeight: 1.02,
-                  margin: 0,
-                  color: "var(--ink)",
-                }}
+  fontSize: "clamp(2rem, 3vw, 3.2rem)",
+  fontWeight: 700,
+  lineHeight: 1.08,
+  maxWidth: "620px",
+  margin: 0,
+  color: "var(--ink)",
+}}
               >
                 Why follow tickets
                 <br />
                 when you can
                 <br />
-                <em style={{ fontStyle: "italic", color: "var(--orange)" }}>orchestrate outcomes?</em>
+                <em
+  className="font-display"
+  style={{
+    fontStyle: "italic",
+    fontWeight: 400,
+    color: "var(--orange)",
+  }}
+>
+  orchestrate outcomes?
+</em>
               </h2>
+              <div
+                style={{
+                  width: "56px",
+                  height: "2px",
+                  background: "var(--orange)",
+                  margin: "1.75rem 0 0",
+                }}
+              />
             </div>
             <p
               style={{
@@ -865,50 +923,78 @@ function HirePage() {
       {/* ════════════════════════════════════════
           GLOBAL SYNCHRONICITY
       ════════════════════════════════════════ */}
-      <section style={{ background: "var(--dark-bg)", padding: "7rem 0", overflow: "hidden" }}>
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 3rem" }}>
+      <section
+  style={{
+    background:
+      theme === "dark"
+        ? `
+          radial-gradient(circle at top left,
+          rgba(232,93,38,.08),
+          transparent 45%),
+          linear-gradient(180deg,#0B0B0B 0%,#121212 100%)
+        `
+        : `
+          radial-gradient(circle at top left,
+          rgba(232,93,38,.08),
+          transparent 45%),
+          linear-gradient(180deg,#FCF9F4 0%,#F6F3EE 100%)
+        `,
+    padding: "9rem 0",
+    overflow: "hidden",
+    position: "relative",
+  }}
+>
+        <div style={{ maxWidth: "1600px", margin: "0 auto", padding: "0 3rem" }}>
 
           {/* label */}
           <p
-            style={{
-              fontSize: "0.65rem",
-              letterSpacing: "0.34em",
-              textTransform: "uppercase",
-              color: "rgba(247,245,241,0.35)",
-              marginBottom: "3rem",
-            }}
-          >
-            G L O B A L &nbsp; S Y N C H R O N I C I T Y &nbsp; E N G I N E
-          </p>
+  style={{
+    fontSize: "0.65rem",
+    letterSpacing: "0.34em",
+    textTransform: "uppercase",
+    color:
+      theme === "dark"
+        ? "rgba(247,245,241,.35)"
+        : "rgba(23,22,20,.35)",
+  }}
+>
+  G L O B A L &nbsp; S Y N C H R O N I C I T Y &nbsp; E N G I N E
+</p>
 
           {/* title + body split */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "4rem",
-              alignItems: "end",
-              marginBottom: "5rem",
-              paddingBottom: "4rem",
-              borderBottom: "1px solid rgba(247,245,241,0.1)",
-            }}
-          >
-            <h2
-              style={{
-                fontFamily: "'EB Garamond', serif",
-                fontSize: "clamp(2.6rem, 5vw, 5rem)",
-                fontWeight: 400,
-                lineHeight: 1.0,
-                color: "var(--dark-ink)",
-                margin: 0,
-              }}
-            >
+         <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "1.2fr .8fr",
+    gap: "6rem",
+    alignItems: "center",
+    marginBottom: "5rem",
+  }}
+>
+           <h2
+  style={{
+    fontSize: "clamp(2.4rem, 4.5vw, 4.5rem)",
+    fontWeight: 800,
+    lineHeight: 1.0,
+    color: theme === "dark" ? "#F7F5F1" : "#171614",
+    margin: 0,
+  }}
+>
               Engineering
               <br />without borders.
               <br />
-              <em style={{ color: "var(--orange)" }}>Innovation without sleep.</em>
+             <em
+  className="font-display"
+  style={{
+    fontStyle: "italic",
+    fontWeight: 400,
+    color: "var(--orange)",
+  }}
+>
+  Innovation without sleep.
+</em>
             </h2>
-            <p style={{ fontSize: "1rem", lineHeight: 1.85, color: "rgba(247,245,241,0.45)" }}>
+            <p style={{ fontSize: "1rem", lineHeight: 1.85, color: "rgba(0,0,0,.60)" }}>
               In a world that never stops, your development shouldn't either. We've transcended the
               traditional outsourcing model to build a Global Synchronicity Engine — stitching
               together high-velocity talent across India, EMEA, and the Americas so your product
@@ -917,14 +1003,37 @@ function HirePage() {
           </div>
 
           {/* three sync metrics */}
-          <div
-            className="hire-sync-cols"
-            style={{ display: "flex", gap: 0 }}
-          >
+ <div
+  className="hire-sync-cols"
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(3,1fr)",
+    overflow: "hidden",
+    borderRadius: "32px",
+
+    border:
+      theme === "dark"
+        ? "1px solid rgba(255,255,255,.08)"
+        : "1px solid rgba(0,0,0,.10)",
+
+   background:
+  theme === "dark"
+    ? "#121212"
+    : "#FFFFFF",
+
+    backdropFilter: "blur(10px)",
+  }}
+>
             {SYNC_POINTS.map((pt, i) => {
               const Icon = pt.icon;
               return (
-                <SyncCard key={pt.n} pt={pt} index={i} Icon={Icon} />
+                <SyncCard
+    key={pt.n}
+    pt={pt}
+    index={i}
+    Icon={Icon}
+    theme={theme}
+/>
               );
             })}
           </div>
@@ -935,7 +1044,7 @@ function HirePage() {
           TECHNOLOGICAL DNA
       ════════════════════════════════════════ */}
       <section style={{ background: "var(--cream)", padding: "7rem 0" }}>
-        <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 3rem" }}>
+        <div style={{ maxWidth: "1600px", margin: "0 auto", padding: "0 3rem" }}>
 
           {/* top label row */}
           <div
@@ -948,19 +1057,10 @@ function HirePage() {
               borderBottom: "1px solid var(--rule)",
             }}
           >
-            <p
-              style={{
-                fontSize: "0.65rem",
-                letterSpacing: "0.34em",
-                textTransform: "uppercase",
-                color: "var(--muted)",
-              }}
-            >
-              T E C H N O L O G I C A L &nbsp; D N A
-            </p>
+          <p className="hire-eyebrow">Technological DNA</p>
             <span
+              className="font-display"
               style={{
-                fontFamily: "'EB Garamond', serif",
                 fontStyle: "italic",
                 fontSize: "1rem",
                 color: "var(--muted)",
@@ -977,8 +1077,8 @@ function HirePage() {
           >
             <div style={{ flexShrink: 0, width: "300px" }}>
               <h2
+                 
                 style={{
-                  fontFamily: "'EB Garamond', serif",
                   fontSize: "clamp(2.2rem, 3.5vw, 3.6rem)",
                   fontWeight: 400,
                   lineHeight: 1.05,
@@ -1028,9 +1128,9 @@ function HirePage() {
                       alignItems: "center",
                     }}
                   >
-                    <h3
+                   <h3
+                      className="font-display"
                       style={{
-                        fontFamily: "'EB Garamond', serif",
                         fontSize: "1.2rem",
                         fontWeight: 400,
                         color: "var(--ink)",
@@ -1071,58 +1171,10 @@ function HirePage() {
           CTA STRIP
       ════════════════════════════════════════ */}
       <section
-        style={{
-          background: "var(--orange)",
-          padding: "5rem 3rem",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          textAlign: "center",
-          gap: "2rem",
-        }}
+      
       >
-        <p
-          style={{
-            fontSize: "0.65rem",
-            letterSpacing: "0.34em",
-            textTransform: "uppercase",
-            color: "rgba(255,255,255,0.6)",
-          }}
-        >
-          S E E &nbsp; Y O U
-        </p>
-        <h2
-          style={{
-            fontFamily: "'EB Garamond', serif",
-            fontSize: "clamp(2.8rem, 6vw, 6rem)",
-            fontWeight: 400,
-            lineHeight: 0.95,
-            color: "#fff",
-            maxWidth: "700px",
-            margin: 0,
-          }}
-        >
-          Ready to deploy your global pod?
-        </h2>
-        <Link
-          to="/contact"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.75rem",
-            background: "var(--ink)",
-            color: "var(--dark-ink)",
-            padding: "1rem 2.2rem",
-            fontSize: "0.72rem",
-            letterSpacing: "0.22em",
-            textTransform: "uppercase",
-            textDecoration: "none",
-            fontWeight: 500,
-            marginTop: "0.5rem",
-          }}
-        >
-          Start the conversation <ArrowRight size={14} />
-        </Link>
+      
+     
       </section>
 
       <Footer theme={theme} />
