@@ -144,57 +144,27 @@ const HIRE_STYLES = `
 =========================== */
 
 .reason-grid-modern{
-
 display:grid;
-
 grid-template-columns: repeat(3,minmax(320px,1fr));
-
-border-top:1px solid var(--rule);
-
-border-left:1px solid var(--rule);
-
+gap:1px;
+background:var(--rule);
+border:1px solid var(--rule);
+border-radius:16px;
+overflow:hidden;
 }
 
 .reason-modern-card{
-
 position:relative;
-
 padding:36px;
 min-height:250px;
 display:flex;
 flex-direction:column;
 justify-content:flex-start;
-
-border-right:1px solid var(--rule);
-
-border-bottom:1px solid var(--rule);
-
+background:var(--cream);
 overflow:hidden;
-
 transition:
 background .35s,
 transform .35s;
-
-}
-
-.reason-modern-card::before{
-
-content:"";
-
-position:absolute;
-
-left:0;
-
-top:0;
-width:3px;
-transition:height .45s ease;
-
-height:0;
-
-background:#E85D26;
-
-transition:height .35s;
-
 }
 
 .reason-modern-card::after{
@@ -217,33 +187,16 @@ transition:.35s;
 pointer-events:none;
 
 }
-
 .reason-modern-card:hover{
-
 background:rgba(232,93,38,.03);
-
 transform:translateY(-2px);
-
 }
-
-.reason-modern-card:hover::before{
-
-height:100%;
-
-}
-
 .reason-modern-card:hover::after{
-
 opacity:1;
-
 }
-
 .reason-number{
-
 display:block;
-
 font-size:12px;
-
 letter-spacing:.2em;
 
 font-weight:700;
@@ -429,9 +382,7 @@ box-shadow:0 24px 60px rgba(0,0,0,.08);
     color: var(--orange) !important;
     transition: color 0.3s ease;
   }
-  .sync-card:hover .sync-accent-line {
-    transform: scaleX(1) !important;
-  }
+   
 
  @media (max-width: 768px) {
     .hire-hero-cols { grid-template-columns: 1fr !important; text-align: center; }
@@ -618,30 +569,14 @@ function SyncCard({
         {pt.d}
       </p>
 
-      {/* bottom accent line — draws right on hover via CSS */}
-      <div style={{ marginTop: "1.5rem", height: "1px", background:
-  theme === "dark"
-    ? "rgba(255,255,255,.08)"
-    : "rgba(0,0,0,.06)", position: "relative", overflow: "hidden" }}>
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: "var(--orange)",
-            transform: "scaleX(0)",
-            transformOrigin: "left",
-            transition: "transform 0.5s cubic-bezier(0.22,1,0.36,1)",
-          }}
-          className="sync-accent-line"
-        />
-      </div>
+      
     </div>
   );
 }
 
 /* ── Reason rows (irinamoi work-list style) ── */
 /* ── Capability grid (IndiaNIC-style bordered panel) ── */
-function ReasonList() {
+function ReasonList({ theme }: { theme: "light" | "dark" }) {
   return (
     <div className="reason-grid-modern">
       {REASONS.map((r) => (
@@ -652,7 +587,15 @@ function ReasonList() {
             {r.title}
           </h3>
 
-          <p className="reason-modern-desc">
+          <p
+            className="reason-modern-desc"
+            style={{
+              color:
+                theme === "dark"
+                  ? "rgba(247,245,241,.65)"
+                  : "rgba(0,0,0,.55)",
+            }}
+          >
             {r.kicker} {r.body}
           </p>
         </div>
@@ -698,18 +641,21 @@ function HirePage() {
       {/* ════════════════════════════════════════
           HERO
       ════════════════════════════════════════ */}
-      <section
-        style={{
-          minHeight: "100svh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          position: "relative",
-          overflow: "hidden",
-          background: "var(--cream)",
-          borderBottom: "1px solid var(--rule)",
-        }}
-      >
+     <section
+  style={{
+    minHeight: "100svh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    position: "relative",
+    overflow: "hidden",
+    background: `
+      radial-gradient(circle at 12% 0%, color-mix(in oklch, var(--orange) 9%, transparent) 0%, transparent 48%),
+      var(--cream)
+    `,
+    borderBottom: "1px solid var(--rule)",
+  }}
+>
         <div
           style={{
             position: "relative",
@@ -730,7 +676,7 @@ function HirePage() {
            <h1
               
               style={{
-                fontSize: "clamp(2.4rem, 4.5vw, 4.5rem)",
+                fontSize: "clamp(2.5rem, 6.2vw, 6.6rem)",
                 fontWeight: 800,
                 lineHeight: 1.02,
                 color: "var(--ink)",
@@ -856,7 +802,7 @@ function HirePage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr 1fr",
+               
               gap: "32rem",
               alignItems: "end",
               marginBottom: "3rem",
@@ -865,34 +811,31 @@ function HirePage() {
             }}
           >
             <div>
-             <p className="hire-eyebrow" style={{ marginBottom: "1.2rem" }}>Why Hire Jarvis</p>
+             <p className="hire-eyebrow" style={{ marginBottom: "1.2rem" }}>[Why Hire Jarvis]</p>
              <h2
-                
                 style={{
-  fontSize: "clamp(2.4rem, 4.5vw, 4.5rem)",
-  fontWeight: 700,
+  fontSize: "clamp(2.5rem, 6.2vw, 6.6rem)",
+  fontWeight: 800,
   lineHeight: 1.08,
-  maxWidth: "620px",
+  maxWidth: "900px",
   margin: 0,
   color: "var(--ink)",
 }}
               >
-                Why follow tickets
-                <br />
-                when you can
+                <span style={{ whiteSpace: "nowrap" }}>
+                  Why follow tickets when,
+                </span>
                 <br />
                 <em
- 
-  className="font-display" 
- style={{
-    
-    fontStyle: "italic",
-    fontWeight: 400,
-    color: "var(--orange)",
-  }}
->
-  orchestrate outcomes?
-</em>
+                  className="font-display"
+                  style={{
+                    fontStyle: "italic",
+                    fontWeight: 400,
+                    color: "var(--orange)",
+                  }}
+                >
+                  orchestrate outcomes.
+                </em>
               </h2>
               <div
                 style={{
@@ -903,22 +846,11 @@ function HirePage() {
                 }}
               />
             </div>
-            <p
-              style={{
-                fontSize: "1rem",
-                lineHeight: 1.8,
-                color: "var(--muted)",
-                maxWidth: "400px",
-                alignSelf: "end",
-              }}
-            >
-              Stop fighting for headcount and start acquiring decision authority. We provide
-              mission-ready experts who turn technical complexity into your unique competitive power.
-            </p>
+           
           </div>
 
           {/* reason list */}
-          <ReasonList />
+<ReasonList theme={theme} />
         </div>
       </section>
 
@@ -958,9 +890,10 @@ function HirePage() {
       theme === "dark"
         ? "rgba(247,245,241,.35)"
         : "rgba(23,22,20,.35)",
+    marginBottom: "22px",
   }}
 >
-  G L O B A L &nbsp; S Y N C H R O N I C I T Y &nbsp; E N G I N E
+  [G L O B A L &nbsp; S Y N C H R O N I C I T Y &nbsp; E N G I N E]
 </p>
 
           {/* title + body split */}
@@ -975,7 +908,7 @@ function HirePage() {
 >
            <h2
   style={{
-    fontSize: "clamp(2.4rem, 4.5vw, 4.5rem)",
+    fontSize: "clamp(2.5rem, 6.2vw, 6.6rem)",
     fontWeight: 800,
     lineHeight: 1.0,
     color: theme === "dark" ? "#F7F5F1" : "#171614",
