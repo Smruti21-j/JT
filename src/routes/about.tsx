@@ -871,8 +871,8 @@ const STYLES = `
 `;
 
 // ─── useInView ────────────────────────────────────────────────────────────────
-function useInView(threshold = 0.12): [React.RefObject<HTMLDivElement>, boolean] {
-  const ref = useRef<HTMLDivElement>(null);
+function useInView(threshold = 0.12): [React.RefObject<HTMLDivElement | null>, boolean] {
+  const ref = useRef<HTMLDivElement | null>(null);
   const [vis, setVis] = useState(false);
   useEffect(() => {
     const obs = new IntersectionObserver(

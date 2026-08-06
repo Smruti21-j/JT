@@ -165,9 +165,59 @@ function BrandsCarousel() {
 }
 
 /* ─── CTA ─────────────────────────────────────────────────────────────────── */
-type CTAProps = { showBrands?: boolean };
-export function CTA({ showBrands = false }: CTAProps = {}) {
-  return <>{showBrands && <BrandsCarousel />}</>;
+type CTAProps = {
+  showBrands?: boolean;
+  description?: string;
+  primaryLabel?: string;
+  primaryTo?: string;
+  secondaryLabel?: string;
+  secondaryTo?: string;
+};
+
+export function CTA({
+  showBrands = false,
+  description,
+  primaryLabel,
+  primaryTo,
+  secondaryLabel,
+  secondaryTo,
+}: CTAProps = {}) {
+  return (
+    <>
+      {showBrands && <BrandsCarousel />}
+      {(description || primaryLabel || secondaryLabel) && (
+        <section className="border-t border-white/5">
+          <div className="mx-auto max-w-6xl px-6 py-20">
+            <div className="rounded-[32px] border border-white/10 bg-slate-950/80 p-10 text-center">
+              {description && (
+                <p className="mx-auto max-w-3xl text-base leading-8 text-slate-200 md:text-lg">
+                  {description}
+                </p>
+              )}
+              <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+                {primaryLabel && primaryTo && (
+                  <Link
+                    to={primaryTo}
+                    className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+                  >
+                    {primaryLabel}
+                  </Link>
+                )}
+                {secondaryLabel && secondaryTo && (
+                  <Link
+                    to={secondaryTo}
+                    className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
+                  >
+                    {secondaryLabel}
+                  </Link>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+    </>
+  );
 }
 
 /* ─── Footer ──────────────────────────────────────────────────────────────── */

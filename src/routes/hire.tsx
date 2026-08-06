@@ -8,6 +8,25 @@ import {
   RadioTower,
   ShieldCheck,
   Workflow,
+  Atom,
+  Triangle,
+  FileCode2,
+  Palette,
+  Box,
+  Server,
+  FileTerminal,
+  Zap,
+  Database,
+  HardDrive,
+  Smartphone,
+  Apple,
+  Bot,
+  Cloud,
+  CloudCog,
+  Wind,
+  Link2,
+  Sparkles,
+  Brain,
 } from "lucide-react";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
@@ -112,6 +131,32 @@ const DNA_GROUPS = [
     stack: ["AWS", "GCP", "Azure", "LangChain", "OpenAI", "PyTorch"],
   },
 ];
+const TECH_ICONS: Record<string, React.ElementType> = {
+  // Frontend Systems
+  "React": Atom,
+  "Next.js": Triangle,
+  "TypeScript": FileCode2,
+  "Design Systems": Palette,
+  "WebGL": Box,
+  // Product Backbones
+  "Node.js": Server,
+  "Python": FileTerminal,
+  "FastAPI": Zap,
+  "Postgres": Database,
+  "Redis": HardDrive,
+  // Mobile Surfaces
+  "React Native": Smartphone,
+  "Flutter": Wind,
+  "iOS Swift": Apple,
+  "Android Kotlin": Bot,
+  // AI & Cloud Ops
+  "AWS": Cloud,
+  "GCP": CloudCog,
+  "Azure": Cloud,
+  "LangChain": Link2,
+  "OpenAI": Sparkles,
+  "PyTorch": Brain,
+};
 
 function hirePalette(_theme: "light" | "dark") {
   return {
@@ -603,6 +648,159 @@ function ReasonList({ theme }: { theme: "light" | "dark" }) {
     </div>
   );
 }
+
+function TechDnaSection({ theme }: { theme: "light" | "dark" }) {
+  const [active, setActive] = useState(0);
+  const activeGroup = DNA_GROUPS[active];
+
+  return (
+    <section style={{ background: "var(--cream)", padding: "7rem 0" }}>
+      <div style={{ maxWidth: "1600px", margin: "0 auto", padding: "0 3rem" }}>
+
+        <p className="hire-eyebrow" style={{ marginBottom: "1.2rem" }}>
+          [Technological DNA]
+        </p>
+
+        <h2
+          style={{
+            fontSize: "clamp(2.5rem, 6.2vw, 6.6rem)",
+            fontWeight: 800,
+            lineHeight: 1.08,
+            maxWidth: "900px",
+            margin: 0,
+            color: "var(--ink)",
+          }}
+        >
+          <span style={{ whiteSpace: "nowrap" }}>
+            Every pod is built around
+          </span>
+          <br />
+          <em
+            className="font-display"
+            style={{
+              fontStyle: "italic",
+              fontWeight: 400,
+              color: "var(--orange)",
+            }}
+          >
+            product velocity.
+          </em>
+        </h2>
+
+        <p
+          style={{
+            fontSize: "1rem",
+            lineHeight: 1.75,
+            color: "var(--muted)",
+            maxWidth: "560px",
+            margin: "1.75rem 0 3rem",
+          }}
+        >
+          Composable squads. Platform resilience. AI-enabled engineering
+          workflows from day one.
+        </p>
+
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.7rem",
+            marginBottom: "3rem",
+          }}
+        >
+          {DNA_GROUPS.map((group, i) => {
+            const isActive = i === active;
+            return (
+              <button
+                key={group.title}
+                type="button"
+                onClick={() => setActive(i)}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  padding: "0.65rem 1.4rem",
+                  borderRadius: "999px",
+                  fontSize: "0.85rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  border: isActive
+                    ? "1px solid var(--orange)"
+                    : "1px solid var(--rule)",
+                  background: isActive ? "var(--orange)" : "transparent",
+                  color: isActive ? "#fff" : "var(--ink)",
+                  transition: "all .25s ease",
+                }}
+              >
+                {group.title}
+              </button>
+            );
+          })}
+        </div>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+            gap: "1rem",
+          }}
+        >
+          {activeGroup.stack.map((item) => {
+  const Icon = TECH_ICONS[item] || activeGroup.icon;
+  return (
+              <div
+                key={item}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  gap: "0.9rem",
+                  padding: "2rem 1rem",
+                  borderRadius: "16px",
+                  border: "1px solid var(--rule)",
+                  background:
+                    theme === "dark"
+                      ? "rgba(255,255,255,.02)"
+                      : "rgba(0,0,0,.015)",
+                }}
+              >
+                <span
+                  style={{
+                    width: 40,
+                    height: 40,
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    background:
+                      theme === "dark"
+                        ? "rgba(232,93,38,.12)"
+                        : "rgba(232,93,38,.08)",
+                  }}
+                >
+                  <Icon size={18} color="var(--orange)" />
+                </span>
+                <span
+                  style={{
+                    fontSize: "0.95rem",
+                    fontWeight: 700,
+                    color: "var(--ink)",
+                  }}
+                >
+                  {item}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
 export const Route = createFileRoute("/hire")({
   component: HirePage,
   head: () => ({
@@ -978,129 +1176,7 @@ function HirePage() {
       {/* ════════════════════════════════════════
           TECHNOLOGICAL DNA
       ════════════════════════════════════════ */}
-      <section style={{ background: "var(--cream)", padding: "7rem 0" }}>
-        <div style={{ maxWidth: "1600px", margin: "0 auto", padding: "0 3rem" }}>
-
-          {/* top label row */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "baseline",
-              justifyContent: "space-between",
-              marginBottom: "4rem",
-              paddingBottom: "2rem",
-              borderBottom: "1px solid var(--rule)",
-            }}
-          >
-          <p className="hire-eyebrow">Technological DNA</p>
-            <span
-              className="font-display"
-              style={{
-                fontStyle: "italic",
-                fontSize: "1rem",
-                color: "var(--muted)",
-              }}
-            >
-              Forging Vision into Shipped Reality.
-            </span>
-          </div>
-
-          {/* two-col: heading left, grid right */}
-          <div
-            className="hire-dna-cols"
-            style={{ display: "flex", gap: "5rem", alignItems: "start" }}
-          >
-            <div style={{ flexShrink: 0, width: "300px" }}>
-              <h2
-                 
-                style={{
-                  fontSize: "clamp(2.2rem, 3.5vw, 3.6rem)",
-                  fontWeight: 400,
-                  lineHeight: 1.05,
-                  color: "var(--ink)",
-                  marginBottom: "1.5rem",
-                }}
-              >
-                Every pod is built around product velocity.
-              </h2>
-              <p style={{ fontSize: "0.88rem", lineHeight: 1.8, color: "var(--muted)" }}>
-                Composable squads. Platform resilience. AI-enabled engineering workflows from day one.
-              </p>
-
-              <div style={{ marginTop: "3rem", display: "flex", flexDirection: "column", gap: "0.8rem" }}>
-                {["AI-assisted QA", "Cloud cost control", "Security by default"].map((item) => (
-                  <div
-                    key={item}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.75rem",
-                      fontSize: "0.82rem",
-                      color: "var(--muted)",
-                    }}
-                  >
-                    <span style={{ width: 5, height: 5, borderRadius: "50%", background: "var(--orange)", flexShrink: 0 }} />
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* DNA groups */}
-            <div style={{ flex: 1 }}>
-              {DNA_GROUPS.map((group, i) => {
-                const Icon = group.icon;
-                return (
-                  <div
-                    key={group.title}
-                    style={{
-                      borderTop: i === 0 ? "1px solid var(--rule)" : undefined,
-                      borderBottom: "1px solid var(--rule)",
-                      padding: "1.6rem 0",
-                      display: "grid",
-                      gridTemplateColumns: "180px 1fr auto",
-                      gap: "1.5rem",
-                      alignItems: "center",
-                    }}
-                  >
-                   <h3
-                      className="font-display"
-                      style={{
-                        fontSize: "1.2rem",
-                        fontWeight: 400,
-                        color: "var(--ink)",
-                        margin: 0,
-                      }}
-                    >
-                      {group.title}
-                    </h3>
-
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
-                      {group.stack.map((item) => (
-                        <span
-                          key={item}
-                          className="hire-dna-tag"
-                          style={{
-                            fontSize: "0.72rem",
-                            padding: "0.3rem 0.8rem",
-                            border: "1px solid var(--rule)",
-                            color: "var(--muted)",
-                            cursor: "default",
-                          }}
-                        >
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-
-                    <Icon size={16} color="var(--muted)" />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
+      <TechDnaSection theme={theme} />
 
       {/* ════════════════════════════════════════
           CTA STRIP

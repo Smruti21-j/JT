@@ -12,7 +12,7 @@ import career04 from "@/assets/career04.png";
 import career05 from "@/assets/career05.png";
 import career06 from "@/assets/career06.png";
 import career07 from "@/assets/career07.png";
-
+import { useThemeInit } from "@/hooks/use-theme-init";
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
 const PERKS = [
@@ -131,6 +131,37 @@ const ROLES = [
   { title: "Quality Analyst", exp: "0 – 3+ years of experience", loc: "Ahmedabad · In-office" },
 ];
 
+function careersPalette(theme: "light" | "dark") {
+  if (theme === "light") {
+    return {
+      bg: "#fbfaf7",
+      cardBg: "#ffffff",
+      ink: "#181818",
+      inkDim: "rgba(25,25,25,0.55)",
+      inkFaint: "rgba(25,25,25,0.35)",
+      inkFainter: "rgba(25,25,25,0.22)",
+      accent: "#ed6323",
+      line: "rgba(0,0,0,0.08)",
+      lineSoft: "rgba(0,0,0,0.05)",
+      panelShade: (i: number) => `hsl(30, 15%, ${96 - i * 1.2}%)`,
+      imgFilter: "saturate(0.9) brightness(0.96)",
+    };
+  }
+  return {
+    bg: "#080604",
+    cardBg: "#0a0806",
+    ink: "#f0e8df",
+    inkDim: "rgba(240,232,223,0.55)",
+    inkFaint: "rgba(240,232,223,0.32)",
+    inkFainter: "rgba(255,255,255,0.2)",
+    accent: "rgb(255,130,50)",
+    line: "rgba(255,255,255,0.06)",
+    lineSoft: "rgba(255,255,255,0.05)",
+    panelShade: (i: number) => `hsl(25, 10%, ${5 + i * 1.2}%)`,
+    imgFilter: "brightness(0.5) saturate(0.55)",
+  };
+}
+
 // ─── Keyframes ─────────────────────────────────────────────────────────────────
 const KEYFRAMES = `
   @keyframes pkHeaderIn {
@@ -216,17 +247,8 @@ const KEYFRAMES = `
 // Full-image viewer. Opens when a culture story card is clicked. Closes on
 // Escape key, backdrop click, or the close button. Click on the image itself
 // does NOT close it (stopPropagation), only clicking the dark backdrop does.
-function Lightbox({
-  image,
-  title,
-  sub,
-  onClose,
-}: {
-  image: string;
-  title: string;
-  sub: string;
-  onClose: () => void;
-}) {
+function Lightbox({ image, title, sub, onClose, theme }: { image: string; title: string; sub: string; onClose: () => void; theme: "light" | "dark" }) {
+  const p = careersPalette(theme);  
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -343,7 +365,8 @@ function Lightbox({
 }
 
 // ─── Stories Gallery (PieterKoopt /stories style) ─────────────────────────────
-function CultureGallery() {
+function CultureGallery({ theme }: { theme: "light" | "dark" }) {
+  const p = careersPalette(theme);
   const headerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const [activeStory, setActiveStory] = useState<number | null>(null);
@@ -539,12 +562,13 @@ function CultureGallery() {
 
       {/* Lightbox — renders on top of everything when a story is selected */}
       {activeStory !== null && (
-        <Lightbox
-          image={CULTURE_STORIES[activeStory].image}
-          title={CULTURE_STORIES[activeStory].title}
-          sub={CULTURE_STORIES[activeStory].sub}
-          onClose={() => setActiveStory(null)}
-        />
+       <Lightbox
+  image={CULTURE_STORIES[activeStory].image}
+  title={CULTURE_STORIES[activeStory].title}
+  sub={CULTURE_STORIES[activeStory].sub}
+  onClose={() => setActiveStory(null)}
+  theme={theme}
+/>
       )}
     </section>
   );
@@ -555,7 +579,8 @@ function CultureGallery() {
 // clips open from left→right as scroll progresses, revealing the image and
 // text underneath. A thin progress bar at the bottom tracks position.
 // Completely different from the homepage stacked-card pattern.
-function PerksSection() {
+function PerksSection({ theme }: { theme: "light" | "dark" }) {
+  const p = careersPalette(theme);
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -587,6 +612,7 @@ function PerksSection() {
     const total = panels.length;
 
     function onScroll() {
+      if (!section) return;
       const rect = section.getBoundingClientRect();
       const sectionH = section.offsetHeight;
       const winH = window.innerHeight;
@@ -907,7 +933,8 @@ function PerksSection() {
 // the row stays invisible forever — which is exactly the empty gap you saw
 // between the table borders. The fix below uses a mount-time reveal
 // instead, with no dependency on scroll position or observer timing.
-function OpenRoles() {
+function OpenRoles({ theme }: { theme: "light" | "dark" }) {
+  const p = careersPalette(theme);
   const headerRef = useRef<HTMLDivElement>(null);
   // Mount-time reveal — no IntersectionObserver. This guarantees the rows
   // become visible a beat after the component mounts, regardless of scroll
@@ -1068,10 +1095,11 @@ export const Route = createFileRoute("/careers")({
 
 function CareersPage() {
   useReveal();
+  const { theme, toggleTheme } = useThemeInit();
   return (
-    <main className="bg-background text-foreground min-h-screen">
-      <style>{KEYFRAMES}</style>
-      <Nav />
+   <main className="bg-background text-foreground min-h-screen">
+  <style>{KEYFRAMES}</style>
+  <Nav theme={theme} onToggleTheme={toggleTheme} />
 
       <AnimatedHero
         bgImage={careersImg}
@@ -1091,30 +1119,18 @@ function CareersPage() {
         </a>
       </AnimatedHero>
 
-      {/* ── People-first: PieterKoopt /stories style gallery ── */}
-      <CultureGallery />
-
-      {/* ── More than a paycheck: PieterKoopt /how-it-works sticky cards ── */}
-      <PerksSection />
-
-      {/* ── Open Roles ── */}
-      <OpenRoles />
+      <CultureGallery theme={theme} />
+<PerksSection theme={theme} />
+<OpenRoles theme={theme} />
 
       <CTA
-        eyebrow="JOIN US · LIFE AT JARVIS"
-        title={
-          <>
-            Don't see your role?{" "}
-            <em className="text-warm not-italic font-light">Write to us.</em>
-          </>
-        }
         description="We're always meeting curious engineers, designers and operators. Drop a note — we read every application."
         primaryLabel="Email talent team →"
         primaryTo="/contact"
         secondaryLabel="About Jarvis"
         secondaryTo="/about"
       />
-      <Footer />
+      <Footer theme={theme} />
     </main>
   );
 }
