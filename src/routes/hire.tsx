@@ -283,7 +283,7 @@ color:#E85D26;
 
 .reason-modern-desc{
 
-font-size:15px;
+font-size:13px;
 line-height:1.7;
 max-width:95%;
 color:var(--muted);
@@ -730,7 +730,7 @@ function HirePage() {
            <h1
               
               style={{
-                fontSize: "clamp(2.6rem, 5.5vw, 4.6rem)",
+                fontSize: "clamp(2.4rem, 4.5vw, 4.5rem)",
                 fontWeight: 800,
                 lineHeight: 1.02,
                 color: "var(--ink)",
@@ -857,7 +857,7 @@ function HirePage() {
             style={{
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
-              gap: "3rem",
+              gap: "32rem",
               alignItems: "end",
               marginBottom: "3rem",
               paddingBottom: "2.5rem",
@@ -869,7 +869,7 @@ function HirePage() {
              <h2
                 
                 style={{
-  fontSize: "clamp(2rem, 3vw, 3.2rem)",
+  fontSize: "clamp(2.4rem, 4.5vw, 4.5rem)",
   fontWeight: 700,
   lineHeight: 1.08,
   maxWidth: "620px",
@@ -882,8 +882,10 @@ function HirePage() {
                 when you can
                 <br />
                 <em
-  className="font-display"
-  style={{
+ 
+  className="font-display" 
+ style={{
+    
     fontStyle: "italic",
     fontWeight: 400,
     color: "var(--orange)",
