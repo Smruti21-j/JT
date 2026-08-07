@@ -2,328 +2,289 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
+import { useThemeInit } from "@/hooks/use-theme-init";
 import { useEffect, useRef, useState } from "react";
-import contactImg from "@/assets/page-contact.jpg";
+import contactHeroImg from "@/assets/contacthero.png";
 
 /* ─── Styles ─────────────────────────────────────────────────────────────── */
 const CONTACT_STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,700;0,800;0,900;1,300;1,400&display=swap');
+.ctp-page{
+  --bg:      var(--color-background);
+  --surface: var(--color-card);
+  --card:    var(--color-card);
+  --ink:     var(--color-foreground);
+  --ink-dim: var(--color-muted-foreground);
+  --ink-faint: color-mix(in oklch, var(--color-muted-foreground) 75%, transparent);
+  --line:    var(--color-border);
+  --acc:     var(--color-primary);
+  --acc-fg:  var(--color-primary-foreground);
+}
 
-  @keyframes ct-fadeUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes ct-lineGrow {
-    from { transform: scaleX(0); }
-    to   { transform: scaleX(1); }
-  }
-  @keyframes ct-lineGrowY {
-    from { transform: scaleY(0); }
-    to   { transform: scaleY(1); }
-  }
-  @keyframes ct-glowPulse {
-    0%, 100% { opacity: 0.07; transform: scale(1); }
-    50%       { opacity: 0.15; transform: scale(1.1); }
-  }
-  @keyframes ct-scanLine {
-    from { transform: translateY(-100%); }
-    to   { transform: translateY(100vh); }
-  }
-  @keyframes ct-orbFloat {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    33%       { transform: translate(30px, -20px) scale(1.05); }
-    66%       { transform: translate(-20px, 15px) scale(0.97); }
-  }
-  @keyframes ct-textReveal {
-    from { clip-path: inset(0 100% 0 0); }
-    to   { clip-path: inset(0 0% 0 0); }
-  }
-  @keyframes ct-borderTrace {
-    0%   { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); }
-    25%  { clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); }
-    50%  { clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%); }
-    75%  { clip-path: polygon(100% 100%, 0 100%, 0 100%, 100% 100%); }
-    100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
-  }
-  @keyframes ct-flicker {
-    0%, 95%, 100% { opacity: 1; }
-    96%            { opacity: 0.4; }
-    97%            { opacity: 1; }
-    98%            { opacity: 0.6; }
-  }
-  @keyframes ct-numberCount {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes ct-pulseRing {
-    0%   { transform: scale(0.8); opacity: 0.8; }
-    100% { transform: scale(2.5); opacity: 0; }
-  }
-  @keyframes ct-signalFlow {
-    0%   { stroke-dashoffset: 1000; opacity: 0; }
-    20%  { opacity: 1; }
-    100% { stroke-dashoffset: 0; opacity: 0.4; }
-  }
-  @keyframes ct-gridShift {
-    0%, 100% { background-position: 0 0; }
-    50%       { background-position: 20px 20px; }
-  }
-  @keyframes ct-sourceWave {
-    0% { transform: translate3d(-8%, 6%, 0) scale(0.96) rotate(0deg); opacity: 0.28; }
-    45% { transform: translate3d(7%, -5%, 0) scale(1.08) rotate(9deg); opacity: 0.58; }
-    100% { transform: translate3d(-8%, 6%, 0) scale(0.96) rotate(0deg); opacity: 0.28; }
-  }
-  @keyframes ct-dataRain {
-    from { transform: translateY(-120%); opacity: 0; }
-    12%, 75% { opacity: 0.65; }
-    to { transform: translateY(120vh); opacity: 0; }
-  }
+@keyframes ctpIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes ctpLineGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes ctpPulseRing{0%{transform:scale(0.8);opacity:0.8}100%{transform:scale(2.4);opacity:0}}
 
-  .ct-vis {
-    opacity: 0;
-    transform: translateY(32px);
-    transition: opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1);
-  }
-  .ct-vis.is-visible {
-    opacity: 1;
-    transform: none;
-  }
+/* ── Hero ── */
+.ctp-hero{
+  position: relative;
+  overflow: hidden;
+  padding: clamp(150px,20vh,210px) 0 clamp(70px,9vh,110px);
+  background:
+    radial-gradient(circle at 12% 0%, color-mix(in oklch, var(--acc) 9%, transparent) 0%, transparent 48%),
+    var(--bg);
+  font-family: var(--font-sans);
+  border-bottom: 1px solid var(--line);
+}
+.ctp-inner{
+  position: relative;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 clamp(20px,4vw,48px);
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+.ctp-hero-copy{ max-width: 620px; }
+.ctp-hero-img-wrap{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ctp-hero-img-wrap img{
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  object-fit: contain;
+}
+@keyframes ctpImgFloat{ 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-10px); } }
+.ctp-hero-img-wrap img{ animation: ctpImgFloat 7s ease-in-out infinite; }
 
-  .ct-input {
-    width: 100%;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 4px;
-    padding: 18px 20px;
-    font-size: 13px;
-    color: rgba(240,232,220,0.8);
-    outline: none;
-    transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-    font-family: inherit;
-    letter-spacing: 0.02em;
-  }
-  .ct-input::placeholder {
-    color: rgba(240,232,220,0.35);
-    font-style: italic;
-    font-size: 12px;
-  }
-  .ct-input:focus {
-    border-color: rgba(255,110,30,0.5);
-    background: rgba(255,90,20,0.04);
-    box-shadow: 0 0 0 3px rgba(255,90,20,0.06), inset 0 0 20px rgba(255,90,20,0.03);
-  }
-  .ct-form-grid {
-    display: grid;
-    grid-template-columns: 1fr 420px;
-    gap: 64px;
-    align-items: start;
-  }
-  .ct-source-veil {
-    position: absolute;
-    inset: 8% 10% auto auto;
-    width: min(720px, 58vw);
-    height: 48vh;
-    border-radius: 999px;
-    background:
-      radial-gradient(circle at 30% 42%, rgba(255, 170, 72, 0.28), transparent 24%),
-      radial-gradient(circle at 58% 52%, rgba(255, 92, 24, 0.32), transparent 22%),
-      radial-gradient(circle at 78% 34%, rgba(255, 210, 120, 0.18), transparent 20%);
-    filter: blur(38px);
-    mix-blend-mode: screen;
-    animation: ct-sourceWave 13s ease-in-out infinite;
-    pointer-events: none;
-  }
-  .ct-rain-line {
-    position: absolute;
-    top: 0;
-    width: 1px;
-    height: 28vh;
-    background: linear-gradient(to bottom, transparent, rgba(255,130,50,.45), transparent);
-    animation: ct-dataRain 7s linear infinite;
-  }
+@media (max-width: 900px){
+  .ctp-inner{ grid-template-columns: 1fr; text-align: center; }
+  .ctp-hero-copy{ max-width: none; margin: 0 auto; }
+  .ctp-hero-img-wrap{ order: -1; margin-bottom: 2rem; }
+  .ctp-eyebrow{ justify-content: center; }
+  .ctp-line{ margin-left: auto; margin-right: auto; }
+}
+.ctp-eyebrow{
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;font-weight:400;
+  color:var(--ink-faint); margin-bottom:22px;
+  animation:ctpIn .6s cubic-bezier(.16,1,.3,1) both;
+  display:flex; align-items:center; gap:10px;
+}
+.ctp-eyebrow::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--acc); flex-shrink:0; }
+.ctp-title{ margin-bottom:28px; animation:ctpIn .7s .08s cubic-bezier(.16,1,.3,1) both; max-width: 820px; }
+.ctp-sub{
+  font-size:15px; color:var(--ink-dim); line-height:1.75;
+  max-width:640px; margin-bottom:0;
+  animation:ctpIn .7s .16s cubic-bezier(.16,1,.3,1) both;
+}
+.ctp-line{
+  margin-top:36px; height:1px; width:120px;
+  background:linear-gradient(to right, var(--acc), transparent);
+  transform-origin:left;
+  animation:ctpLineGrow 1s cubic-bezier(.22,1,.36,1) .5s both;
+}
 
-  .ct-channel-item {
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  .ct-channel-item::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 2px;
-    background: linear-gradient(to bottom, transparent, rgba(255,110,30,0.8), transparent);
-    transform: scaleY(0);
-    transformOrigin: center;
-    transition: transform 0.4s ease;
-  }
-  .ct-channel-item:hover::before {
-    transform: scaleY(1);
-  }
-  .ct-channel-item:hover {
-    background: rgba(255,90,20,0.04) !important;
-    padding-left: 28px !important;
-  }
-  .ct-channel-item:hover .ct-channel-label {
-    color: rgba(255,130,50,0.9) !important;
-  }
+/* ── Sub-section heading (form / location) — smaller than hero ── */
+.ctp-subheading{
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.9rem, 3vw, 2.75rem);
+  line-height: 1.05;
+  color: var(--ink);
+  margin: 0;
+}
 
-  .ct-submit-btn {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
-  }
-  .ct-submit-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-    transform: translateX(-100%) skewX(-20deg);
-    transition: transform 0.5s ease;
-  }
-  .ct-submit-btn:hover::before {
-    transform: translateX(150%) skewX(-20deg);
-  }
-  .ct-submit-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 40px -8px rgba(255,90,20,0.5), 0 0 0 1px rgba(255,130,50,0.3);
-  }
-  .ct-submit-btn:active {
-    transform: translateY(-1px);
-  }
+/* ── Quick-stat strip under hero ── */
+.ctp-stats{
+  border-top:1px solid var(--line);
+  background:var(--surface);
+}
+.ctp-stats-inner{
+  max-width:1600px; margin:0 auto; padding: 0 clamp(20px,4vw,48px);
+  display:grid; grid-template-columns:repeat(3,1fr);
+}
+.ctp-stat{
+  padding: 28px clamp(12px,2vw,28px);
+  border-right:1px solid var(--line);
+  display:flex; flex-direction:column; gap:4px;
+}
+.ctp-stat:last-child{ border-right:none; }
+.ctp-stat-label{
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size:9.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-faint);
+}
+.ctp-stat-val{ font-size:14px; color:var(--ink); font-weight:600; }
+@media (max-width:760px){
+  .ctp-stats-inner{ grid-template-columns:1fr; }
+  .ctp-stat{ border-right:none; border-bottom:1px solid var(--line); }
+  .ctp-stat:last-child{ border-bottom:none; }
+}
 
-  .ct-directions-btn {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-  }
-  .ct-directions-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%);
-    transform: translateX(-100%) skewX(-20deg);
-    transition: transform 0.5s ease;
-  }
-  .ct-directions-btn:hover::before {
-    transform: translateX(150%) skewX(-20deg);
-  }
-  .ct-directions-btn:hover {
-    border-color: rgba(255,130,50,0.5) !important;
-    background: rgba(255,90,20,0.08) !important;
-    transform: translateY(-2px);
-  }
+/* ── Form section ── */
+.ctp-section{ padding:clamp(64px,8vh,100px) 0 clamp(90px,10vh,130px); font-family:var(--font-sans); }
+.ctp-section-inner{ max-width:1600px; margin:0 auto; padding:0 clamp(20px,4vw,48px); }
 
-  /* ── Location section (map + card, devxlabs-style layout) ─────────────── */
-  .ct-loc-grid {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 40px;
-    align-items: stretch;
-  }
-  @media (max-width: 980px) {
-    .ct-loc-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-  .ct-map-frame {
-    position: relative;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.08);
-    background: #0d0906;
-    min-height: 380px;
-  }
-  .ct-map-dotgrid {
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px);
-    background-size: 16px 16px;
-    -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, black 40%, transparent 100%);
-    mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, black 40%, transparent 100%);
-  }
-  .ct-map-pin {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transform: translate(-50%, -100%);
-  }
-  .ct-map-pin-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgb(255,130,50);
-    box-shadow: 0 0 0 4px rgba(255,130,50,0.18), 0 0 24px 4px rgba(255,110,30,0.5);
-    position: relative;
-    z-index: 2;
-  }
-  .ct-map-pin-ring {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,130,50,0.6);
-    animation: ct-pulseRing 2.2s ease-out infinite;
-  }
-  .ct-map-pin-label {
-    margin-top: 10px;
-    font-size: 9px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: rgba(255,180,110,0.85);
-    white-space: nowrap;
-    background: rgba(10,8,6,0.75);
-    border: 1px solid rgba(255,130,50,0.25);
-    border-radius: 3px;
-    padding: 5px 10px;
-  }
+.ctp-form-grid{
+  display:grid;
+  grid-template-columns: 1fr 400px;
+  gap:64px;
+  align-items:start;
+}
+@media (max-width:980px){
+  .ctp-form-grid{ grid-template-columns:1fr; gap:56px; }
+}
 
-  .ct-loc-card {
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 10px;
-    overflow: hidden;
-    background: rgba(255,255,255,0.015);
-    display: flex;
-    flex-direction: column;
-    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  .ct-loc-card:hover {
-    border-color: rgba(255,130,50,0.35);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 44px -20px rgba(255,90,20,0.35);
-  }
-  .ct-loc-card-tag {
-    font-size: 8px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: rgb(255,180,110);
-    background: rgba(255,90,20,0.08);
-    border: 1px solid rgba(255,130,50,0.35);
-    border-radius: 3px;
-    padding: 5px 9px;
-    display: inline-block;
-  }
+.ctp-field{ margin-bottom:26px; }
+.ctp-label{
+  display:block;
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size:9.5px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--ink-faint); margin-bottom:10px;
+}
+.ctp-input, .ctp-textarea{
+  width:100%;
+  background:transparent;
+  border:none;
+  border-bottom:1.5px solid var(--line);
+  padding: 12px 2px;
+  font-size:15px;
+  color:var(--ink);
+  outline:none;
+  font-family:var(--font-sans);
+  transition: border-color .25s ease;
+}
+.ctp-input::placeholder, .ctp-textarea::placeholder{ color:var(--ink-faint); }
+.ctp-input:focus, .ctp-textarea:focus{ border-color:var(--acc); }
+.ctp-textarea{ resize:none; }
 
-  .ct-coord-dot {
-    animation: ct-pulseRing 2.5s ease-out infinite;
-  }
+.ctp-upload{
+  border:1.5px dashed var(--line);
+  border-radius:10px;
+  padding:22px 18px;
+  text-align:center;
+  cursor:pointer;
+  transition: border-color .25s ease, background .25s ease;
+  color:var(--ink-faint);
+}
+.ctp-upload:hover, .ctp-upload.dragging{
+  border-color: color-mix(in oklch, var(--acc) 55%, var(--line));
+  background: color-mix(in oklch, var(--acc) 5%, transparent);
+}
+.ctp-upload-text{ font-size:12px; margin:8px 0 0; }
+.ctp-upload-file{
+  font-size:10.5px;
+  background: color-mix(in oklch, var(--acc) 12%, transparent);
+  border:1px solid color-mix(in oklch, var(--acc) 35%, var(--line));
+  border-radius:999px;
+  padding:4px 11px;
+  color:var(--acc);
+  display:inline-block;
+}
 
-  .ct-hero-title span {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(60px) rotateX(30deg);
-    animation: ct-wordIn 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
-  }
-  @keyframes ct-wordIn {
-    to { opacity: 1; transform: none; }
-  }
-  @media (max-width: 980px) {
-    .ct-form-grid {
-      grid-template-columns: 1fr;
-      gap: 48px;
-    }
-  }
+.ctp-submit{
+  display:inline-flex; align-items:center; gap:10px;
+  background:var(--acc); color:var(--acc-fg);
+  font-size:12px; letter-spacing:.1em; text-transform:uppercase; font-weight:600;
+  padding:16px 34px; border-radius:999px; border:none; cursor:pointer;
+  transition: transform .25s ease, box-shadow .25s ease;
+  box-shadow: 0 18px 40px color-mix(in oklch, var(--acc) 25%, transparent);
+  margin-top:8px;
+}
+.ctp-submit:hover{ transform:translateY(-2px); }
+
+/* ── Right rail: channels + address ── */
+.ctp-rail-card{
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  background:var(--card);
+  margin-bottom:20px;
+}
+.ctp-rail-head{
+  padding:18px 22px;
+  border-bottom:1px solid var(--line);
+  background: color-mix(in oklch, var(--acc) 5%, transparent);
+}
+.ctp-rail-head p{
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size:9.5px; letter-spacing:.25em; text-transform:uppercase; color:var(--acc); margin:0;
+}
+.ctp-channel{
+  padding:16px 22px;
+  border-bottom:1px solid var(--line);
+  transition: background .25s ease, padding-left .25s ease;
+}
+.ctp-channel:last-child{ border-bottom:none; }
+.ctp-channel:hover{
+  background: color-mix(in oklch, var(--acc) 5%, transparent);
+  padding-left:28px;
+}
+.ctp-channel-label{
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:5px;
+}
+.ctp-channel-value{ font-size:14px; color:var(--ink); text-decoration:none; transition:color .2s ease; }
+.ctp-channel:hover .ctp-channel-value{ color:var(--acc); }
+
+.ctp-addr-card{ padding:22px; }
+.ctp-addr-tag{
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size:9px; letter-spacing:.2em; text-transform:uppercase; color:var(--acc);
+  border:1px solid color-mix(in oklch, var(--acc) 35%, var(--line));
+  border-radius:999px; padding:4px 11px; display:inline-block; margin-bottom:14px;
+}
+.ctp-addr-text{ font-size:14px; line-height:1.85; color:var(--ink-dim); margin:0 0 18px; }
+.ctp-addr-quote{
+  border-top:1px solid var(--line); padding-top:14px;
+  font-size:13px; font-style:italic; color:var(--ink-dim); margin:0 0 6px;
+}
+.ctp-addr-note{
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-faint); margin:0;
+}
+
+/* ── Location section ── */
+.ctp-loc-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:32px; align-items:stretch; }
+@media (max-width:980px){ .ctp-loc-grid{ grid-template-columns:1fr; } }
+.ctp-map-frame{
+  position:relative; border-radius:16px; overflow:hidden;
+  border:1px solid var(--line); min-height:380px; background:var(--surface);
+}
+.ctp-map-pin{ position:absolute; display:flex; flex-direction:column; align-items:center; transform:translate(-50%,-100%); z-index:2; }
+.ctp-map-pin-dot{
+  width:12px; height:12px; border-radius:50%; background:var(--acc);
+  box-shadow: 0 0 0 4px color-mix(in oklch, var(--acc) 20%, transparent), 0 0 24px 4px color-mix(in oklch, var(--acc) 40%, transparent);
+  position:relative; z-index:2;
+}
+.ctp-map-pin-ring{
+  position:absolute; width:12px; height:12px; border-radius:50%;
+  border:1px solid color-mix(in oklch, var(--acc) 60%, transparent);
+  animation: ctpPulseRing 2.2s ease-out infinite;
+}
+.ctp-map-pin-label{
+  margin-top:10px; font-size:9px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--acc); white-space:nowrap;
+  background:var(--card); border:1px solid color-mix(in oklch, var(--acc) 30%, var(--line));
+  border-radius:4px; padding:5px 10px;
+}
+
+.ctp-directions{
+  align-self:flex-start; display:inline-flex; align-items:center; gap:9px;
+  border:1px solid var(--line); border-radius:999px; padding:12px 22px;
+  font-size:11px; letter-spacing:.14em; text-transform:uppercase; font-weight:600;
+  color:var(--ink); text-decoration:none; background:transparent;
+  transition:border-color .25s ease, color .25s ease, background .25s ease;
+}
+.ctp-directions:hover{
+  border-color:var(--acc); color:var(--acc);
+  background: color-mix(in oklch, var(--acc) 6%, transparent);
+}
 `;
 
 /* ─── Helpers ────────────────────────────────────────────────────────────── */
@@ -346,111 +307,7 @@ function useInView(threshold = 0.12): [React.RefObject<HTMLDivElement>, boolean]
   return [ref, vis];
 }
 
-/* ─── Animated hero title ────────────────────────────────────────────────── */
-function HeroTitle() {
-  const words = ["Plug", "Into", "the", "Source."];
-  return (
-    <h1
-      style={{
-        fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-        fontSize: "clamp(60px, 10vw, 140px)",
-        fontWeight: 900,
-        textTransform: "uppercase",
-        letterSpacing: "-0.03em",
-        lineHeight: 0.9,
-        margin: 0,
-        color: "#f0e8df",
-        perspective: "800px",
-      }}
-    >
-      {words.map((w, i) => (
-        <span
-          key={w}
-          style={{
-            display: i < 3 ? "inline" : "block",
-            marginRight: i < 3 ? "0.25em" : 0,
-            opacity: 0,
-            transform: "translateY(60px) rotateX(30deg)",
-            animation: `ct-wordIn 0.7s cubic-bezier(0.22,1,0.36,1) ${0.1 + i * 0.12}s forwards`,
-          }}
-        >
-          {i === 3 ? (
-            <em
-              style={{
-                fontStyle: "italic",
-                fontWeight: 300,
-                color: "rgb(255,130,50)",
-                fontFamily: "Georgia, serif",
-                textTransform: "none",
-              }}
-            >
-              {w}
-            </em>
-          ) : (
-            w
-          )}
-          {i < 3 && "\u00A0"}
-        </span>
-      ))}
-    </h1>
-  );
-}
-
-/* ─── Animated scan line ─────────────────────────────────────────────────── */
-function ScanLine() {
-  return (
-    <div
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        right: 0,
-        height: "1px",
-        background: "linear-gradient(to right, transparent, rgba(255,130,50,0.6), transparent)",
-        animation: "ct-scanLine 4s linear infinite",
-        zIndex: 2,
-        pointerEvents: "none",
-      }}
-    />
-  );
-}
-
-/* ─── Signal SVG decoration ──────────────────────────────────────────────── */
-function SignalDecor() {
-  return (
-    <svg
-      viewBox="0 0 400 300"
-      style={{
-        position: "absolute",
-        right: "-60px",
-        top: "50%",
-        transform: "translateY(-50%)",
-        width: "400px",
-        height: "300px",
-        opacity: 0.06,
-        pointerEvents: "none",
-      }}
-    >
-      {[0, 1, 2, 3, 4].map((i) => (
-        <circle
-          key={i}
-          cx="200"
-          cy="150"
-          r={40 + i * 35}
-          fill="none"
-          stroke="rgb(255,130,50)"
-          strokeWidth="0.8"
-          strokeDasharray="4 8"
-          style={{
-            animation: `ct-pulseRing ${2 + i * 0.5}s ease-out ${i * 0.3}s infinite`,
-          }}
-        />
-      ))}
-    </svg>
-  );
-}
-
-/* ─── File Upload component ──────────────────────────────────────────────── */
+/* ─── File Upload ────────────────────────────────────────────────────────── */
 function FileUpload() {
   const [dragging, setDragging] = useState(false);
   const [files, setFiles] = useState<string[]>([]);
@@ -465,22 +322,11 @@ function FileUpload() {
 
   return (
     <div
-      onDragOver={(e) => {
-        e.preventDefault();
-        setDragging(true);
-      }}
+      onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
       onDragLeave={() => setDragging(false)}
       onDrop={handleDrop}
       onClick={() => inputRef.current?.click()}
-      style={{
-        border: `1px dashed ${dragging ? "rgba(255,110,30,0.6)" : "rgba(255,255,255,0.12)"}`,
-        borderRadius: "4px",
-        padding: "28px 20px",
-        background: dragging ? "rgba(255,90,20,0.05)" : "rgba(255,255,255,0.01)",
-        cursor: "pointer",
-        textAlign: "center",
-        transition: "all 0.3s ease",
-      }}
+      className={`ctp-upload${dragging ? " dragging" : ""}`}
     >
       <input
         ref={inputRef}
@@ -492,48 +338,17 @@ function FileUpload() {
           setFiles((prev) => [...prev, ...picked]);
         }}
       />
-      <div style={{ marginBottom: "8px" }}>
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="rgba(255,130,50,0.5)"
-          strokeWidth="1.5"
-        >
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-          <polyline points="17 8 12 3 7 8" />
-          <line x1="12" y1="3" x2="12" y2="15" />
-        </svg>
-      </div>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ margin: "0 auto" }}>
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="17 8 12 3 7 8" />
+        <line x1="12" y1="3" x2="12" y2="15" />
+      </svg>
       {files.length === 0 ? (
-        <p
-          style={{
-            fontSize: "11px",
-            color: "rgba(240,232,220,0.35)",
-            fontStyle: "italic",
-            margin: 0,
-            letterSpacing: "0.05em",
-          }}
-        >
-          Drop your blueprints, resumes, or proposals here.
-        </p>
+        <p className="ctp-upload-text">Drop your blueprints, resumes, or proposals here.</p>
       ) : (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", justifyContent: "center" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", justifyContent: "center", marginTop: "10px" }}>
           {files.map((f, i) => (
-            <span
-              key={i}
-              style={{
-                fontSize: "10px",
-                background: "rgba(255,100,20,0.12)",
-                border: "1px solid rgba(255,100,20,0.25)",
-                borderRadius: "3px",
-                padding: "3px 8px",
-                color: "rgba(255,180,100,0.8)",
-              }}
-            >
-              {f}
-            </span>
+            <span key={i} className="ctp-upload-file">{f}</span>
           ))}
         </div>
       )}
@@ -541,73 +356,20 @@ function FileUpload() {
   );
 }
 
-/* ─── Direct channel item ────────────────────────────────────────────────── */
-function ChannelItem({
-  label,
-  value,
-  href,
-  delay = 0,
-}: {
-  label: string;
-  value: string;
-  href: string;
-  delay?: number;
-}) {
-  const [ref, vis] = useInView(0.1);
+/* ─── Channel item ───────────────────────────────────────────────────────── */
+function ChannelItem({ label, value, href }: { label: string; value: string; href: string }) {
   return (
-    <div
-      ref={ref}
-      className="ct-channel-item"
-      style={{
-        padding: "18px 20px 18px 20px",
-        borderBottom: "1px solid rgba(255,255,255,0.05)",
-        opacity: vis ? 1 : 0,
-        transform: vis ? "none" : "translateX(-20px)",
-        transition: `opacity 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}s, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}s, background 0.3s ease, padding 0.3s ease`,
-      }}
-    >
-      <div
-        className="ct-channel-label"
-        style={{
-          fontSize: "9px",
-          letterSpacing: "0.3em",
-          textTransform: "uppercase",
-          color: "rgba(255,130,50,0.5)",
-          marginBottom: "6px",
-          transition: "color 0.3s ease",
-        }}
-      >
-        {label}
-      </div>
-      <a
-        href={href}
-        style={{
-          fontSize: "13px",
-          color: "rgba(240,232,220,0.75)",
-          textDecoration: "none",
-          fontFamily: "Georgia, serif",
-          transition: "color 0.25s ease",
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.color = "rgb(255,160,80)")}
-        onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(240,232,220,0.75)")}
-      >
-        {value}
-      </a>
+    <div className="ctp-channel">
+      <div className="ctp-channel-label">{label}</div>
+      <a href={href} className="ctp-channel-value">{value}</a>
     </div>
   );
 }
 
-/* ─── Location Section (devxlabs-style: map visual + location card) ─────── */
-// NOTE: replace GOOGLE_MAPS_QUERY with your exact place name / business listing
-// if you want the pin to land precisely — a "share" link's query param from
-// Google Maps works best. This uses a free text query, no API key required.
+/* ─── Location section ───────────────────────────────────────────────────── */
 const GOOGLE_MAPS_QUERY = "Titanium Business Park, Makarba, Ahmedabad, Gujarat 380051";
-const GOOGLE_MAPS_DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-  GOOGLE_MAPS_QUERY,
-)}`;
-const GOOGLE_MAPS_EMBED_SRC = `https://www.google.com/maps?q=${encodeURIComponent(
-  GOOGLE_MAPS_QUERY,
-)}&output=embed`;
+const GOOGLE_MAPS_DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(GOOGLE_MAPS_QUERY)}`;
+const GOOGLE_MAPS_EMBED_SRC = `https://www.google.com/maps?q=${encodeURIComponent(GOOGLE_MAPS_QUERY)}&output=embed`;
 
 function LocationSection() {
   const [ref, vis] = useInView(0.08);
@@ -615,190 +377,61 @@ function LocationSection() {
   return (
     <section
       ref={ref}
+      className="ctp-section"
       style={{
-        position: "relative",
-        borderTop: "1px solid rgba(255,255,255,0.05)",
-        paddingTop: "90px",
-        paddingBottom: "110px",
+        borderTop: "1px solid var(--line)",
         opacity: vis ? 1 : 0,
-        transform: vis ? "none" : "translateY(30px)",
-        transition:
-          "opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1)",
+        transform: vis ? "none" : "translateY(24px)",
+        transition: "opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1)",
       }}
     >
-      {/* ambient glow */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "-10%",
-          right: "-8%",
-          width: "600px",
-          height: "600px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(255,80,10,0.07) 0%, transparent 65%)",
-          animation: "ct-glowPulse 9s ease-in-out infinite",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div className="relative mx-auto max-w-6xl px-6" style={{ zIndex: 1 }}>
-        {/* Section heading */}
-        <div style={{ marginBottom: "40px" }}>
-          <p
-            style={{
-              fontSize: "9px",
-              letterSpacing: "0.4em",
-              textTransform: "uppercase",
-              color: "rgba(255,130,50,0.6)",
-              marginBottom: "14px",
-            }}
-          >
-            OUR LOCATION
-          </p>
-          <h2
-            style={{
-              fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-              fontSize: "clamp(32px, 4vw, 52px)",
-              fontWeight: 800,
-              textTransform: "uppercase",
-              letterSpacing: "-0.02em",
-              lineHeight: 0.95,
-              color: "#f0e8df",
-              margin: 0,
-            }}
-          >
-            WHERE THE SIGNAL ORIGINATES.
+      <div className="ctp-section-inner">
+        <div style={{ marginBottom: "28px" }}>
+          <p className="ctp-eyebrow">OUR LOCATION</p>
+          <h2 className="ctp-subheading">
+            Where the signal{" "}
+            <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "var(--acc)" }}>
+              originates.
+            </em>
           </h2>
-          <div
-            style={{
-              marginTop: "16px",
-              height: "1px",
-              width: "120px",
-              background: "linear-gradient(to right, rgba(255,110,30,0.7), transparent)",
-              transformOrigin: "left",
-              transform: vis ? "scaleX(1)" : "scaleX(0)",
-              transition: "transform 1s cubic-bezier(0.22,1,0.36,1) 0.3s",
-            }}
-          />
         </div>
 
-        <div className="ct-loc-grid">
-          {/* ── Map visual ─────────────────────────────────────────────── */}
-          <div className="ct-map-frame">
-            <div className="ct-map-dotgrid" />
-
-            {/* live embedded map, dimmed to sit behind the dot texture */}
+        <div className="ctp-loc-grid">
+          <div className="ctp-map-frame">
             <iframe
               title="Jarvis Technolabs Location"
               src={GOOGLE_MAPS_EMBED_SRC}
               width="100%"
               height="100%"
-              style={{
-                position: "absolute",
-                inset: 0,
-                border: 0,
-                filter:
-                  "grayscale(1) invert(92%) contrast(85%) brightness(0.85) hue-rotate(180deg)",
-                opacity: 0.9,
-              }}
+              style={{ position: "absolute", inset: 0, border: 0 }}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
-
-            {/* tint overlay to match theme */}
-            <div
-              style={{
-                position: "absolute",
-                inset: 0,
-                background:
-                  "linear-gradient(160deg, rgba(255,90,20,0.12) 0%, transparent 45%, rgba(10,8,6,0.35) 100%)",
-                pointerEvents: "none",
-              }}
-            />
-
-            {/* pin marker + label, positioned over the map */}
-            <div className="ct-map-pin" style={{ left: "50%", top: "48%" }}>
+            <div className="ctp-map-pin" style={{ left: "50%", top: "48%" }}>
               <div style={{ position: "relative", width: "12px", height: "12px" }}>
-                <div className="ct-map-pin-dot" />
-                <div className="ct-map-pin-ring" />
+                <div className="ctp-map-pin-dot" />
+                <div className="ctp-map-pin-ring" />
               </div>
-              <span className="ct-map-pin-label">AHMEDABAD, INDIA</span>
+              <span className="ctp-map-pin-label">AHMEDABAD, INDIA</span>
             </div>
-
-            <ScanLine />
           </div>
 
-          {/* ── Location card ──────────────────────────────────────────── */}
-          <div className="ct-loc-card">
-            <div style={{ padding: "22px 22px 26px", display: "flex", flexDirection: "column", flex: 1 }}>
-              <span className="ct-loc-card-tag" style={{ alignSelf: "flex-start", marginBottom: "14px" }}>
-                [ Headquarters ]
-              </span>
-              <h3
-                style={{
-                  fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                  fontSize: "26px",
-                  fontWeight: 800,
-                  textTransform: "uppercase",
-                  letterSpacing: "-0.01em",
-                  color: "#f0e8df",
-                  margin: "0 0 10px",
-                }}
-              >
+          <div className="ctp-rail-card" style={{ marginBottom: 0, display: "flex", flexDirection: "column" }}>
+            <div className="ctp-addr-card" style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+              <span className="ctp-addr-tag">Headquarters</span>
+              <h3 style={{ fontSize: "22px", fontWeight: 700, color: "var(--ink)", margin: "0 0 12px" }}>
                 Ahmedabad
               </h3>
-
-              <p
-                style={{
-                  fontSize: "13px",
-                  lineHeight: 1.85,
-                  color: "rgba(240,232,220,0.75)",
-                  margin: "0 0 20px",
-                  fontFamily: "Georgia, serif",
-                  flex: 1,
-                }}
-              >
+              <p className="ctp-addr-text" style={{ flex: 1 }}>
                 B-603, Titanium Business Park,
                 <br />
                 Near Makarba Underbridge, Corporate Road,
                 <br />
                 Ahmedabad, Gujarat - 380051, India
               </p>
-
-              <a
-                href={GOOGLE_MAPS_DIRECTIONS_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ct-directions-btn"
-                style={{
-                  alignSelf: "flex-start",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  border: "1px solid rgba(255,255,255,0.14)",
-                  borderRadius: "4px",
-                  padding: "12px 20px",
-                  fontSize: "10px",
-                  letterSpacing: "0.3em",
-                  textTransform: "uppercase",
-                  fontFamily: "'Barlow Condensed', sans-serif",
-                  fontWeight: 700,
-                  color: "rgba(240,232,220,0.75)",
-                  textDecoration: "none",
-                  background: "rgba(255,255,255,0.02)",
-                }}
-              >
-                GET DIRECTIONS
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
+              <a href={GOOGLE_MAPS_DIRECTIONS_URL} target="_blank" rel="noopener noreferrer" className="ctp-directions">
+                Get Directions
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="7" y1="17" x2="17" y2="7" />
                   <polyline points="7 7 17 7 17 17" />
                 </svg>
@@ -817,10 +450,7 @@ export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title: "Contact — Jarvis Technolabs" },
-      {
-        name: "description",
-        content: "Plug into the source. Contact Jarvis Technolabs in Ahmedabad.",
-      },
+      { name: "description", content: "Plug into the source. Contact Jarvis Technolabs in Ahmedabad." },
       { property: "og:title", content: "Contact — Jarvis Technolabs" },
       { property: "og:description", content: "The signal starts here." },
     ],
@@ -830,10 +460,10 @@ export const Route = createFileRoute("/contact")({
 /* ─── Page ───────────────────────────────────────────────────────────────── */
 function ContactPage() {
   useReveal();
+  const { theme, toggleTheme } = useThemeInit();
 
   const [formRef, formVis] = useInView(0.08);
   const [infoRef, infoVis] = useInView(0.08);
-  const [coordRef, coordVis] = useInView(0.1);
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -849,552 +479,141 @@ function ContactPage() {
   };
 
   return (
-    <main
-      style={{
-        background: "#0a0806",
-        color: "#f0e8df",
-        minHeight: "100vh",
-        fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-      }}
-    >
+    <main className="ctp-page bg-background text-foreground min-h-screen">
       <style>{CONTACT_STYLES}</style>
-      <Nav />
+      <Nav theme={theme} onToggleTheme={toggleTheme} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section
-        style={{
-          position: "relative",
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
-          overflow: "hidden",
-        }}
-      >
-        {/* BG Image */}
-        <img
-          src={contactImg}
-          alt=""
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            objectPosition: "center",
-            opacity: 0.18,
-            filter: "saturate(0.2) brightness(0.6)",
-            animation: "ct-glowPulse 8s ease-in-out infinite",
-          }}
-        />
+<section className="ctp-hero">
+  <div className="ctp-inner">
+    <div className="ctp-hero-copy">
+      <p className="ctp-eyebrow">GET IN TOUCH · RESPONSE WITHIN 24 HOURS</p>
+      <h1 className="ctp-title section-title">
+        Plug into
+        <br />
+        <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "var(--acc)" }}>
+          the source.
+        </em>
+      </h1>
+      <p className="ctp-sub">
+        Why wait for the dust to settle when you can clear the air? Stop searching for the
+        "right time" to connect. Whether you're looking to build, to join, or to provide, the
+        signal starts here. Drop the deadwood and let's engineer a new standard together.
+      </p>
+      <div className="ctp-line" />
+    </div>
 
-        {/* Grid overlay */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            animation: "ct-gridShift 20s ease-in-out infinite",
-          }}
-        />
+    <div className="ctp-hero-img-wrap">
+      <img src={contactHeroImg} alt="Contact Jarvis Technolabs" />
+    </div>
+  </div>
+</section>
 
-        {/* Orange signal field */}
-        <div className="ct-source-veil" />
-        {[12, 24, 39, 58, 73, 88].map((left, i) => (
-          <span
-            key={left}
-            className="ct-rain-line"
-            style={{ left: `${left}%`, animationDelay: `${i * 0.85}s` }}
-          />
-        ))}
-        <div
-          style={{
-            position: "absolute",
-            top: "20%",
-            right: "15%",
-            width: "500px",
-            height: "500px",
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(255,90,20,0.12) 0%, transparent 65%)",
-            animation: "ct-orbFloat 12s ease-in-out infinite",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: "10%",
-            left: "5%",
-            width: "350px",
-            height: "350px",
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(255,60,0,0.08) 0%, transparent 65%)",
-            animation: "ct-orbFloat 16s ease-in-out 3s infinite",
-            pointerEvents: "none",
-          }}
-        />
-
-        <ScanLine />
-        <SignalDecor />
-
-        {/* Bottom gradient */}
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: "60%",
-            background: "linear-gradient(to top, #0a0806 40%, transparent)",
-            zIndex: 1,
-          }}
-        />
-
-        {/* Content */}
-        <div className="relative mx-auto max-w-7xl px-6 pb-20 w-full" style={{ zIndex: 2 }}>
-          {/* Eyebrow */}
-          <p
-            style={{
-              fontSize: "9px",
-              letterSpacing: "0.45em",
-              textTransform: "uppercase",
-              color: "rgba(255,130,50,0.6)",
-              marginBottom: "32px",
-              opacity: 0,
-              animation: "ct-fadeUp 0.8s ease 0.2s forwards",
-            }}
-          >
-            GET IN TOUCH · SIGNAL RECEIVED WITHIN 24 CYCLES
-          </p>
-
-          <HeroTitle />
-
-          {/* Sub */}
-          <p
-            style={{
-              maxWidth: "640px",
-              fontSize: "15px",
-              lineHeight: 1.85,
-              color: "rgba(240,232,220,0.6)",
-              marginTop: "28px",
-              fontFamily: "Georgia, 'Times New Roman', serif",
-              fontWeight: 400,
-              opacity: 0,
-              animation: "ct-fadeUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.5s forwards",
-            }}
-          >
-            Why wait for the dust to settle when you can clear the air? Stop searching for the
-            "right time" to connect. Whether you're looking to build, to join, or to provide, the
-            signal starts here. Drop the deadwood and let's engineer a new standard together.
-          </p>
-
-          {/* Animated line */}
-          <div
-            style={{
-              marginTop: "40px",
-              height: "1px",
-              width: "280px",
-              background: "linear-gradient(to right, rgba(255,110,30,0.7), transparent)",
-              transformOrigin: "left",
-              opacity: 0,
-              animation: "ct-lineGrow 1.2s cubic-bezier(0.22,1,0.36,1) 0.7s forwards",
-            }}
-          />
+      {/* ── QUICK STATS STRIP ───────────────────────────────────────────── */}
+      <div className="ctp-stats">
+        <div className="ctp-stats-inner">
+          <div className="ctp-stat">
+            <span className="ctp-stat-label">Sales</span>
+            <span className="ctp-stat-val">sales@jarvistechnolabs.com</span>
+          </div>
+          <div className="ctp-stat">
+            <span className="ctp-stat-label">WhatsApp</span>
+            <span className="ctp-stat-val">+91 98259 26347</span>
+          </div>
+          <div className="ctp-stat">
+            <span className="ctp-stat-label">Location</span>
+            <span className="ctp-stat-val">Ahmedabad, India</span>
+          </div>
         </div>
-      </section>
+      </div>
 
-      {/* ── MAIN FORM SECTION ────────────────────────────────────────────── */}
-      <section
-        style={{
-          position: "relative",
-          borderTop: "1px solid rgba(255,255,255,0.05)",
-          paddingTop: "80px",
-          paddingBottom: "100px",
-          overflow: "hidden",
-        }}
-      >
-        {/* Bg ambient */}
-        <div
-          style={{
-            position: "absolute",
-            top: "-5%",
-            left: "-10%",
-            width: "700px",
-            height: "700px",
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(255,80,10,0.06) 0%, transparent 65%)",
-            animation: "ct-glowPulse 7s ease-in-out infinite",
-            pointerEvents: "none",
-          }}
-        />
-
-        <div className="relative mx-auto max-w-6xl px-6" style={{ zIndex: 1 }}>
-          <div className="ct-form-grid">
-            {/* ── LEFT: Form ─────────────────────────────────────────────── */}
+      {/* ── FORM SECTION ────────────────────────────────────────────────── */}
+      <section className="ctp-section">
+        <div className="ctp-section-inner">
+          <div className="ctp-form-grid">
+            {/* LEFT: Form */}
             <div
               ref={formRef}
               style={{
                 opacity: formVis ? 1 : 0,
-                transform: formVis ? "none" : "translateY(40px)",
-                transition:
-                  "opacity 0.9s cubic-bezier(0.22,1,0.36,1), transform 0.9s cubic-bezier(0.22,1,0.36,1)",
+                transform: formVis ? "none" : "translateY(28px)",
+                transition: "opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1)",
               }}
             >
-              {/* Section eyebrow */}
-              <div style={{ marginBottom: "36px" }}>
-                <p
-                  style={{
-                    fontSize: "9px",
-                    letterSpacing: "0.4em",
-                    textTransform: "uppercase",
-                    color: "rgba(255,130,50,0.6)",
-                    marginBottom: "14px",
-                  }}
-                >
-                  INITIATE UPLINK
-                </p>
-                <h2
-                  style={{
-                    fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                    fontSize: "clamp(32px, 4vw, 52px)",
-                    fontWeight: 800,
-                    textTransform: "uppercase",
-                    letterSpacing: "-0.02em",
-                    lineHeight: 0.95,
-                    color: "#f0e8df",
-                    margin: 0,
-                  }}
-                >
-                  SYNC WITH US.
+              <div style={{ marginBottom: "28px" }}>
+                <p className="ctp-eyebrow">INITIATE UPLINK</p>
+                <h2 className="ctp-subheading">
+                  Sync with{" "}
+                  <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "var(--acc)" }}>
+                    us.
+                  </em>
                 </h2>
-                <div
-                  style={{
-                    marginTop: "16px",
-                    height: "1px",
-                    width: "120px",
-                    background: "linear-gradient(to right, rgba(255,110,30,0.7), transparent)",
-                    transformOrigin: "left",
-                    transform: formVis ? "scaleX(1)" : "scaleX(0)",
-                    transition: "transform 1s cubic-bezier(0.22,1,0.36,1) 0.3s",
-                  }}
-                />
               </div>
 
-              <form
-                onSubmit={handleSubmit}
-                style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-              >
-                {/* Name */}
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "9px",
-                      letterSpacing: "0.3em",
-                      textTransform: "uppercase",
-                      color: "rgba(255,130,50,0.5)",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    CALLSIGN
-                  </label>
-                  <input
-                    required
-                    name="name"
-                    placeholder="Who is initiating this uplink?"
-                    className="ct-input"
-                  />
+              <form onSubmit={handleSubmit}>
+                <div className="ctp-field">
+                  <label className="ctp-label">Callsign</label>
+                  <input required name="name" placeholder="Who is initiating this uplink?" className="ctp-input" />
                 </div>
 
-                {/* Email / Phone */}
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "9px",
-                      letterSpacing: "0.3em",
-                      textTransform: "uppercase",
-                      color: "rgba(255,130,50,0.5)",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    RESPONSE FREQUENCY
-                  </label>
-                  <input
-                    required
-                    name="email_phone"
-                    placeholder="Where shall we beam our response?"
-                    className="ct-input"
-                  />
+                <div className="ctp-field">
+                  <label className="ctp-label">Response Frequency</label>
+                  <input required name="email_phone" placeholder="Where shall we beam our response?" className="ctp-input" />
                 </div>
 
-                {/* Message */}
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "9px",
-                      letterSpacing: "0.3em",
-                      textTransform: "uppercase",
-                      color: "rgba(255,130,50,0.5)",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    TRANSMISSION
-                  </label>
+                <div className="ctp-field">
+                  <label className="ctp-label">Transmission</label>
                   <textarea
                     name="message"
                     rows={5}
                     placeholder="Describe the catalyst. Are we building a legacy, joining forces, or scaling new heights? Give us the raw data."
-                    className="ct-input"
-                    style={{ resize: "none" }}
+                    className="ctp-textarea"
                   />
                 </div>
 
-                {/* File upload */}
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "9px",
-                      letterSpacing: "0.3em",
-                      textTransform: "uppercase",
-                      color: "rgba(255,130,50,0.5)",
-                      marginBottom: "8px",
-                    }}
-                  >
-                    ATTACH BLUEPRINTS
-                  </label>
+                <div className="ctp-field">
+                  <label className="ctp-label">Attach Blueprints</label>
                   <FileUpload />
                 </div>
 
-                {/* Submit */}
-                <div style={{ paddingTop: "8px" }}>
-                  <button
-                    type="submit"
-                    className="ct-submit-btn"
-                    style={{
-                      background: "linear-gradient(135deg, rgb(255,90,20) 0%, rgb(220,60,0) 100%)",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: "4px",
-                      padding: "18px 48px",
-                      fontSize: "11px",
-                      letterSpacing: "0.4em",
-                      textTransform: "uppercase",
-                      fontFamily: "'Barlow Condensed', sans-serif",
-                      fontWeight: 700,
-                      cursor: "pointer",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "12px",
-                    }}
-                  >
-                    {submitted ? "SIGNAL SENT" : "CONNECT"}
-                    {!submitted && (
-                      <span style={{ display: "flex", gap: "3px", alignItems: "center" }}>
-                        {[0, 1, 2].map((i) => (
-                          <span
-                            key={i}
-                            style={{
-                              width: "3px",
-                              height: "3px",
-                              borderRadius: "50%",
-                              background: "rgba(255,255,255,0.6)",
-                              animation: `ct-numberCount 0.5s ease ${i * 0.15}s infinite alternate`,
-                            }}
-                          />
-                        ))}
-                      </span>
-                    )}
-                  </button>
-                </div>
+                <button type="submit" className="ctp-submit">
+                  {submitted ? "Signal Sent" : "Connect"}
+                  {!submitted && <span>→</span>}
+                </button>
               </form>
             </div>
 
-            {/* ── RIGHT: Channels + Address ──────────────────────────────── */}
+            {/* RIGHT: Channels + Address */}
             <div
               ref={infoRef}
               style={{
                 opacity: infoVis ? 1 : 0,
-                transform: infoVis ? "none" : "translateX(30px)",
-                transition:
-                  "opacity 0.9s cubic-bezier(0.22,1,0.36,1) 0.15s, transform 0.9s cubic-bezier(0.22,1,0.36,1) 0.15s",
+                transform: infoVis ? "none" : "translateY(28px)",
+                transition: "opacity .8s cubic-bezier(.22,1,.36,1) .1s, transform .8s cubic-bezier(.22,1,.36,1) .1s",
               }}
             >
-              {/* Direct Channels */}
-              <div
-                style={{
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: "8px",
-                  overflow: "hidden",
-                  background: "rgba(255,255,255,0.015)",
-                  marginBottom: "24px",
-                }}
-              >
-                <div
-                  style={{
-                    padding: "20px 20px 16px",
-                    borderBottom: "1px solid rgba(255,255,255,0.05)",
-                    background: "rgba(255,90,20,0.04)",
-                  }}
-                >
-                  <p
-                    style={{
-                      fontSize: "9px",
-                      letterSpacing: "0.35em",
-                      textTransform: "uppercase",
-                      color: "rgba(255,130,50,0.7)",
-                      margin: 0,
-                    }}
-                  >
-                    DIRECT CHANNELS
-                  </p>
+              <div className="ctp-rail-card">
+                <div className="ctp-rail-head">
+                  <p>Direct Channels</p>
                 </div>
-
-                <ChannelItem
-                  label="Architect the Future"
-                  value="sales@jarvistechnolabs.com"
-                  href="mailto:sales@jarvistechnolabs.com"
-                  delay={0}
-                />
-                <ChannelItem
-                  label="Join the Hive Mind"
-                  value="talent@jarvistechnolabs.com"
-                  href="mailto:talent@jarvistechnolabs.com"
-                  delay={0.07}
-                />
-                <ChannelItem
-                  label="General Frequency"
-                  value="info@jarvistechnolabs.com"
-                  href="mailto:info@jarvistechnolabs.com"
-                  delay={0.14}
-                />
-                <ChannelItem
-                  label="Instant Uplink - WhatsApp"
-                  value="+91 98259 26347"
-                  href="https://wa.me/919825926347"
-                  delay={0.21}
-                />
+                <ChannelItem label="Architect the Future" value="sales@jarvistechnolabs.com" href="mailto:sales@jarvistechnolabs.com" />
+                <ChannelItem label="Join the Hive Mind" value="talent@jarvistechnolabs.com" href="mailto:talent@jarvistechnolabs.com" />
+                <ChannelItem label="General Frequency" value="info@jarvistechnolabs.com" href="mailto:info@jarvistechnolabs.com" />
+                <ChannelItem label="Instant Uplink - WhatsApp" value="+91 98259 26347" href="https://wa.me/919825926347" />
               </div>
 
-              {/* Coordinates */}
-              <div
-                ref={coordRef}
-                style={{
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: "8px",
-                  padding: "24px 20px",
-                  background: "rgba(255,255,255,0.015)",
-                  position: "relative",
-                  overflow: "hidden",
-                  opacity: coordVis ? 1 : 0,
-                  transform: coordVis ? "none" : "translateY(20px)",
-                  transition:
-                    "opacity 0.8s cubic-bezier(0.22,1,0.36,1) 0.3s, transform 0.8s cubic-bezier(0.22,1,0.36,1) 0.3s",
-                }}
-              >
-                {/* Animated corner accent */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    right: 0,
-                    width: "80px",
-                    height: "80px",
-                    background: "linear-gradient(225deg, rgba(255,90,20,0.08) 0%, transparent 60%)",
-                    borderBottomLeftRadius: "40px",
-                  }}
-                />
-
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                    marginBottom: "16px",
-                  }}
-                >
-                  <div style={{ position: "relative", width: "10px", height: "10px" }}>
-                    <div
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        borderRadius: "50%",
-                        background: "rgb(255,130,50)",
-                        zIndex: 1,
-                      }}
-                    />
-                    <div
-                      className="ct-coord-dot"
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        borderRadius: "50%",
-                        border: "1px solid rgba(255,130,50,0.6)",
-                      }}
-                    />
-                  </div>
-                  <p
-                    style={{
-                      fontSize: "9px",
-                      letterSpacing: "0.35em",
-                      textTransform: "uppercase",
-                      color: "rgba(255,130,50,0.7)",
-                      margin: 0,
-                    }}
-                  >
-                    OUR PHYSICAL COORDINATES
+              <div className="ctp-rail-card">
+                <div className="ctp-addr-card">
+                  <span className="ctp-addr-tag">Coordinates</span>
+                  <p className="ctp-addr-text">
+                    B-603, Titanium Business Park,
+                    <br />
+                    Near Makarba Underbridge, Corporate Road,
+                    <br />
+                    Ahmedabad, Gujarat - 380051, India
                   </p>
-                </div>
-
-                <p
-                  style={{
-                    fontSize: "13px",
-                    lineHeight: 1.85,
-                    color: "rgba(240,232,220,0.75)",
-                    margin: "0 0 20px",
-                    fontFamily: "Georgia, serif",
-                  }}
-                >
-                  B-603, Titanium Business Park,
-                  <br />
-                  Near Makarba Underbridge, Corporate Road,
-                  <br />
-                  Ahmedabad, Gujarat - 380051, India
-                </p>
-
-                <div
-                  style={{
-                    borderTop: "1px solid rgba(255,255,255,0.06)",
-                    paddingTop: "16px",
-                  }}
-                >
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      fontFamily: "Georgia, serif",
-                      fontStyle: "italic",
-                      color: "rgba(255,180,100,0.65)",
-                      margin: "0 0 6px",
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    "Barking up the right tree starts with a single seed."
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "9px",
-                      letterSpacing: "0.25em",
-                      textTransform: "uppercase",
-                      color: "rgba(255,255,255,0.4)",
-                      margin: 0,
-                    }}
-                  >
-                    We process inquiries within 24 cycles (hours)
-                  </p>
+                  <p className="ctp-addr-quote">"Barking up the right tree starts with a single seed."</p>
+                  <p className="ctp-addr-note">We process inquiries within 24 hours</p>
                 </div>
               </div>
             </div>
@@ -1402,10 +621,10 @@ function ContactPage() {
         </div>
       </section>
 
-      {/* ── LOCATION SECTION (map + card, devxlabs-style) ────────────────── */}
+      {/* ── LOCATION SECTION ────────────────────────────────────────────── */}
       <LocationSection />
 
-      <Footer />
+      <Footer theme={theme} />
     </main>
   );
 }
