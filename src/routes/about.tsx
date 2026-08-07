@@ -355,11 +355,11 @@ const STYLES = `
 }
 .dir-directive-label::after{ content: ''; flex: 1; height: 1px; background: var(--line); }
 .dir-h3{ font-family: var(--font-display); font-size: clamp(1.8rem,3.2vw,2.8rem); font-weight: 800; line-height: 1.05; color: var(--ink); margin: 0 0 0.5rem; }
-.dir-question{ font-family: var(--font-display); font-style: italic; font-size: 14.5px; color: var(--ink-faint); margin: 0 0 1.5rem; }
+.dir-question{ font-family: var(--font-display); font-style: italic; font-size: 14.5px; color: rgb(237, 99, 35); margin: 0 0 1.5rem; }
 .dir-body{ font-size: 14px; line-height: 1.85; color: var(--ink-dim); max-width: 46ch; margin: 0; }
 .dir-ask{
   margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--line);
-  font-family: var(--font-display); font-style: italic; font-size: 13.5px; color: var(--ink-dim); line-height: 1.65;
+  font-family: var(--font-display); font-style: italic; font-size: 13.5px; color: rgb(237, 99, 35); line-height: 1.65;
 }
 .dir-dots{ display: flex; gap: 6px; margin-top: 1.5rem; align-items: center; }
 .dir-dot{
