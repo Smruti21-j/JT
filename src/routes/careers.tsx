@@ -1,10 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { CTA, Footer } from "@/components/site/CTA";
-import { AnimatedHero } from "@/components/site/AnimatedHero";
 import { useReveal } from "@/hooks/use-reveal";
 import { useEffect, useRef, useState } from "react";
-import careersImg from "@/assets/page-careers1.png";
+import careersHeroImg from "@/assets/careersherosection.png";
 import career01 from "@/assets/career01.png";
 import career02 from "@/assets/career02.png";
 import career03 from "@/assets/career03.png";
@@ -64,14 +63,7 @@ const PERKS = [
     stat: { value: "", label: "" },
     image: career06,
   },
-  {
-    num: "07",
-    titlePlain: "Moments of",
-    titleItalic: "Connection",
-    desc: "We pause to recharge and reconnect through meaningful festival celebrations.",
-    stat: { value: "", label: "" },
-    image: career07,
-  },
+
 ];
 
 // Stories / culture gallery items — served from /public, so paths are absolute from root
@@ -127,8 +119,8 @@ const CULTURE_STORIES = [
 ];
 
 const ROLES = [
-  { title: "BDE", exp: "2 – 5+ years of experience", loc: "Ahmedabad · In-office" },
-  { title: "Quality Analyst", exp: "0 – 3+ years of experience", loc: "Ahmedabad · In-office" },
+  { title: "BDE", dept: "Business Development", exp: "2 – 5+ years of experience", loc: "Ahmedabad · In-office" },
+  { title: "Quality Analyst", dept: "QA", exp: "0 – 3+ years of experience", loc: "Ahmedabad · In-office" },
 ];
 
 function careersPalette(theme: "light" | "dark") {
@@ -162,7 +154,7 @@ function careersPalette(theme: "light" | "dark") {
   };
 }
 
-// ─── Keyframes ─────────────────────────────────────────────────────────────────
+// ─── Keyframes ─────────────────────────────────────────────────────────────
 const KEYFRAMES = `
   @keyframes pkHeaderIn {
     from { opacity: 0; transform: translateY(28px); }
@@ -241,6 +233,111 @@ const KEYFRAMES = `
     opacity: 1;
     transform: translateY(0);
   }
+
+  /* Benefit cards */
+  .benefit-card {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+  }
+  .benefit-card.b-vis {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .benefit-card:nth-child(1) { transition-delay: 0s; }
+  .benefit-card:nth-child(2) { transition-delay: 0.06s; }
+  .benefit-card:nth-child(3) { transition-delay: 0.12s; }
+  .benefit-card:nth-child(4) { transition-delay: 0.18s; }
+  .benefit-card:nth-child(5) { transition-delay: 0.24s; }
+  .benefit-card:nth-child(6) { transition-delay: 0.3s; }
+  .benefit-card:nth-child(7) { transition-delay: 0.36s; }
+
+  /* ── Careers Hero — same pattern as Services page hero ── */
+  @keyframes svhIn{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+
+  .svh-hero{
+    --bg: var(--color-background);
+    --ink: var(--color-foreground);
+    --ink-dim: var(--color-muted-foreground);
+    --ink-faint: color-mix(in oklch, var(--color-muted-foreground) 75%, transparent);
+    --line: var(--color-border);
+    --acc: var(--color-primary);
+    --acc-fg: var(--color-primary-foreground);
+    position: relative;
+    overflow: hidden;
+    padding: clamp(150px,20vh,210px) 0 clamp(100px,12vh,150px);
+    background:
+      radial-gradient(circle at 12% 0%, color-mix(in oklch, var(--acc) 9%, transparent) 0%, transparent 48%),
+      var(--bg);
+    border-bottom: 1px solid var(--line);
+  }
+  .svh-inner{
+    position: relative;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 clamp(20px,4vw,48px);
+  }
+  .svh-inner > *:not(.svh-hero-image){
+    position: relative;
+    z-index: 2;
+  }
+  .svh-hero-image{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: min(42vw,700px);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .svh-hero-image img{
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  @media (max-width: 992px){
+    .svh-hero-image{
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 40px auto 0;
+      top: auto;
+      right: auto;
+      transform: none;
+    }
+  }
+  .svh-eyebrow{
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 10px; letter-spacing: .3em; text-transform: uppercase; font-weight: 400;
+    color: var(--ink-faint); margin-bottom: 22px;
+    animation: svhIn .6s cubic-bezier(.16,1,.3,1) both;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .svh-eyebrow::before{
+    content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--acc); flex-shrink: 0;
+  }
+  .svh-title{
+    margin-bottom: 28px;
+    animation: svhIn .7s .08s cubic-bezier(.16,1,.3,1) both;
+  }
+  .svh-sub{
+    font-size: 15px; color: var(--ink-dim); line-height: 1.75;
+    max-width: 600px; margin-bottom: 44px;
+    animation: svhIn .7s .16s cubic-bezier(.16,1,.3,1) both;
+  }
+  .svh-ctas{
+    display: flex; flex-wrap: wrap; gap: 14px;
+    animation: svhIn .7s .22s cubic-bezier(.16,1,.3,1) both;
+  }
+  .svh-cta-primary{
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--acc); color: var(--acc-fg);
+    font-size: 12px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600;
+    padding: 15px 28px; border-radius: 999px;
+    transition: transform .25s ease, box-shadow .25s ease;
+    box-shadow: 0 18px 40px color-mix(in oklch, var(--acc) 25%, transparent);
+  }
+  .svh-cta-primary:hover{ transform: translateY(-2px); }
 `;
 
 // ─── Lightbox ──────────────────────────────────────────────────────────────
@@ -398,166 +495,56 @@ function CultureGallery({ theme }: { theme: "light" | "dark" }) {
   }, []);
 
   return (
-    <section className="border-t border-white/5" style={{ paddingTop: "6rem", paddingBottom: "6rem" }}>
-      {/* Header */}
-      <div
-        ref={headerRef}
-        className="mx-auto max-w-7xl px-6 mb-16"
-        style={{ opacity: 0 }}
-      >
-        {/* PieterKoopt /stories hero header style */}
-        <div style={{ maxWidth: "700px" }}>
-          <p style={{
-            fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase",
-            color: "rgba(240,232,223,0.32)", marginBottom: "20px",
-          }}>
-            INSIDE JARVIS
-          </p>
-          <h2 style={{
-            fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-            fontSize: "clamp(40px, 6vw, 88px)",
-            fontWeight: 700,
-            lineHeight: 0.92,
-            textTransform: "uppercase",
-            letterSpacing: "-0.01em",
-            color: "#f0e8df",
-            margin: 0,
-          }}>
-            PEOPLE-FIRST.
-            <br />
-            <em style={{
-              fontFamily: "Georgia, serif",
-              fontStyle: "italic",
-              fontWeight: 300,
-              color: "rgb(255,130,50)",
-              textTransform: "none",
-              fontSize: "0.82em",
-            }}>
-              Always.
-            </em>
-          </h2>
-        </div>
-      </div>
+  <section className="bg1 border-t border-white/5" style={{ paddingTop: "6rem", paddingBottom: "6rem" }}>
+  <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
+  <p className="svh-eyebrow" style={{ marginBottom: "14px" }}>
+    [LIFE AT JARVIS]
+  </p>
+  <h2 className="section-title" style={{ margin: 0 }}>
+    Culture you can
+    <br />
+    <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: p.accent }}>
+      feel in the room.
+    </em>
+  </h2>
+</div>
 
-      {/* Masonry-style story grid — PieterKoopt /stories layout */}
+      {/* Plain masonry photo grid — MYCPE ONE "Life at MYCPE ONE" layout */}
       <div
         ref={gridRef}
-        className="mx-auto max-w-7xl px-6"
+        className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14"
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "3px",
+          columnCount: 3,
+          columnGap: "16px",
         }}
       >
-        {CULTURE_STORIES.map((story, i) => {
-          // First item spans 2 cols and 2 rows like PieterKoopt featured image
-          const isFeatured = i === 0;
-          const isTall = i === 3 || i === 6;
-
-          return (
-            <div
-              key={story.title}
-              className="story-card"
-              onClick={() => setActiveStory(i)}
+        {CULTURE_STORIES.map((story, i) => (
+          <div
+            key={story.title}
+            className="story-card"
+            onClick={() => setActiveStory(i)}
+            style={{
+              breakInside: "avoid",
+              marginBottom: "16px",
+              position: "relative",
+              overflow: "hidden",
+              borderRadius: "10px",
+              cursor: "pointer",
+              background: p.cardBg,
+            }}
+          >
+            <img
+              src={story.image}
+              alt={story.title}
+              className="story-img"
               style={{
-                gridColumn: isFeatured ? "span 2" : "span 1",
-                gridRow: isFeatured || isTall ? "span 2" : "span 1",
-                position: "relative",
-                overflow: "hidden",
-                borderRadius: "4px",
-                cursor: "pointer",
-                aspectRatio: isFeatured ? undefined : isTall ? undefined : "3/4",
-                minHeight: isFeatured ? "580px" : isTall ? "520px" : "260px",
-                background: "#0a0806",
+                display: "block",
+                width: "100%",
+                height: "auto",
               }}
-            >
-              <img
-                src={story.image}
-                alt={story.title}
-                className="story-img"
-                style={{
-                  position: "absolute", inset: 0, width: "100%", height: "100%",
-                  objectFit: "cover",
-                  filter: "brightness(0.6) saturate(0.7)",
-                }}
-              />
-
-              {/* Gradient overlay */}
-              <div style={{
-                position: "absolute", inset: 0,
-                background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.2) 45%, transparent 100%)",
-              }} />
-
-              {/* Top tag */}
-              <div style={{
-                position: "absolute", top: "16px", left: "16px",
-                padding: "4px 10px",
-                background: "rgba(255,90,20,0.1)",
-                border: "1px solid rgba(255,110,30,0.25)",
-                borderRadius: "999px",
-                fontSize: "8px", letterSpacing: "0.25em", textTransform: "uppercase",
-                color: "rgba(255,200,140,0.7)",
-              }}>
-                {story.tag}
-              </div>
-
-              {/* Bottom text */}
-              <div style={{
-                position: "absolute", bottom: 0, left: 0, right: 0,
-                padding: isFeatured ? "28px 28px" : "16px 18px",
-              }}>
-                <h3 style={{
-                  fontFamily: isFeatured
-                    ? "'Barlow Condensed', sans-serif"
-                    : "Georgia, serif",
-                  fontSize: isFeatured ? "clamp(22px, 2.5vw, 34px)" : "14px",
-                  fontWeight: isFeatured ? 700 : 400,
-                  fontStyle: isFeatured ? "normal" : "italic",
-                  textTransform: isFeatured ? "uppercase" : "none",
-                  color: "#f0e8df",
-                  margin: 0,
-                  lineHeight: 1.1,
-                  marginBottom: "4px",
-                }}>
-                  {story.title}
-                </h3>
-                <p style={{
-                  fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase",
-                  color: "rgba(255,255,255,0.35)", margin: 0,
-                }}>
-                  {story.sub}
-                </p>
-
-                {isFeatured && (
-                  <div style={{
-                    marginTop: "14px",
-                    display: "inline-flex", alignItems: "center", gap: "8px",
-                    fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase",
-                    color: "rgba(255,130,50,0.8)",
-                  }}>
-                    View story →
-                  </div>
-                )}
-              </div>
-
-              {/* Bottom orange edge accent */}
-              <div style={{
-                position: "absolute", bottom: 0, left: 0,
-                width: "40%", height: "2px",
-                background: "linear-gradient(to right, rgba(255,110,30,0.7), transparent)",
-              }} />
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Scroll-through label like PieterKoopt */}
-      <div style={{
-        textAlign: "center", marginTop: "48px",
-        fontSize: "9px", letterSpacing: "0.35em", textTransform: "uppercase",
-        color: "rgba(255,255,255,0.2)",
-      }}>
-        Scroll through our culture
+            />
+          </div>
+        ))}
       </div>
 
       {/* Lightbox — renders on top of everything when a story is selected */}
@@ -574,371 +561,38 @@ function CultureGallery({ theme }: { theme: "light" | "dark" }) {
   );
 }
 
-// ─── Perks Section — scroll-driven horizontal panel reveal ────────────────────
-// The section pins to the viewport while the user scrolls. Each perk panel
-// clips open from left→right as scroll progresses, revealing the image and
-// text underneath. A thin progress bar at the bottom tracks position.
-// Completely different from the homepage stacked-card pattern.
-function PerksSection({ theme }: { theme: "light" | "dark" }) {
-  const p = careersPalette(theme);
-  const sectionRef = useRef<HTMLElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
-  const progressRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // Header entrance
-    const hEl = headerRef.current;
-    if (hEl) {
-      const obs = new IntersectionObserver(
-        ([e]) => {
-          if (e.isIntersecting) {
-            hEl.style.animation = "pkHeaderIn 0.9s cubic-bezier(0.22,1,0.36,1) both";
-            obs.disconnect();
-          }
-        },
-        { threshold: 0.2 }
-      );
-      obs.observe(hEl);
-    }
-
-    // Scroll-driven horizontal reveal
-    const section = sectionRef.current;
-    const track = trackRef.current;
-    const progress = progressRef.current;
-    if (!section || !track) return;
-
-    const panels = Array.from(track.querySelectorAll<HTMLElement>(".perk-panel"));
-    const total = panels.length;
-
-    function onScroll() {
-      if (!section) return;
-      const rect = section.getBoundingClientRect();
-      const sectionH = section.offsetHeight;
-      const winH = window.innerHeight;
-
-      // How far we've scrolled through the sticky zone (0 → 1)
-      // sticky zone = sectionH - winH
-      const scrolled = -rect.top;
-      const scrollable = sectionH - winH;
-      const raw = Math.max(0, Math.min(1, scrolled / scrollable));
-
-      // Update progress bar
-      if (progress) progress.style.width = `${raw * 100}%`;
-
-      // Each panel occupies 1/total of the scroll range
-      panels.forEach((panel, i) => {
-        const panelStart = i / total;
-        const panelEnd = (i + 1) / total;
-        // local progress within this panel 0→1
-        const local = Math.max(0, Math.min(1, (raw - panelStart) / (1 / total)));
-
-        // Clip-path reveal: right edge moves from 0% → 100%
-        const clipPct = Math.round(local * 100);
-        panel.style.clipPath = `inset(0 ${100 - clipPct}% 0 0)`;
-
-        // Image parallax — slight rightward drift on the inner img
-        const img = panel.querySelector<HTMLElement>(".perk-img-inner");
-        if (img) {
-          const drift = (1 - local) * 40; // px offset
-          img.style.transform = `translateX(${drift}px) scale(1.08)`;
-        }
-
-        // Text reveal — slide up from below
-        const textEls = panel.querySelectorAll<HTMLElement>(".perk-txt");
-        textEls.forEach((t, ti) => {
-          const delay = ti * 0.12;
-          const txtProgress = Math.max(0, Math.min(1, (local - delay) / 0.4));
-          t.style.opacity = String(txtProgress);
-          t.style.transform = `translateY(${(1 - txtProgress) * 22}px)`;
-        });
-      });
-    }
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll(); // initial paint
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Total scroll height = winH + (panels × winH × 0.8) so each panel gets ~80vh of scroll
-  const PANEL_SCROLL = 0.85; // fraction of viewport per panel
-
+/// ─── Careers Hero — matches ServicesHero's design pattern exactly ────────────
+function CareersHero() {
   return (
-    <section
-      ref={sectionRef}
-      className="border-t border-white/5"
-      style={{
-        // Height = one viewport (sticky header) + scroll space for each panel
-        height: `calc(100vh + ${PERKS.length * PANEL_SCROLL * 100}vh)`,
-        position: "relative",
-      }}
-    >
-      {/* Sticky wrapper — stays fixed while parent scrolls */}
-      <div style={{
-        position: "sticky",
-        top: 0,
-        height: "100vh",
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-      }}>
-        {/* ── Section header — always visible at top of sticky frame ── */}
-        <div
-          ref={headerRef}
-          style={{
-            opacity: 0,
-            flexShrink: 0,
-            padding: "48px 60px 32px",
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            gap: "24px",
-            borderBottom: "1px solid rgba(255,255,255,0.05)",
-            background: "linear-gradient(to bottom, #0b0907 0%, rgba(11,9,7,0.95) 100%)",
-            zIndex: 10,
-            position: "relative",
-          }}
-        >
-          <div>
-            <p style={{
-              fontSize: "9px", letterSpacing: "0.32em", textTransform: "uppercase",
-              color: "rgba(240,232,223,0.3)", marginBottom: "14px",
-            }}>
-              [ Rewiring The Experience ]
-            </p>
-            <h2 style={{
-              fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-              fontSize: "clamp(36px, 5.5vw, 76px)",
-              fontWeight: 700,
-              lineHeight: 0.9,
-              textTransform: "uppercase",
-              letterSpacing: "-0.01em",
-              color: "#f0e8df",
-              margin: 0,
-            }}>
-             The Future Isn’t Found.
-              <em style={{
-                fontFamily: "Georgia, serif",
-                fontStyle: "italic",
-                fontWeight: 300,
-                color: "rgb(255,130,50)",
-                textTransform: "none",
-                fontSize: "0.82em",
-                marginLeft: "16px",
-              }}>
-
-                It’s Built.
-              </em>
-            </h2>
-          </div>
-          {/* Perk counter dots */}
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", paddingBottom: "6px" }}>
-            {PERKS.map((p) => (
-              <div key={p.num} style={{
-                width: "28px", height: "1px",
-                background: "rgba(255,130,50,0.35)",
-              }} />
-            ))}
-          </div>
+    <section className="svh-hero">
+      <div className="svh-inner">
+        <div className="svh-hero-image">
+          <img src={careersHeroImg} alt="Careers at Jarvis" />
         </div>
-
-        {/* ── Panel stage — full remaining height ── */}
-        <div
-          ref={trackRef}
-          style={{
-            flex: 1,
-            position: "relative",
-            background: "#080604",
-          }}
-        >
-          {PERKS.map((perk, i) => (
-            <div
-              key={perk.num}
-              className="perk-panel"
-              style={{
-                position: "absolute",
-                inset: 0,
-                clipPath: "inset(0 100% 0 0)", // starts fully hidden
-                zIndex: i + 1,
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-              }}
-            >
-              {/* LEFT: text */}
-              <div style={{
-                background: `hsl(25, 10%, ${5 + i * 1.2}%)`,
-                padding: "40px 56px 40px 60px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-                borderRight: "1px solid rgba(255,255,255,0.04)",
-                position: "relative",
-                overflow: "hidden",
-              }}>
-                {/* Ambient glow */}
-                <div style={{
-                  position: "absolute", top: 0, right: 0,
-                  width: "300px", height: "300px", borderRadius: "50%",
-                  background: "radial-gradient(circle, rgba(255,90,20,0.06) 0%, transparent 70%)",
-                  pointerEvents: "none",
-                }} />
-
-                {/* Number top */}
-                <div className="perk-txt" style={{
-                  fontFamily: "Georgia, 'Times New Roman', serif",
-                  fontSize: "clamp(72px, 8vw, 110px)",
-                  fontWeight: 400,
-                  fontStyle: "italic",
-                  lineHeight: 1,
-                  color: "rgb(255,130,50)",
-                  opacity: 0,
-                  letterSpacing: "-0.02em",
-                  userSelect: "none",
-                }}>
-                  {perk.num}
-                </div>
-
-                {/* Bottom block */}
-                <div style={{ position: "relative", zIndex: 1 }}>
-                  <h3 className="perk-txt" style={{ margin: 0, lineHeight: 1, marginBottom: "20px", opacity: 0 }}>
-                    <span style={{
-                      display: "block",
-                      fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                      fontSize: "clamp(28px, 3vw, 46px)",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.03em",
-                      color: "#f0e8df",
-                    }}>
-                      {perk.titlePlain}
-                    </span>
-                    <span style={{
-                      display: "block",
-                      fontFamily: "Georgia, 'Times New Roman', serif",
-                      fontSize: "clamp(22px, 2.4vw, 38px)",
-                      fontWeight: 300,
-                      fontStyle: "italic",
-                      color: "rgba(240,232,223,0.6)",
-                      marginTop: "2px",
-                    }}>
-                      {perk.titleItalic}
-                    </span>
-                  </h3>
-
-                  {/* Separator */}
-                  <div className="perk-txt" style={{
-                    width: "44px", height: "1px", marginBottom: "16px", opacity: 0,
-                    background: "linear-gradient(to right, rgba(255,130,50,0.9), transparent)",
-                  }} />
-
-                  <p className="perk-txt" style={{
-                    fontSize: "13px", lineHeight: 1.8,
-                    color: "rgba(240,232,223,0.36)",
-                    maxWidth: "360px", marginBottom: "24px", opacity: 0,
-                  }}>
-                    {perk.desc}
-                  </p>
-
-                  <div className="perk-txt" style={{
-                    display: "flex", alignItems: "center", justifyContent: "space-between",
-                    paddingTop: "16px", borderTop: "1px solid rgba(255,255,255,0.05)", opacity: 0,
-                  }}>
-                    <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-                      <span style={{
-                        fontFamily: "'Barlow Condensed', sans-serif",
-                        fontSize: "28px", fontWeight: 700,
-                        color: "rgb(255,130,50)", lineHeight: 1,
-                      }}>
-                        {perk.stat.value}
-                      </span>
-                      <span style={{
-                        fontSize: "9px", letterSpacing: "0.2em", textTransform: "uppercase",
-                        color: "rgba(255,255,255,0.27)",
-                      }}>
-                        {perk.stat.label}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* RIGHT: image */}
-              <div style={{ position: "relative", overflow: "hidden", background: "#060504" }}>
-                <img
-                  src={perk.image}
-                  alt={perk.titlePlain}
-                  className="perk-img-inner"
-                  style={{
-                    position: "absolute", inset: 0, width: "100%", height: "100%",
-                    objectFit: "cover",
-                    filter: "brightness(0.5) saturate(0.55)",
-                    transformOrigin: "left center",
-                    willChange: "transform",
-                  }}
-                />
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(0,0,0,0.35) 0%, transparent 55%)" }} />
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 45%)" }} />
-                {/* Orange wipe edge — follows the clip-path reveal front */}
-                <div style={{
-                  position: "absolute", top: 0, bottom: 0, right: 0,
-                  width: "3px",
-                  background: "linear-gradient(to bottom, transparent 5%, rgba(255,110,30,0.8) 35%, rgba(255,110,30,0.8) 65%, transparent 95%)",
-                  pointerEvents: "none",
-                }} />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* ── Scroll progress bar — bottom edge ── */}
-        <div style={{
-          position: "absolute", bottom: 0, left: 0, right: 0,
-          height: "2px",
-          background: "rgba(255,255,255,0.06)",
-          zIndex: 20,
-        }}>
-          <div
-            ref={progressRef}
-            style={{
-              height: "100%", width: "0%",
-              background: "linear-gradient(to right, rgb(255,100,30), rgb(255,160,60))",
-              transition: "width 0.05s linear",
-            }}
-          />
-        </div>
-
-        {/* SCROLL DOWN hint — fades out as user scrolls */}
-        <div style={{
-          position: "absolute", bottom: "24px", right: "28px",
-          fontSize: "8px", letterSpacing: "0.3em", textTransform: "uppercase",
-          color: "rgba(255,255,255,0.18)",
-          zIndex: 20,
-          display: "flex", alignItems: "center", gap: "8px",
-        }}>
-          <span>Scroll</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <line x1="12" y1="5" x2="12" y2="19" /><polyline points="19 12 12 19 5 12" />
-          </svg>
+        <p className="svh-eyebrow">CAREERS · LIFE AT JARVIS</p>
+        <h1 className="svh-title section-title">
+          The next big thing is{" "}
+          <br /> <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "var(--acc)" }}> 
+            You
+          </em>  <br />
+        </h1>
+        <p className="svh-sub">
+          In the world of IT, you're either ahead of the curve or part of the past. We're looking for enthusiasts who are all ears for new ideas and ready to hit the ground running on global scales. At Jarvis, we don't just play the game; we change the way it's played.
+        </p>
+        <div className="svh-ctas">
+          <a href="mailto:talent@jarvistechnolabs.com" className="svh-cta-primary">
+            Shape the future <span>→</span>
+          </a>
         </div>
       </div>
     </section>
   );
 }
 
-// ─── Open Roles ────────────────────────────────────────────────────────────────
-// FIX: rows were stuck at opacity:0 because they only ever became visible
-// when an IntersectionObserver event fired. If that observer never fires
-// for an element (e.g. it's already in the viewport when the effect runs,
-// or a fast route transition / StrictMode double-mount drops the event),
-// the row stays invisible forever — which is exactly the empty gap you saw
-// between the table borders. The fix below uses a mount-time reveal
-// instead, with no dependency on scroll position or observer timing.
-function OpenRoles({ theme }: { theme: "light" | "dark" }) {
+// ─── Currently Hiring — table-style open roles section, placed right after the hero ──
+function CurrentlyHiringSection({ theme }: { theme: "light" | "dark" }) {
   const p = careersPalette(theme);
   const headerRef = useRef<HTMLDivElement>(null);
-  // Mount-time reveal — no IntersectionObserver. This guarantees the rows
-  // become visible a beat after the component mounts, regardless of scroll
-  // position, ancestor overflow/sticky context, or observer timing quirks.
   const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
@@ -951,108 +605,120 @@ function OpenRoles({ theme }: { theme: "light" | "dark" }) {
   }, []);
 
   return (
-    <section className="border-t border-white/5">
-      <div className="mx-auto max-w-5xl px-6 py-24">
-        <div ref={headerRef} style={{ opacity: 0, marginBottom: "40px" }}>
-          <p style={{
-            fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase",
-            color: "rgba(240,232,223,0.32)", marginBottom: "20px",
-          }}>
-            [Decoding Tomorrow]
-          </p>
-          <h2 style={{
-            fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-            fontSize: "clamp(36px, 5vw, 72px)",
-            fontWeight: 700,
-            lineHeight: 0.92,
-            textTransform: "uppercase",
-            letterSpacing: "-0.01em",
-            color: "#f0e8df",
-            margin: 0,
-            marginBottom: "16px",
-          }}>
-            Are you the missing variable in {" "}
-            <em style={{
-              fontFamily: "Georgia, serif",
-              fontStyle: "italic",
-              fontWeight: 300,
-              color: "rgb(255,130,50)",
-              textTransform: "none",
-            }}>
-              Jarvis Equation.
-            </em>
-          </h2>
-          <p style={{ fontSize: "15px", lineHeight: 1.7, color: "rgba(240,232,223,0.38)", maxWidth: "640px" }}>
-            Ready to synchronize with our team? If you reside in Ahmedabad, we want to hear from you. Join Jarvis Technolabs today and turn your technical prowess into a legacy.{" "}
-            Share your updated resume at{" "}
-            <a href="mailto:talent@jarvistechnolabs.com" style={{ color: "rgb(255,130,50)" }}>
+    <section className="border-t border-white/5" style={{ paddingTop: "6rem", paddingBottom: "7rem" }}>
+      <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
+        <div
+          ref={headerRef}
+          style={{
+            opacity: 0,
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+            gap: "24px",
+            marginBottom: "48px",
+          }}
+        >
+          <div>
+            <p className="svh-eyebrow" style={{ marginBottom: "14px" }}>
+              [OPEN ROLES]
+            </p>
+            <h2 className="section-title" style={{ margin: 0 }}>
+              Currently hiring
+              <br />
+              <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "rgb(237, 99, 35)" }}>
+                across the stack.
+              </em>
+            </h2>
+          </div>
+          <p className="svh-sub" style={{ margin: 0, maxWidth: "340px" }}>
+            Don't see your role? Write to{" "}
+            <a href="mailto:talent@jarvistechnolabs.com" style={{ color: p.accent }}>
               talent@jarvistechnolabs.com
-            </a>
-            .
+            </a>{" "}
+            with what you want to do — if it lands in the quarter, we'll respond.
           </p>
         </div>
 
-        <ul
+        {/* Table header row */}
+        <div
           style={{
-            listStyle: "none", padding: 0, margin: 0,
-            borderTop: "1px solid rgba(255,255,255,0.06)",
-            borderBottom: "1px solid rgba(255,255,255,0.06)",
+            display: "grid",
+            gridTemplateColumns: "2fr 1.4fr 1.4fr 1.2fr auto",
+            gap: "16px",
+            padding: "0 0 16px",
+            borderBottom: `1px solid ${p.line}`,
           }}
         >
+          {["POSITION", "DEPARTMENT", "EXPERIENCE", "MODE", ""].map((h) => (
+            <span key={h} style={{
+              fontSize: "10px", letterSpacing: "0.2em", textTransform: "uppercase",
+              color: p.inkFaint,
+            }}>
+              {h}
+            </span>
+          ))}
+        </div>
+
+        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
           {ROLES.map((r, i) => (
             <li
               key={r.title}
+              className="role-row"
               style={{
-                padding: "32px 0",
-                display: "flex",
-                flexWrap: "wrap",
+                display: "grid",
+                gridTemplateColumns: "2fr 1.4fr 1.4fr 1.2fr auto",
+                gap: "16px",
                 alignItems: "center",
-                justifyContent: "space-between",
-                gap: "24px",
-                borderBottom: i < ROLES.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none",
+                padding: "26px 0",
+                borderBottom: i < ROLES.length - 1 ? `1px solid ${p.lineSoft}` : "none",
                 opacity: revealed ? 1 : 0,
                 transform: revealed ? "translateY(0)" : "translateY(20px)",
-                transition: `opacity 0.6s ease ${i * 0.1}s, transform 0.6s ease ${i * 0.1}s, padding 0.3s ease`,
+                transition: `opacity 0.6s ease ${i * 0.1}s, transform 0.6s ease ${i * 0.1}s`,
               }}
             >
-              <div>
-                <h3 style={{
-                  fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
-                  fontSize: "clamp(22px, 2.5vw, 34px)",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.02em",
-                  color: "#f0e8df",
-                  margin: 0,
-                  marginBottom: "6px",
-                }}>
-                  {r.title}
-                </h3>
-                <p style={{
-                  fontSize: "12px", letterSpacing: "0.15em", textTransform: "uppercase",
-                  color: "rgba(240,232,223,0.32)", margin: 0,
-                }}>
-                  {r.exp} · {r.loc}
-                </p>
-              </div>
+              <h3 style={{
+                fontFamily: "'Barlow Condensed', 'Arial Narrow', sans-serif",
+                fontSize: "clamp(20px, 2.2vw, 28px)",
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.02em",
+                color: p.ink,
+                margin: 0,
+              }}>
+                {r.title}
+              </h3>
+              <span style={{ fontSize: "13px", color: p.inkDim }}>{r.dept}</span>
+              <span style={{ fontSize: "13px", color: p.inkDim }}>{r.exp}</span>
+              <span style={{
+                display: "inline-flex", width: "fit-content",
+                fontSize: "10px", letterSpacing: "0.15em", textTransform: "uppercase",
+                color: p.accent,
+                border: `1px solid ${theme === "light" ? "rgba(237,99,35,0.35)" : "rgba(255,130,50,0.3)"}`,
+                borderRadius: "999px",
+                padding: "5px 12px",
+              }}>
+                {r.loc.split("·")[1]?.trim() ?? r.loc}
+              </span>
               <a
                 href={`mailto:talent@jarvistechnolabs.com?subject=Application — ${encodeURIComponent(r.title)}`}
                 style={{
                   display: "inline-flex", alignItems: "center", gap: "8px",
                   fontSize: "10px", letterSpacing: "0.25em", textTransform: "uppercase",
-                  color: "rgba(255,130,50,0.8)",
-                  border: "1px solid rgba(255,130,50,0.25)",
+                  color: p.accent,
+                  border: `1px solid ${theme === "light" ? "rgba(237,99,35,0.3)" : "rgba(255,130,50,0.25)"}`,
                   borderRadius: "4px",
                   padding: "10px 20px",
                   textDecoration: "none",
+                  whiteSpace: "nowrap",
                   transition: "border-color 0.2s, color 0.2s, background 0.2s",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,130,50,0.7)";
-                  (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,90,20,0.08)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = p.accent;
+                  (e.currentTarget as HTMLAnchorElement).style.background = theme === "light" ? "rgba(237,99,35,0.08)" : "rgba(255,90,20,0.08)";
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(255,130,50,0.25)";
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor = theme === "light" ? "rgba(237,99,35,0.3)" : "rgba(255,130,50,0.25)";
                   (e.currentTarget as HTMLAnchorElement).style.background = "transparent";
                 }}
               >
@@ -1064,11 +730,138 @@ function OpenRoles({ theme }: { theme: "light" | "dark" }) {
 
         <p style={{
           marginTop: "32px", fontSize: "13px", lineHeight: 1.7,
-          color: "rgba(240,232,223,0.3)",
+          color: p.inkFaint,
         }}>
-          * Please note that these are <em style={{ color: "rgba(240,232,223,0.55)", fontStyle: "normal" }}>in-office</em>;
-          positions, and we are exclusively seeking local visionaries residing in Ahmedabad, Gujarat.
+          * Please note that these are <em style={{ color: p.inkDim, fontStyle: "normal" }}>in-office</em> positions,
+          and we are exclusively seeking local visionaries residing in Ahmedabad, Gujarat.
         </p>
+      </div>
+    </section>
+  );
+}
+
+// ─── Benefits — numbered card grid, fade-up-on-scroll (reference-style layout) ──
+function BenefitsSection({ theme }: { theme: "light" | "dark" }) {
+  const p = careersPalette(theme);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const hEl = headerRef.current;
+    if (hEl) {
+      const obs = new IntersectionObserver(
+        ([e]) => { if (e.isIntersecting) { hEl.style.animation = "pkHeaderIn 0.9s cubic-bezier(0.22,1,0.36,1) both"; obs.disconnect(); } },
+        { threshold: 0.2 }
+      );
+      obs.observe(hEl);
+    }
+
+    const gEl = gridRef.current;
+    if (gEl) {
+      const cards = gEl.querySelectorAll(".benefit-card");
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("b-vis"); } });
+        },
+        { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+      );
+      cards.forEach((c) => obs.observe(c));
+      return () => obs.disconnect();
+    }
+  }, []);
+
+  return (
+    <section className="bg1 border-t border-white/5" style={{ paddingTop: "6rem", paddingBottom: "6rem" }}>
+  <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
+        <p className="svh-eyebrow" style={{ marginBottom: "14px" }}>
+          [LIFE  AT JARVIS]
+        </p>
+        <h2 className="section-title" style={{ margin: 0, marginBottom: "16px" }}>
+          Benefits designed
+          <br />
+          <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "rgb(237, 99, 35)" }}>
+            for the long time haul.
+          </em>
+        </h2>
+        <p className="svh-sub" style={{ margin: 0, maxWidth: "560px" }}>
+          The non-headline stuff that makes year three feel as good as year one.
+        </p>
+      </div>
+
+      <div
+  ref={gridRef}
+  className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14"
+  style={{
+    border: `1px solid ${p.line}`,
+    borderRadius: "20px",
+    overflow: "hidden",
+  }}
+>
+  {(() => {
+    const cols = 3;
+    const rows: (typeof PERKS)[] = [];
+    for (let i = 0; i < PERKS.length; i += cols) rows.push(PERKS.slice(i, i + cols));
+    return rows.map((row, rIdx) => (
+      <div
+        key={rIdx}
+        style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${row.length}, 1fr)`,
+          borderBottom: rIdx < rows.length - 1 ? `1px solid ${p.line}` : "none",
+        }}
+      >
+        {row.map((perk, cIdx) => (
+          <div
+            key={perk.num}
+            className="benefit-card"
+            style={{
+              background: p.cardBg,
+              padding: "56px 48px",
+              minHeight: "220px",
+              borderRight: cIdx < row.length - 1 ? `1px solid ${p.line}` : "none",
+              borderLeft: "3px solid transparent",
+              transition: "border-color 0.25s ease, background 0.25s ease",
+            }}  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLDivElement).style.borderLeftColor = p.accent;
+                    (e.currentTarget as HTMLDivElement).style.background = theme === "light" ? "#fdf1ea" : "#100b08";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLDivElement).style.borderLeftColor = "transparent";
+                    (e.currentTarget as HTMLDivElement).style.background = p.cardBg;
+                  }}
+                >
+                  <span style={{
+                    display: "block",
+                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                    fontSize: "11px",
+                    fontWeight: 500,
+                    letterSpacing: "0.05em",
+                    color: p.inkFaint,
+                    marginBottom: "22px",
+                  }}>
+                    {perk.num}
+                  </span>
+                  <h3 style={{
+                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                    fontSize: "19px",
+                    fontWeight: 600,
+                    textTransform: "none",
+                    letterSpacing: "0",
+                    color: p.ink,
+                    margin: 0,
+                    marginBottom: "12px",
+                    lineHeight: 1.3,
+                  }}>
+                    {perk.titlePlain} {perk.titleItalic}
+                  </h3>
+                  <p style={{ fontFamily: "'DM Sans', system-ui, sans-serif", fontSize: "14px", lineHeight: 1.75, color: p.inkDim, margin: 0, fontWeight: 400 }}>
+                    {perk.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ));
+        })()}
       </div>
     </section>
   );
@@ -1101,35 +894,12 @@ function CareersPage() {
   <style>{KEYFRAMES}</style>
   <Nav theme={theme} onToggleTheme={toggleTheme} />
 
-      <AnimatedHero
-        bgImage={careersImg}
-        eyebrow="CAREERS · LIFE AT JARVIS"
-        title={
-          <>
-            The next big thing is  <em className="text-shimmer not-italic font-light">YOU</em>
-          </>
-        }
-        description="In the world of IT, you’re either ahead of the curve or part of the past. We’re looking for enthusiasts who are all ears for new ideas and ready to hit the ground running on global scales. At Jarvis, we don’t just play the game; we change the way it’s played."
-      >
-        <a
-          href="mailto:talent@jarvistechnolabs.com"
-          className="inline-flex items-center gap-2 bg-primary text-primary-foreground rounded-md px-7 py-3.5 text-xs tracking-[0.2em] uppercase font-medium hover:translate-y-[-2px] transition-all"
-        >
-          Shape the future →
-        </a>
-      </AnimatedHero>
+      <CareersHero />
 
+      <CurrentlyHiringSection theme={theme} />
+      <BenefitsSection theme={theme} />
       <CultureGallery theme={theme} />
-<PerksSection theme={theme} />
-<OpenRoles theme={theme} />
 
-      <CTA
-        description="We're always meeting curious engineers, designers and operators. Drop a note — we read every application."
-        primaryLabel="Email talent team →"
-        primaryTo="/contact"
-        secondaryLabel="About Jarvis"
-        secondaryTo="/about"
-      />
       <Footer theme={theme} />
     </main>
   );
