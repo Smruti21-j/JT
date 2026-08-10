@@ -9,6 +9,8 @@ import philosophyImg from "@/assets/Philosophy.png";
 import northStarImg from "@/assets/northstar.png";
 import ethosImg from "@/assets/ethos.png";
 import aboutHeroImg from "@/assets/abouthero.png";
+import about1Img from "@/assets/about1.png";
+import about2Img from "@/assets/about2.png";
 
 
 import impactEchoImg from "@/assets/impactecho.png";
@@ -20,9 +22,7 @@ import unfilteredLightImg from "@/assets/unfilteredlight.png";
 // ─── Image assets ─────────────────────────────────────────────────────────────
 const IMAGES = {
   hero: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e6294/6a060cd7503d72ff714e65f2_405c5347b7528106c9da19b52991b959_template-img-11.avif",
-  studioA: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e6294/6a060cd7503d72ff714e6522_9fe2584dffc769833f62af721c87891c_template-default-image.avif",
   fullBleed: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e6294/6a060cd7503d72ff714e65ff_48c19f09c8468d5bc67a2efb745438e2_template-img-3.avif",
-  dir4: "https://cdn.prod.website-files.com/6a060cd7503d72ff714e629a/6a108b2049a6a6dca89fb586_homestaging-5.avif",
 };
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
@@ -700,15 +700,15 @@ function AboutPage() {
               </div>
             </div>
 
-            <div className="manifesto-imgcol">
-              <div className={`manifesto-img-main${manifestoVis ? " in" : ""}`}>
-                <img src={IMAGES.studioA} alt="Studio interior" />
-              </div>
-              <div className={`manifesto-img-accent${manifestoVis ? " in" : ""}`}>
-                <img src={IMAGES.dir4} alt="" loading="lazy" />
-                <span className={`manifesto-img-tag${manifestoVis ? " in" : ""}`}>At work</span>
-              </div>
-            </div>
+           <div className="manifesto-imgcol">
+  <div className={`manifesto-img-main${manifestoVis ? " in" : ""}`}>
+    <img src={about1Img} alt="Studio interior" />
+  </div>
+  <div className={`manifesto-img-accent${manifestoVis ? " in" : ""}`}>
+    <img src={about2Img} alt="" loading="lazy" />
+    <span className={`manifesto-img-tag${manifestoVis ? " in" : ""}`}>At work</span>
+  </div>
+</div>
           </div>
         </div>
       </section>
