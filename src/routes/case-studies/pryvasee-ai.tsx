@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
 import { useThemeInit } from "@/hooks/use-theme-init";
-import { Menu, Sparkles, ThumbsUp, ThumbsDown, Copy, Download, Info, X, AlertTriangle, ChevronDown, Image as ImageIcon } from "lucide-react";
+import { Menu, Sparkles, ThumbsUp, ThumbsDown, Copy, Download, Info, X, AlertTriangle, ChevronDown } from "lucide-react";
 
 function pillarPalette(theme: "light" | "dark") {
   if (theme === "light") {
@@ -172,13 +172,68 @@ function PhoneFrame({
   );
 }
 
+function NaturalSceneArt({ aux }: { aux: ReturnType<typeof auxPalette> }) {
+  return (
+    <svg
+      viewBox="0 0 200 200"
+      style={{ width: "100%", height: "100%", display: "block" }}
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <defs>
+        <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={`${aux.accent}33`} />
+          <stop offset="100%" stopColor={`${aux.accent}0D`} />
+        </linearGradient>
+        <linearGradient id="hillGradBack" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={`${aux.accent}55`} />
+          <stop offset="100%" stopColor={`${aux.accent}33`} />
+        </linearGradient>
+        <linearGradient id="hillGradFront" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={aux.accent} />
+          <stop offset="100%" stopColor={`${aux.accent}CC`} />
+        </linearGradient>
+      </defs>
+
+      {/* sky */}
+      <rect x="0" y="0" width="200" height="200" fill="url(#skyGrad)" />
+
+      {/* sun */}
+      <circle cx="150" cy="46" r="18" fill={aux.accent} opacity="0.85" />
+      <circle cx="150" cy="46" r="28" fill="none" stroke={aux.accent} strokeWidth="1" opacity="0.3" />
+
+      {/* clouds */}
+      <g opacity="0.5" fill={aux.cardBg}>
+        <ellipse cx="46" cy="40" rx="20" ry="8" />
+        <ellipse cx="60" cy="36" rx="14" ry="7" />
+        <ellipse cx="34" cy="36" rx="12" ry="6" />
+      </g>
+
+      {/* back hill */}
+      <path d="M0,130 Q50,95 100,120 T200,110 V200 H0 Z" fill="url(#hillGradBack)" />
+
+      {/* front hill */}
+      <path d="M0,160 Q60,115 120,150 T200,140 V200 H0 Z" fill="url(#hillGradFront)" />
+
+      {/* tree cluster */}
+      <g transform="translate(38,150)">
+        <rect x="-1.5" y="14" width="3" height="16" fill={aux.title} opacity="0.5" />
+        <circle cx="0" cy="8" r="12" fill={aux.title} opacity="0.55" />
+      </g>
+      <g transform="translate(168,158) scale(0.8)">
+        <rect x="-1.5" y="14" width="3" height="16" fill={aux.title} opacity="0.45" />
+        <circle cx="0" cy="8" r="12" fill={aux.title} opacity="0.5" />
+      </g>
+    </svg>
+  );
+}
+
 function ChatPhoneMockup({ aux }: { aux: ReturnType<typeof auxPalette> }) {
   return (
     <PhoneFrame aux={aux}>
       <div style={{ padding: "10px 14px 16px" }}>
         <div className="flex items-center justify-between" style={{ marginBottom: "14px" }}>
           <Menu size={15} color={aux.desc} />
-          <span style={{ fontSize: "11.5px", fontWeight: 700, color: aux.title }}>PryvaseeAI</span>
+          <span style={{ fontSize: "11.5px", fontWeight: 700, color: aux.title }}>DataShieldAI</span>
           <Sparkles size={15} color={aux.accent} />
         </div>
 
@@ -199,20 +254,17 @@ function ChatPhoneMockup({ aux }: { aux: ReturnType<typeof auxPalette> }) {
           generate an image of a natural scene
         </div>
 
-        <div
-          style={{
-            aspectRatio: "1 / 1",
-            borderRadius: "10px",
-            background: `linear-gradient(135deg, ${aux.accent}22, ${aux.cardBorder})`,
-            border: `1px solid ${aux.cardBorder}`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginBottom: "10px",
-          }}
-        >
-          <ImageIcon size={26} color={aux.desc} />
-        </div>
+       <div
+  style={{
+    aspectRatio: "1 / 1",
+    borderRadius: "10px",
+    overflow: "hidden",
+    border: `1px solid ${aux.cardBorder}`,
+    marginBottom: "10px",
+  }}
+>
+  <NaturalSceneArt aux={aux} />
+</div>
 
         <div className="flex items-center gap-3" style={{ opacity: 0.6 }}>
           <ThumbsUp size={12} color={aux.desc} />
