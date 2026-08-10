@@ -371,7 +371,7 @@ const GOOGLE_MAPS_QUERY = "Titanium Business Park, Makarba, Ahmedabad, Gujarat 3
 const GOOGLE_MAPS_DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(GOOGLE_MAPS_QUERY)}`;
 const GOOGLE_MAPS_EMBED_SRC = `https://www.google.com/maps?q=${encodeURIComponent(GOOGLE_MAPS_QUERY)}&output=embed`;
 
-function LocationSection() {
+function LocationSection({ theme }: { theme: "light" | "dark" }) {
   const [ref, vis] = useInView(0.08);
 
   return (
@@ -399,14 +399,21 @@ function LocationSection() {
         <div className="ctp-loc-grid">
           <div className="ctp-map-frame">
             <iframe
-              title="Jarvis Technolabs Location"
-              src={GOOGLE_MAPS_EMBED_SRC}
-              width="100%"
-              height="100%"
-              style={{ position: "absolute", inset: 0, border: 0 }}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
+  title="Jarvis Technolabs Location"
+  src={GOOGLE_MAPS_EMBED_SRC}
+  width="100%"
+  height="100%"
+  style={{
+    position: "absolute",
+    inset: 0,
+    border: 0,
+    filter: theme === "dark"
+      ? "invert(90%) hue-rotate(180deg) brightness(0.95) contrast(0.9)"
+      : "none",
+  }}
+  loading="lazy"
+  referrerPolicy="no-referrer-when-downgrade"
+/>
             <div className="ctp-map-pin" style={{ left: "50%", top: "48%" }}>
               <div style={{ position: "relative", width: "12px", height: "12px" }}>
                 <div className="ctp-map-pin-dot" />
@@ -622,7 +629,7 @@ function ContactPage() {
       </section>
 
       {/* ── LOCATION SECTION ────────────────────────────────────────────── */}
-      <LocationSection />
+      <LocationSection theme={theme} />
 
       <Footer theme={theme} />
     </main>
