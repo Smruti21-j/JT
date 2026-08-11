@@ -11,6 +11,9 @@ import { ScrollToTop } from "@/components/site/ScrollToTop";
 
 export const Route = createFileRoute("/insights")({
   component: InsightsPage,
+  validateSearch: (search: Record<string, unknown>) => ({
+    post: typeof search.post === "string" ? search.post : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Insights - Jarvis Technolabs" },
@@ -466,6 +469,17 @@ function InsightsPage() {
   const p = insightsPalette(theme);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const { post: postSlug } = Route.useSearch();
+
+  useEffect(() => {
+    if (postSlug) {
+      const idx = POSTS.findIndex((post) => post.slug === postSlug);
+      if (idx !== -1) {
+        setActiveIndex(idx);
+        window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+      }
+    }
+  }, [postSlug]);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -497,6 +511,23 @@ function InsightsPage() {
     if (activeIndex !== null) {
       window.addEventListener("popstate", onPopState);
       return () => window.removeEventListener("popstate", onPopState);
+    }
+  }, [activeIndex]);
+
+  // useReveal()'s IntersectionObserver only attaches once on initial mount.
+  // When returning from an article, the grid's .reveal elements are new DOM
+  // nodes the old observer never sees — so they stay invisible until a full
+  // page refresh re-runs the hook. This forces them visible manually
+  // whenever we land back on the grid view.
+  useEffect(() => {
+    if (activeIndex === null) {
+      const raf = requestAnimationFrame(() => {
+        document.querySelectorAll<HTMLElement>(".reveal").forEach((el) => {
+          el.style.opacity = "1";
+          el.style.transform = "none";
+        });
+      });
+      return () => cancelAnimationFrame(raf);
     }
   }, [activeIndex]);
 

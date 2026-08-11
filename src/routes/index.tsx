@@ -32,6 +32,8 @@ import archPattern3 from "../assets/3.svg";
 import archPattern4 from "../assets/4.svg";
 import archPattern5 from "../assets/5.svg";
 
+import { POSTS } from "@/data/insights";
+
 const PK_KEYFRAMES = `
   @keyframes pkHeaderIn {
     from { opacity: 0; transform: translateY(32px); }
@@ -69,7 +71,7 @@ function auxPalette(theme: "light" | "dark") {
       accent: "#ed6323",
       lineColor: "rgba(0,0,0,0.12)",
       dotFill: "#fbfaf7",
-      aiRowBg: "#EFEBFC",
+      aiRowBg: "rgba(0,0,0,0.045)",
       aiBadgeBg: "#7C5CFC",
       humanRowBg: "#FDECDC",
       humanBadgeBg: "rgb(199,90,26)",
@@ -86,7 +88,7 @@ function auxPalette(theme: "light" | "dark") {
     accent: "rgb(255,130,50)",
     lineColor: "rgba(255,255,255,0.14)",
     dotFill: "#061512",
-    aiRowBg: "rgba(124,92,252,0.14)",
+    aiRowBg: "rgba(255,255,255,0.06)",
     aiBadgeBg: "#8b74f7",
     humanRowBg: "rgba(255,130,50,0.12)",
     humanBadgeBg: "rgb(255,130,50)",
@@ -343,10 +345,10 @@ function HowYouPlugUsIn({ theme }: { theme: "light" | "dark" }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const BLUEPRINT_CHECKS = [
-  "Processes thousands of live data transactions every second",
-  "Connects seamlessly to your current tools via instant API pipelines",
-  "Self-monitoring alerts that fix system bugs before outages happen",
-  "Turns complex background data into clear, simple visual dashboards",
+  "Real spreadsheet logic, rebuilt into autonomous digital workflows",
+  "Seamless API pipelines connecting every tool in your stack",
+  "Self-monitoring architecture that fixes itself before you notice",
+  "Complex data, made instantly readable for every human on your team",
 ];
 
 function IconCheck({ size = 16 }: { size?: number }) {
@@ -922,14 +924,14 @@ function PrototypeBlueprint({ theme }: { theme: "light" | "dark" }) {
             [AUTONOMOUS ARCHITECTURE]
             </p>
             <h2 className= "section-title"  style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "16px" }}>
-              Stop building prototypes.
+              Everyone builds the dashboard
               <br />
               <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
-                Start running engines
+                We build what powers it
               </em>
             </h2>
             <p style={{ fontSize: "15px", lineHeight: 1.8, color: pal.headerParaColor, marginBottom: "22px" }}>
-              Move past endless development loops. Delivering complete software solutions that connect your entire business stack & run your daily operations on autopilot.
+            Drag the line and watch it happen - the same numbers, transformed from a static sheet into a system that runs, thinks, and adapts on its own. That's the difference between software you maintain and software that maintains itself.
             </p>
             <div className="flex flex-col gap-3">
               {BLUEPRINT_CHECKS.map((check) => (
@@ -961,14 +963,14 @@ function PrototypeBlueprint({ theme }: { theme: "light" | "dark" }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const RECEIPT_STATS = [
-  { value: "8.5", label: "Era of Impact" },
-  { value: "150+", label: "Breakthroughs" },
-  { value: "25+", label: "Global Reach" },
-  { value: "50+", label: "Vision Architects" },
-  { value: "3×", label: "Faster with AI in the loop" },
-  { value: "99.4%", label: "Merged clean, first pass" },
-  { value: "8", label: "Industries with deep playbooks" },
-  { value: "24/7", label: "Delivery & support coverage" },
+  { value: "10+", label: "Years Building Software" },
+  { value: "200+", label: "Products Shipped" },
+  { value: "30+", label: "Industries Served" },
+  { value: "60+", label: "Engineers & Architects" },
+  { value: "4×", label: "Faster Delivery with AI-Assisted Dev" },
+  { value: "98.7%", label: "Client Retention Rate" },
+  { value: "12", label: "Domains with Proven Playbooks" },
+  { value: "24/7", label: "Global Delivery Coverage" },
 ];
 
 function CountUp({ value, color, duration = 1500 }: { value: string; color: string; duration?: number }) {
@@ -1066,11 +1068,12 @@ function TheReceipts({ theme }: { theme: "light" | "dark" }) {
           [EXPERIENCE]
         </p>
         <h2 className= "section-title"  style={{ color: pal.headerHeadingColor, margin: 0 }}>
-          Impact Delivered
+          Years in the Making
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
-            Measured by outcomes
+           Built to Outlast Trends
           </em>
+          
         </h2>
       </div>
 
@@ -1359,13 +1362,13 @@ function TechToolsSection({ theme }: { theme: "light" | "dark" }) {
                 marginBottom: "18px",
               }}
             >
-              [Architecture Components]
+              [CASE STUDIES]
             </p>
             <h2 className="section-title" style={{ color: pal.headerHeadingColor, margin: 0 }}>
-              More than development.
+              This Isn't a Pitch Deck
               <br />
               <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
-                End-to-end ownership
+                It's a Track Record
               </em>
             </h2>
           </div>
@@ -1545,20 +1548,88 @@ function IconScale({ size = 48 }: { size?: number }) {
     </svg>
   );
 }
-
+function IconShield({ size = 48 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3 4.5 6v6c0 4.5 3.2 7.8 7.5 9 4.3-1.2 7.5-4.5 7.5-9V6Z" />
+      <path d="M9 12l2 2 4-4" />
+    </svg>
+  );
+}
+function IconLandmark({ size = 48 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 21h18" />
+      <path d="M4.5 21V10M9 21V10M15 21V10M19.5 21V10" />
+      <path d="M2.5 10 12 4l9.5 6Z" />
+    </svg>
+  );
+}
+function IconFactory({ size = 48 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 21V11l6 4v-4l6 4V6.5L21 11v10Z" />
+      <path d="M3 21h18" />
+      <path d="M7 21v-4M12 21v-4M17 21v-4" />
+    </svg>
+  );
+}
+function IconPlane({ size = 48 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2.5 16 21 8.5c1.2-.5 2 .8 1.2 1.7L15 17.5l.7 4.5-2.7-1.8-1.5-3.4-6-1.3L2.5 16Z" />
+      <path d="M9.5 15.5 8 21" />
+    </svg>
+  );
+}
+function IconBolt({ size = 48 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M13 2 4 14h7l-1 8 9-12h-7z" />
+    </svg>
+  );
+}
+function IconGamepad({ size = 48 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2.5" y="8" width="19" height="10" rx="5" />
+      <path d="M7 11v4M5 13h4" />
+      <circle cx="15.5" cy="11.5" r="1" fill="currentColor" stroke="none" />
+      <circle cx="18" cy="14" r="1" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+function IconCar({ size = 48 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3.5 16v-3l2-4.5h13l2 4.5v3" />
+      <path d="M3.5 16h17M5 16v2M19 16v2" />
+      <circle cx="7" cy="16" r="1.6" />
+      <circle cx="17" cy="16" r="1.6" />
+    </svg>
+  );
+}
+function IconPackage({ size = 48 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3.5 7.5 12 3l8.5 4.5V16L12 20.5 3.5 16Z" />
+      <path d="M3.5 7.5 12 12l8.5-4.5M12 12v8.5" />
+    </svg>
+  );
+}
 // ─────────────────────────────────────────────────────────────────────────────
 // AI CAPABILITIES
 // ─────────────────────────────────────────────────────────────────────────────
 
 const AI_CAPABILITIES = [
-  { image: iconAiAgents, title: "AI Agents", desc: "Autonomous, AI-native agents that do the work, not just answer questions." },
-  { image: iconOverflow, title: "Workflow & Business Automation", desc: "Wire AI into the operations that drain your team's hours." },
-  { image: icondata, title: "Data Science & Analytics", desc: "Turn the data you're sitting on into decisions you can act on." },
-  { image: iconci, title: "Computer Vision", desc: "Systems that see — inspection, recognition, real-world visual intelligence." },
-  { image: iconML, title: "Custom Models & ML", desc: "Models trained on your domain, your data, your edge cases." },
-  { image: iconnlp, title: "NLP Solutions", desc: "Language understanding tuned to your industry's actual vocabulary." },
-  { image: iconai, title: "Generative AI", desc: "Production-grade GenAI features, not weekend-demo gimmicks." },
-  { image: iconops, title: "AI Operations (MLOps)", desc: "Keeping models reliable, monitored, and honest in production." },
+  { image: iconAiAgents, title: "AI Agents", desc: "Autonomous systems that execute tasks end-to-end;  not chatbots that just answer questions." },
+  { image: iconOverflow, title: "Workflow & Business Automation", desc: "We wire intelligence into the manual work eating your team's hours, so it disappears quietly." },
+  { image: icondata, title: "Data Science & Analytics", desc: "Your data has been talking. We build the systems that finally listen - and act." },
+  { image: iconci, title: "Computer Vision", desc: "Machines that see what your team can't scale to watch - inspection, detection, real-time response." },
+  { image: iconML, title: "Custom Models & ML", desc: "Off-the-shelf models solve generic problems. We train ones that solve yours." },
+  { image: iconnlp, title: "NLP Solutions", desc: "From documents to conversations, we turn unstructured language into structured decisions." },
+  { image: iconai, title: "Generative AI", desc: "Content, code, and creative output generated on demand - tuned to your brand, not a template." },
+  { image: iconops, title: "AI Operations (MLOps)", desc: "Models that stay accurate in production, not just in a notebook- monitored, retrained, maintained." },
 ];
 
 function AICapabilityCard({
@@ -1694,17 +1765,17 @@ function AICapabilities({ theme }: { theme: "light" | "dark" }) {
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-         [ARCHITECTURE COMPONENTS]
+         [INTELLIGENCE STACK]
         </p>
         <h2 className= "section-title" style={{  color: pal.headerHeadingColor, margin: 0, marginBottom: "18px" }}>
-          AI, Built for
+          We Don't Bolt On AI
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323", textTransform: "none", fontSize: "0.85em", letterSpacing: "0em" }}>
-            Actually Scales
+            We Build Around It
           </em>
         </h2>
         <p style={{ maxWidth: "620px", fontSize: "15px", lineHeight: 1.75, color: pal.headerParaColor }}>
-          Deeply engineered solutions tailored to your business—built by professionals who've solved production challenges, not just explored the technology.
+          Every service here is engineered by people who've deployed AI into real production systems;  not just demoed it in a sandbox. If it doesn't hold up under real traffic, real data, and real deadlines, we don't ship it.
         </p>
       </div>
 
@@ -1736,38 +1807,44 @@ const DELIVERY_STAGES = [
   {
     num: "01",
     title: "Discovery",
-    ai: "Neural Discovery (Instant execution roadmaps).",
-    human: "Strategic Direction (Risk elimination)."
+    tagline: "Every build starts as a question worth interrogating.",
+    ai: "Scans requirements in hours, not weeks; surfacing feasibility before assumptions calcify",
+    human: "Asks the harder question;  should we build this, and how, before asking how fast"
   },
   {
     num: "02",
     title: "Architecture",
-    ai: "Predictive Modelling (Simulates stacks).",
-    human: "System Architecture (Zero-trust design)."
+    tagline: "The blueprint decides everything that comes after.",
+    ai: "Simulates the entire stack before a single server exists",
+    human: "Designs for the failure modes no simulation saw coming; zero trust, by default"
   },
   {
     num: "03",
     title: "Experience",
-    ai: "Generative UI/UX (Predictive heatmaps).",
-    human: "Human Ergonomics (Emotional connection)."
+    tagline: "Interfaces people actually want to open.",
+    ai: "Generates UI variants and predicts where users will click, scroll, and stall",
+    human: "Adds the ergonomic, emotional judgment that makes software feel considered, not generated"
   },
   {
     num: "04",
-    title: "Development",
-    ai: "Accelerated Code Synthesis (LLMs).",
-    human: "Enterprise Craft (Human-in-the-loop audit)."
+    title: "Develop & Deploy",
+    tagline: "Where code becomes consequence.",
+    ai: "Synthesizes production code and ships it live with zero-downtime precision",
+    human: "Owns the final call - every release reviewed, audited, and signed off by someone accountable"
   },
   {
     num: "05",
-    title: "Security",
-    ai: "Continuous Threat Auditing (24/7 agents).",
-    human: "Security Governance (Compliance sign-off)."
+    title: "Security & QA",
+    tagline: "Trust isn't a checkbox - it's a posture.",
+    ai: "Watches every endpoint, every hour, catching anomalies before they become incidents",
+    human: "Certifies compliance and governance where \"the model flagged it\" isn't good enough"
   },
   {
     num: "06",
     title: "Growth",
-    ai: "Real-Time Telemetry (Predictive scaling).",
-    human: "Continuous Evolution (Engineering squads)."
+    tagline: "Launch day is the beginning, not the finish line.",
+    ai: "Reads real-time telemetry and scales infrastructure ahead of demand, not behind it",
+    human: "Keeps evolving the product with dedicated engineering - because done software is dying software"
   }
 ];
 
@@ -1816,16 +1893,29 @@ function StageCard({
     transitionDelay: `${index * 0.15}s`,
   }}
 >
-   <div style={{ minHeight: "70px" }}>
+   <div style={{ minHeight: "88px" }}>
   <span
     className="font-mono"
     style={{ fontSize: "9px", letterSpacing: "0.25em", textTransform: "uppercase", color: aux.accent, fontWeight: 600 }}
   >
     Stage {stage.num}
   </span>
-  <h4 style={{ margin: "6px 0 0", fontSize: "17px", fontWeight: 700, color: aux.title, lineHeight: 1.25 }}>
+  <h4 style={{ margin: "6px 0 6px", fontSize: "17px", fontWeight: 700, color: aux.title, lineHeight: 1.25 }}>
     {stage.title}
   </h4>
+  <p
+  className="font-display"
+  style={{
+    margin: 0,
+    fontSize: "13px",
+    lineHeight: 1.5,
+    fontStyle: "italic",
+    fontWeight: 400,
+    color: "#ed6323",
+  }}
+>
+  {stage.tagline}
+</p>
 </div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -1958,14 +2048,14 @@ function AIDeliveryProcess({ theme }: { theme: "light" | "dark" }) {
         [END TO END DELIVERY]
         </p>
         <h2  className= "section-title" style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "22px" }}>
-         AI-Powered Engineering.
+         Engineering at AI Speed
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
-            Perfected by Humans
+          Judgment at Human Depth
           </em>
         </h2>
         <p style={{ maxWidth: "620px", fontSize: "15px", lineHeight: 1.75, color: pal.headerParaColor }}>
-          Combining autonomous AI execution with elite human engineering to architect, build, & scale custom enterprise software in record time.
+          Machines move fast. Humans make it matter. Every stage below runs on both - AI compresses the timeline, and our engineers make sure nothing important gets compressed with it.
         </p>
       </div>
 
@@ -2006,39 +2096,13 @@ function AIDeliveryProcess({ theme }: { theme: "light" | "dark" }) {
 // INSIGHT CARDS DATA
 // ─────────────────────────────────────────────────────────────────────────────
 
-const INSIGHT_CARDS = 
-[
-  {
-    tag: "Artificial Intelligence",
-    title: "Building AI That Delivers Beyond the Demo",
-    excerpt: "What separates impressive AI demonstrations from production-ready solutions that create measurable business value.",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80",
-  },
-  {
-    tag: "Software Architecture",
-    title: "Designing Systems Built to Scale",
-    excerpt: "How thoughtful architecture, modern technologies, and clean engineering create products ready for long-term growth.",
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1600&q=80",
-  },
-  {
-    tag: "Product Engineering",
-    title: "Accelerating Development with AI",
-    excerpt: "How AI enhances development workflows while experienced engineers ensure quality, reliability, and maintainability.",
-    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1600&q=80",
-  },
-  {
-    tag: "Cybersecurity",
-    title: "Building Security into Every Release",
-    excerpt: "Why secure development practices, continuous testing, and proactive monitoring matter from day one.",
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1600&q=80",
-  },
-  {
-    tag: "Digital Transformation",
-    title: "Delivering Software That Drives Growth",
-    excerpt: "From strategy to deployment, discover how modern engineering helps businesses innovate faster and scale with confidence.",
-    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=1600&q=80",
-  },
-];
+const INSIGHT_CARDS = POSTS.slice(0, 3).map((post) => ({
+  tag: post.tag,
+  title: post.title,
+  excerpt: post.excerpt,
+  image: post.img,
+  slug: post.slug,
+}));
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ENGINEERING NOTES (was "LatestSignal" / "Notes from the build floor.")
@@ -2075,9 +2139,10 @@ function SignalCard({
 
   return (
     <Link
-      to="/insights"
-      ref={ref as any}
-      className="sg-card group"
+  to="/insights"
+  search={{ post: item.slug }}
+  ref={ref as any}
+  className="sg-card group"
       style={{
         display: "block",
         position: "relative",
@@ -2209,8 +2274,7 @@ function EngineeringNotes({ theme }: { theme: "light" | "dark" }) {
           <Link
             to="/insights"
             className="font-mono"
-            style={{ fontSize: "12px", letterSpacing: "0.2em", textTransform: "uppercase", color: pal.numColor, fontWeight: 500, whiteSpace: "nowrap" }}
-          >
+            style={{ fontSize: "12px", letterSpacing: "0.2em", textTransform: "uppercase", color: pal.numColor, fontWeight: 500, whiteSpace: "nowrap" }}>
             Read the blog →
           </Link>
         </div>
@@ -2238,14 +2302,21 @@ function EngineeringNotes({ theme }: { theme: "light" | "dark" }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const SHIPPED_INDUSTRIES = [
-  { icon: IconDollar, title: "Finance", desc: "Banking, payments, and trading systems that can't break." },
-  { icon: IconTv, title: "Media & OTT", desc: "Streaming, DRM, and content discovery built for scale." },
-  { icon: IconTruck, title: "Logistics", desc: "Real-time tracking and routing across messy operations." },
-  { icon: IconShoppingBag, title: "Retail", desc: "Commerce, personalization, and fulfillment across every channel." },
-  { icon: IconGraduationCap, title: "Education", desc: "Learning platforms built to keep students engaged." },
-  { icon: IconHome, title: "Real Estate", desc: "Listings, transactions, and property management tools." },
-  { icon: IconScale, title: "Legal", desc: "Document intelligence and workflow for legal teams." },
-  { icon: IconStethoscope, title: "Healthcare", desc: "Telemedicine, EHR, and clinical AI built for compliance." },
+  { icon: IconDollar, title: "Finance & Fintech" },
+  { icon: IconTv, title: "Media & OTT" },
+  { icon: IconShield, title: "Banking & Insurance" },
+  { icon: IconTruck, title: "Logistics & Supply Chain" },
+  { icon: IconLandmark, title: "Government & Public Sector" },
+  { icon: IconGraduationCap, title: "Education & EdTech" },
+  { icon: IconShoppingBag, title: "Retail & E-commerce" },
+  { icon: IconFactory, title: "Manufacturing & Industry 4.0" },
+  { icon: IconPlane, title: "Travel & Hospitality" },
+  { icon: IconHome, title: "Real Estate & PropTech" },
+  { icon: IconBolt, title: "Energy & Utilities" },
+  { icon: IconGamepad, title: "Gaming & Entertainment" },
+  { icon: IconCar, title: "Automotive & Mobility" },
+  { icon: IconPackage, title: "Consumer & CPG" },
+  { icon: IconStethoscope, title: "Healthcare" },
 ];
 
 function IndustryCard({
@@ -2286,21 +2357,18 @@ function IndustryCard({
         overflow: "hidden",
         background: aux.cardBg,
         border: `1px solid ${aux.cardBorder}`,
-        borderRadius: "18px",
-        padding: "28px 24px",
+        borderRadius: "14px",
+        padding: "18px 16px",
         transitionDelay: `${(index % 8) * 0.05}s`,
       }}
     >
       <span className="ind-underline" style={{ background: aux.accent }} aria-hidden="true" />
-      <div className="ind-icon" style={{ position: "relative", color: aux.accent, marginBottom: "18px" }}>
-        <Icon />
+      <div className="ind-icon" style={{ position: "relative", color: aux.accent, marginBottom: "10px", width: "28px", height: "28px" }}>
+        <Icon size={28} />
       </div>
-      <h3  style={{ position: "relative", fontSize: "18px", fontWeight: 600, color: aux.title, marginBottom: "8px" }}>
+      <h3 style={{ position: "relative", fontSize: "13.5px", fontWeight: 600, color: aux.title, margin: 0, lineHeight: 1.3 }}>
         {item.title}
       </h3>
-      <p style={{ position: "relative", fontSize: "12.5px", lineHeight: 1.6, color: aux.desc, margin: 0 }}>
-        {item.desc}
-      </p>
     </div>
   );
 }
@@ -2357,26 +2425,26 @@ function ShippedIndustries({ theme }: { theme: "light" | "dark" }) {
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
         <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-          [INDUSTRY EXPERIENCE]
+          [INDUSTRIES]
         </p>  
         <h2 className= "section-title" style={{ color: pal.headerHeadingColor, margin: 0, marginBottom: "18px" }}>
-          Experience that spans
+          We've Already Been
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323", textTransform: "none", fontSize: "0.85em", letterSpacing: "0em" }}>
-            Multiple Industries
+            Where You're Headed
           </em>
         </h2>
         <p style={{ maxWidth: "640px", fontSize: "15px", lineHeight: 1.75, color: pal.headerParaColor }}>
-          Nearly a decade of cross-industry delivery means we show up with playbooks, not questions — not learning your domain on your budget.
+          Nearly a decade of shipping across industries means we show up already fluent in your compliance, your edge cases, your users. No learning curve billed to your timeline.
         </p>
       </div>
 
       <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {SHIPPED_INDUSTRIES.map((item, i) => (
-            <IndustryCard key={item.title} item={item} index={i} theme={theme} />
-          ))}
-        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+  {SHIPPED_INDUSTRIES.map((item, i) => (
+    <IndustryCard key={item.title} item={item} index={i} theme={theme} />
+  ))}
+</div>
       </div>
     </section>
   );
