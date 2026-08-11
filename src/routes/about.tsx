@@ -557,7 +557,7 @@ function StoryChapters() {
             Beyond the code.
             <br />
             <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "var(--acc)" }}>
-              The Narrative.
+              The Narrative
             </em>
           </h2>
         </div>
@@ -647,7 +647,7 @@ function AboutPage() {
               The Catalyst,
               <br />
               <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "var(--acc)" }}>
-                not the vendor.
+                not the vendor
               </em>
             </h1>
             <p className="abt-hero-sub">
@@ -678,7 +678,7 @@ function AboutPage() {
             >
               <p className="abt-eyebrow">The Catalyst Manifesto</p>
               <h2 className="manifesto-h2">
-                The reactive <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "var(--acc)" }}>break-fix</em> script belongs to the past.
+                The reactive <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "var(--acc)" }}>break-fix</em> script belongs to the past
               </h2>
               <div ref={ruleRef} className={`manifesto-rule ${ruleVis ? "in" : ""}`} />
 
@@ -734,7 +734,7 @@ function AboutPage() {
                 How the future is forged,
                 <br />
                 <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "var(--acc)" }}>
-                  day by day.
+                  day by day
                 </em>
               </h2>
             </div>

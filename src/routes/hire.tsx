@@ -683,7 +683,7 @@ function TechDnaSection({ theme }: { theme: "light" | "dark" }) {
               color: "var(--orange)",
             }}
           >
-            product velocity.
+            product velocity
           </em>
         </h2>
 
@@ -892,7 +892,7 @@ function HirePage() {
     color: "var(--orange)",
   }}
 >
-               global growth.
+               global growth
               </em>
               <br />
                
@@ -1032,7 +1032,7 @@ function HirePage() {
                     color: "var(--orange)",
                   }}
                 >
-                  orchestrate outcomes.
+                  orchestrate outcomes
                 </em>
               </h2>
               <div
@@ -1124,7 +1124,7 @@ function HirePage() {
     color: "var(--orange)",
   }}
 >
-  Innovation without sleep.
+  Innovation without sleep
 </em>
             </h2>
             <p style={{ fontSize: "1rem", lineHeight: 1.85, color: "rgba(0,0,0,.60)" }}>

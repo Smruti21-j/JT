@@ -409,7 +409,7 @@ function PrivacyAICaseStudy() {
               <SectionLabel color={aux.accent}>[Case Study]</SectionLabel>
 
               <h1
-                className="font-display"
+               
                 style={{
                   fontSize: "clamp(41.6px, 70.656px, 75.2px)",
                   fontWeight: 700,
@@ -423,8 +423,8 @@ function PrivacyAICaseStudy() {
               >
                 Privacy, built
                 <br />
-                <em style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>
-                  into every interaction.
+                <em  className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>
+                  into every interaction
                 </em>
               </h1>
 
@@ -469,10 +469,10 @@ function PrivacyAICaseStudy() {
           <div className="grid lg:grid-cols-12 gap-12">
             <div className="lg:col-span-4">
               <SectionLabel color={pal.headerLabelColor}>[Overview]</SectionLabel>
-              <h2 className="font-display" style={{ fontSize: "clamp(28px, 3vw, 36px)", fontWeight: 700, color: pal.headerHeadingColor, margin: 0 }}>
+              <h2  style={{ fontSize: "clamp(28px, 3vw, 36px)", fontWeight: 700, color: pal.headerHeadingColor, margin: 0 }}>
                 A privacy-first
                 <br />
-                <em style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>AI ecosystem.</em>
+                <em  className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>AI ecosystem</em>
               </h2>
             </div>
 
@@ -504,12 +504,12 @@ function PrivacyAICaseStudy() {
         <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
           <SectionLabel color={pal.headerLabelColor}>[The Challenge]</SectionLabel>
           <h2
-            className="font-display"
+            
             style={{ fontSize: "clamp(28px, 3vw, 36px)", fontWeight: 700, color: pal.headerHeadingColor, margin: 0, marginBottom: "40px", maxWidth: "700px" }}
           >
             Three problems{" "}
-            <em style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>
-              nobody was solving together.
+            <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>
+              nobody was solving together
             </em>
           </h2>
 
@@ -547,11 +547,11 @@ function PrivacyAICaseStudy() {
         <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
           <SectionLabel color={pal.headerLabelColor}>[What We Built]</SectionLabel>
           <h2
-            className="font-display"
+            
             style={{ fontSize: "clamp(28px, 3vw, 36px)", fontWeight: 700, color: pal.headerHeadingColor, margin: 0, marginBottom: "40px", maxWidth: "760px" }}
           >
             Every layer designed around{" "}
-            <em style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>user control.</em>
+            <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>user control</em>
           </h2>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -582,10 +582,10 @@ function PrivacyAICaseStudy() {
         <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
           <SectionLabel color={pal.headerLabelColor}>[Outcome]</SectionLabel>
           <h2
-            className="font-display"
+           
             style={{ fontSize: "clamp(28px, 3vw, 36px)", fontWeight: 700, color: pal.headerHeadingColor, margin: 0, marginBottom: "40px" }}
           >
-            What shipped.
+            What shipped
           </h2>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -614,14 +614,14 @@ function PrivacyAICaseStudy() {
         <div className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16">
           <SectionLabel color={pal.headerLabelColor}>[Tech Stack]</SectionLabel>
           <h2
-            className="font-display"
+            
             style={{ fontSize: "clamp(28px, 3vw, 36px)", fontWeight: 700, color: pal.headerHeadingColor, margin: 0, marginBottom: "28px" }}
           >
             Built on a{" "}
-            <em style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>
+            <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>
               modern, production-grade
             </em>{" "}
-            stack.
+            stack
           </h2>
 
           <div className="flex flex-wrap gap-3">

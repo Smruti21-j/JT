@@ -719,7 +719,7 @@ function InsightsPage() {
               Ideas worth{" "}
             </span>
             <span className="font-display" style={{ fontWeight: 400, color: p.accent, fontStyle: "italic" }}>
-              building on.
+              building on
             </span>
           </h1>
 
@@ -773,7 +773,7 @@ function InsightsPage() {
           <div className="reveal" style={{ marginBottom: "3.5rem", display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: "1.5rem" }}>
             <div>
               <p className="font-mono" style={{ fontSize: "0.62rem", letterSpacing: "0.32em", textTransform: "uppercase", marginBottom: "0.9rem", color: p.inkFainter }}>LATEST</p>
-              <h2 className=" section-title" style={{ color: p.ink, margin: 0 }}>From the studio.</h2>
+              <h2 className=" section-title" style={{ color: p.ink, margin: 0 }}>From the studio</h2>
             </div>
             <Link
               to="/contact"

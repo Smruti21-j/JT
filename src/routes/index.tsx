@@ -117,56 +117,56 @@ function hoverTint(theme: "light" | "dark", index: number) {
 const ENGAGEMENT_TILES = [
   {
     badge: null,
-    tag: "Agentic AI · Core",
+    tag: "Artificial Intelligence",
     title: "Intelligence that Acts",
     desc: "Transition from generative prompts to agentic workflows that resolve complex tasks with zero friction.",
     image: pillarImg1,
   },
   {
     badge: null,
-    tag: "Platform · Foundation",
+    tag: "Digital Transformation",
     title: "The AI-First Core",
-    desc: "mbed intelligence into the substrate of your business to create a self-evolving, future-proof operating model.",
+    desc: "Embed intelligence into the substrate of your business to create a self-evolving, future-proof operating model.",
     image: pillarImg2,
   },
   {
     badge: null,
-    tag: "Engineering · Scale",
+    tag: "Product Engineering",
     title: "Digital Engineering at Scale",
     desc: "Accelerate your time-to-impact with battle-tested engineering playbooks and frontier technology stacks.",
     image: pillarImg3,
   },
   {
     badge: null,
-    tag: "Infrastructure · Cloud",
+    tag: "Application Transformation",
     title: "Next-Gen Ecosystems",
     desc: "Build the connected, cloud-native infrastructure required for a resilient and sovereign digital future.",
     image: pillarImg4,
   },
   {
     badge: null,
-    tag: "Design · Experience",
+    tag: "UI / UX Design",
     title: "Design with Purpose",
     desc: "Amplify human potential through sensory UX that balances high-tech precision with human-centric empathy.",
     image: pillarImg5,
   },
   {
     badge: null,
-    tag: "Data · Growth",
+    tag: "Digital Consulting",
     title: "Accelerated Value Chains",
     desc: "Unlock pervasive efficiencies across your entire enterprise with data-driven insights that act as your growth catalyst.",
     image: pillarImg6,
   },
   {
     badge: null,
-    tag: "Strategy · Governance",
+    tag: "Performance & Growth",
     title: "The Architects of Intent",
     desc: "Before you build autonomy, you must engineer the intent. We map your industry’s future friction points to design custom governance and cognitive blueprints, ensuring your proprietary intelligence remains entirely your own.",
     image: pillarImg7,
   },
   {
     badge: null,
-    tag: "AgencyOps · Dev Hub",
+    tag: "Autonomous Ops",
     title: "The Engine of Perpetual Motion",
     desc: "Autonomy isn't set and forget - it is a living ecosystem. Our engineering squads continuously tune, optimize, & defend your agentic workflows and self-healing infrastructure in real time.",
     image: pillarImg8,
@@ -315,7 +315,7 @@ function HowYouPlugUsIn({ theme }: { theme: "light" | "dark" }) {
           The Architect of 
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: aux.accent }}>
-            Autonomy.
+            Autonomy
           </em>
         </h2>
 
@@ -566,109 +566,306 @@ function BlueprintProductionSlider({ theme }: { theme: "light" | "dark" }) {
         </div>
       </div>
 
-      <div
+     <div
         className="absolute inset-0"
         style={{
-          background: bpBg,
-          backgroundImage: `
-            linear-gradient(${bpGridMajor} 1px, transparent 1px),
-            linear-gradient(90deg, ${bpGridMajor} 1px, transparent 1px),
-            linear-gradient(${bpGridMinor} 1px, transparent 1px),
-            linear-gradient(90deg, ${bpGridMinor} 1px, transparent 1px)
-          `,
-          backgroundSize: "88px 88px, 88px 88px, 22px 22px, 22px 22px",
-          padding: "22px",
+          background: "#1B1E24",
+          padding: "0",
           overflow: "hidden",
           clipPath: `inset(0 ${100 - pos}% 0 0)`,
+          fontFamily: "var(--font-sans)",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        {[
-          { top: 10, left: 10, bt: true, bl: true },
-          { top: 10, right: 10, bt: true, br: true },
-          { bottom: 10, left: 10, bb: true, bl: true },
-          { bottom: 10, right: 10, bb: true, br: true },
-        ].map((c, i) => (
-          <div
-            key={i}
+        {/* Title bar */}
+        <div
+          className="flex items-center justify-between"
+          style={{
+            padding: "9px 14px",
+            borderBottom: `1px solid ${bpLine}22`,
+            flexShrink: 0,
+          }}
+        >
+          <p className="font-mono" style={{ fontSize: "11px", fontWeight: 700, color: bpBright, margin: 0 }}>
+            admin_dashboard.xlsx
+          </p>
+          <span
+            className="font-mono"
             style={{
-              position: "absolute", width: "14px", height: "14px",
-              top: c.top, bottom: (c as any).bottom, left: c.left, right: (c as any).right,
-              borderTop: c.bt ? `1.5px solid ${bpMuted}` : undefined,
-              borderBottom: c.bb ? `1.5px solid ${bpMuted}` : undefined,
-              borderLeft: c.bl ? `1.5px solid ${bpMuted}` : undefined,
-              borderRight: c.br ? `1.5px solid ${bpMuted}` : undefined,
+              fontSize: "8px",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              color: "#1e7d3f",
+              background: "rgba(33,163,88,0.15)",
+              border: "1px solid rgba(33,163,88,0.35)",
+              borderRadius: "999px",
+              padding: "3px 9px",
             }}
-          />
-        ))}
-
-        <div className="flex items-center justify-between" style={{ marginBottom: "16px" }}>
-          <div>
-            <p className="font-mono" style={{ fontSize: "13px", fontWeight: 700, color: bpBright, margin: 0 }}>admin_dashboard.spec</p>
-            <p className="font-mono" style={{ fontSize: "9px", color: bpMuted, marginTop: "2px" }}>rev. 004 · draft</p>
-          </div>
-          <span className="font-mono" style={{ fontSize: "9px", letterSpacing: "0.1em", textTransform: "uppercase", color: bpBright, border: `1px solid ${bpLine}`, borderRadius: "999px", padding: "5px 12px" }}>
-            Concept
+          >
+            Live Data
           </span>
         </div>
 
-       <div className="grid grid-cols-4 gap-2.5" style={{ marginBottom: "16px" }}>
-          {STAT_CARDS.map((s, i) => (
-            <div key={s.label} style={{ border: `1.5px dashed ${bpLine}`, borderRadius: "10px", padding: "10px", position: "relative" }}>
-              <span className="font-mono" style={{ position: "absolute", top: "6px", right: "8px", fontSize: "8px", color: bpMuted }}>
-                #{String(i + 1).padStart(2, "0")}
-              </span>
-              <p className="font-mono" style={{ fontSize: "7.5px", letterSpacing: "0.06em", textTransform: "uppercase", color: bpMuted, margin: "0 0 6px" }}>
-                {s.label}
-              </p>
-              <p className="font-mono" style={{ fontSize: "15px", fontWeight: 700, color: bpBright, margin: "0 0 8px" }}>
-                {s.value}
-              </p>
-              <div style={{ display: "flex", gap: "2px", alignItems: "flex-end", height: "16px" }}>
+        {/* Formula bar */}
+        <div
+          className="flex items-center gap-2"
+          style={{
+            padding: "6px 14px",
+            borderBottom: `1px solid ${bpLine}22`,
+            flexShrink: 0,
+          }}
+        >
+          <span
+            className="font-mono"
+            style={{
+              fontSize: "8.5px",
+              color: bpBright,
+              background: "rgba(255,255,255,0.06)",
+              border: `1px solid ${bpLine}33`,
+              borderRadius: "3px",
+              padding: "2px 8px",
+              minWidth: "34px",
+              textAlign: "center",
+            }}
+          >
+            B2
+          </span>
+          <span className="font-mono" style={{ fontSize: "9px", color: bpMuted }}>fx</span>
+          <span className="font-mono" style={{ fontSize: "9px", color: bpBright, opacity: 0.85 }}>
+            =SUM(Applications[Status]="Disbursed")
+          </span>
+        </div>
+
+        {/* Spreadsheet grid */}
+        <div style={{ flex: 1, overflow: "hidden", position: "relative" }}>
+          {/* Column header row */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "26px repeat(4, 1fr)",
+              borderBottom: `1px solid ${bpLine}33`,
+              background: "rgba(255,255,255,0.03)",
+            }}
+          >
+            <div />
+            {["A", "B", "C", "D"].map((col) => (
+              <div
+                key={col}
+                className="font-mono"
+                style={{
+                  fontSize: "8px",
+                  color: bpMuted,
+                  textAlign: "center",
+                  padding: "5px 0",
+                  borderLeft: `1px solid ${bpLine}22`,
+                }}
+              >
+                {col}
+              </div>
+            ))}
+          </div>
+
+          {/* Header data row */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "26px repeat(4, 1fr)",
+              borderBottom: `1px solid ${bpLine}33`,
+            }}
+          >
+            <div
+              className="font-mono"
+              style={{ fontSize: "8px", color: bpMuted, textAlign: "center", padding: "8px 0", borderRight: `1px solid ${bpLine}22` }}
+            >
+              1
+            </div>
+            {STAT_CARDS.map((s) => (
+              <div
+                key={s.label}
+                style={{
+                  padding: "8px 8px",
+                  borderLeft: `1px solid ${bpLine}22`,
+                }}
+              >
+                <p className="font-mono" style={{ fontSize: "7px", letterSpacing: "0.05em", textTransform: "uppercase", color: bpMuted, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {s.label}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Value row */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "26px repeat(4, 1fr)",
+              borderBottom: `1px solid ${bpLine}33`,
+              background: "rgba(255,255,255,0.02)",
+            }}
+          >
+            <div
+              className="font-mono"
+              style={{ fontSize: "8px", color: bpMuted, textAlign: "center", padding: "10px 0", borderRight: `1px solid ${bpLine}22` }}
+            >
+              2
+            </div>
+            {STAT_CARDS.map((s) => (
+              <div
+                key={s.label}
+                style={{
+                  padding: "8px 8px",
+                  borderLeft: `1px solid ${bpLine}22`,
+                }}
+              >
+                <p className="font-mono" style={{ fontSize: "14px", fontWeight: 700, color: bpBright, margin: 0 }}>
+                  {s.value}
+                </p>
+                <p className="font-mono" style={{ fontSize: "7.5px", color: s.up ? "#3ecf6e" : "#f0665f", margin: "2px 0 0", fontWeight: 700 }}>
+                  {s.delta}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Sparkline row */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "26px repeat(4, 1fr)",
+              borderBottom: `1px solid ${bpLine}33`,
+            }}
+          >
+            <div
+              className="font-mono"
+              style={{ fontSize: "8px", color: bpMuted, textAlign: "center", padding: "10px 0", borderRight: `1px solid ${bpLine}22` }}
+            >
+              3
+            </div>
+            {STAT_CARDS.map((s) => (
+              <div
+                key={s.label}
+                style={{
+                  padding: "8px 8px",
+                  borderLeft: `1px solid ${bpLine}22`,
+                  display: "flex",
+                  gap: "2px",
+                  alignItems: "flex-end",
+                  height: "20px",
+                }}
+              >
                 {s.bars.map((v, bi) => (
-                  <span key={bi} style={{ width: "3px", height: `${(v / Math.max(...s.bars)) * 100}%`, background: "rgba(255,255,255,0.4)", borderRadius: "1px" }} />
+                  <span key={bi} style={{ width: "3px", height: `${(v / Math.max(...s.bars)) * 100}%`, background: "#3ecf6e", opacity: 0.75, borderRadius: "1px" }} />
                 ))}
               </div>
-            </div>
-          ))}
-        </div>
-
-       <div style={{ border: `1.5px dashed ${bpLine}`, borderRadius: "12px", padding: "14px", marginBottom: "14px" }}>
-          <div className="flex items-center justify-between" style={{ marginBottom: "10px" }}>
-            <p className="font-mono" style={{ fontSize: "9px", letterSpacing: "0.06em", textTransform: "uppercase", color: bpMuted, margin: 0 }}>
-              Applications · 30d trend
-            </p>
-            <p className="font-mono" style={{ fontSize: "9px", color: bpBright, margin: 0 }}>
-              ▲ 8.2%
-            </p>
+            ))}
           </div>
-          <svg viewBox="0 0 300 46" style={{ width: "100%", height: "38px" }}>
-            <polyline points="0,28 40,20 80,32 120,16 160,26 200,13 240,24 280,18 300,23" fill="none" stroke={bpLine} strokeWidth="1.6" strokeDasharray="5 4" opacity="0.85" />
-          </svg>
-        </div>
 
-        <p className="font-mono" style={{ fontSize: "9px", letterSpacing: "0.08em", textTransform: "uppercase", color: bpMuted, marginBottom: "10px" }}>
-          Recent Applications · list × {RECORD_ROWS.length}
-        </p>
-        <div className="flex flex-col gap-2.5">
-          {RECORD_ROWS.map((row, i) => (
-            <div key={i} className="flex items-center justify-between">
-              <div style={{ display: "flex", alignItems: "center", gap: "9px" }}>
-                <span style={{ width: "26px", height: "26px", borderRadius: "8px", border: `1.5px dashed ${bpLine}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <span className="font-mono" style={{ fontSize: "8px", color: bpMuted }}>{i + 1}</span>
-                </span>
-                <div>
-                  <p className="font-mono" style={{ fontSize: "10.5px", color: bpBright, margin: 0 }}>{row.label}</p>
-                  <p className="font-mono" style={{ fontSize: "8.5px", color: bpMuted, margin: 0 }}>{row.id}</p>
-                </div>
-              </div>
-              <span className="font-mono" style={{ fontSize: "9px", color: bpBright, border: `1px solid ${bpLine}`, borderRadius: "999px", padding: "3px 8px" }}>
-                {row.status}
+          {/* Divider row label */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "26px 1fr",
+              borderBottom: `1px solid ${bpLine}33`,
+              background: "rgba(255,255,255,0.03)",
+            }}
+          >
+            <div className="font-mono" style={{ fontSize: "8px", color: bpMuted, textAlign: "center", padding: "6px 0", borderRight: `1px solid ${bpLine}22` }}>
+              4
+            </div>
+            <div style={{ padding: "6px 10px", borderLeft: `1px solid ${bpLine}22` }}>
+              <span className="font-mono" style={{ fontSize: "8px", letterSpacing: "0.08em", textTransform: "uppercase", color: bpMuted }}>
+                Recent Applications
               </span>
             </div>
+          </div>
+
+          {/* Column sub-header for records */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "26px 1.6fr 1fr 1fr",
+              borderBottom: `1px solid ${bpLine}33`,
+              background: "rgba(255,255,255,0.02)",
+            }}
+          >
+            <div className="font-mono" style={{ fontSize: "8px", color: bpMuted, textAlign: "center", padding: "5px 0", borderRight: `1px solid ${bpLine}22` }}>
+              5
+            </div>
+            {["Loan ID", "Type", "Status"].map((h) => (
+              <div key={h} style={{ padding: "5px 10px", borderLeft: `1px solid ${bpLine}22` }}>
+                <span className="font-mono" style={{ fontSize: "7px", letterSpacing: "0.06em", textTransform: "uppercase", color: bpMuted }}>
+                  {h}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Record rows */}
+          {RECORD_ROWS.map((row, i) => (
+            <div
+              key={row.id}
+              style={{
+                display: "grid",
+                gridTemplateColumns: "26px 1.6fr 1fr 1fr",
+                borderBottom: `1px solid ${bpLine}22`,
+                background: i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.015)",
+              }}
+            >
+              <div className="font-mono" style={{ fontSize: "8px", color: bpMuted, textAlign: "center", padding: "7px 0", borderRight: `1px solid ${bpLine}22` }}>
+                {6 + i}
+              </div>
+              <div style={{ padding: "7px 10px", borderLeft: `1px solid ${bpLine}22` }}>
+                <span className="font-mono" style={{ fontSize: "9px", color: bpBright }}>{row.id}</span>
+              </div>
+              <div style={{ padding: "7px 10px", borderLeft: `1px solid ${bpLine}22` }}>
+                <span className="font-mono" style={{ fontSize: "8.5px", color: bpMuted }}>{row.label}</span>
+              </div>
+              <div style={{ padding: "7px 10px", borderLeft: `1px solid ${bpLine}22` }}>
+                <span
+                  className="font-mono"
+                  style={{
+                    fontSize: "8px",
+                    color: recordStatusColor(row.status, "dark"),
+                    background: `${recordStatusColor(row.status, "dark")}20`,
+                    borderRadius: "999px",
+                    padding: "2px 7px",
+                  }}
+                >
+                  {row.status}
+                </span>
+              </div>
+            </div>
           ))}
         </div>
-      </div>
 
+        {/* Sheet tab */}
+        <div
+          className="flex items-center gap-1"
+          style={{
+            padding: "6px 10px",
+            borderTop: `1px solid ${bpLine}22`,
+            flexShrink: 0,
+          }}
+        >
+          <span
+            className="font-mono"
+            style={{
+              fontSize: "8px",
+              color: bpBright,
+              background: "rgba(255,255,255,0.06)",
+              borderRadius: "4px 4px 0 0",
+              padding: "4px 10px",
+              borderTop: "2px solid #3ecf6e",
+            }}
+          >
+            Sheet1
+          </span>
+          <span className="font-mono" style={{ fontSize: "8px", color: bpMuted, padding: "4px 10px" }}>
+            Sheet2
+          </span>
+        </div>
+      </div>
       <div
         className="absolute top-0 bottom-0"
         style={{ left: `${pos}%`, width: "3px", background: aux.accent, transform: "translateX(-1.5px)", pointerEvents: "none", boxShadow: `0 0 24px 2px ${aux.accent}` }}
@@ -728,7 +925,7 @@ function PrototypeBlueprint({ theme }: { theme: "light" | "dark" }) {
               Stop building prototypes.
               <br />
               <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
-                Start running engines.
+                Start running engines
               </em>
             </h2>
             <p style={{ fontSize: "15px", lineHeight: 1.8, color: pal.headerParaColor, marginBottom: "22px" }}>
@@ -737,9 +934,15 @@ function PrototypeBlueprint({ theme }: { theme: "light" | "dark" }) {
             <div className="flex flex-col gap-3">
               {BLUEPRINT_CHECKS.map((check) => (
                 <div key={check} className="flex items-center gap-3">
-                  <span style={{ color: aux.accent, flexShrink: 0 }}>
-                    <IconCheck />
-                  </span>
+                  <span
+                    style={{
+                      flexShrink: 0,
+                      width: "6px",
+                      height: "6px",
+                      borderRadius: "50%",
+                      background: aux.accent,
+                    }}
+                  />
                   <span style={{ fontSize: "14px", color: pal.headerHeadingColor }}>{check}</span>
                 </div>
               ))}
@@ -866,7 +1069,7 @@ function TheReceipts({ theme }: { theme: "light" | "dark" }) {
           Impact Delivered
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
-            Measured by outcomes.
+            Measured by outcomes
           </em>
         </h2>
       </div>
@@ -1162,7 +1365,7 @@ function TechToolsSection({ theme }: { theme: "light" | "dark" }) {
               More than development.
               <br />
               <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
-                End-to-end ownership.
+                End-to-end ownership
               </em>
             </h2>
           </div>
@@ -1404,6 +1607,7 @@ function AICapabilityCard({
       }}
     >
       <div
+        className="ac-icon-wrap"
         style={{
           color: aux.accent,
           width: "48px",
@@ -1473,6 +1677,19 @@ function AICapabilities({ theme }: { theme: "light" | "dark" }) {
         }
         .ac-card.ac-vis { opacity: 1; transform: translateY(0); }
         .ac-card:hover { background: var(--ac-hover-bg); }
+
+        .ac-icon-wrap {
+          transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .ac-card:hover .ac-icon-wrap {
+          transform: translateY(-6px) scale(1.12) rotate(-4deg);
+        }
+        .ac-icon-wrap img {
+          transition: filter 0.35s ease;
+        }
+        .ac-card:hover .ac-icon-wrap img {
+          filter: drop-shadow(0 8px 14px rgba(237,99,35,0.35));
+        }
       `}</style>
 
       <div ref={headerRef} className="mx-auto max-w-[1600px] px-5 sm:px-8 lg:px-12 xl:px-16 mb-14" style={{ opacity: 0 }}>
@@ -1483,7 +1700,7 @@ function AICapabilities({ theme }: { theme: "light" | "dark" }) {
           AI, Built for
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323", textTransform: "none", fontSize: "0.85em", letterSpacing: "0em" }}>
-            Actually Scales.
+            Actually Scales
           </em>
         </h2>
         <p style={{ maxWidth: "620px", fontSize: "15px", lineHeight: 1.75, color: pal.headerParaColor }}>
@@ -1744,7 +1961,7 @@ function AIDeliveryProcess({ theme }: { theme: "light" | "dark" }) {
          AI-Powered Engineering.
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323" }}>
-            Perfected by Humans.
+            Perfected by Humans
           </em>
         </h2>
         <p style={{ maxWidth: "620px", fontSize: "15px", lineHeight: 1.75, color: pal.headerParaColor }}>
@@ -1985,7 +2202,7 @@ function EngineeringNotes({ theme }: { theme: "light" | "dark" }) {
               INSIGHTS FROM
               <br />
               <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323", textTransform: "none", fontSize: "0.85em", letterSpacing: "0em" }}>
-               The Frontlines.
+               The Frontlines
               </em>
             </h2>
           </div>
@@ -2021,7 +2238,6 @@ function EngineeringNotes({ theme }: { theme: "light" | "dark" }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const SHIPPED_INDUSTRIES = [
-  { icon: IconStethoscope, title: "Healthcare", desc: "Telemedicine, EHR, and clinical AI built for compliance." },
   { icon: IconDollar, title: "Finance", desc: "Banking, payments, and trading systems that can't break." },
   { icon: IconTv, title: "Media & OTT", desc: "Streaming, DRM, and content discovery built for scale." },
   { icon: IconTruck, title: "Logistics", desc: "Real-time tracking and routing across messy operations." },
@@ -2029,6 +2245,7 @@ const SHIPPED_INDUSTRIES = [
   { icon: IconGraduationCap, title: "Education", desc: "Learning platforms built to keep students engaged." },
   { icon: IconHome, title: "Real Estate", desc: "Listings, transactions, and property management tools." },
   { icon: IconScale, title: "Legal", desc: "Document intelligence and workflow for legal teams." },
+  { icon: IconStethoscope, title: "Healthcare", desc: "Telemedicine, EHR, and clinical AI built for compliance." },
 ];
 
 function IndustryCard({
@@ -2146,7 +2363,7 @@ function ShippedIndustries({ theme }: { theme: "light" | "dark" }) {
           Experience that spans
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323", textTransform: "none", fontSize: "0.85em", letterSpacing: "0em" }}>
-            Multiple Industries.
+            Multiple Industries
           </em>
         </h2>
         <p style={{ maxWidth: "640px", fontSize: "15px", lineHeight: 1.75, color: pal.headerParaColor }}>

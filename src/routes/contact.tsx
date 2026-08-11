@@ -419,7 +419,7 @@ function LocationSection({ theme }: { theme: "light" | "dark" }) {
                 <div className="ctp-map-pin-dot" />
                 <div className="ctp-map-pin-ring" />
               </div>
-              <span className="ctp-map-pin-label">AHMEDABAD, INDIA</span>
+              <span className="ctp-map-pin-label">JARVIS TECHNOLABS</span>
             </div>
           </div>
 
@@ -499,7 +499,7 @@ function ContactPage() {
         Plug into
         <br />
         <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "var(--acc)" }}>
-          the source.
+          the source
         </em>
       </h1>
       <p className="ctp-sub">

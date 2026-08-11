@@ -16,9 +16,13 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CareersRouteImport } from './routes/careers'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CareersIndexRouteImport } from './routes/careers.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as CaseStudiesPryvaseeAiRouteImport } from './routes/case-studies/pryvasee-ai'
+import { Route as CareersRoleIdRouteImport } from './routes/careers.$roleId'
+import { Route as CareersRoleIdIndexRouteImport } from './routes/careers.$roleId.index'
+import { Route as CareersRoleIdApplyRouteImport } from './routes/careers.$roleId.apply'
 
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
@@ -55,6 +59,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersIndexRoute = CareersIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CareersRoute,
+} as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -70,23 +79,41 @@ const CaseStudiesPryvaseeAiRoute = CaseStudiesPryvaseeAiRouteImport.update({
   path: '/case-studies/pryvasee-ai',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CareersRoleIdRoute = CareersRoleIdRouteImport.update({
+  id: '/$roleId',
+  path: '/$roleId',
+  getParentRoute: () => CareersRoute,
+} as any)
+const CareersRoleIdIndexRoute = CareersRoleIdIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CareersRoleIdRoute,
+} as any)
+const CareersRoleIdApplyRoute = CareersRoleIdApplyRouteImport.update({
+  id: '/apply',
+  path: '/apply',
+  getParentRoute: () => CareersRoleIdRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/careers': typeof CareersRoute
+  '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/hire': typeof HireRoute
   '/insights': typeof InsightsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
+  '/careers/$roleId': typeof CareersRoleIdRouteWithChildren
   '/case-studies/pryvasee-ai': typeof CaseStudiesPryvaseeAiRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/careers/': typeof CareersIndexRoute
+  '/careers/$roleId/apply': typeof CareersRoleIdApplyRoute
+  '/careers/$roleId/': typeof CareersRoleIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/careers': typeof CareersRoute
   '/contact': typeof ContactRoute
   '/hire': typeof HireRoute
   '/insights': typeof InsightsRouteWithChildren
@@ -94,19 +121,26 @@ export interface FileRoutesByTo {
   '/case-studies/pryvasee-ai': typeof CaseStudiesPryvaseeAiRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/careers': typeof CareersIndexRoute
+  '/careers/$roleId/apply': typeof CareersRoleIdApplyRoute
+  '/careers/$roleId': typeof CareersRoleIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/careers': typeof CareersRoute
+  '/careers': typeof CareersRouteWithChildren
   '/contact': typeof ContactRoute
   '/hire': typeof HireRoute
   '/insights': typeof InsightsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
+  '/careers/$roleId': typeof CareersRoleIdRouteWithChildren
   '/case-studies/pryvasee-ai': typeof CaseStudiesPryvaseeAiRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/careers/': typeof CareersIndexRoute
+  '/careers/$roleId/apply': typeof CareersRoleIdApplyRoute
+  '/careers/$roleId/': typeof CareersRoleIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -118,14 +152,17 @@ export interface FileRouteTypes {
     | '/hire'
     | '/insights'
     | '/services'
+    | '/careers/$roleId'
     | '/case-studies/pryvasee-ai'
     | '/insights/$slug'
     | '/services/$slug'
+    | '/careers/'
+    | '/careers/$roleId/apply'
+    | '/careers/$roleId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/careers'
     | '/contact'
     | '/hire'
     | '/insights'
@@ -133,6 +170,9 @@ export interface FileRouteTypes {
     | '/case-studies/pryvasee-ai'
     | '/insights/$slug'
     | '/services/$slug'
+    | '/careers'
+    | '/careers/$roleId/apply'
+    | '/careers/$roleId'
   id:
     | '__root__'
     | '/'
@@ -142,15 +182,19 @@ export interface FileRouteTypes {
     | '/hire'
     | '/insights'
     | '/services'
+    | '/careers/$roleId'
     | '/case-studies/pryvasee-ai'
     | '/insights/$slug'
     | '/services/$slug'
+    | '/careers/'
+    | '/careers/$roleId/apply'
+    | '/careers/$roleId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  CareersRoute: typeof CareersRoute
+  CareersRoute: typeof CareersRouteWithChildren
   ContactRoute: typeof ContactRoute
   HireRoute: typeof HireRoute
   InsightsRoute: typeof InsightsRouteWithChildren
@@ -209,6 +253,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/careers/': {
+      id: '/careers/'
+      path: '/'
+      fullPath: '/careers/'
+      preLoaderRoute: typeof CareersIndexRouteImport
+      parentRoute: typeof CareersRoute
+    }
     '/services/$slug': {
       id: '/services/$slug'
       path: '/$slug'
@@ -230,8 +281,56 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CaseStudiesPryvaseeAiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/careers/$roleId': {
+      id: '/careers/$roleId'
+      path: '/$roleId'
+      fullPath: '/careers/$roleId'
+      preLoaderRoute: typeof CareersRoleIdRouteImport
+      parentRoute: typeof CareersRoute
+    }
+    '/careers/$roleId/': {
+      id: '/careers/$roleId/'
+      path: '/'
+      fullPath: '/careers/$roleId/'
+      preLoaderRoute: typeof CareersRoleIdIndexRouteImport
+      parentRoute: typeof CareersRoleIdRoute
+    }
+    '/careers/$roleId/apply': {
+      id: '/careers/$roleId/apply'
+      path: '/apply'
+      fullPath: '/careers/$roleId/apply'
+      preLoaderRoute: typeof CareersRoleIdApplyRouteImport
+      parentRoute: typeof CareersRoleIdRoute
+    }
   }
 }
+
+interface CareersRoleIdRouteChildren {
+  CareersRoleIdApplyRoute: typeof CareersRoleIdApplyRoute
+  CareersRoleIdIndexRoute: typeof CareersRoleIdIndexRoute
+}
+
+const CareersRoleIdRouteChildren: CareersRoleIdRouteChildren = {
+  CareersRoleIdApplyRoute: CareersRoleIdApplyRoute,
+  CareersRoleIdIndexRoute: CareersRoleIdIndexRoute,
+}
+
+const CareersRoleIdRouteWithChildren = CareersRoleIdRoute._addFileChildren(
+  CareersRoleIdRouteChildren,
+)
+
+interface CareersRouteChildren {
+  CareersRoleIdRoute: typeof CareersRoleIdRouteWithChildren
+  CareersIndexRoute: typeof CareersIndexRoute
+}
+
+const CareersRouteChildren: CareersRouteChildren = {
+  CareersRoleIdRoute: CareersRoleIdRouteWithChildren,
+  CareersIndexRoute: CareersIndexRoute,
+}
+
+const CareersRouteWithChildren =
+  CareersRoute._addFileChildren(CareersRouteChildren)
 
 interface InsightsRouteChildren {
   InsightsSlugRoute: typeof InsightsSlugRoute
@@ -260,7 +359,7 @@ const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  CareersRoute: CareersRoute,
+  CareersRoute: CareersRouteWithChildren,
   ContactRoute: ContactRoute,
   HireRoute: HireRoute,
   InsightsRoute: InsightsRouteWithChildren,
