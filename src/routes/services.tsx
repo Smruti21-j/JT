@@ -13,6 +13,7 @@ import consultingImg from "@/assets/service-consulting.jpg";
 import growthImg from "@/assets/service-growth.jpg";
 import managedImg from "@/assets/service-managed.jpg";
 import servicesImage from "@/assets/servicesimage.png";
+import { ScrollToTop } from "@/components/site/ScrollToTop";
 
 const PANEL_ACCENT = [
   "var(--color-primary)", "var(--color-primary)", "var(--color-primary)",
@@ -713,6 +714,7 @@ function ServicesPage() {
       <ServicesHero />
       <ServicesSection />
       <Footer theme={theme} />
+       <ScrollToTop />
     </main>
   );
 }

@@ -12,6 +12,7 @@ import career05 from "@/assets/career05.png";
 import career06 from "@/assets/career06.png";
 import career07 from "@/assets/career07.png";
 import { useThemeInit } from "@/hooks/use-theme-init";
+import { ScrollToTop } from "@/components/site/ScrollToTop";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -971,6 +972,7 @@ function CareersPage() {
       <CultureGallery theme={theme} />
 
       <Footer theme={theme} />
+      <ScrollToTop />
     </main>
   );
 }

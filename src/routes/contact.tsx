@@ -5,6 +5,7 @@ import { useReveal } from "@/hooks/use-reveal";
 import { useThemeInit } from "@/hooks/use-theme-init";
 import { useEffect, useRef, useState } from "react";
 import contactHeroImg from "@/assets/contacthero.png";
+import { ScrollToTop } from "@/components/site/ScrollToTop";
 
 /* ─── Styles ─────────────────────────────────────────────────────────────── */
 const CONTACT_STYLES = `
@@ -288,8 +289,8 @@ const CONTACT_STYLES = `
 `;
 
 /* ─── Helpers ────────────────────────────────────────────────────────────── */
-function useInView(threshold = 0.12): [React.RefObject<HTMLDivElement>, boolean] {
-  const ref = useRef<HTMLDivElement>(null);
+function useInView(threshold = 0.12): [React.RefObject<HTMLDivElement | null>, boolean] {
+  const ref = useRef<HTMLDivElement | null>(null);
   const [vis, setVis] = useState(false);
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -632,6 +633,7 @@ function ContactPage() {
       <LocationSection theme={theme} />
 
       <Footer theme={theme} />
+      <ScrollToTop />
     </main>
   );
 }

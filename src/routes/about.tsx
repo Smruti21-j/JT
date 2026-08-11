@@ -3,6 +3,7 @@ import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
 import { useThemeInit } from "@/hooks/use-theme-init";
 import { useEffect, useRef, useState, useCallback } from "react";
+import { ScrollToTop } from "@/components/site/ScrollToTop";
 
 // ─── Local image imports (Prime Directives + Story Chapters) ─────────────────
 import philosophyImg from "@/assets/Philosophy.png";
@@ -747,13 +748,12 @@ function AboutPage() {
             </div>
           </div>
 
-          <DirectiveCards />
+  <DirectiveCards />
         </div>
       </section>
 
-   
-
       <Footer theme={theme} />
+      <ScrollToTop />
     </main>
   );
 }

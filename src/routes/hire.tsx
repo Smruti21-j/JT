@@ -32,7 +32,7 @@ import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
 import { useThemeInit } from "@/hooks/use-theme-init";
-
+import { ScrollToTop } from "@/components/site/ScrollToTop";
 import { useRef, useState, useEffect } from "react";
  
 import heroCover from "@/assets/hirecover.png";
@@ -1189,6 +1189,7 @@ function HirePage() {
       </section>
 
       <Footer theme={theme} />
+      <ScrollToTop />
     </main>
   );
 }

@@ -6,6 +6,7 @@ import { useReveal } from "@/hooks/use-reveal";
 import { useThemeInit } from "@/hooks/use-theme-init";
 import { POSTS } from "@/data/insights";
 import insightsBg from "@/assets/insightspage.png";
+import { ScrollToTop } from "@/components/site/ScrollToTop";
 
 
 export const Route = createFileRoute("/insights")({
@@ -824,6 +825,7 @@ function InsightsPage() {
 
       <CTA />
       <Footer theme={theme} />
+       <ScrollToTop />
     </main>
   );
 }

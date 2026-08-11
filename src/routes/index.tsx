@@ -5,7 +5,7 @@ import { ScrollToTop } from "@/components/site/ScrollToTop";
 import { Brands } from "@/components/site/Brands";
 import { CTA, Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
-import { useEffect, useRef, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import { useThemeInit } from "@/hooks/use-theme-init";
 //-----icons used -----
 import iconAiAgents from "../assets/icon-ai-agents.png";  
@@ -1205,7 +1205,7 @@ const TECH_TOOL_ITEMS = [
     desc: "From a rough idea to a client-ready, costed proposal.",
     icon: IconDocument,
   },
-];
+] as const;
 
 // ─── Generative wireframe art (replaces the icon on each card) ──────────────
 function WireframeArt({ index }: { index: number }) {
@@ -1246,7 +1246,7 @@ function ArchCard({
   active,
   theme,
 }: {
-  item: (typeof TECH_TOOL_ITEMS)[0];
+  item: (typeof TECH_TOOL_ITEMS)[number];
   index: number;
   active: boolean;
   theme: "light" | "dark";
@@ -1273,7 +1273,7 @@ function ArchCard({
 
   if ("slug" in item && item.slug) {
     return (
-      <Link to="/case-studies/$slug" params={{ slug: item.slug }} className={className}>
+      <Link to={`/case-studies/${item.slug}`} className={className}>
         {content}
       </Link>
     );
@@ -1566,7 +1566,7 @@ function AICapabilityCard({
   index,
   theme,
 }: {
-  cap: (typeof AI_CAPABILITIES)[0] & { image?: string };
+  cap: (typeof AI_CAPABILITIES)[0] & { image?: string; icon?: (props: { size?: number }) => JSX.Element };
   index: number;
   theme: "light" | "dark";
 }) {
