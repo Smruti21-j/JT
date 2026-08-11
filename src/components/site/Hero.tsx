@@ -5,7 +5,7 @@ import type { SiteTheme } from "@/hooks/use-theme-init";
 import heroIllustrationDark from "@/assets/darktheme.png";
 import heroIllustrationLight from "@/assets/lighttheme.png";
 
-const ROTATING_WORDS = ["Digital", "Autonomous", "Sovereign", "Architected", "Pioneering", "Cohesive", "Catalytic"];
+const ROTATING_WORDS = ["Sovereign", "Architected", "Pioneering", "Cohesive", "Catalytic"];
 
 function RotatingWord() {
   const [index, setIndex] = useState(0);
@@ -85,9 +85,7 @@ export function Hero({ theme }: HeroProps) {
             <div className="mt-4 h-1 w-16 bg-primary rounded-full" />
 
             <p className="mt-6 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
-              Move decisively from experimentation to enterprise-scale impact. Build the
-              autonomous intelligence layer that powers your future, delivering the resilient,
-              sovereign, and mission-ready digital ecosystems essential for the AI-first economy.
+              Not another AI pilot stuck behind glass. We build autonomous systems that think, adapt, and act at enterprise scale;  the intelligent infrastructure powering the businesses that refuse to wait for "eventually."
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-4">

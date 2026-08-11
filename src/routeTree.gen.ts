@@ -20,6 +20,7 @@ import { Route as CareersIndexRouteImport } from './routes/careers.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as CaseStudiesPryvaseeAiRouteImport } from './routes/case-studies/pryvasee-ai'
+import { Route as CaseStudiesLendnovaRouteImport } from './routes/case-studies/lendnova'
 import { Route as CareersRoleIdRouteImport } from './routes/careers.$roleId'
 import { Route as CareersRoleIdIndexRouteImport } from './routes/careers.$roleId.index'
 import { Route as CareersRoleIdApplyRouteImport } from './routes/careers.$roleId.apply'
@@ -79,6 +80,11 @@ const CaseStudiesPryvaseeAiRoute = CaseStudiesPryvaseeAiRouteImport.update({
   path: '/case-studies/pryvasee-ai',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CaseStudiesLendnovaRoute = CaseStudiesLendnovaRouteImport.update({
+  id: '/case-studies/lendnova',
+  path: '/case-studies/lendnova',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CareersRoleIdRoute = CareersRoleIdRouteImport.update({
   id: '/$roleId',
   path: '/$roleId',
@@ -104,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/insights': typeof InsightsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
   '/careers/$roleId': typeof CareersRoleIdRouteWithChildren
+  '/case-studies/lendnova': typeof CaseStudiesLendnovaRoute
   '/case-studies/pryvasee-ai': typeof CaseStudiesPryvaseeAiRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/hire': typeof HireRoute
   '/insights': typeof InsightsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
+  '/case-studies/lendnova': typeof CaseStudiesLendnovaRoute
   '/case-studies/pryvasee-ai': typeof CaseStudiesPryvaseeAiRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -135,6 +143,7 @@ export interface FileRoutesById {
   '/insights': typeof InsightsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
   '/careers/$roleId': typeof CareersRoleIdRouteWithChildren
+  '/case-studies/lendnova': typeof CaseStudiesLendnovaRoute
   '/case-studies/pryvasee-ai': typeof CaseStudiesPryvaseeAiRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/insights'
     | '/services'
     | '/careers/$roleId'
+    | '/case-studies/lendnova'
     | '/case-studies/pryvasee-ai'
     | '/insights/$slug'
     | '/services/$slug'
@@ -167,6 +177,7 @@ export interface FileRouteTypes {
     | '/hire'
     | '/insights'
     | '/services'
+    | '/case-studies/lendnova'
     | '/case-studies/pryvasee-ai'
     | '/insights/$slug'
     | '/services/$slug'
@@ -183,6 +194,7 @@ export interface FileRouteTypes {
     | '/insights'
     | '/services'
     | '/careers/$roleId'
+    | '/case-studies/lendnova'
     | '/case-studies/pryvasee-ai'
     | '/insights/$slug'
     | '/services/$slug'
@@ -199,6 +211,7 @@ export interface RootRouteChildren {
   HireRoute: typeof HireRoute
   InsightsRoute: typeof InsightsRouteWithChildren
   ServicesRoute: typeof ServicesRouteWithChildren
+  CaseStudiesLendnovaRoute: typeof CaseStudiesLendnovaRoute
   CaseStudiesPryvaseeAiRoute: typeof CaseStudiesPryvaseeAiRoute
 }
 
@@ -279,6 +292,13 @@ declare module '@tanstack/react-router' {
       path: '/case-studies/pryvasee-ai'
       fullPath: '/case-studies/pryvasee-ai'
       preLoaderRoute: typeof CaseStudiesPryvaseeAiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/case-studies/lendnova': {
+      id: '/case-studies/lendnova'
+      path: '/case-studies/lendnova'
+      fullPath: '/case-studies/lendnova'
+      preLoaderRoute: typeof CaseStudiesLendnovaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/careers/$roleId': {
@@ -364,6 +384,7 @@ const rootRouteChildren: RootRouteChildren = {
   HireRoute: HireRoute,
   InsightsRoute: InsightsRouteWithChildren,
   ServicesRoute: ServicesRouteWithChildren,
+  CaseStudiesLendnovaRoute: CaseStudiesLendnovaRoute,
   CaseStudiesPryvaseeAiRoute: CaseStudiesPryvaseeAiRoute,
 }
 export const routeTree = rootRouteImport

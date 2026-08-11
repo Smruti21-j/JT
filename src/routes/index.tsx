@@ -1164,6 +1164,16 @@ function IconDocument({ size = 22 }: { size?: number }) {
   );
 }
 
+function IconLayers({ size = 22 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3 2.5 8 12 13l9.5-5Z" />
+      <path d="M2.5 12 12 17l9.5-5" />
+      <path d="M2.5 16 12 21l9.5-5" />
+    </svg>
+  );
+}
+
 const TECH_TOOL_ITEMS = [
   {
     tag: "Case Study · AI Privacy",
@@ -1173,10 +1183,11 @@ const TECH_TOOL_ITEMS = [
     slug: "pryvasee-ai",
   },
   {
-    tag: "AgencyOps · Dev Hub",
-    title: "EchoAce",
-    desc: "A client-safe project workspace that wraps your repos and agents.",
-    icon: IconGrid,
+    tag: "Case Study · Digital Lending",
+    title: "LendNova",
+    desc: "A multi-lender digital marketplace that matches borrowers with the right lender in one application.",
+    icon: IconLayers,
+    slug: "lendnova",
   },
   {
     tag: "AgencyOps · Portfolio Sharing",
