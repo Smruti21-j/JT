@@ -519,12 +519,14 @@ function InsightsPage() {
   // nodes the old observer never sees — so they stay invisible until a full
   // page refresh re-runs the hook. This forces them visible manually
   // whenever we land back on the grid view.
-  useEffect(() => {
+ useEffect(() => {
     if (activeIndex === null) {
       const raf = requestAnimationFrame(() => {
         document.querySelectorAll<HTMLElement>(".reveal").forEach((el) => {
           el.style.opacity = "1";
           el.style.transform = "none";
+          el.style.filter = "none";
+          el.classList.add("is-visible", "in-view", "visible");
         });
       });
       return () => cancelAnimationFrame(raf);

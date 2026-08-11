@@ -2273,6 +2273,7 @@ function EngineeringNotes({ theme }: { theme: "light" | "dark" }) {
           </div>
           <Link
             to="/insights"
+            search={{ post: undefined }}
             className="font-mono"
             style={{ fontSize: "12px", letterSpacing: "0.2em", textTransform: "uppercase", color: pal.numColor, fontWeight: 500, whiteSpace: "nowrap" }}>
             Read the blog →
