@@ -72,7 +72,7 @@ function auxPalette(theme: "light" | "dark") {
       lineColor: "rgba(0,0,0,0.12)",
       dotFill: "#fbfaf7",
       aiRowBg: "rgba(0,0,0,0.045)",
-      aiBadgeBg: "#7C5CFC",
+      aiBadgeBg: "#8a8a8a",
       humanRowBg: "#FDECDC",
       humanBadgeBg: "rgb(199,90,26)",
       pillBg: "#ffffff",
@@ -89,7 +89,7 @@ function auxPalette(theme: "light" | "dark") {
     lineColor: "rgba(255,255,255,0.14)",
     dotFill: "#061512",
     aiRowBg: "rgba(255,255,255,0.06)",
-    aiBadgeBg: "#8b74f7",
+    aiBadgeBg: "#9a9a9a",
     humanRowBg: "rgba(255,130,50,0.12)",
     humanBadgeBg: "rgb(255,130,50)",
     pillBg: "#0a1c18",
@@ -444,12 +444,15 @@ function BlueprintProductionSlider({ theme }: { theme: "light" | "dark" }) {
 
   const rowIcon = (key: string) => (key === "home" ? IconHome : IconDollar);
 
-  const bpBg = "#0c1f4d";
-  const bpGridMinor = "rgba(255,255,255,0.07)";
-  const bpGridMajor = "rgba(255,255,255,0.14)";
-  const bpLine = "rgba(255,255,255,0.85)";
-  const bpMuted = "rgba(255,255,255,0.6)";
-  const bpBright = "#ffffff";
+  // Real-Excel palette for the spreadsheet mockup panel
+  const excelBg = "#ffffff";
+  const excelHeaderBg = "#f3f2f1";
+  const excelGrid = "#d4d4d4";
+  const excelHeaderText = "#616161";
+  const excelText = "#000000";
+  const excelGreen = "#217346";
+  const excelPositive = "#107C41";
+  const excelNegative = "#C00000";
 
   return (
     <div
@@ -568,14 +571,14 @@ function BlueprintProductionSlider({ theme }: { theme: "light" | "dark" }) {
         </div>
       </div>
 
-     <div
+      {/* Excel-style spreadsheet mockup (revealed by drag slider) */}
+      <div
         className="absolute inset-0"
         style={{
-          background: "#1B1E24",
-          padding: "0",
+          background: excelBg,
           overflow: "hidden",
           clipPath: `inset(0 ${100 - pos}% 0 0)`,
-          fontFamily: "var(--font-sans)",
+          fontFamily: "Calibri, 'Segoe UI', Arial, sans-serif",
           display: "flex",
           flexDirection: "column",
         }}
@@ -584,28 +587,48 @@ function BlueprintProductionSlider({ theme }: { theme: "light" | "dark" }) {
         <div
           className="flex items-center justify-between"
           style={{
-            padding: "9px 14px",
-            borderBottom: `1px solid ${bpLine}22`,
+            padding: "6px 12px",
+            background: excelHeaderBg,
+            borderBottom: `1px solid ${excelGrid}`,
             flexShrink: 0,
           }}
         >
-          <p className="font-mono" style={{ fontSize: "11px", fontWeight: 700, color: bpBright, margin: 0 }}>
-            admin_dashboard.xlsx
-          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <span
+              style={{
+                width: "16px",
+                height: "16px",
+                borderRadius: "3px",
+                background: excelGreen,
+                color: "#fff",
+                fontSize: "9px",
+                fontWeight: 800,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              X
+            </span>
+            <p style={{ fontSize: "12px", fontWeight: 600, color: "#1a1a1a", margin: 0 }}>
+              admin_dashboard.xlsx
+            </p>
+          </div>
           <span
             className="font-mono"
             style={{
               fontSize: "8px",
-              letterSpacing: "0.1em",
+              letterSpacing: "0.08em",
               textTransform: "uppercase",
-              color: "#1e7d3f",
-              background: "rgba(33,163,88,0.15)",
-              border: "1px solid rgba(33,163,88,0.35)",
-              borderRadius: "999px",
-              padding: "3px 9px",
+              color: excelGreen,
+              background: "rgba(33,115,70,0.1)",
+              border: `1px solid ${excelGreen}55`,
+              borderRadius: "3px",
+              padding: "2px 8px",
+              fontWeight: 700,
             }}
           >
-            Live Data
+            AutoSave On
           </span>
         </div>
 
@@ -613,54 +636,49 @@ function BlueprintProductionSlider({ theme }: { theme: "light" | "dark" }) {
         <div
           className="flex items-center gap-2"
           style={{
-            padding: "6px 14px",
-            borderBottom: `1px solid ${bpLine}22`,
+            padding: "5px 10px",
+            background: excelBg,
+            borderBottom: `1px solid ${excelGrid}`,
             flexShrink: 0,
           }}
         >
           <span
-            className="font-mono"
             style={{
-              fontSize: "8.5px",
-              color: bpBright,
-              background: "rgba(255,255,255,0.06)",
-              border: `1px solid ${bpLine}33`,
-              borderRadius: "3px",
+              fontSize: "11px",
+              color: excelText,
+              background: "#fff",
+              border: `1px solid ${excelGrid}`,
+              borderRadius: "2px",
               padding: "2px 8px",
-              minWidth: "34px",
+              minWidth: "42px",
               textAlign: "center",
+              fontWeight: 500,
             }}
           >
             B2
           </span>
-          <span className="font-mono" style={{ fontSize: "9px", color: bpMuted }}>fx</span>
-          <span className="font-mono" style={{ fontSize: "9px", color: bpBright, opacity: 0.85 }}>
+          <span style={{ fontSize: "11px", color: excelHeaderText, fontStyle: "italic", padding: "0 4px" }}>fx</span>
+          <span style={{ fontSize: "11px", color: excelText }}>
             =SUM(Applications[Status]="Disbursed")
           </span>
         </div>
 
-        {/* Spreadsheet grid */}
+        {/* Grid */}
         <div style={{ flex: 1, overflow: "hidden", position: "relative" }}>
-          {/* Column header row */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "26px repeat(4, 1fr)",
-              borderBottom: `1px solid ${bpLine}33`,
-              background: "rgba(255,255,255,0.03)",
-            }}
-          >
-            <div />
+          {/* Column letters */}
+          <div style={{ display: "grid", gridTemplateColumns: "26px repeat(4, 1fr)", background: excelHeaderBg }}>
+            <div style={{ borderRight: `1px solid ${excelGrid}`, borderBottom: `1px solid ${excelGrid}` }} />
             {["A", "B", "C", "D"].map((col) => (
               <div
                 key={col}
-                className="font-mono"
                 style={{
-                  fontSize: "8px",
-                  color: bpMuted,
+                  fontSize: "10px",
+                  fontWeight: 600,
+                  color: excelHeaderText,
                   textAlign: "center",
-                  padding: "5px 0",
-                  borderLeft: `1px solid ${bpLine}22`,
+                  padding: "4px 0",
+                  borderRight: `1px solid ${excelGrid}`,
+                  borderBottom: `1px solid ${excelGrid}`,
                 }}
               >
                 {col}
@@ -668,172 +686,102 @@ function BlueprintProductionSlider({ theme }: { theme: "light" | "dark" }) {
             ))}
           </div>
 
-          {/* Header data row */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "26px repeat(4, 1fr)",
-              borderBottom: `1px solid ${bpLine}33`,
-            }}
-          >
-            <div
-              className="font-mono"
-              style={{ fontSize: "8px", color: bpMuted, textAlign: "center", padding: "8px 0", borderRight: `1px solid ${bpLine}22` }}
-            >
-              1
-            </div>
+          {/* Row 1 — headers */}
+          <div style={{ display: "grid", gridTemplateColumns: "26px repeat(4, 1fr)" }}>
+            <div style={{ fontSize: "10px", color: excelHeaderText, textAlign: "center", padding: "8px 0", background: excelHeaderBg, borderRight: `1px solid ${excelGrid}`, borderBottom: `1px solid ${excelGrid}` }}>1</div>
             {STAT_CARDS.map((s) => (
-              <div
-                key={s.label}
-                style={{
-                  padding: "8px 8px",
-                  borderLeft: `1px solid ${bpLine}22`,
-                }}
-              >
-                <p className="font-mono" style={{ fontSize: "7px", letterSpacing: "0.05em", textTransform: "uppercase", color: bpMuted, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              <div key={s.label} style={{ padding: "8px 8px", borderRight: `1px solid ${excelGrid}`, borderBottom: `1px solid ${excelGrid}` }}>
+                <p style={{ fontSize: "10.5px", fontWeight: 700, color: excelText, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {s.label}
                 </p>
               </div>
             ))}
           </div>
 
-          {/* Value row */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "26px repeat(4, 1fr)",
-              borderBottom: `1px solid ${bpLine}33`,
-              background: "rgba(255,255,255,0.02)",
-            }}
-          >
-            <div
-              className="font-mono"
-              style={{ fontSize: "8px", color: bpMuted, textAlign: "center", padding: "10px 0", borderRight: `1px solid ${bpLine}22` }}
-            >
-              2
-            </div>
-            {STAT_CARDS.map((s) => (
+          {/* Row 2 — values, B2 selected */}
+          <div style={{ display: "grid", gridTemplateColumns: "26px repeat(4, 1fr)" }}>
+            <div style={{ fontSize: "10px", color: excelHeaderText, textAlign: "center", padding: "10px 0", background: excelHeaderBg, borderRight: `1px solid ${excelGrid}`, borderBottom: `1px solid ${excelGrid}` }}>2</div>
+            {STAT_CARDS.map((s, i) => (
               <div
                 key={s.label}
                 style={{
-                  padding: "8px 8px",
-                  borderLeft: `1px solid ${bpLine}22`,
+                  padding: "6px 8px",
+                  borderRight: `1px solid ${excelGrid}`,
+                  borderBottom: `1px solid ${excelGrid}`,
+                  outline: i === 1 ? `2px solid ${excelGreen}` : "none",
+                  outlineOffset: "-2px",
+                  position: "relative",
                 }}
               >
-                <p className="font-mono" style={{ fontSize: "14px", fontWeight: 700, color: bpBright, margin: 0 }}>
-                  {s.value}
-                </p>
-                <p className="font-mono" style={{ fontSize: "7.5px", color: s.up ? "#3ecf6e" : "#f0665f", margin: "2px 0 0", fontWeight: 700 }}>
-                  {s.delta}
-                </p>
+                <p style={{ fontSize: "15px", fontWeight: 700, color: excelText, margin: 0 }}>{s.value}</p>
+                <p style={{ fontSize: "9px", color: s.up ? excelPositive : excelNegative, margin: "1px 0 0", fontWeight: 600 }}>{s.delta}</p>
+                {i === 1 && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      right: "-2px",
+                      bottom: "-2px",
+                      width: "6px",
+                      height: "6px",
+                      background: excelGreen,
+                    }}
+                  />
+                )}
               </div>
             ))}
           </div>
 
-          {/* Sparkline row */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "26px repeat(4, 1fr)",
-              borderBottom: `1px solid ${bpLine}33`,
-            }}
-          >
-            <div
-              className="font-mono"
-              style={{ fontSize: "8px", color: bpMuted, textAlign: "center", padding: "10px 0", borderRight: `1px solid ${bpLine}22` }}
-            >
-              3
-            </div>
+          {/* Row 3 — sparkline */}
+          <div style={{ display: "grid", gridTemplateColumns: "26px repeat(4, 1fr)" }}>
+            <div style={{ fontSize: "10px", color: excelHeaderText, textAlign: "center", padding: "10px 0", background: excelHeaderBg, borderRight: `1px solid ${excelGrid}`, borderBottom: `1px solid ${excelGrid}` }}>3</div>
             {STAT_CARDS.map((s) => (
-              <div
-                key={s.label}
-                style={{
-                  padding: "8px 8px",
-                  borderLeft: `1px solid ${bpLine}22`,
-                  display: "flex",
-                  gap: "2px",
-                  alignItems: "flex-end",
-                  height: "20px",
-                }}
-              >
+              <div key={s.label} style={{ padding: "8px 8px", borderRight: `1px solid ${excelGrid}`, borderBottom: `1px solid ${excelGrid}`, display: "flex", gap: "2px", alignItems: "flex-end", height: "20px" }}>
                 {s.bars.map((v, bi) => (
-                  <span key={bi} style={{ width: "3px", height: `${(v / Math.max(...s.bars)) * 100}%`, background: "#3ecf6e", opacity: 0.75, borderRadius: "1px" }} />
+                  <span key={bi} style={{ width: "3px", height: `${(v / Math.max(...s.bars)) * 100}%`, background: excelGreen, opacity: 0.7 }} />
                 ))}
               </div>
             ))}
           </div>
 
-          {/* Divider row label */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "26px 1fr",
-              borderBottom: `1px solid ${bpLine}33`,
-              background: "rgba(255,255,255,0.03)",
-            }}
-          >
-            <div className="font-mono" style={{ fontSize: "8px", color: bpMuted, textAlign: "center", padding: "6px 0", borderRight: `1px solid ${bpLine}22` }}>
-              4
-            </div>
-            <div style={{ padding: "6px 10px", borderLeft: `1px solid ${bpLine}22` }}>
-              <span className="font-mono" style={{ fontSize: "8px", letterSpacing: "0.08em", textTransform: "uppercase", color: bpMuted }}>
-                Recent Applications
-              </span>
+          {/* Row 4 — section label */}
+          <div style={{ display: "grid", gridTemplateColumns: "26px 1fr" }}>
+            <div style={{ fontSize: "10px", color: excelHeaderText, textAlign: "center", padding: "6px 0", background: excelHeaderBg, borderRight: `1px solid ${excelGrid}`, borderBottom: `1px solid ${excelGrid}` }}>4</div>
+            <div style={{ padding: "6px 10px", borderBottom: `1px solid ${excelGrid}` }}>
+              <span style={{ fontSize: "10.5px", fontWeight: 700, color: excelText }}>Recent Applications</span>
             </div>
           </div>
 
-          {/* Column sub-header for records */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "26px 1.6fr 1fr 1fr",
-              borderBottom: `1px solid ${bpLine}33`,
-              background: "rgba(255,255,255,0.02)",
-            }}
-          >
-            <div className="font-mono" style={{ fontSize: "8px", color: bpMuted, textAlign: "center", padding: "5px 0", borderRight: `1px solid ${bpLine}22` }}>
-              5
-            </div>
+          {/* Row 5 — column labels */}
+          <div style={{ display: "grid", gridTemplateColumns: "26px 1.6fr 1fr 1fr" }}>
+            <div style={{ fontSize: "10px", color: excelHeaderText, textAlign: "center", padding: "5px 0", background: excelHeaderBg, borderRight: `1px solid ${excelGrid}`, borderBottom: `1px solid ${excelGrid}` }}>5</div>
             {["Loan ID", "Type", "Status"].map((h) => (
-              <div key={h} style={{ padding: "5px 10px", borderLeft: `1px solid ${bpLine}22` }}>
-                <span className="font-mono" style={{ fontSize: "7px", letterSpacing: "0.06em", textTransform: "uppercase", color: bpMuted }}>
-                  {h}
-                </span>
+              <div key={h} style={{ padding: "5px 10px", borderRight: `1px solid ${excelGrid}`, borderBottom: `1px solid ${excelGrid}` }}>
+                <span style={{ fontSize: "9.5px", fontWeight: 700, color: excelHeaderText }}>{h}</span>
               </div>
             ))}
           </div>
 
-          {/* Record rows */}
+          {/* Data rows */}
           {RECORD_ROWS.map((row, i) => (
-            <div
-              key={row.id}
-              style={{
-                display: "grid",
-                gridTemplateColumns: "26px 1.6fr 1fr 1fr",
-                borderBottom: `1px solid ${bpLine}22`,
-                background: i % 2 === 0 ? "transparent" : "rgba(255,255,255,0.015)",
-              }}
-            >
-              <div className="font-mono" style={{ fontSize: "8px", color: bpMuted, textAlign: "center", padding: "7px 0", borderRight: `1px solid ${bpLine}22` }}>
+            <div key={row.id} style={{ display: "grid", gridTemplateColumns: "26px 1.6fr 1fr 1fr" }}>
+              <div style={{ fontSize: "10px", color: excelHeaderText, textAlign: "center", padding: "7px 0", background: excelHeaderBg, borderRight: `1px solid ${excelGrid}`, borderBottom: `1px solid ${excelGrid}` }}>
                 {6 + i}
               </div>
-              <div style={{ padding: "7px 10px", borderLeft: `1px solid ${bpLine}22` }}>
-                <span className="font-mono" style={{ fontSize: "9px", color: bpBright }}>{row.id}</span>
+              <div style={{ padding: "7px 10px", borderRight: `1px solid ${excelGrid}`, borderBottom: `1px solid ${excelGrid}` }}>
+                <span style={{ fontSize: "10.5px", color: excelText }}>{row.id}</span>
               </div>
-              <div style={{ padding: "7px 10px", borderLeft: `1px solid ${bpLine}22` }}>
-                <span className="font-mono" style={{ fontSize: "8.5px", color: bpMuted }}>{row.label}</span>
+              <div style={{ padding: "7px 10px", borderRight: `1px solid ${excelGrid}`, borderBottom: `1px solid ${excelGrid}` }}>
+                <span style={{ fontSize: "10px", color: excelText }}>{row.label}</span>
               </div>
-              <div style={{ padding: "7px 10px", borderLeft: `1px solid ${bpLine}22` }}>
-                <span
-                  className="font-mono"
-                  style={{
-                    fontSize: "8px",
-                    color: recordStatusColor(row.status, "dark"),
-                    background: `${recordStatusColor(row.status, "dark")}20`,
-                    borderRadius: "999px",
-                    padding: "2px 7px",
-                  }}
-                >
+              <div
+                style={{
+                  padding: "7px 10px",
+                  borderRight: `1px solid ${excelGrid}`,
+                  borderBottom: `1px solid ${excelGrid}`,
+                  background: `${recordStatusColor(row.status, "light")}22`,
+                }}
+              >
+                <span style={{ fontSize: "10px", fontWeight: 600, color: recordStatusColor(row.status, "light") }}>
                   {row.status}
                 </span>
               </div>
@@ -841,33 +789,18 @@ function BlueprintProductionSlider({ theme }: { theme: "light" | "dark" }) {
           ))}
         </div>
 
-        {/* Sheet tab */}
+        {/* Sheet tabs */}
         <div
-          className="flex items-center gap-1"
-          style={{
-            padding: "6px 10px",
-            borderTop: `1px solid ${bpLine}22`,
-            flexShrink: 0,
-          }}
+          className="flex items-center gap-0.5"
+          style={{ padding: "4px 8px 0", background: excelHeaderBg, borderTop: `1px solid ${excelGrid}`, flexShrink: 0 }}
         >
-          <span
-            className="font-mono"
-            style={{
-              fontSize: "8px",
-              color: bpBright,
-              background: "rgba(255,255,255,0.06)",
-              borderRadius: "4px 4px 0 0",
-              padding: "4px 10px",
-              borderTop: "2px solid #3ecf6e",
-            }}
-          >
+          <span style={{ fontSize: "10.5px", fontWeight: 600, color: excelText, background: "#fff", borderRadius: "4px 4px 0 0", padding: "5px 14px", borderTop: `2px solid ${excelGreen}`, borderLeft: `1px solid ${excelGrid}`, borderRight: `1px solid ${excelGrid}` }}>
             Sheet1
           </span>
-          <span className="font-mono" style={{ fontSize: "8px", color: bpMuted, padding: "4px 10px" }}>
-            Sheet2
-          </span>
+          <span style={{ fontSize: "10.5px", color: excelHeaderText, padding: "5px 14px" }}>Sheet2</span>
         </div>
       </div>
+
       <div
         className="absolute top-0 bottom-0"
         style={{ left: `${pos}%`, width: "3px", background: aux.accent, transform: "translateX(-1.5px)", pointerEvents: "none", boxShadow: `0 0 24px 2px ${aux.accent}` }}
@@ -963,10 +896,10 @@ function PrototypeBlueprint({ theme }: { theme: "light" | "dark" }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 const RECEIPT_STATS = [
-  { value: "10+", label: "Years Building Software" },
+  { value: "9+", label: "Years Building Software" },
   { value: "200+", label: "Products Shipped" },
   { value: "30+", label: "Industries Served" },
-  { value: "60+", label: "Engineers & Architects" },
+  { value: "50+", label: "Engineers & Architects" },
   { value: "4×", label: "Faster Delivery with AI-Assisted Dev" },
   { value: "98.7%", label: "Client Retention Rate" },
   { value: "12", label: "Domains with Proven Playbooks" },

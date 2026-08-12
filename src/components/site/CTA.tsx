@@ -231,15 +231,15 @@ const FOOTER_COLS = [
     ],
   },
   {
-    title: "CX Pillars",
+    title: "Company",
     links: [
-      { label: "Personalization",        to: "/services" },
-      { label: "Real-time Intelligence", to: "/services" },
-      { label: "Adaptive Systems",       to: "/services" },
+      { label: "About",    to: "/about" },
+      { label: "Careers",  to: "/careers" },
+      { label: "Contact",  to: "/contact" },
     ],
   },
   {
-    title: "Company",
+    title: "Explore",
     links: [
       { label: "About",    to: "/about" },
       { label: "Careers",  to: "/careers" },
@@ -267,7 +267,7 @@ export function Footer({ theme = "dark" }: { theme?: "light" | "dark" }) {
           <div className="lg:col-span-5">
             <Link to="/"><img src={logo} alt="Jarvis Technolabs" className="h-20 w-auto object-contain mb-6" /></Link>
             <p className="text-sm leading-relaxed max-w-sm mb-6 text-muted-foreground">
-              We are an AI-native digital engineering company helping enterprises and high-growth brands build intelligent products, automate operations, and deliver exceptional customer experiences.
+              We build the intelligence behind what's next - systems that learn, workflows that run themselves, and experiences customers don't forget. Not someday. Already running.
             </p>
 
             <div className="flex gap-3 mb-8">

@@ -543,16 +543,14 @@ function ServicesHero() {
     </div>
         <p className="svh-eyebrow">Full-Stack, AI-Native Delivery</p>
         <h1 className="svh-title section-title">
-          Impact
+          Impact That
           <br />
           <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "var(--acc)" }}>
-          Witnessed
+          Kept Moving
           </em>
         </h1>
         <p className="svh-sub">
-          See your future in action. Explore the missions where we turned bold ambition into a scalable reality. 
-          These global leaders didn't just build software - they used our intelligence layer to gain decision authority 
-          and command their markets.
+          Every system here didn't just launch - it changed something. A market gained, a bottleneck erased, a business that moved faster than it thought it could. This is full-stack engineering measured the only way that matters: what happened after.
         </p>
         <div className="svh-ctas">
           <Link to="/contact" className="svh-cta-primary">

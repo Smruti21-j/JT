@@ -305,6 +305,7 @@ export function Brands() {
       <div className="brands-wrap">
         <div className="brands-copy reveal">
           <div>
+            <p className="brands-eyebrow">[TRUSTED PARTNERSHIPS]</p>
            
             <h2 className="brands-title">
               The Ecosystem
