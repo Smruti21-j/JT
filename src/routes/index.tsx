@@ -1194,30 +1194,35 @@ const TECH_TOOL_ITEMS = [
     title: "EchoShowcase",
     desc: "Curate work, share it as branded secure links, and measure how prospects engage.",
     icon: IconStack,
+    slug: "bhg",
   },
   {
     tag: "AI Context Layer",
     title: "Context Brain",
     desc: "The context layer that briefs every AI coding agent over MCP.",
     icon: IconBrainSimple,
+    slug:"tradetracker",
   },
   {
     tag: "Infrastructure · DevOps",
     title: "SSH Manager",
     desc: "Browser terminals, a secrets vault, and CI/CD in one console.",
     icon: IconTerminal,
+    slug:"creditreport",
   },
   {
     tag: "Presentations · AI",
     title: "Deck Forge",
     desc: "On-brand decks forged fast — brand applied at render time.",
     icon: IconPresentation,
+    slug:"ircs",
   },
   {
     tag: "Proposals · AI",
     title: "Proposal Creator",
     desc: "From a rough idea to a client-ready, costed proposal.",
     icon: IconDocument,
+    slug:"proposal-creator",
   },
 ] as const;
 
@@ -1287,7 +1292,7 @@ function ArchCard({
 
   if ("slug" in item && item.slug) {
     return (
-      <Link to={`/case-studies/${item.slug}`} className={className}>
+      <Link to={`/case-studies/${item.slug}` as any} className={className}>
         {content}
       </Link>
     );

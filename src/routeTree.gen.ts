@@ -19,8 +19,13 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as CareersIndexRouteImport } from './routes/careers.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
+import { Route as CaseStudiesTradetrackerRouteImport } from './routes/case-studies/tradetracker'
 import { Route as CaseStudiesPryvaseeAiRouteImport } from './routes/case-studies/pryvasee-ai'
 import { Route as CaseStudiesLendnovaRouteImport } from './routes/case-studies/lendnova'
+import { Route as CaseStudiesIrcsRouteImport } from './routes/case-studies/ircs'
+import { Route as CaseStudiesCreditreportRouteImport } from './routes/case-studies/creditreport'
+import { Route as CaseStudiesBniRouteImport } from './routes/case-studies/bni'
+import { Route as CaseStudiesBhgRouteImport } from './routes/case-studies/bhg'
 import { Route as CareersRoleIdRouteImport } from './routes/careers.$roleId'
 import { Route as CareersRoleIdIndexRouteImport } from './routes/careers.$roleId.index'
 import { Route as CareersRoleIdApplyRouteImport } from './routes/careers.$roleId.apply'
@@ -75,6 +80,11 @@ const InsightsSlugRoute = InsightsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => InsightsRoute,
 } as any)
+const CaseStudiesTradetrackerRoute = CaseStudiesTradetrackerRouteImport.update({
+  id: '/case-studies/tradetracker',
+  path: '/case-studies/tradetracker',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CaseStudiesPryvaseeAiRoute = CaseStudiesPryvaseeAiRouteImport.update({
   id: '/case-studies/pryvasee-ai',
   path: '/case-studies/pryvasee-ai',
@@ -83,6 +93,26 @@ const CaseStudiesPryvaseeAiRoute = CaseStudiesPryvaseeAiRouteImport.update({
 const CaseStudiesLendnovaRoute = CaseStudiesLendnovaRouteImport.update({
   id: '/case-studies/lendnova',
   path: '/case-studies/lendnova',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaseStudiesIrcsRoute = CaseStudiesIrcsRouteImport.update({
+  id: '/case-studies/ircs',
+  path: '/case-studies/ircs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaseStudiesCreditreportRoute = CaseStudiesCreditreportRouteImport.update({
+  id: '/case-studies/creditreport',
+  path: '/case-studies/creditreport',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaseStudiesBniRoute = CaseStudiesBniRouteImport.update({
+  id: '/case-studies/bni',
+  path: '/case-studies/bni',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CaseStudiesBhgRoute = CaseStudiesBhgRouteImport.update({
+  id: '/case-studies/bhg',
+  path: '/case-studies/bhg',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CareersRoleIdRoute = CareersRoleIdRouteImport.update({
@@ -110,8 +140,13 @@ export interface FileRoutesByFullPath {
   '/insights': typeof InsightsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
   '/careers/$roleId': typeof CareersRoleIdRouteWithChildren
+  '/case-studies/bhg': typeof CaseStudiesBhgRoute
+  '/case-studies/bni': typeof CaseStudiesBniRoute
+  '/case-studies/creditreport': typeof CaseStudiesCreditreportRoute
+  '/case-studies/ircs': typeof CaseStudiesIrcsRoute
   '/case-studies/lendnova': typeof CaseStudiesLendnovaRoute
   '/case-studies/pryvasee-ai': typeof CaseStudiesPryvaseeAiRoute
+  '/case-studies/tradetracker': typeof CaseStudiesTradetrackerRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/careers/': typeof CareersIndexRoute
@@ -125,8 +160,13 @@ export interface FileRoutesByTo {
   '/hire': typeof HireRoute
   '/insights': typeof InsightsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
+  '/case-studies/bhg': typeof CaseStudiesBhgRoute
+  '/case-studies/bni': typeof CaseStudiesBniRoute
+  '/case-studies/creditreport': typeof CaseStudiesCreditreportRoute
+  '/case-studies/ircs': typeof CaseStudiesIrcsRoute
   '/case-studies/lendnova': typeof CaseStudiesLendnovaRoute
   '/case-studies/pryvasee-ai': typeof CaseStudiesPryvaseeAiRoute
+  '/case-studies/tradetracker': typeof CaseStudiesTradetrackerRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/careers': typeof CareersIndexRoute
@@ -143,8 +183,13 @@ export interface FileRoutesById {
   '/insights': typeof InsightsRouteWithChildren
   '/services': typeof ServicesRouteWithChildren
   '/careers/$roleId': typeof CareersRoleIdRouteWithChildren
+  '/case-studies/bhg': typeof CaseStudiesBhgRoute
+  '/case-studies/bni': typeof CaseStudiesBniRoute
+  '/case-studies/creditreport': typeof CaseStudiesCreditreportRoute
+  '/case-studies/ircs': typeof CaseStudiesIrcsRoute
   '/case-studies/lendnova': typeof CaseStudiesLendnovaRoute
   '/case-studies/pryvasee-ai': typeof CaseStudiesPryvaseeAiRoute
+  '/case-studies/tradetracker': typeof CaseStudiesTradetrackerRoute
   '/insights/$slug': typeof InsightsSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/careers/': typeof CareersIndexRoute
@@ -162,8 +207,13 @@ export interface FileRouteTypes {
     | '/insights'
     | '/services'
     | '/careers/$roleId'
+    | '/case-studies/bhg'
+    | '/case-studies/bni'
+    | '/case-studies/creditreport'
+    | '/case-studies/ircs'
     | '/case-studies/lendnova'
     | '/case-studies/pryvasee-ai'
+    | '/case-studies/tradetracker'
     | '/insights/$slug'
     | '/services/$slug'
     | '/careers/'
@@ -177,8 +227,13 @@ export interface FileRouteTypes {
     | '/hire'
     | '/insights'
     | '/services'
+    | '/case-studies/bhg'
+    | '/case-studies/bni'
+    | '/case-studies/creditreport'
+    | '/case-studies/ircs'
     | '/case-studies/lendnova'
     | '/case-studies/pryvasee-ai'
+    | '/case-studies/tradetracker'
     | '/insights/$slug'
     | '/services/$slug'
     | '/careers'
@@ -194,8 +249,13 @@ export interface FileRouteTypes {
     | '/insights'
     | '/services'
     | '/careers/$roleId'
+    | '/case-studies/bhg'
+    | '/case-studies/bni'
+    | '/case-studies/creditreport'
+    | '/case-studies/ircs'
     | '/case-studies/lendnova'
     | '/case-studies/pryvasee-ai'
+    | '/case-studies/tradetracker'
     | '/insights/$slug'
     | '/services/$slug'
     | '/careers/'
@@ -211,8 +271,13 @@ export interface RootRouteChildren {
   HireRoute: typeof HireRoute
   InsightsRoute: typeof InsightsRouteWithChildren
   ServicesRoute: typeof ServicesRouteWithChildren
+  CaseStudiesBhgRoute: typeof CaseStudiesBhgRoute
+  CaseStudiesBniRoute: typeof CaseStudiesBniRoute
+  CaseStudiesCreditreportRoute: typeof CaseStudiesCreditreportRoute
+  CaseStudiesIrcsRoute: typeof CaseStudiesIrcsRoute
   CaseStudiesLendnovaRoute: typeof CaseStudiesLendnovaRoute
   CaseStudiesPryvaseeAiRoute: typeof CaseStudiesPryvaseeAiRoute
+  CaseStudiesTradetrackerRoute: typeof CaseStudiesTradetrackerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -287,6 +352,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InsightsSlugRouteImport
       parentRoute: typeof InsightsRoute
     }
+    '/case-studies/tradetracker': {
+      id: '/case-studies/tradetracker'
+      path: '/case-studies/tradetracker'
+      fullPath: '/case-studies/tradetracker'
+      preLoaderRoute: typeof CaseStudiesTradetrackerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/case-studies/pryvasee-ai': {
       id: '/case-studies/pryvasee-ai'
       path: '/case-studies/pryvasee-ai'
@@ -299,6 +371,34 @@ declare module '@tanstack/react-router' {
       path: '/case-studies/lendnova'
       fullPath: '/case-studies/lendnova'
       preLoaderRoute: typeof CaseStudiesLendnovaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/case-studies/ircs': {
+      id: '/case-studies/ircs'
+      path: '/case-studies/ircs'
+      fullPath: '/case-studies/ircs'
+      preLoaderRoute: typeof CaseStudiesIrcsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/case-studies/creditreport': {
+      id: '/case-studies/creditreport'
+      path: '/case-studies/creditreport'
+      fullPath: '/case-studies/creditreport'
+      preLoaderRoute: typeof CaseStudiesCreditreportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/case-studies/bni': {
+      id: '/case-studies/bni'
+      path: '/case-studies/bni'
+      fullPath: '/case-studies/bni'
+      preLoaderRoute: typeof CaseStudiesBniRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/case-studies/bhg': {
+      id: '/case-studies/bhg'
+      path: '/case-studies/bhg'
+      fullPath: '/case-studies/bhg'
+      preLoaderRoute: typeof CaseStudiesBhgRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/careers/$roleId': {
@@ -384,8 +484,13 @@ const rootRouteChildren: RootRouteChildren = {
   HireRoute: HireRoute,
   InsightsRoute: InsightsRouteWithChildren,
   ServicesRoute: ServicesRouteWithChildren,
+  CaseStudiesBhgRoute: CaseStudiesBhgRoute,
+  CaseStudiesBniRoute: CaseStudiesBniRoute,
+  CaseStudiesCreditreportRoute: CaseStudiesCreditreportRoute,
+  CaseStudiesIrcsRoute: CaseStudiesIrcsRoute,
   CaseStudiesLendnovaRoute: CaseStudiesLendnovaRoute,
   CaseStudiesPryvaseeAiRoute: CaseStudiesPryvaseeAiRoute,
+  CaseStudiesTradetrackerRoute: CaseStudiesTradetrackerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
