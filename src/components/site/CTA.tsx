@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import logoDark from "@/assets/JT logo-bk - icon.svg";
+import logoDark from "@/assets/JT-logdark.png";
 import logoLight from "@/assets/JT-logo-original.png";
 import { useEffect, useRef } from "react";
 import { Linkedin, Instagram, Twitter, Youtube, Facebook, Mail, Phone, MapPin } from "lucide-react";
@@ -258,7 +258,7 @@ const SOCIALS = [
 ];
 
 export function Footer({ theme = "dark" }: { theme?: "light" | "dark" }) {
-  const logo = theme === "light" ? logoLight : logoDark;
+const logo = theme === "light" ? logoLight : logoDark;
   return (<footer className="relative border-t border-border text-foreground overflow-hidden" style={{ background: "var(--footer-solid, var(--color-secondary))" }}>
     
       

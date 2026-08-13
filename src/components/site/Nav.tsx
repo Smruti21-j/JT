@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import logoFullDark from "@/assets/JT logo-bk - icon.svg";
-import logoIconDark from "@/assets/JT logo-bk.svg";
+import logoFullDark from "@/assets/JT-logdark.png";
+import logoIconDark from "@/assets/JT-logo-original-icon.png";
 import logoFullLight from "@/assets/JT-logo-original.png";
 import logoIconLight from "@/assets/JT-logo-original-icon.png";
 import type { SiteTheme } from "@/hooks/use-theme-init";
@@ -104,7 +104,7 @@ export function Nav({ theme, onToggleTheme }: NavProps) {
                   width: "auto",
                   objectFit: "contain",
                   opacity: scrolled ? 1 : 0,
-                  filter: isLight ? "none" : "brightness(0) invert(1)",
+                  
                   transition: "opacity 0.3s ease",
                 }}
               />
