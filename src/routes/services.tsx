@@ -21,7 +21,11 @@ const PANEL_ACCENT = [
   "var(--color-primary)", "var(--color-primary)",
 ];
 
-// ─── data (fully preserved — same categories and sub-categories, untouched) ──
+// ─── data (same categories/sub-categories; `title` stays the plain category
+// name used by the LEFT sticky nav only. The RIGHT side intro no longer
+// reads `title` — it now has its own `headline` (2-line hook, matching the
+// hero's "Kept Moving" treatment) plus an updated `tagline` paragraph, so
+// editing one side never touches the other. ─────────────────────────────
 const SERVICE_GROUPS = [
   {
     title: "Artificial Intelligence",
@@ -29,7 +33,8 @@ const SERVICE_GROUPS = [
     titleBtm: "Intelligence",
     image: dataAiImg,
     eyebrow: "Neural Command Layer",
-    tagline: "Move from AI that talks to AI that acts. A focused set of systems for building, deploying and operating production-grade intelligence.",
+    tagline: `Most "AI" stops at a chat window. Ours doesn't. We build the reasoning engines that plan missions, make calls, and execute across your business, without waiting for someone to type a prompt.`,
+    headline: { line1: "The AI That Acts", line2: "Not the One That Just Answers" },
     stat: { value: null, label: null },
     items: [
       "Core Systems: Generative AI, LLM Substrates, Deep Learning",
@@ -50,7 +55,8 @@ const SERVICE_GROUPS = [
     titleBtm: "Transformation",
     image: digitalImg,
     eyebrow: "Enterprise Singularity",
-    tagline: "Reclaim your digital destiny. Transform legacy chaos into a self-evolving operating model.",
+    tagline: `Every year you run on patched-together infrastructure, you're paying a tax nobody put on the invoice. We rebuild the core - so the data, the logic, and the outcomes belong to you again, not a vendor's roadmap.`,
+    headline: { line1: "Your Legacy System", line2: "Is Costing You More Than You Think" },
     stat: { value:  null, label:  null },
     items: [
       "Core Logic: Enterprise Architecture, Business Intelligence",
@@ -71,7 +77,8 @@ const SERVICE_GROUPS = [
     titleBtm: "Engineering",
     image: productImg,
     eyebrow: "Precision Build Matrix",
-    tagline: "Forge the impossible with future-fit engineering built for infinite scale.",
+    tagline: `Every product here started as a "can we actually build this?" conversation. We engineer for the scale you haven't hit yet, so growth doesn't become the thing that finally breaks you.`,
+    headline: { line1: `"Impossible" Is Just`, line2: "A Timeline We Haven't Quoted Yet" },
     stat: { value: null, label: null },
     items: [
       "Design Forge: Product Assessment & Design, Application Re-Engineering",
@@ -92,7 +99,8 @@ const SERVICE_GROUPS = [
     titleBtm: "Transformation",
     image: appImg,
     eyebrow: "Omniscreen Deployment",
-    tagline: "High-velocity platforms engineered for a real-time, always-connected world.",
+    tagline: `Batch processing was fine when the world moved slower. It doesn't anymore. We build composable systems that operate at the speed your business actually competes at - now, not next quarter's release.`,
+    headline: { line1: "Your Customers", line2: "Live in Real Time. Does Your App?" },
     stat: { value: null, label: null },
     items: [
       "Web Logic: Responsive Web Ecosystems, Progressive Web Apps (PWA)",
@@ -112,7 +120,8 @@ const SERVICE_GROUPS = [
     titleBtm: "Design",
     image: uiuxImg,
     eyebrow: "Neuro-Experience Design",
-    tagline: "Interfaces that sense human intent and feel inevitable, from first click to last.",
+    tagline: `The best interface is the one your users never notice - because they already knew what they needed. We design the human-AI layer that makes complexity invisible, and your brand feel inevitable.`,
+    headline: { line1: "Great Design", line2: "Disappears. That's the Point" },
     stat: { value: null, label: null },
     items: [
       "Research: Cognitive UX Research, Usability Consulting",
@@ -131,7 +140,8 @@ const SERVICE_GROUPS = [
     titleBtm: "Consulting",
     image: consultingImg,
     eyebrow: "Strategic Foresight Engine",
-    tagline: "Turn technical complexity into unvarnished business clarity, before you build.",
+    tagline: `Complexity isn't your problem - confusion dressed up as strategy is. We turn technical noise into decisions you can actually defend in the boardroom, backed by logic instead of vibes.`,
+    headline: { line1: "Everyone Has Opinions", line2: "We Bring the Blueprint" },
     stat: { value:  null, label:  null },
     items: [
       "Strategic Core: Business & Stakeholder Value, Technology Strategy",
@@ -150,7 +160,8 @@ const SERVICE_GROUPS = [
     titleBtm: "& Growth",
     image: growthImg,
     eyebrow: "Perpetual Optimisation Loop",
-    tagline: "Stop chasing vanity metrics; start commanding results that compound.",
+    tagline: `Impressions, likes, "engagement" - none of it means anything if it doesn't move a number that matters. We build the optimization loop that turns attention into outcomes you can actually bank.`,
+    headline: { line1: "Vanity Metrics", line2: "Don't Pay Your Bills." },
     stat: { value: null, label: null },
     items: [
       "Engines: Experience & Conversion Optimization, 1:1 Personalization",
@@ -169,7 +180,8 @@ const SERVICE_GROUPS = [
     titleBtm: "Ops",
     image: managedImg,
     eyebrow: "Autonomous Operations Grid",
-    tagline: "The self-healing backbone for your digital core, watched around the clock.",
+    tagline: `If your team is thinking about uptime, something already went wrong. We build the self-healing backbone that watches, patches, and defends itself - so "IT emergency" stops being a phrase you hear.`,
+    headline: { line1: "The Best Infrastructure", line2: "Is the One You Forget Exists." },
     stat: { value: null, label: null },
     items: [
       "Reliability: Intelligent IT Ops & Support, 24/7 Application Support",
@@ -220,6 +232,11 @@ function parseItem(raw: string) {
 //   responsive grid (.svr-list) instead of a single-column vertical stack.
 //   Title/description font sizes now match those tiles exactly (19px/800
 //   title, 13px/1.65 description) instead of the old font-display serif.
+// - NEW: each per-service intro block on the RIGHT now has its own 2-line
+//   headline (.svr-headline / .svr-headline-accent), styled the same way
+//   as the hero's "Kept Moving" treatment (font-display, second line
+//   italic + accent-colored). It no longer reads `group.title` at all, so
+//   it's fully decoupled from the LEFT sticky nav's category name.
 // ─────────────────────────────────────────────────────────────────────────
 const STYLES = `
 
@@ -404,17 +421,39 @@ const STYLES = `
 .svr-intro{
   padding-bottom:28px; margin-bottom:28px; border-bottom:1px solid var(--line);
   animation:svrIntroIn .4s cubic-bezier(.16,1,.3,1) both;
+  text-align:left;
 }
 .svr-intro-eyebrow{
   font-family: var(--font-mono, ui-monospace, monospace);
   font-size:10px;letter-spacing:.3em;text-transform:uppercase;font-weight:400;
-  color:var(--acc); margin-bottom:10px;
+  color:var(--acc); margin-bottom:14px;
+  text-align:left;
 }
 .svr-intro-title{
   font-family:var(--font-display); font-weight:700; letter-spacing:-.01em;
   font-size:clamp(1.4rem,2.2vw,1.9rem); color:var(--ink); line-height:1.15; margin-bottom:10px;
+  text-align:left;
 }
-.svr-intro-tagline{ font-size:15px; color:var(--ink-dim); line-height:1.75; max-width:640px; margin-bottom:16px; }
+/* Per-service 2-line headline on the right — independent of group.title.
+   Line 1 sits in normal ink; line 2 mirrors the hero's "Kept Moving"
+   treatment (font-display, italic, accent color) at the same size.
+   Explicitly left-aligned so it never inherits centering from a parent. */
+.svr-headline{
+  font-family:var(--font-display); font-weight:700; letter-spacing:-.01em;
+  font-size:clamp(1.6rem,3.1vw,2.5rem); line-height:1.15; color:var(--ink);
+  margin:0 0 16px;
+  text-align:left;
+}
+.svr-headline-accent{
+  display:block;
+  font-family:var(--font-display); font-style:italic; font-weight:400;
+  color:var(--acc);
+  text-align:left;
+}
+.svr-intro-tagline{
+  font-size:15px; color:var(--ink-dim); line-height:1.75; max-width:640px; margin-bottom:16px;
+  text-align:left;
+}
 .svr-intro-stat{ display:inline-flex; align-items:baseline; gap:9px; }
 .svr-intro-stat-val{ font-family:var(--font-display); font-weight:800; font-size:1.4rem; color:var(--acc); line-height:1; }
 .svr-intro-stat-lbl{ font-size:9px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-faint); }
@@ -593,7 +632,9 @@ function ServicesEditorial({ onCardClick }: { onCardClick: (item: LBItem) => voi
     <section id="services-list" className="svl-section">
       <div className="svl-inner">
         <div className="svl-layout">
-          {/* ── LEFT: sticky, shows ONLY the currently active category ── */}
+          {/* ── LEFT: sticky, shows ONLY the currently active category's
+              plain name — this is independent from the right side's
+              per-service headline below. ── */}
           <div className="svl-left" style={{ ["--acc" as string]: acc }}>
             <p className="svl-left-eyebrow">Our Services</p>
             <div key={svc.title} className="svl-active">
@@ -612,7 +653,9 @@ function ServicesEditorial({ onCardClick }: { onCardClick: (item: LBItem) => voi
             </div>
           </div>
 
-          {/* ── RIGHT: every category's cards, stacked one after another ── */}
+          {/* ── RIGHT: every category's cards, stacked one after another.
+              Each intro now renders its own eyebrow + 2-line headline +
+              paragraph — it no longer reads group.title. ── */}
           <div className="svl-right">
             {SERVICE_GROUPS.map((group, gi) => (
               <div
@@ -623,7 +666,12 @@ function ServicesEditorial({ onCardClick }: { onCardClick: (item: LBItem) => voi
               >
                 <div className="svr-intro">
                   <p className="svr-intro-eyebrow">{group.eyebrow}</p>
-                  <h3 className="svr-intro-title">{group.title}</h3>
+                  <h3 className="svr-headline">
+                    {group.headline.line1}
+                    <br />
+                    <em className="font-display svr-headline-accent">{group.headline.line2}</em>
+                  </h3>
+                   
                 </div>
 
                 <div className="svr-list">
