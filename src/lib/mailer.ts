@@ -1,4 +1,4 @@
-const MAILER_BASE = "http://mailer.jprojects.in/api";
+const MAILER_BASE = "https://mailer.jprojects.in/api";
 const ACCESS_TOKEN = import.meta.env.VITE_MAILER_ACCESS_TOKEN as string;
 
 export class MailerError extends Error {}
