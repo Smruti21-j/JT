@@ -2,21 +2,16 @@ import { createFileRoute, notFound } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
 import { useThemeInit } from "@/hooks/use-theme-init";
-import { useMemo, useRef, useState } from "react";
+import { useRecaptchaScript, getRecaptchaToken } from "@/hooks/use-recaptcha";
+import { sendMail, MailerError } from "@/lib/mailer";
+import { useRef, useState } from "react";
 
 const ROLE_TITLES: Record<string, string> = {
   bde: "BDE",
   "quality-analyst": "Quality Analyst",
 };
 
-// ─── IMPORTANT ────────────────────────────────────────────────────────────
-// Replace this with your own Formspree endpoint (free at https://formspree.io).
-// 1. Sign up, create a new form, set its destination to talent@jarvistechnolabs.com
-// 2. Copy the endpoint it gives you (looks like https://formspree.io/f/xxxxxxx)
-// 3. Paste it below.
-// Formspree supports file attachments up to a size limit on the free tier —
-// check their docs if resumes/photos need to go through.
-const FORM_ENDPOINT = "https://formsubmit.co/talent@jarvistechnolabs.com";
+const RECIPIENT_EMAIL = "talent@jarvistechnolabs.com";
 
 export const Route = createFileRoute("/careers/$roleId/apply")({
   component: ApplyPage,
@@ -56,13 +51,6 @@ const sectionHeadingStyle: React.CSSProperties = {
   color: "var(--color-primary)",
   marginBottom: "1.75rem",
 };
-
-function useMathCaptcha() {
-  const [a, b] = useMemo(() => {
-    return [Math.floor(Math.random() * 8) + 1, Math.floor(Math.random() * 8) + 1];
-  }, []);
-  return { a, b, answer: a + b };
-}
 
 // ─── Drag-and-drop upload zone ───────────────────────────────────────────
 function UploadZone({
@@ -200,6 +188,7 @@ function ApplyPage() {
   const loaderData = Route.useLoaderData();
   const title = loaderData?.title ?? "this role";
   const { theme, toggleTheme } = useThemeInit();
+  useRecaptchaScript();
 
   const [form, setForm] = useState({
     firstName: "",
@@ -221,8 +210,6 @@ function ApplyPage() {
   });
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [captchaInput, setCaptchaInput] = useState("");
-  const { a, b, answer } = useMathCaptcha();
 
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
@@ -233,56 +220,46 @@ function ApplyPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
-
-    if (Number(captchaInput) !== answer) {
-      setErrorMsg("Captcha answer is incorrect. Please try again.");
-      return;
-    }
-
-    if (FORM_ENDPOINT.includes("YOUR_FORM_ID")) {
-      setErrorMsg(
-        "Form isn't connected to a delivery service yet — see FORM_ENDPOINT comment in the code."
-      );
-      return;
-    }
-
     setStatus("submitting");
-    try {
-      const fd = new FormData();
-      fd.append("position", title);
-      fd.append("firstName", form.firstName);
-      fd.append("lastName", form.lastName);
-      fd.append("email", form.email);
-      fd.append("mobile", `${form.countryCode} ${form.mobile}`);
-      fd.append("noticePeriod", form.noticePeriod);
-      fd.append("highestQualification", form.highestQualification);
-      fd.append("currentEmployer", form.currentEmployer);
-      fd.append("totalExperience", form.totalExperience);
-      fd.append("currentSalary", form.currentSalary);
-      fd.append("skillSet", form.skillSet);
-      fd.append("street", form.street);
-      fd.append("zip", form.zip);
-      fd.append("city", form.city);
-      fd.append("state", form.state);
-      fd.append("country", form.country);
-      fd.append("_subject", `Application — ${title}`);
-      if (resumeFile) fd.append("resume", resumeFile);
-      if (photoFile) fd.append("photo", photoFile);
 
-      const res = await fetch(FORM_ENDPOINT, {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        body: fd,
+    try {
+      // Fresh token, generated right before the send — never reused, never stale
+      const token = await getRecaptchaToken("apply_submit");
+
+      const html = `
+        <h2>New Application — ${title}</h2>
+        <p><strong>Name:</strong> ${form.firstName} ${form.lastName}</p>
+        <p><strong>Email:</strong> ${form.email}</p>
+        <p><strong>Mobile:</strong> ${form.countryCode} ${form.mobile}</p>
+        <p><strong>Notice Period:</strong> ${form.noticePeriod}</p>
+        <hr/>
+        <p><strong>Highest Qualification:</strong> ${form.highestQualification}</p>
+        <p><strong>Current Employer:</strong> ${form.currentEmployer}</p>
+        <p><strong>Total Experience:</strong> ${form.totalExperience} yrs</p>
+        <p><strong>Current Salary:</strong> ${form.currentSalary} LPA</p>
+        <p><strong>Skill Set:</strong> ${form.skillSet}</p>
+        <hr/>
+        <p><strong>Address:</strong> ${form.street}, ${form.city}, ${form.state}, ${form.country} ${form.zip}</p>
+      `;
+
+      const attachments = [resumeFile, photoFile].filter((f): f is File => f !== null);
+
+      await sendMail({
+        to: RECIPIENT_EMAIL,
+        subject: `Application — ${title} — ${form.firstName} ${form.lastName}`,
+        html,
+        attachments,
+        captchaToken: token,
       });
-      if (res.ok) {
-        setStatus("success");
-      } else {
-        setStatus("error");
-        setErrorMsg("Something went wrong sending your application. Please try again.");
-      }
-    } catch {
+
+      setStatus("success");
+    } catch (err) {
       setStatus("error");
-      setErrorMsg("Network error — please check your connection and try again.");
+      setErrorMsg(
+        err instanceof MailerError
+          ? err.message
+          : "Something went wrong sending your application. Please try again."
+      );
     }
   };
 
@@ -517,20 +494,6 @@ function ApplyPage() {
               />
             </div>
 
-            {/* ── Captcha ── */}
-            <div style={{ marginBottom: "0.5rem" }}>
-              <label style={labelStyle}>
-                Quick check: what is {a} + {b}? *
-              </label>
-              <input
-                required
-                style={{ ...inputStyle, maxWidth: "180px" }}
-                value={captchaInput}
-                onChange={(e) => setCaptchaInput(e.target.value)}
-                inputMode="numeric"
-              />
-            </div>
-
             {errorMsg && (
               <p style={{ color: "#dc2626", fontSize: "13px", marginTop: "1rem" }}>{errorMsg}</p>
             )}
@@ -556,6 +519,12 @@ function ApplyPage() {
             >
               {status === "submitting" ? "Sending…" : "Send Application"}
             </button>
+
+            <p style={{ fontSize: "10.5px", color: "var(--color-muted-foreground)", marginTop: "14px", textAlign: "center" }}>
+              This site is protected by reCAPTCHA and the Google{" "}
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Privacy Policy</a> and{" "}
+              <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer">Terms of Service</a> apply.
+            </p>
           </form>
         </div>
       </section>

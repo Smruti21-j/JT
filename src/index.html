@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>reCAPTCHA v3 Token Generator</title>
+    <!-- Your REAL Site Key is automatically inserted below: -->
+    <script src="https://www.google.com/recaptcha/api.js?render=6LepWIUtAAAAAJyTSQ8gGHy_deuEu9Lr6LvNDNY4"></script>
+</head>
+<body>
+    <h2>Check your Token!</h2>
+    <p id="tokenDisplay" style="word-wrap: break-word; font-family: monospace;"></p>
+ 
+    <script>
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6LepWIUtAAAAAJyTSQ8gGHy_deuEu9Lr6LvNDNY4', {action: 'submit'}).then(function(token) {
+                console.log("YOUR TOKEN IS:", token);
+                document.getElementById('tokenDisplay').innerText = token;
+            });
+        });
+    </script>
+</body>
+</html>

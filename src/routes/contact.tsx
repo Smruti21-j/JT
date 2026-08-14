@@ -3,9 +3,13 @@ import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
 import { useReveal } from "@/hooks/use-reveal";
 import { useThemeInit } from "@/hooks/use-theme-init";
+import { useRecaptchaScript, getRecaptchaToken } from "@/hooks/use-recaptcha";
+import { sendMail, MailerError } from "@/lib/mailer";
 import { useEffect, useRef, useState } from "react";
 import contactHeroImg from "@/assets/contacthero.png";
 import { ScrollToTop } from "@/components/site/ScrollToTop";
+
+const RECIPIENT_EMAIL = "talent@jarvistechnolabs.com";
 
 /* ─── Styles ─────────────────────────────────────────────────────────────── */
 const CONTACT_STYLES = `
@@ -198,6 +202,11 @@ const CONTACT_STYLES = `
   margin-top:8px;
 }
 .ctp-submit:hover{ transform:translateY(-2px); }
+.ctp-submit:disabled{ opacity:.65; cursor:not-allowed; transform:none; }
+
+.ctp-error{ color:#dc2626; font-size:13px; margin-top:14px; }
+.ctp-recaptcha-note{ font-size:10.5px; color:var(--ink-faint); margin-top:14px; line-height:1.6; }
+.ctp-recaptcha-note a{ color:var(--ink-faint); text-decoration:underline; }
 
 /* ── Right rail: channels + address ── */
 .ctp-rail-card{
@@ -309,16 +318,15 @@ function useInView(threshold = 0.12): [React.RefObject<HTMLDivElement | null>, b
 }
 
 /* ─── File Upload ────────────────────────────────────────────────────────── */
-function FileUpload() {
+function FileUpload({ files, onFiles }: { files: File[]; onFiles: (files: File[]) => void }) {
   const [dragging, setDragging] = useState(false);
-  const [files, setFiles] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDragging(false);
-    const dropped = Array.from(e.dataTransfer.files).map((f) => f.name);
-    setFiles((prev) => [...prev, ...dropped]);
+    const dropped = Array.from(e.dataTransfer.files);
+    onFiles([...files, ...dropped]);
   };
 
   return (
@@ -335,8 +343,8 @@ function FileUpload() {
         multiple
         style={{ display: "none" }}
         onChange={(e) => {
-          const picked = Array.from(e.target.files || []).map((f) => f.name);
-          setFiles((prev) => [...prev, ...picked]);
+          const picked = Array.from(e.target.files || []);
+          onFiles([...files, ...picked]);
         }}
       />
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" style={{ margin: "0 auto" }}>
@@ -349,7 +357,7 @@ function FileUpload() {
       ) : (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", justifyContent: "center", marginTop: "10px" }}>
           {files.map((f, i) => (
-            <span key={i} className="ctp-upload-file">{f}</span>
+            <span key={i} className="ctp-upload-file">{f.name}</span>
           ))}
         </div>
       )}
@@ -469,21 +477,51 @@ export const Route = createFileRoute("/contact")({
 function ContactPage() {
   useReveal();
   const { theme, toggleTheme } = useThemeInit();
+  useRecaptchaScript();
 
   const [formRef, formVis] = useInView(0.08);
   const [infoRef, infoVis] = useInView(0.08);
-  const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [name, setName] = useState("");
+  const [emailPhone, setEmailPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [attachments, setAttachments] = useState<File[]>([]);
+
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    const data = new FormData(form);
-    const subject = encodeURIComponent(`Signal from ${data.get("name")}`);
-    const body = encodeURIComponent(
-      `From: ${data.get("name")} <${data.get("email_phone")}>\n\n${data.get("message") ?? ""}`,
-    );
-    window.location.href = `mailto:sales@jarvistechnolabs.com?subject=${subject}&body=${body}`;
-    setSubmitted(true);
+    setErrorMsg("");
+    setStatus("submitting");
+
+    try {
+      const token = await getRecaptchaToken("contact_submit");
+
+      const html = `
+        <h2>New Signal from ${name}</h2>
+        <p><strong>Contact:</strong> ${emailPhone}</p>
+        <p><strong>Message:</strong></p>
+        <p>${message.replace(/\n/g, "<br/>")}</p>
+      `;
+
+      await sendMail({
+        to: RECIPIENT_EMAIL,
+        subject: `Signal from ${name}`,
+        html,
+        attachments,
+        captchaToken: token,
+      });
+
+      setStatus("success");
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(
+        err instanceof MailerError
+          ? err.message
+          : "Something went wrong sending your message. Please try again."
+      );
+    }
   };
 
   return (
@@ -558,37 +596,67 @@ function ContactPage() {
                 </h2>
               </div>
 
-              <form onSubmit={handleSubmit}>
-                <div className="ctp-field">
-                  <label className="ctp-label">Callsign</label>
-                  <input required name="name" placeholder="Who is initiating this uplink?" className="ctp-input" />
-                </div>
+              {status === "success" ? (
+                <p style={{ fontSize: "15px", color: "var(--ink-dim)" }}>
+                  Signal received. We'll be in touch within 24 hours.
+                </p>
+              ) : (
+                <form onSubmit={handleSubmit}>
+                  <div className="ctp-field">
+                    <label className="ctp-label">Callsign</label>
+                    <input
+                      required
+                      name="name"
+                      placeholder="Who is initiating this uplink?"
+                      className="ctp-input"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
 
-                <div className="ctp-field">
-                  <label className="ctp-label">Response Frequency</label>
-                  <input required name="email_phone" placeholder="Where shall we beam our response?" className="ctp-input" />
-                </div>
+                  <div className="ctp-field">
+                    <label className="ctp-label">Response Frequency</label>
+                    <input
+                      required
+                      name="email_phone"
+                      placeholder="Where shall we beam our response?"
+                      className="ctp-input"
+                      value={emailPhone}
+                      onChange={(e) => setEmailPhone(e.target.value)}
+                    />
+                  </div>
 
-                <div className="ctp-field">
-                  <label className="ctp-label">Transmission</label>
-                  <textarea
-                    name="message"
-                    rows={5}
-                    placeholder="Describe the catalyst. Are we building a legacy, joining forces, or scaling new heights? Give us the raw data."
-                    className="ctp-textarea"
-                  />
-                </div>
+                  <div className="ctp-field">
+                    <label className="ctp-label">Transmission</label>
+                    <textarea
+                      name="message"
+                      rows={5}
+                      placeholder="Describe the catalyst. Are we building a legacy, joining forces, or scaling new heights? Give us the raw data."
+                      className="ctp-textarea"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                    />
+                  </div>
 
-                <div className="ctp-field">
-                  <label className="ctp-label">Attach Blueprints</label>
-                  <FileUpload />
-                </div>
+                  <div className="ctp-field">
+                    <label className="ctp-label">Attach Blueprints</label>
+                    <FileUpload files={attachments} onFiles={setAttachments} />
+                  </div>
 
-                <button type="submit" className="ctp-submit">
-                  {submitted ? "Signal Sent" : "Connect"}
-                  {!submitted && <span>→</span>}
-                </button>
-              </form>
+                  {errorMsg && <p className="ctp-error">{errorMsg}</p>}
+
+                  <button type="submit" className="ctp-submit" disabled={status === "submitting"}>
+                    {status === "submitting" ? "Sending…" : "Connect"}
+                    {status !== "submitting" && <span>→</span>}
+                  </button>
+
+                  <p className="ctp-recaptcha-note">
+                    This site is protected by reCAPTCHA and the Google{" "}
+                    <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer">Privacy Policy</a> and{" "}
+                    <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer">Terms of Service</a> apply.
+                  </p>
+                </form>
+              )}
             </div>
 
             {/* RIGHT: Channels + Address */}
