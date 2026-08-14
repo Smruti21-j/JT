@@ -32,7 +32,7 @@ const SERVICE_GROUPS = [
     titleTop: "ARTIFICIAL",
     titleBtm: "Intelligence",
     image: dataAiImg,
-    eyebrow: "Neural Command Layer",
+  
     tagline: `Most "AI" stops at a chat window. Ours doesn't. We build the reasoning engines that plan missions, make calls, and execute across your business, without waiting for someone to type a prompt.`,
     headline: { line1: "The AI That Acts", line2: "Not the One That Just Answers" },
     stat: { value: null, label: null },
@@ -54,7 +54,7 @@ const SERVICE_GROUPS = [
     titleTop: "DIGITAL",
     titleBtm: "Transformation",
     image: digitalImg,
-    eyebrow: "Enterprise Singularity",
+  
     tagline: `Every year you run on patched-together infrastructure, you're paying a tax nobody put on the invoice. We rebuild the core - so the data, the logic, and the outcomes belong to you again, not a vendor's roadmap.`,
     headline: { line1: "Your Legacy System", line2: "Is Costing You More Than You Think" },
     stat: { value:  null, label:  null },
@@ -76,7 +76,7 @@ const SERVICE_GROUPS = [
     titleTop: "PRODUCT",
     titleBtm: "Engineering",
     image: productImg,
-    eyebrow: "Precision Build Matrix",
+    
     tagline: `Every product here started as a "can we actually build this?" conversation. We engineer for the scale you haven't hit yet, so growth doesn't become the thing that finally breaks you.`,
     headline: { line1: `"Impossible" Is Just`, line2: "A Timeline We Haven't Quoted Yet" },
     stat: { value: null, label: null },
@@ -98,7 +98,7 @@ const SERVICE_GROUPS = [
     titleTop: "APPLICATION",
     titleBtm: "Transformation",
     image: appImg,
-    eyebrow: "Omniscreen Deployment",
+    
     tagline: `Batch processing was fine when the world moved slower. It doesn't anymore. We build composable systems that operate at the speed your business actually competes at - now, not next quarter's release.`,
     headline: { line1: "Your Customers", line2: "Live in Real Time. Does Your App?" },
     stat: { value: null, label: null },
@@ -119,7 +119,7 @@ const SERVICE_GROUPS = [
     titleTop: "UI / UX",
     titleBtm: "Design",
     image: uiuxImg,
-    eyebrow: "Neuro-Experience Design",
+   
     tagline: `The best interface is the one your users never notice - because they already knew what they needed. We design the human-AI layer that makes complexity invisible, and your brand feel inevitable.`,
     headline: { line1: "Great Design", line2: "Disappears. That's the Point" },
     stat: { value: null, label: null },
@@ -139,7 +139,7 @@ const SERVICE_GROUPS = [
     titleTop: "STRATEGIC",
     titleBtm: "Consulting",
     image: consultingImg,
-    eyebrow: "Strategic Foresight Engine",
+   
     tagline: `Complexity isn't your problem - confusion dressed up as strategy is. We turn technical noise into decisions you can actually defend in the boardroom, backed by logic instead of vibes.`,
     headline: { line1: "Everyone Has Opinions", line2: "We Bring the Blueprint" },
     stat: { value:  null, label:  null },
@@ -159,7 +159,7 @@ const SERVICE_GROUPS = [
     titleTop: "PERFORMANCE",
     titleBtm: "& Growth",
     image: growthImg,
-    eyebrow: "Perpetual Optimisation Loop",
+   
     tagline: `Impressions, likes, "engagement" - none of it means anything if it doesn't move a number that matters. We build the optimization loop that turns attention into outcomes you can actually bank.`,
     headline: { line1: "Vanity Metrics", line2: "Don't Pay Your Bills." },
     stat: { value: null, label: null },
@@ -179,7 +179,7 @@ const SERVICE_GROUPS = [
     titleTop: "AUTONOMOUS",
     titleBtm: "Ops",
     image: managedImg,
-    eyebrow: "Autonomous Operations Grid",
+
     tagline: `If your team is thinking about uptime, something already went wrong. We build the self-healing backbone that watches, patches, and defends itself - so "IT emergency" stops being a phrase you hear.`,
     headline: { line1: "The Best Infrastructure", line2: "Is the One You Forget Exists." },
     stat: { value: null, label: null },
@@ -665,7 +665,7 @@ function ServicesEditorial({ onCardClick }: { onCardClick: (item: LBItem) => voi
                 style={{ ["--acc" as string]: PANEL_ACCENT[gi] }}
               >
                 <div className="svr-intro">
-                  <p className="svr-intro-eyebrow">{group.eyebrow}</p>
+                   
                   <h3 className="svr-headline">
                     {group.headline.line1}
                     <br />
@@ -711,7 +711,7 @@ function ServicesEditorial({ onCardClick }: { onCardClick: (item: LBItem) => voi
     ))}
   </div>
 )}
-                          <span className="svr-card-btn">See Details →</span>
+                       
                         </div>
                       </button>
                     );

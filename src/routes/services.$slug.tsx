@@ -239,7 +239,9 @@ export const Route = createFileRoute("/services/$slug")({
   }),
   notFoundComponent: () => (
     <main className="bg-background text-foreground min-h-screen flex flex-col">
-      <Nav />
+      <Nav theme={"light"} onToggleTheme={function (): void {
+        throw new Error("Function not implemented.");
+      } } />
       <div className="flex-1 flex items-center justify-center px-6 text-center">
         <div>
           <p className="text-xs tracking-[0.3em] text-muted-foreground bracket-label mb-6">404</p>
@@ -257,7 +259,9 @@ function ServiceDetail() {
   const { detail } = Route.useLoaderData();
   return (
     <main className="bg-background text-foreground min-h-screen">
-      <Nav />
+      <Nav theme={"light"} onToggleTheme={function (): void {
+        throw new Error("Function not implemented.");
+      } } />
       <AnimatedHero
         bgImage={detail.image}
         eyebrow={detail.eyebrow}

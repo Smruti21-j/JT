@@ -16,7 +16,7 @@ const ROLE_TITLES: Record<string, string> = {
 // 3. Paste it below.
 // Formspree supports file attachments up to a size limit on the free tier —
 // check their docs if resumes/photos need to go through.
-const FORM_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+const FORM_ENDPOINT = "https://formsubmit.co/talent@jarvistechnolabs.com";
 
 export const Route = createFileRoute("/careers/$roleId/apply")({
   component: ApplyPage,
