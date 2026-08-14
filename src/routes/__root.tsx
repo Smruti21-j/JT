@@ -28,12 +28,17 @@ function NotFoundComponent() {
 export const Route = createRootRoute({
   head: () => ({
     meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "author", content: "Jarvis Technolabs" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
+  { charSet: "utf-8" },
+  { name: "viewport", content: "width=device-width, initial-scale=1" },
+  { name: "author", content: "Jarvis Technolabs" },
+  { property: "og:type", content: "website" },
+  { property: "og:title", content: "Jarvis Technolabs — You Think, We Create" },
+  { property: "og:description", content: "Navigating your digital transformation from first principles. AI-native partner for products, automation and enterprise..." },
+  { property: "og:image", content: "https://jarvis3.smrutipanda790.workers.dev/og-image.png" },
+  { property: "og:url", content: "https://jarvis3.smrutipanda790.workers.dev" },
+  { name: "twitter:card", content: "summary_large_image" },
+  { name: "twitter:image", content: "https://jarvis3.smrutipanda790.workers.dev/og-image.png" },
+],
     links: [
       { rel: "icon", href: faviconIco },
       { rel: "stylesheet", href: appCss },
