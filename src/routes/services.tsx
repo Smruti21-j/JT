@@ -28,6 +28,7 @@ const PANEL_ACCENT = [
 // editing one side never touches the other. ─────────────────────────────
 const SERVICE_GROUPS = [
   {
+    slug: "artificial-intelligence",
     title: "Artificial Intelligence",
     titleTop: "ARTIFICIAL",
     titleBtm: "Intelligence",
@@ -50,6 +51,7 @@ const SERVICE_GROUPS = [
     ],
   },
   {
+     slug: "digital-transformation", 
     title: "Digital Transformation",
     titleTop: "DIGITAL",
     titleBtm: "Transformation",
@@ -72,6 +74,7 @@ const SERVICE_GROUPS = [
     ],
   },
   {
+    slug: "product-engineering", 
     title: "Product Engineering",
     titleTop: "PRODUCT",
     titleBtm: "Engineering",
@@ -94,6 +97,7 @@ const SERVICE_GROUPS = [
     ],
   },
   {
+    slug: "application-transformation",
     title: "Application Transformation",
     titleTop: "APPLICATION",
     titleBtm: "Transformation",
@@ -115,6 +119,7 @@ const SERVICE_GROUPS = [
     ],
   },
   {
+    slug: "ui-ux-design", 
     title: "UI / UX Design",
     titleTop: "UI / UX",
     titleBtm: "Design",
@@ -135,6 +140,7 @@ const SERVICE_GROUPS = [
     ],
   },
   {
+    slug: "consulting",
     title: "Consulting",
     titleTop: "STRATEGIC",
     titleBtm: "Consulting",
@@ -155,6 +161,7 @@ const SERVICE_GROUPS = [
     ],
   },
   {
+    slug: "performance-growth",
     title: "Performance & Growth",
     titleTop: "PERFORMANCE",
     titleBtm: "& Growth",
@@ -175,6 +182,7 @@ const SERVICE_GROUPS = [
     ],
   },
   {
+    slug: "autonomous-ops",
     title: "Autonomous Ops",
     titleTop: "AUTONOMOUS",
     titleBtm: "Ops",
@@ -206,6 +214,12 @@ function parseItem(raw: string) {
   };
 }
 
+function slugify(str: string) {
+  return str
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
 // ─── STYLES ───────────────────────────────────────────────────────────────
 //
 // TYPOGRAPHY ALIGNED TO index.tsx:
@@ -678,21 +692,13 @@ function ServicesEditorial({ onCardClick }: { onCardClick: (item: LBItem) => voi
                   {group.subImages.map((img, i) => {
                     const { title, detail } = parseItem(group.items[i] ?? "");
                     return (
-                      <button
-                        key={img.label}
-                        type="button"
-                        className="svr-card"
-                        onClick={() =>
-                          onCardClick({
-                            src: img.src,
-                            label: img.label,
-                            title,
-                            detail,
-                            acc: PANEL_ACCENT[gi],
-                            svcTitle: group.title,
-                          })
-                        }
-                      >
+                      <Link
+  key={img.label}
+  to="/services/$slug"
+  hash={slugify(title || img.label)}
+  params={{ slug: group.slug }}
+  className="svr-card"
+>
                         <div className="svr-card-media">
                           <img
                             src={img.src}
@@ -713,7 +719,7 @@ function ServicesEditorial({ onCardClick }: { onCardClick: (item: LBItem) => voi
 )}
                        
                         </div>
-                      </button>
+                      </Link>
                     );
                   })}
                 </div>

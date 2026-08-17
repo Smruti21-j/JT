@@ -2259,7 +2259,7 @@ const SHIPPED_INDUSTRIES = [
   { icon: IconLandmark, title: "Government & Public Sector" },
   { icon: IconGraduationCap, title: "Education & EdTech" },
   { icon: IconShoppingBag, title: "Retail & E-commerce" },
-  { icon: IconFactory, title: "Manufacturing & Industry 4.0" },
+  { icon: IconFactory, title: "Manufacturing & Industry " },
   { icon: IconPlane, title: "Travel & Hospitality" },
   { icon: IconHome, title: "Real Estate & PropTech" },
   { icon: IconBolt, title: "Energy & Utilities" },

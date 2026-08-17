@@ -295,7 +295,7 @@ const logo = theme === "light" ? logoLight : logoDark;
   </a>
   <a href="tel:+917203030707" className="flex items-center gap-3 text-sm group text-muted-foreground">
     <Phone size={16} style={{ color: "var(--color-primary)" }} />
-    <span className="group-hover:text-foreground transition-colors">+91 720 303 0707</span>
+    <span className="group-hover:text-foreground transition-colors">+91 98259 26347</span>
   </a>
 
 </div>
@@ -320,7 +320,7 @@ const logo = theme === "light" ? logoLight : logoDark;
           </div>
         </div>
         <div className="flex flex-wrap justify-center items-center pt-8 gap-6 text-xs text-muted-foreground">
-  <div>© {new Date().getFullYear()} Jarvis Technolabs — Intelligent Systems Company</div>
+  <div>© {new Date().getFullYear()} Jarvis Technolabs — You Think, We Create</div>
 </div>
       </div>
     </footer>

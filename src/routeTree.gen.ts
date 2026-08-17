@@ -17,7 +17,7 @@ import { Route as CareersRouteImport } from './routes/careers'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CareersIndexRouteImport } from './routes/careers.index'
-import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as ServicesSlugRouteImport } from './routes/services_.$slug'
 import { Route as InsightsSlugRouteImport } from './routes/insights.$slug'
 import { Route as CaseStudiesTradetrackerRouteImport } from './routes/case-studies/tradetracker'
 import { Route as CaseStudiesPryvaseeAiRouteImport } from './routes/case-studies/pryvasee-ai'
@@ -71,9 +71,9 @@ const CareersIndexRoute = CareersIndexRouteImport.update({
   getParentRoute: () => CareersRoute,
 } as any)
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ServicesRoute,
+  id: '/services_/$slug',
+  path: '/services/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const InsightsSlugRoute = InsightsSlugRouteImport.update({
   id: '/$slug',
@@ -138,7 +138,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/hire': typeof HireRoute
   '/insights': typeof InsightsRouteWithChildren
-  '/services': typeof ServicesRouteWithChildren
+  '/services': typeof ServicesRoute
   '/careers/$roleId': typeof CareersRoleIdRouteWithChildren
   '/case-studies/bhg': typeof CaseStudiesBhgRoute
   '/case-studies/bni': typeof CaseStudiesBniRoute
@@ -159,7 +159,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/hire': typeof HireRoute
   '/insights': typeof InsightsRouteWithChildren
-  '/services': typeof ServicesRouteWithChildren
+  '/services': typeof ServicesRoute
   '/case-studies/bhg': typeof CaseStudiesBhgRoute
   '/case-studies/bni': typeof CaseStudiesBniRoute
   '/case-studies/creditreport': typeof CaseStudiesCreditreportRoute
@@ -181,7 +181,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/hire': typeof HireRoute
   '/insights': typeof InsightsRouteWithChildren
-  '/services': typeof ServicesRouteWithChildren
+  '/services': typeof ServicesRoute
   '/careers/$roleId': typeof CareersRoleIdRouteWithChildren
   '/case-studies/bhg': typeof CaseStudiesBhgRoute
   '/case-studies/bni': typeof CaseStudiesBniRoute
@@ -191,7 +191,7 @@ export interface FileRoutesById {
   '/case-studies/pryvasee-ai': typeof CaseStudiesPryvaseeAiRoute
   '/case-studies/tradetracker': typeof CaseStudiesTradetrackerRoute
   '/insights/$slug': typeof InsightsSlugRoute
-  '/services/$slug': typeof ServicesSlugRoute
+  '/services_/$slug': typeof ServicesSlugRoute
   '/careers/': typeof CareersIndexRoute
   '/careers/$roleId/apply': typeof CareersRoleIdApplyRoute
   '/careers/$roleId/': typeof CareersRoleIdIndexRoute
@@ -257,7 +257,7 @@ export interface FileRouteTypes {
     | '/case-studies/pryvasee-ai'
     | '/case-studies/tradetracker'
     | '/insights/$slug'
-    | '/services/$slug'
+    | '/services_/$slug'
     | '/careers/'
     | '/careers/$roleId/apply'
     | '/careers/$roleId/'
@@ -270,7 +270,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   HireRoute: typeof HireRoute
   InsightsRoute: typeof InsightsRouteWithChildren
-  ServicesRoute: typeof ServicesRouteWithChildren
+  ServicesRoute: typeof ServicesRoute
   CaseStudiesBhgRoute: typeof CaseStudiesBhgRoute
   CaseStudiesBniRoute: typeof CaseStudiesBniRoute
   CaseStudiesCreditreportRoute: typeof CaseStudiesCreditreportRoute
@@ -278,6 +278,7 @@ export interface RootRouteChildren {
   CaseStudiesLendnovaRoute: typeof CaseStudiesLendnovaRoute
   CaseStudiesPryvaseeAiRoute: typeof CaseStudiesPryvaseeAiRoute
   CaseStudiesTradetrackerRoute: typeof CaseStudiesTradetrackerRoute
+  ServicesSlugRoute: typeof ServicesSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -338,12 +339,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareersIndexRouteImport
       parentRoute: typeof CareersRoute
     }
-    '/services/$slug': {
-      id: '/services/$slug'
-      path: '/$slug'
+    '/services_/$slug': {
+      id: '/services_/$slug'
+      path: '/services/$slug'
       fullPath: '/services/$slug'
       preLoaderRoute: typeof ServicesSlugRouteImport
-      parentRoute: typeof ServicesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/insights/$slug': {
       id: '/insights/$slug'
@@ -464,18 +465,6 @@ const InsightsRouteWithChildren = InsightsRoute._addFileChildren(
   InsightsRouteChildren,
 )
 
-interface ServicesRouteChildren {
-  ServicesSlugRoute: typeof ServicesSlugRoute
-}
-
-const ServicesRouteChildren: ServicesRouteChildren = {
-  ServicesSlugRoute: ServicesSlugRoute,
-}
-
-const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
-  ServicesRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -483,7 +472,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   HireRoute: HireRoute,
   InsightsRoute: InsightsRouteWithChildren,
-  ServicesRoute: ServicesRouteWithChildren,
+  ServicesRoute: ServicesRoute,
   CaseStudiesBhgRoute: CaseStudiesBhgRoute,
   CaseStudiesBniRoute: CaseStudiesBniRoute,
   CaseStudiesCreditreportRoute: CaseStudiesCreditreportRoute,
@@ -491,6 +480,7 @@ const rootRouteChildren: RootRouteChildren = {
   CaseStudiesLendnovaRoute: CaseStudiesLendnovaRoute,
   CaseStudiesPryvaseeAiRoute: CaseStudiesPryvaseeAiRoute,
   CaseStudiesTradetrackerRoute: CaseStudiesTradetrackerRoute,
+  ServicesSlugRoute: ServicesSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
