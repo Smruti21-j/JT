@@ -304,8 +304,20 @@ const KEYFRAMES = `
     transform: scale(1.06);
   }
 
-  /* Roles */
+  /* Roles — grid lives here (not inline) so it can respond to viewport width.
+     Desktop: 5-column grid (position / dept / experience / mode / apply).
+     <680px: collapses to a stacked block per role so nothing gets clipped,
+     and the column-header row (which only makes sense side-by-side) hides. */
+  .roles-header-row {
+    display: grid;
+    grid-template-columns: 2fr 1.4fr 1.4fr 1.2fr auto;
+    gap: 16px;
+  }
   .role-row {
+    display: grid;
+    grid-template-columns: 2fr 1.4fr 1.4fr 1.2fr auto;
+    gap: 16px;
+    align-items: center;
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.6s ease, transform 0.6s ease;
@@ -313,6 +325,16 @@ const KEYFRAMES = `
   .role-row.r-vis {
     opacity: 1;
     transform: translateY(0);
+  }
+  @media (max-width: 680px) {
+    .roles-header-row {
+      display: none;
+    }
+    .role-row {
+      grid-template-columns: 1fr;
+      row-gap: 10px;
+      justify-items: start;
+    }
   }
 
   /* Benefit cards */
@@ -712,10 +734,8 @@ function CurrentlyHiringSection({ theme }: { theme: "light" | "dark" }) {
         </div>
 
         <div
+          className="roles-header-row"
           style={{
-            display: "grid",
-            gridTemplateColumns: "2fr 1.4fr 1.4fr 1.2fr auto",
-            gap: "16px",
             padding: "0 0 16px",
             borderBottom: `1px solid ${p.line}`,
           }}
@@ -736,10 +756,6 @@ function CurrentlyHiringSection({ theme }: { theme: "light" | "dark" }) {
               key={r.title}
               className="role-row"
               style={{
-                display: "grid",
-                gridTemplateColumns: "2fr 1.4fr 1.4fr 1.2fr auto",
-                gap: "16px",
-                alignItems: "center",
                 padding: "26px 0",
                 borderBottom: i < ROLES.length - 1 ? `1px solid ${p.lineSoft}` : "none",
                 opacity: revealed ? 1 : 0,

@@ -87,6 +87,34 @@ const ROLES = [
   },
 ];
 
+/* Responsive grid + sidebar behavior can't live in inline `style={{}}`
+   objects (no media query support), so the two-column layout and the
+   sticky sidebar are pulled into real CSS classes here. Below 900px the
+   grid collapses to a single column and the sidebar drops its sticky
+   positioning, so nothing gets squeezed or clipped on mobile. */
+const JD_STYLES = `
+.jd-grid{
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:2.5rem;
+  align-items:start;
+}
+.jd-sidebar{
+  position:sticky;
+  top:100px;
+}
+@media (max-width:900px){
+  .jd-grid{
+    grid-template-columns:1fr;
+    gap:1.5rem;
+  }
+  .jd-sidebar{
+    position:static;
+    top:auto;
+  }
+}
+`;
+
 export const Route = createFileRoute("/careers/$roleId/")({
   component: JobDetailPage,
   loader: ({ params }) => {
@@ -104,7 +132,8 @@ function JobDetailPage() {
   const { theme, toggleTheme } = useThemeInit();
 
   return (
-    <main className="bg-background text-foreground min-h-screen">
+    <main className="bg-background text-foreground min-h-screen" style={{ overflowX: "hidden" }}>
+      <style>{JD_STYLES}</style>
       <Nav theme={theme} onToggleTheme={toggleTheme} />
 
       <section style={{ padding: "8rem 0 5rem", background: "var(--color-background)" }}>
@@ -133,7 +162,7 @@ function JobDetailPage() {
             {role.title}
           </h1>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "2.5rem", alignItems: "start" }}>
+          <div className="jd-grid">
             {/* LEFT: description */}
             <div
               style={{
@@ -184,13 +213,12 @@ function JobDetailPage() {
 
             {/* RIGHT: requirements + apply */}
             <div
+              className="jd-sidebar"
               style={{
                 background: "var(--color-card)",
                 border: "1px solid var(--color-border)",
                 borderRadius: "16px",
                 padding: "1.75rem",
-                position: "sticky",
-                top: "100px",
               }}
             >
               <h3 style={{ fontSize: "1rem", fontWeight: 700, marginBottom: "1.25rem", color: "var(--color-foreground)" }}>

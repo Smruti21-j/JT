@@ -221,30 +221,24 @@ export function CTA({
 }
 
 /* ─── Footer ──────────────────────────────────────────────────────────────── */
-const FOOTER_COLS = [
-  {
-    title: "AI Systems",
-    links: [
-      { label: "Autonomous Workflows", to: "/services/$slug", params: { slug: "digital-transformation" } },
-      { label: "Decision Intelligence",  to: "/services/$slug", params: { slug: "data-ai" } },
-      { label: "AI Infrastructure",      to: "/services/$slug", params: { slug: "managed-services" } },
-    ],
-  },
+type FooterLink =
+  | { label: string; to: string }
+  | { label: string; params: { slug: string } };
+
+const FOOTER_COLS: Array<{ title: string; links: FooterLink[] }> = [
   {
     title: "Company",
     links: [
-      { label: "About",    to: "/about" },
-      { label: "Careers",  to: "/careers" },
-      { label: "Contact",  to: "/contact" },
+      { label: "About", to: "/about" },
+      { label: "Careers", to: "/careers" },
+      { label: "Contact", to: "/contact" },
     ],
   },
   {
     title: "Explore",
     links: [
-      { label: "About",    to: "/about" },
-      { label: "Careers",  to: "/careers" },
+      { label: "Services", to: "/services" },
       { label: "Insights", to: "/insights" },
-      { label: "Contact",  to: "/contact" },
     ],
   },
 ];
@@ -320,7 +314,7 @@ const logo = theme === "light" ? logoLight : logoDark;
           </div>
         </div>
         <div className="flex flex-wrap justify-center items-center pt-8 gap-6 text-xs text-muted-foreground">
-  <div>© {new Date().getFullYear()} Jarvis Technolabs — You Think, We Create</div>
+  <div>© {new Date().getFullYear()} Jarvis Technolabs - You Think, We Create</div>
 </div>
       </div>
     </footer>

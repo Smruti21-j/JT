@@ -173,6 +173,8 @@ const HIRE_STYLES = `
     --dark-bg: #0C0C0B;
     --dark-ink: #F7F5F1;
     font-family: var(--font-sans);
+    overflow-x: hidden;
+    width: 100%;
 }
 .hire-eyebrow{
   font-family: var(--font-mono, ui-monospace, monospace);
@@ -181,6 +183,35 @@ const HIRE_STYLES = `
   text-transform:uppercase;
   font-weight:400;
   color: var(--muted);
+}
+
+/* text that should nowrap on desktop but wrap freely on small screens */
+.hire-nowrap{ white-space:nowrap; }
+@media(max-width:640px){
+  .hire-nowrap{ white-space:normal; }
+}
+
+/* shared section container — collapses horizontal padding on mobile */
+.hire-container{
+  max-width:1600px;
+  margin:0 auto;
+  padding:0 3rem;
+  width:100%;
+  box-sizing:border-box;
+}
+@media(max-width:640px){
+  .hire-container{ padding:0 1.25rem; }
+}
+
+/* two-column layouts (hero copy/image, sync heading/body, header blocks)
+   collapse to a single stacked column on tablet/mobile */
+.hire-two-col{
+  display:grid;
+  gap:3rem;
+  align-items:center;
+}
+@media(max-width:900px){
+  .hire-two-col{ grid-template-columns:1fr !important; gap:2rem; }
 }
    
  
@@ -427,13 +458,23 @@ box-shadow:0 24px 60px rgba(0,0,0,.08);
     color: var(--orange) !important;
     transition: color 0.3s ease;
   }
-   
+
+  /* ── responsive grids ── */
+  .hire-sync-cols{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+  }
+  .hire-dna-toggle-cols{
+    display:flex;
+    flex-wrap:wrap;
+  }
 
  @media (max-width: 768px) {
     .hire-hero-cols { grid-template-columns: 1fr !important; text-align: center; }
     .hire-hero-cols > div:last-child { order: -1; margin-bottom: 2rem; }
-    .hire-sync-cols { flex-direction: column !important; }
-    .hire-dna-cols { flex-direction: column !important; }
+    .hire-sync-cols { grid-template-columns: 1fr !important; }
+    .sync-card { border-right: none !important; border-bottom: 1px solid rgba(0,0,0,.10); }
+    .sync-card:last-child { border-bottom: none; }
   }
 `;
 
@@ -508,6 +549,7 @@ function SyncCard({
   style={{
     flex: 1,
     padding: "2rem 2.5rem",
+    minWidth: 0,
 
    background:
   theme === "dark"
@@ -655,7 +697,7 @@ function TechDnaSection({ theme }: { theme: "light" | "dark" }) {
 
   return (
     <section style={{ background: "var(--cream)", padding: "7rem 0" }}>
-      <div style={{ maxWidth: "1600px", margin: "0 auto", padding: "0 3rem" }}>
+      <div className="hire-container">
 
         <p className="hire-eyebrow" style={{ marginBottom: "1.2rem" }}>
           [Technological DNA]
@@ -663,7 +705,7 @@ function TechDnaSection({ theme }: { theme: "light" | "dark" }) {
 
         <h2
           style={{
-            fontSize: "clamp(2.5rem, 6.2vw, 6.6rem)",
+            fontSize: "clamp(2.2rem, 6.2vw, 6.6rem)",
             fontWeight: 800,
             lineHeight: 1.08,
             maxWidth: "900px",
@@ -671,7 +713,7 @@ function TechDnaSection({ theme }: { theme: "light" | "dark" }) {
             color: "var(--ink)",
           }}
         >
-          <span style={{ whiteSpace: "nowrap" }}>
+          <span className="hire-nowrap">
             Every pod is built around
           </span>
           <br />
@@ -701,9 +743,8 @@ function TechDnaSection({ theme }: { theme: "light" | "dark" }) {
         </p>
 
         <div
+          className="hire-dna-toggle-cols"
           style={{
-            display: "flex",
-            flexWrap: "wrap",
             gap: "0.7rem",
             marginBottom: "3rem",
           }}
@@ -741,7 +782,7 @@ function TechDnaSection({ theme }: { theme: "light" | "dark" }) {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
             gap: "1rem",
           }}
         >
@@ -855,26 +896,20 @@ function HirePage() {
   }}
 >
         <div
+          className="hire-container hire-two-col hire-hero-cols"
           style={{
             position: "relative",
             zIndex: 2,
-            maxWidth: "1600px",
-            margin: "0 auto",
-            width: "100%",
-            padding: "8rem 3rem 4rem",
-            display: "grid",
             gridTemplateColumns: "1.1fr 1fr",
-            gap: "3rem",
-            alignItems: "center",
+            padding: "8rem 3rem 4rem",
           }}
-          className="hire-hero-cols"
         >
           {/* left: copy */}
           <div>
            <h1
               
               style={{
-                fontSize: "clamp(2.5rem, 6.2vw, 6.6rem)",
+                fontSize: "clamp(2.2rem, 6.2vw, 6.6rem)",
                 fontWeight: 800,
                 lineHeight: 1.02,
                 color: "var(--ink)",
@@ -994,15 +1029,11 @@ function HirePage() {
           WHY HIRE — editorial list
       ════════════════════════════════════════ */}
       <section style={{ background: "var(--cream)", padding: "5rem 0" }}>
-        <div style={{ maxWidth: "1600px", margin: "0 auto", padding: "0 3rem" }}>
+        <div className="hire-container">
 
           {/* section header */}
           <div
             style={{
-              display: "grid",
-               
-              gap: "32rem",
-              alignItems: "end",
               marginBottom: "3rem",
               paddingBottom: "2.5rem",
               borderBottom: "1px solid var(--rule)",
@@ -1012,7 +1043,7 @@ function HirePage() {
              <p className="hire-eyebrow" style={{ marginBottom: "1.2rem" }}>[Why Hire Jarvis]</p>
              <h2
                 style={{
-  fontSize: "clamp(2.5rem, 6.2vw, 6.6rem)",
+  fontSize: "clamp(2.2rem, 6.2vw, 6.6rem)",
   fontWeight: 800,
   lineHeight: 1.08,
   maxWidth: "900px",
@@ -1020,7 +1051,7 @@ function HirePage() {
   color: "var(--ink)",
 }}
               >
-                <span style={{ whiteSpace: "nowrap" }}>
+                <span className="hire-nowrap">
                   Why follow tickets when,
                 </span>
                 <br />
@@ -1076,7 +1107,7 @@ function HirePage() {
     position: "relative",
   }}
 >
-        <div style={{ maxWidth: "1600px", margin: "0 auto", padding: "0 3rem" }}>
+        <div className="hire-container">
 
           {/* label */}
           <p
@@ -1096,17 +1127,16 @@ function HirePage() {
 
           {/* title + body split */}
          <div
+  className="hire-two-col"
   style={{
-    display: "grid",
     gridTemplateColumns: "1.2fr .8fr",
     gap: "6rem",
-    alignItems: "center",
     marginBottom: "5rem",
   }}
 >
            <h2
   style={{
-    fontSize: "clamp(2.5rem, 6.2vw, 6.6rem)",
+    fontSize: "clamp(2.2rem, 6.2vw, 6.6rem)",
     fontWeight: 800,
     lineHeight: 1.0,
     color: theme === "dark" ? "#F7F5F1" : "#171614",
@@ -1139,8 +1169,6 @@ function HirePage() {
  <div
   className="hire-sync-cols"
   style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(3,1fr)",
     overflow: "hidden",
     borderRadius: "32px",
 

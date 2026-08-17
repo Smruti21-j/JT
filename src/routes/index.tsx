@@ -2210,10 +2210,10 @@ function EngineeringNotes({ theme }: { theme: "light" | "dark" }) {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div>
             <p className="font-mono" style={{ fontSize: "10px", letterSpacing: "0.3em", textTransform: "uppercase", color: pal.headerLabelColor, marginBottom: "22px" }}>
-             [BLOCKCHAIN & AI INSIGHTS]
+             [INSIGHTS]
             </p>
             <h2 className= "section-title" style={{  color: pal.headerHeadingColor, margin: 0 }}>
-              INSIGHTS FROM
+              Dispatches From
               <br />
               <em className="font-display" style={{ fontStyle: "italic", fontWeight: 400, color: "#ed6323", textTransform: "none", fontSize: "0.85em", letterSpacing: "0em" }}>
                The Frontlines
@@ -2225,7 +2225,7 @@ function EngineeringNotes({ theme }: { theme: "light" | "dark" }) {
             search={{ post: undefined }}
             className="font-mono"
             style={{ fontSize: "12px", letterSpacing: "0.2em", textTransform: "uppercase", color: pal.numColor, fontWeight: 500, whiteSpace: "nowrap" }}>
-            Read the blog →
+            Read the blogs →
           </Link>
         </div>
       </div>

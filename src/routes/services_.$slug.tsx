@@ -24,7 +24,7 @@ import { ScrollToTop } from "@/components/site/ScrollToTop";
    user actually clicked on — not a repeated hero image.
 ───────────────────────────────────────────────────────────────────────── */
 
-type Item = { title: string; hook?: string; body: string };
+type Item = { title: string; hook?: string | boolean; body?: string };
 type Section = { category: string; image?: string; items: Item[] };
 type ServiceDetail = {
   slug: string;
@@ -153,54 +153,54 @@ const SERVICES: ServiceDetail[] = [
     number: "02",
     image: digitalImg,
     headline: {
-      line1: "Your Legacy System",
-      line2: "Is Costing You More Than You Think",
+      line1: "Legacy Isn't a",
+      line2: "Compliment. It's a Countdown",
     },
     intro:
-      "Every year you run on patched-together infrastructure, you're paying a tax nobody put on the invoice. We rebuild the core - so the data, the logic, and the outcomes belong to you again, not a vendor's roadmap.",
+      "Every system running on borrowed time still works - until the day it doesn't, and it takes your roadmap down with it. We rebuild the core so the data, the logic, and the outcomes belong to you again - not a patchwork of vendors and workarounds nobody fully understands anymore.",
     sections: [
       {
         category: "Core Logic",
         image: "/DT1.png",
         items: [
-          { title: "Enterprise Architecture", body: "Reference patterns and system design that scale without collapsing under their own weight." },
-          { title: "Business Intelligence", body: "Decision-grade reporting built on data your teams can actually trust." },
+          { title: "Enterprise Architecture",hook: "The blueprint most companies never actually draw", body: "Systems grow by accident more often than by design. We architect the structure underneath - so every new system fits a plan, instead of becoming one more thing to work around." },
+          { title: "Business Intelligence", hook: "Data you're collecting but not actually using", body: "Dashboards that get built once and ignored forever don't count as intelligence. We build BI systems people actually open - because the insight arrives before the decision, not after." },
         ],
       },
       {
         category: "Modernization",
         image: "/DT2.png",
         items: [
-          { title: "Architecture Resurgence (App Modernization)", body: "Strangler-pattern rebuilds - no big-bang rewrites, no downtime gambles." },
+          { title: "Architecture Resurgence (App Modernization)",hook:"Rewriting from scratch isn't always progress. Sometimes it's just risk", body: "We don't burn down what works. We modernize the core of your existing systems - keeping what's proven, replacing what's costing you, without betting the business on a full rebuild." },
         ],
       },
       {
         category: "Integration",
         image: "/DT3.png",
         items: [
-          { title: "Sovereign System Integration", body: "ERP, CRM and commerce systems wired together reliably, on your terms." },
-          { title: "Cloud & Hybrid Core", body: "Hybrid and multi-cloud connectivity that doesn't lock you into one vendor's roadmap." },
+          { title: "Sovereign System Integration", hook: "Connecting the dots without the vendor lock-in", body: "ERP, CRM and commerce systems wired together reliably, on your terms." },
+          { title: "Cloud & Hybrid Core", hook: "Your infrastructure, your rules", body: "Hybrid and multi-cloud connectivity that doesn't lock you into one vendor's roadmap." },
         ],
       },
       {
         category: "Experience",
         image: "/DT4.png",
         items: [
-          { title: "Immersive Digital Experience", body: "Customer-facing surfaces engineered to perform, not just look good in a deck." },
-          { title: "Enterprise Mobility", body: "Connected workflows that follow your team onto every device." },
+          { title: "Immersive Digital Experience", hook: "Your customers don't remember your architecture. They remember how it felt", body: "We design the layer where all this infrastructure finally becomes something a human notices - fast, intuitive, and worth coming back to." },
+          { title: "Enterprise Mobility", hook: "If it doesn't work on a phone in a hallway, it doesn't work", body: "Your team isn't always at a desk. We build mobile-first systems that keep pace with how work actually happens - not how it looked in 2015." },
         ],
       },
     ],
     whyItMatters: [
-      "Systems that finally share one source of truth instead of five conflicting ones",
-      "Release cycles measured in days, not quarters",
-      "Infrastructure costs that reflect what you actually use",
-      "A core your team can extend, instead of one only the original vendor understands",
+      "Decisions get made on data that's structured and current - not buried in a report nobody opens",
+      "Your systems integrate without one outage taking down everything connected to it",
+      "Infrastructure choices match how your business actually operates, not a vendor's default recommendation",
+      "The experience your customers and employees touch daily finally matches the sophistication running underneath it",
     ],
     closing: {
-      line1: "Modernization Isn't a Rewrite.",
-      line2: "It's Taking Your Core Back.",
-      body: "Let's talk about what that looks like inside your business - not a generic pitch, an honest conversation about what's actually possible with your data, your stack, your timeline.",
+      line1: "Your Next Chapter",
+      line2: "Shouldn't Run on Your Last Decade's Infrastructure",
+      body: "Let's talk about what a modern core looks like for your business; not a rip-and-replace scare tactic, an honest plan for what to keep, what to rebuild, and what to finally let go.",
     },
   },
   {
@@ -219,31 +219,31 @@ const SERVICES: ServiceDetail[] = [
         category: "Design Forge",
         image: "/PE1.png",
         items: [
-          { title: "Product Assessment & Design", body: "Vision, scope and technical feasibility, validated before a line of code ships." },
-          { title: "Application Re-Engineering", body: "Modernizing what exists without losing the velocity of what's next." },
+          { title: "Product Assessment & Design", hook: "From idea to implementation, we validate your vision before any code is written.", body: "Vision, scope and technical feasibility, validated before a line of code ships." },
+          { title: "Application Re-Engineering", hook: "Modernizing what exists without losing the velocity of what's next.", body: "Modernizing what exists without losing the velocity of what's next." },
         ],
       },
       {
         category: "Scale Logic",
         image: "/PE2.png",
         items: [
-          { title: "Platform Engineering", body: "Internal developer platforms that let your team ship faster without breaking things." },
-          { title: "Custom High-Stakes Development", body: "Built for the load, traffic and edge cases you haven't hit yet - but will." },
+          { title: "Platform Engineering", hook: "Internal developer platforms that let your team ship faster without breaking things.", body: "Internal developer platforms that let your team ship faster without breaking things." },
+          { title: "Custom High-Stakes Development", hook: "Built for the load, traffic and edge cases you haven't hit yet - but will.", body: "Built for the load, traffic and edge cases you haven't hit yet - but will." },
         ],
       },
       {
         category: "Velocity",
         image: "/PE3.png",
         items: [
-          { title: "Battle-Tested DevOps", body: "CI/CD, infrastructure-as-code and progressive delivery that doesn't break at 2am." },
-          { title: "Precision Quality Assurance", body: "Automation pyramids that scale with the product instead of slowing it down." },
+          { title: "Battle-Tested DevOps", hook: "CI/CD, infrastructure-as-code and progressive delivery that doesn't break at 2am.", body: "CI/CD, infrastructure-as-code and progressive delivery that doesn't break at 2am." },
+          { title: "Precision Quality Assurance", hook: "Automation pyramids that scale with the product instead of slowing it down.", body: "Automation pyramids that scale with the product instead of slowing it down." },
         ],
       },
       {
         category: "Resource",
         image: "/PE4.png",
         items: [
-          { title: "Elite Team Augmentation", body: "Senior engineers embedded in your team - not a black-box outsourced pod." },
+          { title: "Elite Team Augmentation", hook: "Senior engineers embedded in your team - not a black-box outsourced pod.", body: "Senior engineers embedded in your team - not a black-box outsourced pod." },
         ],
       },
     ],
@@ -275,16 +275,16 @@ const SERVICES: ServiceDetail[] = [
         category: "Web Logic",
         image: "/AT1.png",
         items: [
-          { title: "Responsive Web Ecosystems", body: "Modern web stacks, edge-rendered for speed on every connection." },
-          { title: "Progressive Web Apps (PWA)", body: "App-grade experience, no App Store approval queue required." },
+          { title: "Responsive Web Ecosystems", hook: "Modern web stacks, edge-rendered for speed on every connection.", body: "Modern web stacks, edge-rendered for speed on every connection." },
+          { title: "Progressive Web Apps (PWA)", hook: "App-grade experience, no App Store approval queue required.", body: "App-grade experience, no App Store approval queue required." },
         ],
       },
       {
         category: "Mobile Core",
         image: "/AT2.png",
         items: [
-          { title: "Mobile App Development", body: "Native iOS & Android builds with the deep integrations your product actually needs." },
-          { title: "Cross-Platform Architectures", body: "One codebase, native performance, half the maintenance overhead." },
+          { title: "Mobile App Development", hook: "Native iOS & Android builds with the deep integrations your product actually needs.", body: "Native iOS & Android builds with the deep integrations your product actually needs." },
+          { title: "Cross-Platform Architectures", hook: "One codebase, native performance, half the maintenance overhead.", body: "One codebase, native performance, half the maintenance overhead." },
         ],
       },
       {
@@ -636,40 +636,21 @@ const STYLES = `
   .svd-cat-grid{ grid-template-columns:1.15fr .85fr; }
 }
 
-.svd-cat-eyebrow{
-  font-family: var(--font-mono, ui-monospace, monospace);
-  font-size:10px;letter-spacing:.3em;text-transform:uppercase;font-weight:400;
-  color:var(--acc); margin-bottom:16px;
-  display:flex; align-items:center; gap:10px;
-}
-.svd-cat-eyebrow::before{
-  content:""; width:7px; height:7px; border-radius:50%; background:var(--acc); flex-shrink:0;
-}
-
 .svd-cat-title{
   font-family:var(--font-display); font-weight:800; letter-spacing:-.01em;
   font-size:clamp(1.9rem,3.4vw,2.6rem); line-height:1.08; color:var(--ink);
   margin-bottom:14px;
 }
 
-/* The accent line — now uses font-display italic (same swashy serif italic
-   as the hero headline accent), matching the reference style across the
-   whole page instead of a plain sans italic. */
-.svd-cat-hook{
-  font-style:italic; font-weight:400;
-  font-size:17px; color:var(--acc); line-height:1.4; margin-bottom:28px;
-  max-width:520px;
-}
-
 .svd-cat-label{
   font-size:10px; letter-spacing:.2em; text-transform:uppercase; font-weight:700;
-  color:var(--ink-faint); margin-bottom:18px;
+  color:var(--ink-faint); margin:0 0 18px;
 }
 
 .svd-cat-offerings{
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
-  gap:22px 28px;
+  display:flex;
+  flex-direction:column;
+  gap:22px;
 }
 .svd-offering{ display:flex; gap:11px; align-items:flex-start; }
 .svd-offering-dot{
@@ -680,8 +661,10 @@ const STYLES = `
   font-weight:700; font-size:15px; color:var(--ink); line-height:1.4; margin:0;
 }
 .svd-offering-hook{
-  font-style:italic; font-weight:400;
-  font-size:13.5px; color:var(--acc); margin:3px 0 0; line-height:1.4;
+  font-family:var(--font-display); font-weight:400;
+  font-size:12.5px; color:var(--acc); margin:4px 0 0; line-height:1.45;
+  font-style:italic !important; font-synthesis:style !important;
+  transform:skewX(-6deg) !important; transform-origin:left; display:inline-block;
 }
 .svd-offering-body{
   font-size:12.5px; color:var(--ink-dim); margin:5px 0 0; line-height:1.6;
@@ -731,8 +714,10 @@ const STYLES = `
 }
 .svd-closing-accent{
   display:block;
-  font-family:var(--font-display); font-style:italic; font-weight:400;
+  font-family:var(--font-display); font-weight:400;
   color:var(--acc);
+  font-style:italic !important; font-synthesis:style !important;
+  transform:skewX(-6deg) !important; transform-origin:left;
 }
 .svd-closing-body{
   font-size:15px; color:var(--ink-dim); line-height:1.75;
@@ -830,7 +815,6 @@ function ServiceDetailPage() {
         <div className="svd-inner">
           {detail.sections.map((section, index) => {
             const imageFirst = index % 2 === 0; // even → image left, odd → image right
-            const headlineHook = section.items[0]?.hook;
 
             return (
               <div
@@ -840,18 +824,9 @@ function ServiceDetailPage() {
               >
                 <div className="svd-cat-grid">
                   <div style={{ order: imageFirst ? 1 : 0 }}>
-                    <p className="svd-cat-eyebrow">
-                      0{index + 1} · {section.category}
-                    </p>
                     <h2 className="svd-cat-title">{section.category}</h2>
 
-                    {headlineHook && (
-                      <p className="svd-cat-hook font-display" style={{ fontStyle: "italic" }}>
-                        {headlineHook}
-                      </p>
-                    )}
-
-                    <p className="svd-cat-label">Offerings</p>
+                    <p className="svd-cat-label"></p>
                     <div className="svd-cat-offerings">
                       {section.items.map((item) => (
                         <div key={item.title} className="svd-offering">
@@ -859,7 +834,15 @@ function ServiceDetailPage() {
                           <div>
                             <p className="svd-offering-title">{item.title}</p>
                             {item.hook && (
-                              <p className="svd-offering-hook font-display" style={{ fontStyle: "italic" }}>
+                              <p
+                                className="font-display svd-offering-hook"
+                                style={{
+                                  fontStyle: "italic",
+                                  transform: "skewX(-6deg)",
+                                  transformOrigin: "left",
+                                  display: "inline-block",
+                                }}
+                              >
                                 {item.hook}
                               </p>
                             )}

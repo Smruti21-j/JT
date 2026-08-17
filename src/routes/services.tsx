@@ -594,7 +594,7 @@ function ServicesHero() {
     <div className="svh-hero-image">
       <img src={servicesImage} alt="Services Illustration" />
     </div>
-        <p className="svh-eyebrow">Full-Stack, AI-Native Delivery</p>
+        <p className="svh-eyebrow">[WHAT WE BUILD. WHAT IT BUILTS]</p>
         <h1 className="svh-title section-title">
           Impact That
           <br />
