@@ -52,19 +52,19 @@ export function Nav({ theme, onToggleTheme }: NavProps) {
         transition: "padding 0.35s ease",
       }}
     >
-      <header
-        className="w-full"
-        style={{
-          maxWidth: scrolled ? "1152px" : "100%",
-          borderRadius: scrolled ? "999px" : "0px",
-          background: scrolled ? "var(--nav-solid)" : "var(--nav-transparent)",
-          border: scrolled ? "1px solid var(--nav-border)" : "1px solid transparent",
-          boxShadow: scrolled ? "var(--nav-shadow)" : "none",
-          backdropFilter: "blur(18px) saturate(160%)",
-          WebkitBackdropFilter: "blur(18px) saturate(160%)",
-          transition: "max-width 0.35s ease, border-radius 0.35s ease, background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease",
-        }}
-      >
+     <header
+  className="w-full"
+  style={{
+    maxWidth: scrolled && !mobileOpen ? "1152px" : "100%",
+    borderRadius: mobileOpen ? "24px" : scrolled ? "999px" : "0px",
+    background: scrolled ? "var(--nav-solid)" : "var(--nav-transparent)",
+    border: scrolled ? "1px solid var(--nav-border)" : "1px solid transparent",
+    boxShadow: scrolled ? "var(--nav-shadow)" : "none",
+    backdropFilter: "blur(18px) saturate(160%)",
+    WebkitBackdropFilter: "blur(18px) saturate(160%)",
+    transition: "max-width 0.35s ease, border-radius 0.35s ease, background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease",
+  }}
+>
         <div
           className="mx-auto flex max-w-7xl items-center justify-between px-8"
           style={{

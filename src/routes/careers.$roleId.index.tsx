@@ -161,7 +161,12 @@ function JobDetailPage() {
           >
             {role.title}
           </h1>
-
+<Link
+  to="/careers"
+  className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+>
+  ← Back to Careers
+</Link>
           <div className="jd-grid">
             {/* LEFT: description */}
             <div

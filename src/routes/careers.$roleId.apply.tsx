@@ -1,10 +1,11 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/CTA";
 import { useThemeInit } from "@/hooks/use-theme-init";
 import { useRecaptchaScript, getRecaptchaToken } from "@/hooks/use-recaptcha";
 import { sendMail, MailerError } from "@/lib/mailer";
 import { useRef, useState } from "react";
+ 
 
 const ROLE_TITLES: Record<string, string> = {
   bde: "BDE",
@@ -304,7 +305,12 @@ function ApplyPage() {
           <h1 style={{ fontSize: "clamp(2.2rem,4.5vw,3.4rem)", fontWeight: 800, margin: "0 0 3rem" }}>
             {title}
           </h1>
-
+<Link
+  to="/careers"
+  className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+>
+  ← Back to Careers
+</Link>
           <form
             onSubmit={handleSubmit}
             style={{
@@ -318,7 +324,7 @@ function ApplyPage() {
             {/* ── Basic Info ── */}
             <h3 style={sectionHeadingStyle}>Basic Info</h3>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.5rem", marginBottom: "1.75rem" }}>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-7">
               <div>
                 <label style={labelStyle}>First Name *</label>
                 <input required style={inputStyle} value={form.firstName} onChange={update("firstName")} />
@@ -373,7 +379,7 @@ function ApplyPage() {
             {/* ── Professional Details ── */}
             <h3 style={sectionHeadingStyle}>Professional Details</h3>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.5rem", marginBottom: "1.75rem" }}>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-7">
               <div>
                 <label style={labelStyle}>Highest Qualification Held *</label>
                 <select
