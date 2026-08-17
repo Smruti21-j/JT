@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import logoDark from "@/assets/JT-logdark.png";
-import logoLight from "@/assets/JT-logo-original.png";
+import logoLight from "@/assets/original-logo.svg";
+import logoDark from "@/assets/original-logo-white.svg";
 import { useEffect, useRef } from "react";
 import { Linkedin, Instagram, Twitter, Youtube, Facebook, Mail, Phone, MapPin } from "lucide-react";
 
@@ -259,7 +259,7 @@ const logo = theme === "light" ? logoLight : logoDark;
       <div className="relative max-w-[1600px] mx-auto px-5 sm:px-8 lg:px-12 xl:px-16 py-20" style={{ zIndex: 10 }}>
         <div className="grid lg:grid-cols-12 gap-12 border-b border-border pb-16">
           <div className="lg:col-span-5">
-            <Link to="/"><img src={logo} alt="Jarvis Technolabs" className="h-20 w-auto object-contain mb-6" /></Link>
+            <Link to="/"><img src={logo} alt="Jarvis Technolabs" className="h-10 w-auto object-contain mb-6" /></Link>
             <p className="text-sm leading-relaxed max-w-sm mb-6 text-muted-foreground">
               We build the intelligence behind what's next - systems that learn, workflows that run themselves, and experiences customers don't forget. Not someday. Already running.
             </p>

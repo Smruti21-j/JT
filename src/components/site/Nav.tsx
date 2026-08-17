@@ -1,10 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
-import logoFullDark from "@/assets/JT-logdark.png";
-import logoIconDark from "@/assets/JT-logo-original-icon.png";
-import logoFullLight from "@/assets/JT-logo-original.png";
-import logoIconLight from "@/assets/JT-logo-original-icon.png";
+import logoFullLight from "@/assets/original-logo.svg";
+import logoIconLight from "@/assets/original-logo-icon.svg";
+import logoFullDark from "@/assets/original-logo-white.svg";
+import logoIconDark from "@/assets/original-logo-white-icon.svg";
 import type { SiteTheme } from "@/hooks/use-theme-init";
 
 const LINKS = [
@@ -87,7 +87,7 @@ export function Nav({ theme, onToggleTheme }: NavProps) {
                 alt="Jarvis Technolabs"
                 style={{
                   display: scrolled ? "none" : "block",
-                  height: "100%",
+                  height: "90%",
                   width: "auto",
                   objectFit: "contain",
                   opacity: scrolled ? 0 : 1,
